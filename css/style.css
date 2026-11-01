@@ -1824,32 +1824,19 @@ body:not(.dark) .result-box.locked:hover {
 
 .modal.is-gallery-modal .modal-panel {
   width: min(100%, 860px);
-  max-height: min(90vh, 840px);
+  max-height: min(92vh, 860px);
   border-radius: 16px;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: var(--surface-strong);
   border: 1px solid var(--border);
   box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
-  display: flex;
-  flex-direction: column;
-}
-
-.modal.is-gallery-modal #modalContent {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 0;
-  min-height: 0;
-  overflow: hidden;
 }
 
 .modal.is-gallery-modal .gallery-preview {
   border-radius: 0;
-  overflow: hidden;
+  overflow: visible;
   background: transparent;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  flex: 1 1 0;
 }
 
 .gallery-preview-media {
@@ -1858,10 +1845,9 @@ body:not(.dark) .result-box.locked:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 180px;
+  min-height: 200px;
+  max-height: min(calc(90vh - 210px), 520px);
   overflow: hidden;
-  flex: 1 1 0;
-  min-width: 0;
 }
 
 .gallery-ambient-bg {
@@ -1886,7 +1872,7 @@ body:not(.dark) .gallery-ambient-bg {
 .gallery-preview img {
   position: relative;
   z-index: 2;
-  max-height: 100%;
+  max-height: min(calc(90vh - 220px), 500px);
   max-width: 100%;
   width: auto;
   object-fit: contain;
@@ -4502,11 +4488,12 @@ html.user-logged-in #statusCard {
   }
 
   .modal.is-gallery-modal .gallery-preview-media {
-    min-height: 140px;
+    min-height: 160px;
+    max-height: calc(88vh - 180px);
   }
 
   .modal.is-gallery-modal .gallery-preview-media img {
-    max-height: 100%;
+    max-height: calc(88vh - 190px);
   }
 
   .modal.is-gallery-modal .gallery-preview-body {
