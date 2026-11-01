@@ -1,18 +1,18 @@
 const i18n = {
   en: {
     pageTitle: {
-      home: "International Hall | Home",
-      students: "International Hall | Students",
-      roommates: "International Hall | Roommates",
-      results: "International Hall | Results",
-      hostel: "International Hall | Hall Info",
-      hallsuper: "International Hall | Hall Super",
-      gallery: "International Hall | Gallery",
-      developer: "International Hall | Developer",
-      profile: "International Hall | Profile",
-      embed: "International Hall | Portal",
-      "dc-social": "International Hall | DC Facebook Pages",
-      "dc-clubs": "International Hall | Dhaka College Clubs"
+      home: "Dhaka College International Hall | Official Student & Hostel Portal",
+      students: "Student Directory & Profiles | Dhaka College International Hall",
+      roommates: "Room & Roommate Allocations | Dhaka College International Hall",
+      results: "Academic Results & Merit Lists | Dhaka College International Hall",
+      hostel: "Hostel Information & Administration | Dhaka College International Hall",
+      hallsuper: "Hall Super Office & Administration | Dhaka College International Hall",
+      gallery: "Photo Gallery & Campus Memories | Dhaka College International Hall",
+      developer: "Website Developer & Technical Portfolio | Dhaka College International Hall",
+      profile: "Student Portal & Profile Access | Dhaka College International Hall",
+      embed: "Portals, Archives & Campus Resources | Dhaka College International Hall",
+      "dc-social": "Official Facebook Pages & Social Directory | Dhaka College International Hall",
+      "dc-clubs": "Clubs & Co-Curricular Directory | Dhaka College International Hall"
     },
     nav: {
       logo: "International Hall",
@@ -257,18 +257,18 @@ const i18n = {
   },
   bn: {
     pageTitle: {
-      home: "আন্তর্জাতিক ছাত্রাবাস | হোম",
-      students: "আন্তর্জাতিক ছাত্রাবাস | শিক্ষার্থী",
-      roommates: "আন্তর্জাতিক ছাত্রাবাস | রুমমেট",
-      results: "আন্তর্জাতিক ছাত্রাবাস | ফলাফল",
-      hostel: "আন্তর্জাতিক ছাত্রাবাস | হল তথ্য",
-      hallsuper: "আন্তর্জাতিক ছাত্রাবাস | হল সুপার",
-      gallery: "আন্তর্জাতিক ছাত্রাবাস | গ্যালারি",
-      developer: "আন্তর্জাতিক ছাত্রাবাস | ডেভেলপার",
-      profile: "আন্তর্জাতিক ছাত্রাবাস | প্রোফাইল",
-      embed: "আন্তর্জাতিক ছাত্রাবাস | পোর্টাল",
-      "dc-social": "আন্তর্জাতিক ছাত্রাবাস | ডিসি ফেসবুক পেজ",
-      "dc-clubs": "আন্তর্জাতিক ছাত্রাবাস | ক্লাবসমূহ"
+      home: "ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস | অফিসিয়াল শিক্ষার্থী ও হোস্টেল পোর্টাল",
+      students: "শিক্ষার্থী তালিকা ও ডিরেক্টরি | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      roommates: "রুম ও রুমমেট তালিকা | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      results: "একাডেমিক ফলাফল ও মূল্যায়ন | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      hostel: "ছাত্রাবাস তথ্য ও প্রশাসন | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      hallsuper: "হল সুপার প্রশাসন ও বার্তা | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      gallery: "ফটো গ্যালারি ও ক্যাম্পাস স্মৃতি | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      developer: "ডেভেলপার পরিচিতি ও পোর্টফোলিও | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      profile: "শিক্ষার্থী পোর্টাল ও প্রোফাইল | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      embed: "পোর্টাল, আর্কাইভ ও রিসোর্স | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      "dc-social": "ফেসবুক পেজ ও সোশ্যাল ডিরেক্টরি | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      "dc-clubs": "ক্লাব ও সহশিক্ষা কার্যক্রম | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস"
     },
     nav: {
       logo: "আন্তর্জাতিক ছাত্রাবাস",
@@ -4857,12 +4857,33 @@ function openGalleryModal(src, title, desc = "") {
           </div>
         ` : ""}
         <div class="gallery-preview-actions">
-          <a class="btn primary" href="${src}" download>Download</a>
-          <a class="btn secondary" href="${src}" target="_blank" rel="noopener">Open image</a>
+          <button class="btn primary gallery-download-btn" type="button" aria-label="Download photo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Download</span>
+          </button>
+          <a class="btn secondary" href="${src}" target="_blank" rel="noopener noreferrer" aria-label="Open full image in new tab">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle;">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span>Open image</span>
+          </a>
         </div>
       </div>
     </div>
   `;
+
+  const downloadBtn = content.querySelector(".gallery-download-btn");
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", () => {
+      downloadGalleryImage(src, title);
+    });
+  }
 
   modal.classList.remove("is-room-modal");
   modal.classList.add("is-gallery-modal");
@@ -5859,3 +5880,53 @@ window.openStudentModalFromRoom = function(slug) {
 
 
 window.openGalleryModal = openGalleryModal;
+
+
+async function downloadGalleryImage(url, title) {
+  if (!url) return;
+  const btn = document.querySelector(".gallery-download-btn");
+  const origHtml = btn ? btn.innerHTML : "";
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite; margin-right:6px;">⏳</span> <span>Downloading...</span>`;
+  }
+
+  const cleanName = ((title || "dc-hall-photo").trim().toLowerCase().replace(/[^a-z0-9_-]/gi, "-").replace(/-+/g, "-") || "photo") + ".jpg";
+
+  try {
+    const res = await fetch(url, { mode: "cors" });
+    if (!res.ok) throw new Error("Fetch failed: " + res.status);
+    const blob = await res.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const tempA = document.createElement("a");
+    tempA.href = blobUrl;
+    tempA.download = cleanName;
+    document.body.appendChild(tempA);
+    tempA.click();
+    tempA.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 2500);
+  } catch (err) {
+    console.warn("Direct blob download failed, falling back to Sanity attachment / direct download", err);
+    let dlUrl = url;
+    if (url.includes("cdn.sanity.io")) {
+      dlUrl = url + (url.includes("?") ? "&" : "?") + "dl=" + encodeURIComponent(cleanName);
+    }
+    const tempA = document.createElement("a");
+    tempA.href = dlUrl;
+    tempA.download = cleanName;
+    tempA.target = "_blank";
+    tempA.rel = "noopener noreferrer";
+    document.body.appendChild(tempA);
+    tempA.click();
+    tempA.remove();
+  } finally {
+    if (btn) {
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }, 700);
+    }
+  }
+}
+
+window.downloadGalleryImage = downloadGalleryImage;

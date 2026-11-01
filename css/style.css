@@ -1824,18 +1824,25 @@ body:not(.dark) .result-box.locked:hover {
 
 .modal.is-gallery-modal .modal-panel {
   width: min(100%, 860px);
-  max-height: min(92vh, 880px);
+  max-height: min(92vh, 860px);
   border-radius: 16px;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background: var(--surface-strong);
   border: 1px solid var(--border);
   box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
 }
 
 .modal.is-gallery-modal .gallery-preview {
   border-radius: 0;
-  overflow: hidden;
+  overflow: visible;
   background: transparent;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1 1 auto;
 }
 
 .gallery-preview-media {
@@ -1844,9 +1851,10 @@ body:not(.dark) .result-box.locked:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 260px;
-  max-height: 70vh;
+  min-height: 220px;
+  max-height: min(54vh, 500px);
   overflow: hidden;
+  flex: 1 1 auto;
 }
 
 .gallery-ambient-bg {
@@ -1871,7 +1879,7 @@ body:not(.dark) .gallery-ambient-bg {
 .gallery-preview img {
   position: relative;
   z-index: 2;
-  max-height: 68vh;
+  max-height: min(52vh, 480px);
   max-width: 100%;
   width: auto;
   object-fit: contain;
@@ -1912,8 +1920,9 @@ body:not(.dark) .gallery-ambient-bg {
 }
 
 .gallery-preview-body {
-  padding: 22px 24px;
+  padding: 16px 24px 20px;
   background: var(--surface-strong);
+  flex-shrink: 0;
 }
 
 .gallery-preview-eyebrow {
@@ -4486,20 +4495,33 @@ html.user-logged-in #statusCard {
   }
 
   .modal.is-gallery-modal .gallery-preview-media {
-    min-height: 200px;
-    max-height: 60vh;
+    min-height: 180px;
+    max-height: 48vh;
   }
 
   .modal.is-gallery-modal .gallery-preview-media img {
-    max-height: 56vh;
+    max-height: 46vh;
   }
 
   .modal.is-gallery-modal .gallery-preview-body {
-    padding: 16px;
+    padding: 14px 16px 18px;
   }
 
   .modal.is-gallery-modal .gallery-preview-title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
+  }
+
+  .modal.is-gallery-modal .gallery-preview-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+
+  .modal.is-gallery-modal .gallery-preview-actions .btn {
+    flex: 1 1 calc(50% - 4px);
+    justify-content: center;
+    padding: 8px 12px;
+    font-size: 0.85rem;
   }
 
   /* Room Modal Mobile View */
@@ -4647,4 +4669,17 @@ html.user-logged-in #statusCard {
   .room-photo-grid img {
     height: 140px;
   }
+}
+
+
+.gallery-download-btn {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-download-btn:disabled {
+  opacity: 0.75;
+  cursor: wait;
 }
