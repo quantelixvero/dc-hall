@@ -6,6 +6,7 @@ import hallInfo from './hallInfo'
 import galleryItem from './galleryItem'
 import galleryEvent from './galleryEvent'
 import developerProfile from './developerProfile'
+import editRequest from './editRequest'
 
 export const schemaTypes = [
   student,
@@ -16,4 +17,5 @@ export const schemaTypes = [
   galleryItem,
   galleryEvent,
   developerProfile,
+  editRequest,
 ]

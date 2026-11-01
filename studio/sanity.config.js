@@ -77,6 +77,17 @@ export default defineConfig({
           heading: 'HSC-29',
         },
       },
+      // ═══════════════════════════════════════════
+      // Edit Request Template (auto-status pending)
+      // ═══════════════════════════════════════════
+      {
+        id: 'editRequest-pending',
+        title: 'New Edit Request (নতুন সম্পাদনা অনুরোধ)',
+        schemaType: 'editRequest',
+        value: {
+          status: 'pending',
+        },
+      },
     ],
   },
 })
