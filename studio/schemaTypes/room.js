@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { RoomAssignedStudentsInput } from '../components/RoomAssignedStudentsInput'
+import { RoomAssignedStudentsInput } from '../components/RoomAssignedStudentsInput.jsx'
 
 export default defineType({
   name: 'room',

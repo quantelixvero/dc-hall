@@ -18,6 +18,65 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
+    templates: (prev) => [
+      ...prev,
+      // ═══════════════════════════════════════════
+      // Pre-filled Batch Student Templates
+      // ═══════════════════════════════════════════
+      {
+        id: 'student-hsc27',
+        title: 'HSC-27 Student (স্বয়ংক্রিয় HSC-27)',
+        schemaType: 'student',
+        value: {
+          batch: 'HSC-27',
+        },
+      },
+      {
+        id: 'student-hsc28',
+        title: 'HSC-28 Student (স্বয়ংক্রিয় HSC-28)',
+        schemaType: 'student',
+        value: {
+          batch: 'HSC-28',
+        },
+      },
+      {
+        id: 'student-hsc29',
+        title: 'HSC-29 Student (স্বয়ংক্রিয় HSC-29)',
+        schemaType: 'student',
+        value: {
+          batch: 'HSC-29',
+        },
+      },
+      // ═══════════════════════════════════════════
+      // Pre-filled Batch Gallery Templates
+      // ═══════════════════════════════════════════
+      {
+        id: 'galleryItem-hsc27',
+        title: 'HSC-27 Photo Collection',
+        schemaType: 'galleryItem',
+        value: {
+          batch: 'HSC-27',
+          heading: 'HSC-27',
+        },
+      },
+      {
+        id: 'galleryItem-hsc28',
+        title: 'HSC-28 Photo Collection',
+        schemaType: 'galleryItem',
+        value: {
+          batch: 'HSC-28',
+          heading: 'HSC-28',
+        },
+      },
+      {
+        id: 'galleryItem-hsc29',
+        title: 'HSC-29 Photo Collection',
+        schemaType: 'galleryItem',
+        value: {
+          batch: 'HSC-29',
+          heading: 'HSC-29',
+        },
+      },
+    ],
   },
 })
-

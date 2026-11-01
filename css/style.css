@@ -4676,3 +4676,126 @@ html.user-logged-in #statusCard {
   opacity: 0.75;
   cursor: wait;
 }
+
+
+/* ====================================================
+   MULTI-BATCH UI — Students Page & Homepage
+   ==================================================== */
+
+/* Back to All Batches button */
+.back-to-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
+}
+.back-to-all-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--bg);
+}
+
+/* Batch archive banner (single-batch dedicated view) */
+.batch-archive-banner {
+  width: 100%;
+  margin-bottom: 24px;
+}
+.batch-archive-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.batch-archive-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* Active (latest) batch header highlight */
+.active-batch-header .batch-header-inner {
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+.active-batch-header .batch-heading,
+.active-batch-header .batch-label,
+.active-batch-header .batch-badge,
+.active-batch-header .batch-icon {
+  color: #fff !important;
+}
+.active-batch-header .batch-count-pill {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+/* Previous batch preview grid — 3-column */
+.prev-batch-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* View All button for previous batches */
+.prev-batch-action {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 32px;
+}
+.prev-batch-view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 28px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+.prev-batch-view-all-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .prev-batch-preview-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .batch-archive-title {
+    font-size: 1.25rem;
+  }
+  .prev-batch-view-all-btn {
+    padding: 8px 20px;
+    font-size: 0.85rem;
+  }
+  .back-to-all-btn {
+    font-size: 0.82rem;
+    padding: 6px 14px;
+  }
+}
+
+@media (max-width: 420px) {
+  .prev-batch-preview-grid {
+    grid-template-columns: 1fr;
+  }
+}

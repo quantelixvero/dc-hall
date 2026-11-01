@@ -3316,8 +3316,8 @@ function applyLanguage() {
         : "You are logged in as Master Admin. Full access unlocked across all batches.";
     } else {
       successMsg.textContent = currentLang === "bn"
-        ? `তুমি ${role.toUpperCase()} ব্যাচ হিসেবে লগইন আছো! তোমার নিজস্ব ব্যাচের তথ্য দৃশ্যমান (অন্যান্য ব্যাচ সুরক্ষিত)।`
-        : `You are logged in under ${role.toUpperCase()}. Your batch records are unlocked (other batches protected).`;
+        ? `তুমি ${role.toUpperCase()} ব্যাচ হিসেবে লগইন আছো! তোমার ব্যাচ এবং জুনিয়র ব্যাচসমূহের সংরক্ষিত তথ্য আনলক রয়েছে।`
+        : `You are logged in under ${role.toUpperCase()}. Your batch and junior batches' records are unlocked.`;
     }
   }
   updateProfileNavButton();
@@ -3459,57 +3459,153 @@ function renderSingleStudentCard(student, index) {
   `;
 }
 
+function getHomepage6Students(allStudents) {
+  const batchMap = {};
+  allStudents.forEach(s => {
+    const b = s.batch || "HSC-27";
+    batchMap[b] = batchMap[b] || [];
+    batchMap[b].push(s);
+  });
+  const batchKeys = Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
+  const latestBatch = batchKeys[0] || "HSC-27";
+  const founderBatch = "HSC-27";
+  if (latestBatch === founderBatch) {
+    return (batchMap[founderBatch] || []).slice(0, 6);
+  }
+  const top3 = (batchMap[latestBatch] || []).slice(0, 3);
+  const bottom3 = (batchMap[founderBatch] || []).slice(0, 3);
+  return [...top3, ...bottom3];
+}
+
+function getAllBatchesSorted() {
+  const batchMap = {};
+  students.forEach(s => {
+    const b = s.batch || "HSC-27";
+    batchMap[b] = batchMap[b] || [];
+    batchMap[b].push(s);
+  });
+  return Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a)).map(key => ({
+    batch: key,
+    students: batchMap[key]
+  }));
+}
+
 function renderStudentCards(list = getFilteredStudents()) {
   const grid = byId("studentGrid");
   if (!grid) return;
 
-  const limit = Number(grid.dataset.limit || list.length);
   const isHomePage = !!grid.dataset.limit;
-  const visibleStudents = list.slice(0, limit);
 
-  if (!visibleStudents.length) {
+  // === HOMEPAGE: 3+3 rule ===
+  if (isHomePage) {
+    const homepage6 = getHomepage6Students(list.length ? list : students);
+    if (!homepage6.length) {
+      grid.innerHTML = `<div class="empty-state">${t("common.noStudent")}</div>`;
+      return;
+    }
+    grid.innerHTML = homepage6.map((student, index) => renderSingleStudentCard(student, index)).join("");
+    return;
+  }
+
+  // === STUDENTS PAGE: check for ?batch= URL param ===
+  const urlParams = new URLSearchParams(window.location.search);
+  const singleBatchParam = urlParams.get("batch");
+
+  if (singleBatchParam) {
+    const normalizedParam = singleBatchParam.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const batchStudents = list.filter(s => {
+      const sb = (s.batch || "HSC-27").toLowerCase().replace(/[^a-z0-9]/g, "");
+      return sb === normalizedParam;
+    });
+    const batchLabel = singleBatchParam.toUpperCase().replace("HSC", "HSC-");
+
+    let html = `
+      <div class="batch-archive-banner" data-aos="fade-up">
+        <a href="students.html" class="back-to-all-btn">← ${currentLang === 'bn' ? 'সকল ব্যাচ' : 'All Batches'}</a>
+        <div class="batch-archive-title-wrap">
+          <h2 class="batch-archive-title">🎓 ${batchLabel}</h2>
+          <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+        </div>
+      </div>`;
+
+    if (!batchStudents.length) {
+      html += `<div class="empty-state">${t("common.noStudent")}</div>`;
+    } else {
+      batchStudents.forEach((student, idx) => {
+        html += renderSingleStudentCard(student, idx);
+      });
+    }
+    grid.innerHTML = html;
+    return;
+  }
+
+  // === STUDENTS PAGE: multi-batch overview ===
+  const batches = getAllBatchesSorted();
+
+  if (!batches.length || !list.length) {
     grid.innerHTML = `<div class="empty-state">${t("common.noStudent")}</div>`;
     return;
   }
 
-  if (isHomePage) {
-    grid.innerHTML = visibleStudents.map((student, index) => renderSingleStudentCard(student, index)).join("");
-    return;
-  }
-
-  // Group by batch for students page (Item 14)
-  const batchMap = {};
-  visibleStudents.forEach((student) => {
-    const b = student.batch || "HSC-27";
-    batchMap[b] = batchMap[b] || [];
-    batchMap[b].push(student);
-  });
-
-  const batches = Object.keys(batchMap).sort();
   let html = "";
   let globalIdx = 0;
 
-  batches.forEach((b) => {
-    const count = batchMap[b].length;
-    html += `
-      <div class="batch-section-header" data-aos="fade-up">
-        <div class="batch-header-inner">
-          <h2 class="batch-heading">
-            <span class="batch-icon">🎓</span>
-            <span class="batch-label">Batch:</span>
-            <span class="batch-badge">${b}</span>
-          </h2>
-          <span class="batch-count-pill">${count} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+  batches.forEach((batchGroup, batchIndex) => {
+    const { batch, students: batchStudents } = batchGroup;
+    const isLatest = batchIndex === 0;
+    const filteredBatchStudents = batchStudents.filter(s => list.includes(s));
+    if (!filteredBatchStudents.length) return;
+
+    if (isLatest) {
+      html += `
+        <div class="batch-section-header active-batch-header" data-aos="fade-up">
+          <div class="batch-header-inner">
+            <h2 class="batch-heading">
+              <span class="batch-icon">🎓</span>
+              <span class="batch-label">${currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:'}</span>
+              <span class="batch-badge">${batch}</span>
+            </h2>
+            <span class="batch-count-pill">${filteredBatchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+          </div>
+        </div>`;
+      filteredBatchStudents.forEach(student => {
+        html += renderSingleStudentCard(student, globalIdx++);
+      });
+    } else {
+      const previewStudents = filteredBatchStudents.slice(0, 3);
+      const batchSlug = batch.toLowerCase().replace(/[^a-z0-9-]/g, "");
+
+      html += `
+        <div class="batch-section-header" data-aos="fade-up">
+          <div class="batch-header-inner">
+            <h2 class="batch-heading">
+              <span class="batch-icon">🎓</span>
+              <span class="batch-label">Batch:</span>
+              <span class="batch-badge">${batch}</span>
+            </h2>
+            <span class="batch-count-pill">${filteredBatchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+          </div>
         </div>
-      </div>
-    `;
-    batchMap[b].forEach((student) => {
-      html += renderSingleStudentCard(student, globalIdx++);
-    });
+        <div class="prev-batch-preview-grid">`;
+      previewStudents.forEach(student => {
+        html += renderSingleStudentCard(student, globalIdx++);
+      });
+      html += `</div>`;
+
+      if (filteredBatchStudents.length > 3) {
+        html += `
+          <div class="prev-batch-action" data-aos="fade-up">
+            <a href="students.html?batch=${batchSlug}" class="prev-batch-view-all-btn">
+              ${currentLang === 'bn' ? `সকল ${batch} শিক্ষার্থী দেখুন →` : `View All ${batch} Students →`}
+            </a>
+          </div>`;
+      }
+    }
   });
 
   grid.innerHTML = html;
 }
+
 
 function initStudentSearch() {
   if (!byId("studentGrid")) return;
@@ -3548,23 +3644,134 @@ function renderRoommates() {
   if (!grid) return;
 
   const source = document.querySelector(".filter-panel") ? filteredRoommateStudents() : students;
-  const rooms = Object.entries(groupByRoom(source));
-  const limit = Number(grid.dataset.limit || rooms.length);
-  const visibleRooms = rooms.slice(0, limit);
+  const isHomePage = !!grid.dataset.limit;
 
-  if (!visibleRooms.length) {
+  // === HOMEPAGE: show latest batch rooms ===
+  if (isHomePage) {
+    const limit = Number(grid.dataset.limit || 2);
+    const rooms = Object.entries(groupByRoom(source));
+    const visibleRooms = rooms.slice(0, limit);
+    if (!visibleRooms.length) {
+      grid.innerHTML = `<div class="empty-state">${t("common.noStudent")}</div>`;
+      return;
+    }
+    grid.innerHTML = visibleRooms.map(([room, pair], index) => `
+      <article class="room-pair" data-aos="fade-up" data-aos-delay="${index * 70}">
+        ${renderRoomPerson(pair[0], "fade-right")}
+        <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
+        ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+      </article>
+    `).join("");
+    return;
+  }
+
+  // === ROOMMATES PAGE: check for ?batch= URL param ===
+  const urlParams = new URLSearchParams(window.location.search);
+  const singleBatchParam = urlParams.get("batch");
+
+  if (singleBatchParam) {
+    const normalizedParam = singleBatchParam.toLowerCase().replace(/[^a-z0-9]/g, "");
+    const batchSource = source.filter(s => {
+      const sb = (s.batch || "HSC-27").toLowerCase().replace(/[^a-z0-9]/g, "");
+      return sb === normalizedParam;
+    });
+    const batchLabel = singleBatchParam.toUpperCase().replace("HSC", "HSC-");
+    const rooms = Object.entries(groupByRoom(batchSource));
+
+    let html = `
+      <div class="batch-archive-banner" data-aos="fade-up" style="grid-column: 1 / -1;">
+        <a href="roommates.html" class="back-to-all-btn">← ${currentLang === 'bn' ? 'সকল ব্যাচ' : 'All Batches'}</a>
+        <div class="batch-archive-title-wrap">
+          <h2 class="batch-archive-title">🎓 ${batchLabel} — ${currentLang === 'bn' ? 'রুমমেট' : 'Roommates'}</h2>
+          <span class="batch-count-pill">${rooms.length} ${currentLang === 'bn' ? 'টি রুম' : 'Rooms'}</span>
+        </div>
+      </div>`;
+
+    if (!rooms.length) {
+      html += `<div class="empty-state" style="grid-column: 1 / -1;">${t("common.noStudent")}</div>`;
+    } else {
+      rooms.forEach(([room, pair], index) => {
+        html += `
+          <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
+            ${renderRoomPerson(pair[0], "fade-right")}
+            <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
+            ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+          </article>`;
+      });
+    }
+    grid.innerHTML = html;
+    return;
+  }
+
+  // === ROOMMATES PAGE: multi-batch overview ===
+  const batchMap = {};
+  source.forEach(s => {
+    const b = s.batch || "HSC-27";
+    batchMap[b] = batchMap[b] || [];
+    batchMap[b].push(s);
+  });
+  const batchKeys = Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
+
+  if (!batchKeys.length) {
     grid.innerHTML = `<div class="empty-state">${t("common.noStudent")}</div>`;
     return;
   }
 
-  grid.innerHTML = visibleRooms.map(([room, pair], index) => `
-    <article class="room-pair" data-aos="fade-up" data-aos-delay="${index * 70}">
-      ${renderRoomPerson(pair[0], "fade-right")}
-      <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
-      ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
-    </article>
-  `).join("");
+  let html = "";
+  batchKeys.forEach((batch, batchIndex) => {
+    const batchStudents = batchMap[batch];
+    const rooms = Object.entries(groupByRoom(batchStudents));
+    if (!rooms.length) return;
+
+    const isLatest = batchIndex === 0;
+    const batchSlug = batch.toLowerCase().replace(/[^a-z0-9-]/g, "");
+
+    html += `
+      <div class="batch-section-header${isLatest ? ' active-batch-header' : ''}" data-aos="fade-up" style="grid-column: 1 / -1;">
+        <div class="batch-header-inner">
+          <h2 class="batch-heading">
+            <span class="batch-icon">🎓</span>
+            <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : 'Batch:'}</span>
+            <span class="batch-badge">${batch}</span>
+          </h2>
+          <span class="batch-count-pill">${rooms.length} ${currentLang === 'bn' ? 'টি রুম' : 'Rooms'}</span>
+        </div>
+      </div>`;
+
+    if (isLatest) {
+      rooms.forEach(([room, pair], index) => {
+        html += `
+          <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
+            ${renderRoomPerson(pair[0], "fade-right")}
+            <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
+            ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+          </article>`;
+      });
+    } else {
+      const previewRooms = rooms.slice(0, 2);
+      previewRooms.forEach(([room, pair], index) => {
+        html += `
+          <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
+            ${renderRoomPerson(pair[0], "fade-right")}
+            <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
+            ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+          </article>`;
+      });
+
+      if (rooms.length > 2) {
+        html += `
+          <div class="prev-batch-action" data-aos="fade-up" style="grid-column: 1 / -1;">
+            <a href="roommates.html?batch=${batchSlug}" class="prev-batch-view-all-btn">
+              ${currentLang === 'bn' ? `সকল ${batch} রুমমেট দেখুন →` : `View All ${batch} Roommates →`}
+            </a>
+          </div>`;
+      }
+    }
+  });
+
+  grid.innerHTML = html;
 }
+
 
 function renderRoomPerson(student, animation) {
   return `
@@ -4174,6 +4381,12 @@ function maskData(val) {
   return "••••••••";
 }
 
+function parseBatchNum(batch) {
+  if (!batch) return 27;
+  const m = String(batch).match(/(\d+)/);
+  return m ? parseInt(m[1], 10) : 27;
+}
+
 function getAuthRole() {
   const role = localStorage.getItem("dc-auth-role");
   if (role && role !== "guest") return role;
@@ -4186,7 +4399,9 @@ function getAuthRole() {
       "hsc25": "dc25hall",
       "hsc26": "dc26hall",
       "hsc27": "dc27hall",
-      "hsc28": "dc28hall"
+      "hsc28": "dc28hall",
+      "hsc29": "dc29hall",
+      "hsc30": "dc30hall"
     };
     for (const [bKey, bPass] of Object.entries(batchPasswords)) {
       if (savedPassword === bPass) return bKey;
@@ -4206,9 +4421,10 @@ function canViewStudentPrivateData(student) {
   const role = getAuthRole();
   if (role === "master") return true; // Master Admin sees all batches
   if (!role || role === "guest") return false;
-  // Batch user can only view their own batch
-  const sBatch = String(student?.batch || "HSC-27").toLowerCase().replace(/[^a-z0-9]/g, "");
-  const uRole = String(role).toLowerCase().replace(/[^a-z0-9]/g, "");
+  // Seniority hierarchy: lower batch number = more senior, can view juniors
+  const userBatchNum = parseBatchNum(role);
+  const studentBatchNum = parseBatchNum(student?.batch || "HSC-27");
+  return userBatchNum <= studentBatchNum;
   return uRole === sBatch;
 }
 
@@ -4223,7 +4439,7 @@ function checkSessionValidity() {
   if (!isValid && cmsSettings.batch_passwords) {
     isValid = Object.values(cmsSettings.batch_passwords).includes(savedPassword);
   }
-  if (!isValid && (savedPassword === "dc24hall" || savedPassword === "dc25hall" || savedPassword === "dc26hall" || savedPassword === "dc27hall" || savedPassword === "dc28hall")) {
+  if (!isValid && (savedPassword === "dc24hall" || savedPassword === "dc25hall" || savedPassword === "dc26hall" || savedPassword === "dc27hall" || savedPassword === "dc28hall" || savedPassword === "dc29hall" || savedPassword === "dc30hall")) {
     isValid = true;
   }
   if (!isValid) {
@@ -4300,8 +4516,8 @@ function initAuth() {
           if (adminStudioBtn) adminStudioBtn.style.display = "flex";
         } else {
           successMsg.textContent = currentLang === "bn"
-            ? `তুমি ${currentRole.toUpperCase()} ব্যাচ হিসেবে লগইন আছো! তোমার নিজস্ব ব্যাচের তথ্য দৃশ্যমান (অন্যান্য ব্যাচ সুরক্ষিত)।`
-            : `You are logged in under ${currentRole.toUpperCase()}. Your batch records are unlocked (other batches protected).`;
+            ? `তুমি ${currentRole.toUpperCase()} ব্যাচ হিসেবে লগইন আছো! তোমার ব্যাচ এবং জুনিয়র ব্যাচসমূহের সংরক্ষিত তথ্য আনলক রয়েছে।`
+            : `You are logged in under ${currentRole.toUpperCase()}. Your batch and junior batches' records are unlocked.`;
           if (adminStudioBtn) adminStudioBtn.style.display = "none";
         }
       }
@@ -4341,7 +4557,9 @@ function initAuth() {
         "hsc25": "dc25hall",
         "hsc26": "dc26hall",
         "hsc27": "dc27hall",
-        "hsc28": "dc28hall"
+        "hsc28": "dc28hall",
+        "hsc29": "dc29hall",
+        "hsc30": "dc30hall"
       };
 
       if (enteredPassword === masterPass) {
