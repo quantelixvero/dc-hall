@@ -13,6 +13,7 @@ import {
   EditIcon,
   EnvelopeIcon,
   DashboardIcon,
+  EyeOpenIcon,
 } from '@sanity/icons'
 
 // Hardcoded Super Admin emails (always have full access)
@@ -246,7 +247,7 @@ export const structure = async (S, context) => {
   return S.list()
     .title('DC Hall Administration')
     .items([
-      // Dashboard — Admin-only controls
+      // ─── Dashboard ───────────────────────────────────────────────
       S.listItem()
         .title('📊 Dashboard (অ্যাডমিন ড্যাশবোর্ড)')
         .icon(DashboardIcon)
@@ -254,15 +255,18 @@ export const structure = async (S, context) => {
           S.list()
             .title('Admin Dashboard')
             .items([
+              // 1. Password & Security — separate adminSettings doc
               S.listItem()
-                .title('🔒 Site Passwords & Privacy (সাইট পাসওয়ার্ড)')
+                .title('🔑 Password & Security (পাসওয়ার্ড ও সিকিউরিটি)')
                 .icon(LockIcon)
                 .child(
                   S.document()
-                    .schemaType('siteSettings')
-                    .documentId('siteSettings')
-                    .title('Site Passwords & Privacy')
+                    .schemaType('adminSettings')
+                    .documentId('adminSettings')
+                    .title('Password & Security Management')
                 ),
+
+              // 2. Batch Admin & Moderator Management
               S.listItem()
                 .title('👥 Batch Admin & Moderator Management')
                 .icon(UsersIcon)
@@ -271,8 +275,10 @@ export const structure = async (S, context) => {
                     .title('Batch Configurations')
                     .defaultOrdering([{ field: 'batch', direction: 'asc' }])
                 ),
+
+              // 3. All Edit Requests
               S.listItem()
-                .title('📬 All Edit Requests')
+                .title('📬 All Edit Requests (সকল অনুরোধ)')
                 .icon(EnvelopeIcon)
                 .child(
                   S.documentTypeList('editRequest')
@@ -285,14 +291,17 @@ export const structure = async (S, context) => {
             ])
         ),
 
+      S.divider(),
+
+      // ─── Website Content ─────────────────────────────────────────
       S.listItem()
-        .title('⚙️ Site Settings (সাইট সেটিংস)')
+        .title('⚙️ Site Settings (ওয়েবসাইট সেটিংস)')
         .icon(CogIcon)
         .child(
           S.document()
             .schemaType('siteSettings')
             .documentId('siteSettings')
-            .title('Site Settings')
+            .title('Website Settings')
         ),
       S.listItem()
         .title('Home Page Content (হোম পেজ)')
@@ -324,7 +333,7 @@ export const structure = async (S, context) => {
 
       S.divider(),
 
-      // Batch Portals
+      // ─── Batch Portals ───────────────────────────────────────────
       S.listItem()
         .title('📁 HSC-28 Portal')
         .icon(FolderIcon)
@@ -387,7 +396,7 @@ export const structure = async (S, context) => {
 
       S.divider(),
 
-      // Master Lists
+      // ─── Master Lists ────────────────────────────────────────────
       S.listItem()
         .title('All Students (সকল শিক্ষার্থী)')
         .icon(UsersIcon)
