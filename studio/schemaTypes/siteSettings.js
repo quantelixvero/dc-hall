@@ -162,9 +162,8 @@ export default defineType({
       title: 'Master Admin Password (অ্যাডমিন মাস্টার পাসওয়ার্ড)',
 
       type: 'string',
+      hidden: true,
 
-      group: 'privacy',
-      hidden: true,
 
       description: 'এই পাসওয়ার্ড দিয়ে লগইন করলে সমস্ত ব্যাচের সব লক করা তথ্য আনলক হবে। ডিফল্ট: 102103104',
 
@@ -179,9 +178,8 @@ export default defineType({
       title: 'Batch Specific Passwords (ব্যাচভিত্তিক গোপন পাসওয়ার্ড)',
 
       type: 'object',
+      hidden: true,
 
-      group: 'privacy',
-      hidden: true,
 
       description: 'নির্দিষ্ট ব্যাচের শিক্ষার্থীরা এই পাসওয়ার্ড দিয়ে লগইন করলে শুধুমাত্র তাদের ব্যাচের সংরক্ষিত তথ্য দেখতে পারবে।',
 
@@ -203,8 +201,8 @@ export default defineType({
       name: 'batch_administration',
       title: '🛡️ Batch Administration (ব্যাচ প্রশাসন ও মডারেটর ব্যবস্থাপনা)',
       type: 'array',
-      group: 'privacy',
-      hidden: true,
+      hidden: true,
+
       description: 'প্রতিটি ব্যাচের জন্য Batch Admin ও Moderator ইমেইল নির্ধারণ করুন। Batch Admin নিজ ব্যাচের সব content edit করতে পারবে ও Moderator এর request accept/reject করবে। Moderator শুধু edit request পাঠাতে পারবে।',
       of: [
         {
@@ -265,9 +263,8 @@ export default defineType({
       title: 'Global Legacy Visibility Password (অপশনাল ব্যাকআপ পাসওয়ার্ড)',
 
       type: 'string',
+      hidden: true,
 
-      group: 'privacy',
-      hidden: true,
 
     }),
 
@@ -278,9 +275,8 @@ export default defineType({
       title: 'Global Visibility (সবার জন্য উন্মুক্ত রাখবেন কি না)',
 
       type: 'boolean',
+      hidden: true,
 
-      group: 'privacy',
-      hidden: true,
 
       description: 'ON থাকলে পাসওয়ার্ড ছাড়াই সাধারণ ভিজিটররা মৌলিক তথ্য দেখতে পারবে।',
 
@@ -295,9 +291,8 @@ export default defineType({
       title: 'General User Locked Fields (সাধারণ ব্যবহারকারীদের জন্য লক তথ্যসমূহ)',
 
       type: 'object',
+      hidden: true,
 
-      group: 'privacy',
-      hidden: true,
 
       description: 'যে যে ফিল্ডগুলো সাধারণ ভিজিটরদের কাছে লক থাকবে (লগইন ছাড়া দেখা যাবে না)',
 
