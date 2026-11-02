@@ -2555,13 +2555,26 @@ function mapCmsStudent(item, index) {
     dobBnVal = item.dob_bn || toBengaliDigits(item.dob);
   }
 
+  // 1st and 2nd Year Room resolution
+  const room1st = item.room_1st_year?.room_no
+    ? item.room_1st_year
+    : null;
+
+  const room2nd = item.room_2nd_year?.room_no
+    ? item.room_2nd_year
+    : (item.room_no ? { room_no: item.room_no } : null);
+
+  const mainRoomNo = (room2nd?.room_no || room1st?.room_no || item.room_no || "").trim();
+
   return {
     id: index + 1,
     slug,
     position: Number(item.position || index + 1),
     roommateIds: item.roommate_ids || [],
     name: nameEn,
-    room: (item.room_no || "").trim(),
+    room: mainRoomNo,
+    room_1st_year: room1st,
+    room_2nd_year: room2nd,
     roll: shortRoll,
     fullRoll,
     batch,
@@ -3458,25 +3471,42 @@ function getFilteredStudents() {
 
 function renderSingleStudentCard(student, index) {
   const showBadge = isProfileFieldVisible("room_badge");
-  const isRoomUnlocked = isProfileFieldUnlocked("room", student);
+  const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
   const isRollUnlocked = isProfileFieldUnlocked("roll", student);
-  const roomDisplay = isRoomUnlocked ? (student.room || "-") : maskData(student.room || "-");
-  const rollDisplay = isRollUnlocked ? student.roll : maskData(student.roll);
+  const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
+  const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : maskData(roomVal);
+  const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? toBengaliDigits(student.roll) : student.roll) : maskData(student.roll);
 
-  const badgeHtml = showBadge
-    ? `<p class="student-room-roll">${t("common.room")} ${roomDisplay} · ${t("common.roll")} ${rollDisplay}</p>`
+  const showRoom = (isProfileFieldVisible("room_2nd_year") || isProfileFieldVisible("room_1st_year")) && roomVal !== "-";
+  const showRoll = isProfileFieldVisible("roll") && student.roll;
+
+  let badgeParts = [];
+  if (showRoom) badgeParts.push(`${t("common.room")} ${roomDisplay}`);
+  if (showRoll) badgeParts.push(`${t("common.roll")} ${rollDisplay}`);
+
+  const badgeHtml = (showBadge && badgeParts.length)
+    ? `<p class="student-room-roll">${badgeParts.join(" · ")}</p>`
     : "";
+
+  const showPhoto = isProfileFieldVisible("photo");
+  const showName = isProfileFieldVisible("name");
+  const showBatch = isProfileFieldVisible("batch");
+  const showGroup = isProfileFieldVisible("group");
+  const showSection = isProfileFieldVisible("section");
+
+  const photoSrc = showPhoto ? student.img : "images/student-avatar.png";
+  const nameDisplay = showName ? (isProfileFieldUnlocked("name", student) ? studentValue(student, "name") : maskData(studentValue(student, "name"))) : "";
 
   return `
     <button class="student-card" type="button" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 60, 240)}">
-      <img src="${student.img}" alt="${studentValue(student, "name")}" loading="lazy">
+      <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
       <span class="student-body">
-        <h3>${studentValue(student, "name")}</h3>
+        ${nameDisplay ? `<h3>${nameDisplay}</h3>` : ''}
         ${badgeHtml}
         <span class="student-meta">
-          <span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>
-          <span class="pill">${groupLabel(student.group)}</span>
-          ${student.section ? `<span class="pill">${student.section}</span>` : ""}
+          ${showBatch ? `<span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>` : ''}
+          ${showGroup ? `<span class="pill">${groupLabel(student.group)}</span>` : ''}
+          ${(showSection && student.section) ? `<span class="pill">${student.section}</span>` : ""}
         </span>
       </span>
     </button>
@@ -3873,9 +3903,20 @@ function renderResults(filterClass = "all") {
   const thead = byId("resultThead");
   if (!table) return;
 
-  const isUnlocked = getAuthStatus();
-  const lockResults = cmsSettings?.locked_fields?.lock_results !== false;
-  const showResults = !lockResults || isUnlocked;
+  const show1st = isProfileFieldVisible("results_1st");
+  const show2nd = isProfileFieldVisible("results_2nd");
+
+  if (!show1st && !show2nd) {
+    if (thead) thead.innerHTML = "";
+    table.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align: center; padding: 3.5rem 1rem; color: var(--text-muted); font-size: 1.05rem;">
+          ${currentLang === "bn" ? "🔒 ফলাফল সাময়িকভাবে অ্যাডমিন কর্তৃক লুকানো রয়েছে।" : "🔒 Academic results are currently hidden by admin."}
+        </td>
+      </tr>
+    `;
+    return;
+  }
   const lockIconSvg = `<svg viewBox="0 0 24 24" width="12" height="12" fill="#10b981" style="display:inline-block; vertical-align:middle; margin-left:4px;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`;
 
   const filteredStudents = students.filter((s) => {
@@ -3929,9 +3970,9 @@ function renderResults(filterClass = "all") {
   }
 
   table.innerHTML = filteredStudents.map((student, index) => {
-    const isAuthorized = canViewStudentPrivateData(student);
-    const showStudentResults = !lockResults || isAuthorized;
     const isSecondYear = String(student.classNo || student.class_no || "11") === "12" || student.batch === "HSC-27";
+    const resUnlocked = isSecondYear ? isProfileFieldUnlocked("results_2nd", student) : isProfileFieldUnlocked("results_1st", student);
+    const showStudentResults = resUnlocked;
 
     let examsInOrder = [];
     if (filterClass === "12") {
@@ -4446,44 +4487,84 @@ function getAuthStatus() {
 // ══════════════════════════════════════════════════════════════
 function getProfileFieldControl(fieldId) {
   if (cmsAdminSettings?.profile_field_controls && Array.isArray(cmsAdminSettings.profile_field_controls)) {
-    return cmsAdminSettings.profile_field_controls.find(c => c.field_id === fieldId);
+    // 1. Exact match
+    let found = cmsAdminSettings.profile_field_controls.find(c => c.field_id === fieldId);
+    if (found) return found;
+
+    // 2. Comprehensive Aliases
+    const aliases = {
+      blood: "blood_group",
+      blood_group: "blood",
+      dob: "dob",
+      birth_date: "dob",
+      father_phone: "fatherPhone",
+      fatherPhone: "father_phone",
+      guardian: "father_phone",
+      classNo: "batch",
+      class: "batch",
+      batch: "class",
+      room: "room_2nd_year",
+      room_no: "room_2nd_year",
+      results: "results_1st"
+    };
+
+    const alt = aliases[fieldId];
+    if (alt) {
+      found = cmsAdminSettings.profile_field_controls.find(c => c.field_id === alt);
+      if (found) return found;
+    }
   }
   return null;
 }
 
 function isProfileFieldVisible(fieldId) {
+  // If general "results" is queried, check if either 1st or 2nd year results is visible
+  if (fieldId === "results") {
+    const r1 = isProfileFieldVisible("results_1st");
+    const r2 = isProfileFieldVisible("results_2nd");
+    return r1 || r2;
+  }
+
+  // If general "room" is queried, check if either 1st or 2nd year room is visible
+  if (fieldId === "room") {
+    const rm1 = isProfileFieldVisible("room_1st_year");
+    const rm2 = isProfileFieldVisible("room_2nd_year");
+    return rm1 || rm2;
+  }
+
   const ctrl = getProfileFieldControl(fieldId);
   if (ctrl) {
     if (ctrl.invisible === true) return false;
     if (ctrl.visible === false) return false;
+    return true;
   }
   return true;
 }
 
 function isProfileFieldUnlocked(fieldId, student) {
   const role = getAuthRole();
-  if (role === "master") return true;
+  if (role === "master") return true; // Master Admin sees everything unlocked
 
   const ctrl = getProfileFieldControl(fieldId);
   const isGuest = !role || role === "guest";
 
   if (isGuest) {
     if (ctrl) {
-      return !ctrl.public_lock;
+      return ctrl.public_lock !== true;
     }
-    // Fallbacks
+    // Fallbacks to legacy settings
     if (fieldId === "phone") return cmsSettings?.locked_fields?.lock_phone === false;
-    if (fieldId === "father_phone") return cmsSettings?.locked_fields?.lock_father_phone === false;
+    if (fieldId === "father_phone" || fieldId === "fatherPhone") return cmsSettings?.locked_fields?.lock_father_phone === false;
     if (fieldId === "email") return cmsSettings?.locked_fields?.lock_email === false;
     if (fieldId === "address") return cmsSettings?.locked_fields?.lock_address === false;
-    if (fieldId === "facebook" || fieldId === "messenger" || fieldId === "whatsapp" || fieldId === "telegram") return cmsSettings?.locked_fields?.lock_socials === false;
-    if (fieldId === "results_1st" || fieldId === "results_2nd") return cmsSettings?.locked_fields?.lock_results === false;
+    if (["facebook", "messenger", "whatsapp", "telegram"].includes(fieldId)) return cmsSettings?.locked_fields?.lock_socials === false;
+    if (fieldId === "results_1st" || fieldId === "results_2nd" || fieldId === "results") return cmsSettings?.locked_fields?.lock_results === false;
     return true;
   }
 
-  // Logged-in user:
+  // Logged-in student:
   const userBatchNum = parseBatchNum(role);
-  const studentBatchNum = parseBatchNum(student?.batch || "HSC-27");
+  const studentBatchNum = parseBatchNum(student?.batch || student?.classNo || "HSC-27");
 
   // Same batch or senior viewing junior:
   if (userBatchNum <= studentBatchNum) {
@@ -4492,9 +4573,9 @@ function isProfileFieldUnlocked(fieldId, student) {
 
   // Junior viewing senior:
   if (ctrl) {
-    return !ctrl.batch_lock;
+    return ctrl.batch_lock !== true;
   }
-  return false;
+  return true;
 }
 
 function canViewStudentPrivateData(student) {
@@ -4711,7 +4792,7 @@ function initDropdowns() {
   });
 }
 
-function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHref, fbHref, messengerHref, lockStatus = {}) {
+function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHref, fbHref, messengerHref) {
   const savedLogos = cmsSettings?.contact_logos || {};
   
   const defaultSvgs = {
@@ -4719,7 +4800,7 @@ function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHre
     whatsapp: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.012 2c-5.506 0-9.988 4.482-9.988 9.988 0 1.761.459 3.472 1.332 4.988L2 22l5.163-1.355c1.464.798 3.111 1.218 4.793 1.218 5.506 0 9.988-4.482 9.988-9.988 0-2.662-1.036-5.164-2.918-7.046A9.923 9.923 0 0 0 12.012 2zm5.727 14.126c-.237.668-1.378 1.285-1.921 1.343-.492.052-1.127.086-1.808-.13-2.946-.931-4.992-3.83-5.139-4.026-.147-.197-1.203-1.603-1.203-3.059 0-1.456.759-2.171 1.03-2.464.271-.293.593-.367.791-.367.198 0 .395.003.568.011.183.008.431-.071.674.512.249.599.852 2.072.926 2.219.074.147.124.317.025.513-.099.197-.149.317-.297.492-.149.176-.312.39-.446.524-.149.149-.304.312-.13.612.174.3.774 1.277 1.66 2.067.886.79 1.636 1.036 1.933 1.183.297.147.469.122.642-.078.174-.2.742-.862.94-1.159.198-.297.395-.247.668-.147.272.099 1.73.816 2.027.964.297.149.495.223.568.349.074.127.074.729-.163 1.396z"/></svg>`,
     telegram: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>`,
     email: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
-    facebook: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`,
+    facebook: `<svg viewBox="0 0 24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`,
     messenger: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.518 3.734 7.214V22l3.355-1.843c.902.25 1.859.386 2.911.386 5.523 0 10-4.146 10-9.258C22 6.145 17.523 2 12 2zm1.096 11.903L10.36 11.13l-4.903 2.695 5.385-5.719 2.736 2.77 4.903-2.695-5.385 5.722z"/></svg>`
   };
 
@@ -4738,59 +4819,91 @@ function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHre
 
   const buttons = [];
 
-  if (student.phone) {
-    const callClass = lockStatus.phone ? "contact-btn call locked" : "contact-btn call";
+  // 1. Phone
+  if (isProfileFieldVisible("phone") && student.phone) {
+    const isUnlocked = isProfileFieldUnlocked("phone", student);
+    const callClass = isUnlocked ? "contact-btn call" : "contact-btn call locked";
+    const href = isUnlocked ? `tel:${cleanPhoneNumber(student.phone)}` : "profile.html";
+    const title = isUnlocked ? t("common.tapCall") : (currentLang === "bn" ? "লগইন করে ফোন নম্বর দেখুন" : "Click to log in and call");
     buttons.push(`
-      <a class="${callClass}" href="${phoneHref}" aria-label="${t("common.tapCall")}" title="${t("common.tapCall")}">
+      <a class="${callClass}" href="${href}" aria-label="${t("common.tapCall")}" title="${title}">
         ${renderIcon("call", savedLogos.phone)}
       </a>
     `);
   }
 
-  if (student.hasWhatsApp || student.whatsapp) {
-    const whatsappClass = lockStatus.socials ? "contact-btn whatsapp locked" : "contact-btn whatsapp";
+  // 2. WhatsApp
+  const whatsappNum = student.whatsapp || student.phone || "";
+  if (isProfileFieldVisible("whatsapp") && (student.hasWhatsApp || student.whatsapp || student.phone)) {
+    const isUnlocked = isProfileFieldUnlocked("whatsapp", student);
+    const whatsappClass = isUnlocked ? "contact-btn whatsapp" : "contact-btn whatsapp locked";
+    const href = isUnlocked ? `https://wa.me/${whatsappNumber(whatsappNum)}` : "profile.html";
+    const target = isUnlocked ? 'target="_blank" rel="noopener"' : '';
+    const title = isUnlocked ? t("common.whatsapp") : (currentLang === "bn" ? "লগইন করে হোয়াটসঅ্যাপ দেখুন" : "Click to log in and message");
     buttons.push(`
-      <a class="${whatsappClass}" href="${whatsappHref}" ${!lockStatus.socials ? 'target="_blank" rel="noopener"' : ''} aria-label="${t("common.whatsapp")}" title="${t("common.whatsapp")}">
+      <a class="${whatsappClass}" href="${href}" ${target} aria-label="${t("common.whatsapp")}" title="${title}">
         ${renderIcon("whatsapp", savedLogos.whatsapp)}
       </a>
     `);
   }
 
-  if ((student.hasTelegram || student.telegram) && telegramHref) {
-    const telegramClass = lockStatus.socials ? "contact-btn telegram locked" : "contact-btn telegram";
+  // 3. Telegram
+  const telegramId = student.telegram || "";
+  if (isProfileFieldVisible("telegram") && (student.hasTelegram || student.telegram) && telegramId) {
+    const isUnlocked = isProfileFieldUnlocked("telegram", student);
+    const telegramClass = isUnlocked ? "contact-btn telegram" : "contact-btn telegram locked";
+    const href = isUnlocked ? `https://t.me/${telegramId.replace(/[^a-zA-Z0-9_]/g, '')}` : "profile.html";
+    const target = isUnlocked ? 'target="_blank" rel="noopener"' : '';
+    const title = isUnlocked ? "Telegram" : (currentLang === "bn" ? "লগইন করে টেলিগ্রাম দেখুন" : "Click to log in and chat");
     buttons.push(`
-      <a class="${telegramClass}" href="${telegramHref}" ${!lockStatus.socials ? 'target="_blank" rel="noopener"' : ''} aria-label="Telegram" title="Telegram">
+      <a class="${telegramClass}" href="${href}" ${target} aria-label="Telegram" title="${title}">
         ${renderIcon("telegram", savedLogos.telegram)}
       </a>
     `);
   }
 
-  if (student.email) {
-    const emailClass = lockStatus.email ? "contact-btn email locked" : "contact-btn email";
+  // 4. Email
+  if (isProfileFieldVisible("email") && student.email) {
+    const isUnlocked = isProfileFieldUnlocked("email", student);
+    const emailClass = isUnlocked ? "contact-btn email" : "contact-btn email locked";
+    const href = isUnlocked ? `mailto:${student.email}` : "profile.html";
+    const title = isUnlocked ? t("common.email") : (currentLang === "bn" ? "লগইন করে ইমেইল দেখুন" : "Click to log in and email");
     buttons.push(`
-      <a class="${emailClass}" href="${emailHref}" aria-label="${t("common.email")}" title="${t("common.email")}">
+      <a class="${emailClass}" href="${href}" aria-label="${t("common.email")}" title="${title}">
         ${renderIcon("email", savedLogos.email)}
       </a>
     `);
   }
 
-  if (student.fb || student.fbUsername) {
-    const fbClass = lockStatus.socials ? "contact-btn facebook locked" : "contact-btn facebook";
+  // 5. Facebook
+  if (isProfileFieldVisible("facebook") && (student.fb || student.fbUsername)) {
+    const isUnlocked = isProfileFieldUnlocked("facebook", student);
+    const fbClass = isUnlocked ? "contact-btn facebook" : "contact-btn facebook locked";
+    const href = isUnlocked ? (student.fb || "") : "profile.html";
+    const target = isUnlocked ? 'target="_blank" rel="noopener"' : '';
+    const title = isUnlocked ? t("common.viewFacebook") : (currentLang === "bn" ? "লগইন করে ফেসবুক দেখুন" : "Click to log in and view profile");
     buttons.push(`
-      <a class="${fbClass}" href="${fbHref}" ${!lockStatus.socials ? 'target="_blank" rel="noopener"' : ''} aria-label="${t("common.viewFacebook")}" title="${t("common.viewFacebook")}">
+      <a class="${fbClass}" href="${href}" ${target} aria-label="${t("common.viewFacebook")}" title="${title}">
         ${renderIcon("facebook", savedLogos.facebook)}
       </a>
     `);
   }
 
-  if (student.messenger || student.fbUsername) {
-    const messengerClass = lockStatus.socials ? "contact-btn messenger locked" : "contact-btn messenger";
+  // 6. Messenger
+  if (isProfileFieldVisible("messenger") && (student.messenger || student.fbUsername)) {
+    const isUnlocked = isProfileFieldUnlocked("messenger", student);
+    const messengerClass = isUnlocked ? "contact-btn messenger" : "contact-btn messenger locked";
+    const href = isUnlocked ? (student.messenger || "") : "profile.html";
+    const target = isUnlocked ? 'target="_blank" rel="noopener"' : '';
+    const title = isUnlocked ? "Messenger" : (currentLang === "bn" ? "লগইন করে মেসেঞ্জার দেখুন" : "Click to log in and chat");
     buttons.push(`
-      <a class="${messengerClass}" href="${messengerHref}" ${!lockStatus.socials ? 'target="_blank" rel="noopener"' : ''} aria-label="Messenger" title="Messenger">
+      <a class="${messengerClass}" href="${href}" ${target} aria-label="Messenger" title="${title}">
         ${renderIcon("messenger", savedLogos.messenger)}
       </a>
     `);
   }
+
+  if (!buttons.length) return "";
 
   return `
     <div class="contact-actions" aria-label="Contact links">
@@ -4808,31 +4921,30 @@ function openStudentModal(student) {
 
   const smallLockIconSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="#10b981" style="display:inline-block; vertical-align:middle; margin-left:6px;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`;
 
-  const isUnlocked = canViewStudentPrivateData(student);
-  const lockPhone = cmsSettings?.locked_fields?.lock_phone !== false;
-  const lockFather = cmsSettings?.locked_fields?.lock_father_phone !== false;
-  const lockEmail = cmsSettings?.locked_fields?.lock_email !== false;
-  const lockAddress = cmsSettings?.locked_fields?.lock_address !== false;
-  const lockSocials = cmsSettings?.locked_fields?.lock_socials !== false;
-  const lockResults = cmsSettings?.locked_fields?.lock_results !== false;
-
-  const showPhone = !lockPhone || isUnlocked;
-  const showFather = !lockFather || isUnlocked;
-  const showEmail = !lockEmail || isUnlocked;
-  const showAddress = !lockAddress || isUnlocked;
-  const showSocials = !lockSocials || isUnlocked;
-  const showResults = !lockResults || isUnlocked;
-
-  const displayPhone = showPhone ? student.phone : maskData(student.phone);
-  const displayFather = showFather ? student.fatherPhone : maskData(student.fatherPhone);
-  const displayEmail = showEmail ? student.email : maskData(student.email);
-  const displayAddress = showAddress ? studentValue(student, "address") : maskData(studentValue(student, "address"));
-
-  const lockStatus = {
-    phone: !showPhone,
-    email: !showEmail,
-    socials: !showSocials
+  const hasVal = (val) => {
+    if (val === null || val === undefined) return false;
+    const s = String(val).trim();
+    return s !== "" && s !== "-" && s !== "--" && s !== "—" && s !== "N/A" && s !== "null" && s !== "undefined";
   };
+
+  // Field Unlocks
+  const showPhone = isProfileFieldUnlocked("phone", student);
+  const showFather = isProfileFieldUnlocked("father_phone", student);
+  const showEmail = isProfileFieldUnlocked("email", student);
+  const showAddress = isProfileFieldUnlocked("address", student);
+  const showWhatsApp = isProfileFieldUnlocked("whatsapp", student);
+  const showTelegram = isProfileFieldUnlocked("telegram", student);
+  const showFacebook = isProfileFieldUnlocked("facebook", student);
+  const showMessenger = isProfileFieldUnlocked("messenger", student);
+  const showRoll = isProfileFieldUnlocked("roll", student);
+  const showBatch = isProfileFieldUnlocked("batch", student);
+  const showGroup = isProfileFieldUnlocked("group", student);
+  const showSection = isProfileFieldUnlocked("section", student);
+  const showPractical = isProfileFieldUnlocked("practical_group", student);
+  const showRoom1 = isProfileFieldUnlocked("room_1st_year", student);
+  const showRoom2 = isProfileFieldUnlocked("room_2nd_year", student);
+  const showBlood = isProfileFieldUnlocked("blood_group", student);
+  const showDob = isProfileFieldUnlocked("dob", student);
 
   const phoneHref = showPhone ? `tel:${cleanPhoneNumber(student.phone)}` : "profile.html";
   const fatherPhoneHref = showFather ? `tel:${cleanPhoneNumber(student.fatherPhone)}` : "profile.html";
@@ -4840,31 +4952,39 @@ function openStudentModal(student) {
   const addressHref = showAddress ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(studentValue(student, "address"))}` : "profile.html";
 
   const fbUrl = student.fb || "";
-  const fbHref = showSocials && fbUrl ? fbUrl : "profile.html";
-
+  const fbHref = showFacebook && fbUrl ? fbUrl : "profile.html";
   const messengerUrl = student.messenger || "";
-  const messengerHref = showSocials && messengerUrl ? messengerUrl : "profile.html";
+  const messengerHref = showMessenger && messengerUrl ? messengerUrl : "profile.html";
 
   const whatsappNum = student.whatsapp || student.phone || "";
-  const whatsappHref = showSocials && whatsappNum ? `https://wa.me/${whatsappNumber(whatsappNum)}` : "profile.html";
-
+  const whatsappHref = showWhatsApp && whatsappNum ? `https://wa.me/${whatsappNumber(whatsappNum)}` : "profile.html";
   const telegramId = student.telegram || "";
-  const telegramHref = showSocials && telegramId ? `https://t.me/${telegramId.replace(/[^a-zA-Z0-9_]/g, '')}` : "";
+  const telegramHref = showTelegram && telegramId ? `https://t.me/${telegramId.replace(/[^a-zA-Z0-9_]/g, '')}` : "profile.html";
 
-  // Flags for icon visibility
-  const showFbIcon = !!fbUrl;
-  const showMessengerIcon = !!messengerUrl;
-  const showWhatsAppIcon = student.hasWhatsApp || !!student.whatsapp;
-  const showTelegramIcon = student.hasTelegram || !!student.telegram;
+  // Badge values
+  const badgeRoomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
+  const badgeRoomUnlocked = showRoom2 || showRoom1;
+  const badgeRoomText = badgeRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(badgeRoomVal) : badgeRoomVal) : maskData(badgeRoomVal);
+  const badgeRollText = showRoll ? (currentLang === "bn" ? toBengaliDigits(student.roll) : student.roll) : maskData(student.roll);
 
-        const hasVal = (val) => {
-          if (val === null || val === undefined) return false;
-          const s = String(val).trim();
-          return s !== "" && s !== "-" && s !== "--" && s !== "—" && s !== "N/A" && s !== "null" && s !== "undefined";
-        };
+  const showRoomBadge = isProfileFieldVisible("room_badge");
+  const isRoomVisible = (isProfileFieldVisible("room_2nd_year") || isProfileFieldVisible("room_1st_year")) && badgeRoomVal !== "-";
+  const isRollVisible = isProfileFieldVisible("roll") && student.roll;
 
-        content.innerHTML = `
+  let badgeParts = [];
+  if (isRoomVisible) badgeParts.push(`${t("common.room")} ${badgeRoomText}`);
+  if (isRollVisible) badgeParts.push(`${t("common.roll")} ${badgeRollText}`);
+
+  const badgeHtml = (showRoomBadge && badgeParts.length)
+    ? `<p class="lead">${badgeParts.join(" · ")}</p>`
+    : "";
+
+  const showPhoto = isProfileFieldVisible("photo");
+  const showName = isProfileFieldVisible("name");
+
+  content.innerHTML = `
     <div class="profile">
+      ${showPhoto ? `
       <div class="profile-photo-wrapper">
         <img src="${student.img}" alt="${studentValue(student, "name")}" loading="lazy">
         <button type="button" class="expand-photo-btn" data-img="${student.img}" aria-label="${currentLang === 'bn' ? 'সম্পূর্ণ ছবি দেখুন' : 'View Full Photo'}" title="${currentLang === 'bn' ? 'সম্পূর্ণ ছবি দেখুন' : 'View Full Photo'}">
@@ -4875,46 +4995,64 @@ function openStudentModal(student) {
             <line x1="3" y1="21" x2="10" y2="14"></line>
           </svg>
         </button>
-      </div>
+      </div>` : ''}
       <div>
         <p class="eyebrow">${t("common.fullProfile")}</p>
-        <h2 id="modalName">${studentValue(student, "name")}</h2>
-        ${isProfileFieldVisible("room_badge") ? `
-        <p class="lead">${t("common.room")} ${isProfileFieldUnlocked("room", student) ? student.room : maskData(student.room)} · ${t("common.roll")} ${isProfileFieldUnlocked("roll", student) ? student.roll : maskData(student.roll)}</p>
-        ` : ''}
-        ${isProfileFieldVisible("quick_actions") ? contactActions(student, phoneHref, whatsappHref, telegramHref, emailHref, fbHref, messengerHref, lockStatus) : ''}
+        <h2 id="modalName">${showName ? (isProfileFieldUnlocked("name", student) ? studentValue(student, "name") : maskData(studentValue(student, "name"))) : ""}</h2>
+        ${badgeHtml}
+        ${isProfileFieldVisible("quick_actions") ? contactActions(student, phoneHref, whatsappHref, telegramHref, emailHref, fbHref, messengerHref) : ''}
 
         <div class="profile-grid">
-          ${(isProfileFieldVisible("room_1st_year") && student.room_1st_year?.room_no) ? `
-          <div class="profile-item room-item" data-room-id="${student.room_1st_year.room_no}" style="cursor: pointer;">
-            <span>${currentLang === 'bn' ? '১ম বর্ষের রুম (নিচ তলা)' : '1ST YEAR ROOM (GROUND FLOOR)'}</span>
-            <strong>Room ${student.room_1st_year.room_no}${student.room_1st_year.bedmate_name ? ` · Bedmate: ${student.room_1st_year.bedmate_name}` : ''}</strong>
-          </div>` : ''}
-          ${(isProfileFieldVisible("room_2nd_year") && (student.room_2nd_year?.room_no || student.room)) ? `
-          <div class="profile-item room-item" data-room-id="${student.room_2nd_year?.room_no || student.room}" style="cursor: pointer;">
-            <span>${currentLang === 'bn' ? '২য় বর্ষের রুম (৩য় তলা)' : '2ND YEAR ROOM (3RD FLOOR)'}</span>
-            <strong>Room ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Bedmate: ${student.room_2nd_year.bedmate_name}` : ''}</strong>
-          </div>` : ''}
+          ${isProfileFieldVisible("roll") ? `
           <div class="profile-item roll-item">
             <span>${t("common.roll")}</span>
             <strong class="roll-copy-wrapper" style="display: inline-flex; align-items: center; gap: 8px;">
-              <span class="roll-text">${student.fullRoll}</span>
+              <span class="roll-text">${showRoll ? student.fullRoll : maskData(student.fullRoll)}</span>
+              ${showRoll ? `
               <button type="button" class="copy-roll-btn" data-roll="${student.fullRoll}" aria-label="Copy Roll Number" title="Copy Roll" style="background:none; border:none; padding:4px; color:var(--text-muted); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; border-radius:4px; transition:background 0.2s, color 0.2s;">
                 <svg class="copy-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="pointer-events:none;"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
                 <svg class="check-icon" viewBox="0 0 24 24" width="14" height="14" fill="#10b981" style="display:none; pointer-events:none;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-              </button>
+              </button>` : smallLockIconSvg}
             </strong>
-          </div>
-          ${hasVal(student.room) ? `
-          <div class="profile-item room-item" data-room-id="${student.room}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
-            <span>${currentLang === 'bn' ? 'রুম নং' : 'ROOM NO'}</span>
-            <strong>${currentLang === "bn" ? toBengaliDigits(student.room) : student.room}</strong>
-          </div>` : ""}
-          ${hasVal(student.classNo) ? `<div class="profile-item"><span>${t("common.classLabel")}</span><strong>${classLabel(student.classNo, student)}</strong></div>` : ""}
-          ${hasVal(student.group) ? `<div class="profile-item"><span>${t("common.group")}</span><strong>${groupLabel(student.group)}</strong></div>` : ""}
-          ${hasVal(student.section) ? `<div class="profile-item"><span>${t("common.section")}</span><strong>${student.section}</strong></div>` : ""}
-          ${hasVal(student.practicalGroup) ? `<div class="profile-item"><span>${t("common.practicalGroup")}</span><strong>${student.practicalGroup}</strong></div>` : ""}
-          ${(showWhatsAppIcon && hasVal(whatsappNum)) ? (!showSocials ? `
+          </div>` : ''}
+
+          ${(isProfileFieldVisible("batch") && hasVal(student.classNo)) ? `
+          <div class="profile-item">
+            <span>${t("common.classLabel")}</span>
+            <strong>${showBatch ? classLabel(student.classNo, student) : maskData(student.batch || "HSC-27") + smallLockIconSvg}</strong>
+          </div>` : ''}
+
+          ${(isProfileFieldVisible("group") && hasVal(student.group)) ? `
+          <div class="profile-item">
+            <span>${t("common.group")}</span>
+            <strong>${showGroup ? groupLabel(student.group) : maskData(student.group) + smallLockIconSvg}</strong>
+          </div>` : ''}
+
+          ${(isProfileFieldVisible("section") && hasVal(student.section)) ? `
+          <div class="profile-item">
+            <span>${t("common.section")}</span>
+            <strong>${showSection ? student.section : maskData(student.section) + smallLockIconSvg}</strong>
+          </div>` : ''}
+
+          ${(isProfileFieldVisible("practical_group") && hasVal(student.practicalGroup)) ? `
+          <div class="profile-item">
+            <span>${t("common.practicalGroup")}</span>
+            <strong>${showPractical ? student.practicalGroup : maskData(student.practicalGroup) + smallLockIconSvg}</strong>
+          </div>` : ''}
+
+          ${(isProfileFieldVisible("room_1st_year") && student.room_1st_year?.room_no) ? `
+          <div class="profile-item room-item" data-room-id="${student.room_1st_year.room_no}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
+            <span>${currentLang === 'bn' ? '১ম বর্ষের রুম (নিচ তলা)' : '1ST YEAR ROOM (GROUND FLOOR)'}</span>
+            <strong>${showRoom1 ? `Room ${student.room_1st_year.room_no}${student.room_1st_year.bedmate_name ? ` · Bedmate: ${student.room_1st_year.bedmate_name}` : ''}` : maskData("Room 102") + smallLockIconSvg}</strong>
+          </div>` : ''}
+
+          ${(isProfileFieldVisible("room_2nd_year") && (student.room_2nd_year?.room_no || student.room)) ? `
+          <div class="profile-item room-item" data-room-id="${student.room_2nd_year?.room_no || student.room}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
+            <span>${currentLang === 'bn' ? '২য় বর্ষের রুম (৩য় তলা)' : '2ND YEAR ROOM (3RD FLOOR)'}</span>
+            <strong>${showRoom2 ? `Room ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Bedmate: ${student.room_2nd_year.bedmate_name}` : ''}` : maskData("Room 317") + smallLockIconSvg}</strong>
+          </div>` : ''}
+
+          ${(isProfileFieldVisible("whatsapp") && hasVal(whatsappNum)) ? (!showWhatsApp ? `
           <a href="profile.html" class="profile-item locked-item" title="${currentLang === 'bn' ? 'লগইন করে দেখতে ক্লিক করুন' : 'Click to log in and view'}">
             <span>WHATSAPP</span>
             <strong>${maskData(whatsappNum)}${smallLockIconSvg}</strong>
@@ -4927,7 +5065,8 @@ function openStudentModal(student) {
               </a>
             </strong>
           </div>`) : ''}
-          ${(showTelegramIcon && hasVal(telegramId)) ? (!showSocials ? `
+
+          ${(isProfileFieldVisible("telegram") && hasVal(telegramId)) ? (!showTelegram ? `
           <a href="profile.html" class="profile-item locked-item" title="${currentLang === 'bn' ? 'লগইন করে দেখতে ক্লিক করুন' : 'Click to log in and view'}">
             <span>TELEGRAM</span>
             <strong>${maskData(telegramId)}${smallLockIconSvg}</strong>
@@ -4940,7 +5079,8 @@ function openStudentModal(student) {
               </a>
             </strong>
           </div>`) : ''}
-          ${hasVal(student.phone) ? (!showPhone ? `
+
+          ${(isProfileFieldVisible("phone") && hasVal(student.phone)) ? (!showPhone ? `
           <a href="profile.html" class="profile-item locked-item" title="${currentLang === 'bn' ? 'লগইন করে দেখতে ক্লিক করুন' : 'Click to log in and view'}">
             <span>${t("common.phone")}</span>
             <strong>${maskData(student.phone)}${smallLockIconSvg}</strong>
@@ -4953,7 +5093,8 @@ function openStudentModal(student) {
               </a>
             </strong>
           </div>`) : ''}
-          ${hasVal(student.fatherPhone) ? (!showFather ? `
+
+          ${(isProfileFieldVisible("father_phone") && hasVal(student.fatherPhone)) ? (!showFather ? `
           <a href="profile.html" class="profile-item locked-item" title="${currentLang === 'bn' ? 'লগইন করে দেখতে ক্লিক করুন' : 'Click to log in and view'}">
             <span>${t("common.fatherPhone")}</span>
             <strong>${maskData(student.fatherPhone)}${smallLockIconSvg}</strong>
@@ -4966,7 +5107,8 @@ function openStudentModal(student) {
               </a>
             </strong>
           </div>`) : ''}
-          ${hasVal(student.email) ? (!showEmail ? `
+
+          ${(isProfileFieldVisible("email") && hasVal(student.email)) ? (!showEmail ? `
           <a href="profile.html" class="profile-item locked-item" title="${currentLang === 'bn' ? 'লগইন করে দেখতে ক্লিক করুন' : 'Click to log in and view'}">
             <span>${t("common.email")}</span>
             <strong>${maskData(student.email)}${smallLockIconSvg}</strong>
@@ -4979,7 +5121,8 @@ function openStudentModal(student) {
               </a>
             </strong>
           </div>`) : ''}
-          ${hasVal(studentValue(student, "address")) ? (!showAddress ? `
+
+          ${(isProfileFieldVisible("address") && hasVal(studentValue(student, "address"))) ? (!showAddress ? `
           <a href="profile.html" class="profile-item locked-item" title="${currentLang === 'bn' ? 'লগইন করে দেখতে ক্লিক করুন' : 'Click to log in and view'}">
             <span>${t("common.address")}</span>
             <strong>${maskData(studentValue(student, "address"))}${smallLockIconSvg}</strong>
@@ -4992,16 +5135,28 @@ function openStudentModal(student) {
               </a>
             </strong>
           </div>`) : ''}
-          ${hasVal(student.blood) ? `<div class="profile-item"><span>${t("common.blood")}</span><strong>${student.blood}</strong></div>` : ""}
-          ${hasVal(studentValue(student, "dob") || student.dob) ? `<div class="profile-item"><span>${t("common.dob")}</span><strong>${studentValue(student, "dob") || student.dob}</strong></div>` : ""}
+
+          ${(isProfileFieldVisible("blood_group") && hasVal(student.blood)) ? `
+          <div class="profile-item">
+            <span>${t("common.blood")}</span>
+            <strong>${showBlood ? student.blood : maskData(student.blood) + smallLockIconSvg}</strong>
+          </div>` : ''}
+
+          ${(isProfileFieldVisible("dob") && hasVal(studentValue(student, "dob") || student.dob)) ? `
+          <div class="profile-item">
+            <span>${t("common.dob")}</span>
+            <strong>${showDob ? (studentValue(student, "dob") || student.dob) : maskData("01/01/2005") + smallLockIconSvg}</strong>
+          </div>` : ''}
+
           ${hasVal(studentValue(student, "college")) ? `<div class="profile-item"><span>${t("common.college")}</span><strong>${studentValue(student, "college")}</strong></div>` : ""}
         </div>
 
-        ${hasVal(studentValue(student, "bio")) ? `
+        ${(isProfileFieldVisible("bio") && hasVal(studentValue(student, "bio"))) ? `
           <h3>${t("common.about")}</h3>
           <p>${studentValue(student, "bio")}</p>
         ` : ""}
 
+        ${(isProfileFieldVisible("results_1st") || isProfileFieldVisible("results_2nd")) ? `
         <div class="academic-section-title">
           <div class="title-left">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="academic-title-icon">
@@ -5012,6 +5167,7 @@ function openStudentModal(student) {
           </div>
         </div>
         <div class="student-academic-results">
+          ${isProfileFieldVisible("results_1st") ? `
           <div class="academic-year-card">
             <div class="academic-year-header">
               <div class="year-info">
@@ -5021,19 +5177,20 @@ function openStudentModal(student) {
             </div>
             <div class="pdf-grid grid-5">
               ${studentFirstYearResults(student).map(([key, file]) => {
-                const fileHref = showResults ? file : "profile.html";
-                const targetAttr = showResults ? 'target="_blank" rel="noopener"' : '';
-                const lockTooltip = showResults ? (currentLang === "bn" ? "মার্কশিট দেখতে ক্লিক করুন" : "Click to view marksheet") : (currentLang === "bn" ? "লগইন করে দেখতে ক্লিক করুন" : "Click to log in and view");
+                const isResUnlocked = isProfileFieldUnlocked("results_1st", student);
+                const fileHref = isResUnlocked ? file : "profile.html";
+                const targetAttr = isResUnlocked ? 'target="_blank" rel="noopener"' : '';
+                const lockTooltip = isResUnlocked ? (currentLang === "bn" ? "মার্কশিট দেখতে ক্লিক করুন" : "Click to view marksheet") : (currentLang === "bn" ? "লগইন করে দেখতে ক্লিক করুন" : "Click to log in and view");
                 const docIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon doc"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
                 const lockIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
-                const icon = showResults ? docIconSvg : lockIconSvg;
-                const linkClass = showResults ? "result-box" : "result-box locked";
+                const icon = isResUnlocked ? docIconSvg : lockIconSvg;
+                const linkClass = isResUnlocked ? "result-box" : "result-box locked";
                 return `<a class="${linkClass}" href="${fileHref}" ${targetAttr} title="${lockTooltip}">${icon}<span class="res-name">${t(`pdf.${key}`)}</span></a>`;
               }).join("")}
             </div>
-          </div>
+          </div>` : ''}
 
-          ${(String(student.classNo || student.class_no || "11") === "12" || student.batch === "HSC-27") ? `
+          ${(isProfileFieldVisible("results_2nd") && (String(student.classNo || student.class_no || "11") === "12" || student.batch === "HSC-27")) ? `
           <div class="academic-year-card">
             <div class="academic-year-header">
               <div class="year-info">
@@ -5043,19 +5200,20 @@ function openStudentModal(student) {
             </div>
             <div class="pdf-grid grid-4">
               ${studentSecondYearResults(student).map(([key, file]) => {
-                const fileHref = showResults ? file : "profile.html";
-                const targetAttr = showResults ? 'target="_blank" rel="noopener"' : '';
-                const lockTooltip = showResults ? (currentLang === "bn" ? "মার্কশিট দেখতে ক্লিক করুন" : "Click to view marksheet") : (currentLang === "bn" ? "লগইন করে দেখতে ক্লিক করুন" : "Click to log in and view");
+                const isResUnlocked = isProfileFieldUnlocked("results_2nd", student);
+                const fileHref = isResUnlocked ? file : "profile.html";
+                const targetAttr = isResUnlocked ? 'target="_blank" rel="noopener"' : '';
+                const lockTooltip = isResUnlocked ? (currentLang === "bn" ? "মার্কশিট দেখতে ক্লিক করুন" : "Click to view marksheet") : (currentLang === "bn" ? "লগইন করে দেখতে ক্লিক করুন" : "Click to log in and view");
                 const docIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon doc"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
                 const lockIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
-                const icon = showResults ? docIconSvg : lockIconSvg;
-                const linkClass = showResults ? "result-box" : "result-box locked";
+                const icon = isResUnlocked ? docIconSvg : lockIconSvg;
+                const linkClass = isResUnlocked ? "result-box" : "result-box locked";
                 return `<a class="${linkClass}" href="${fileHref}" ${targetAttr} title="${lockTooltip}">${icon}<span class="res-name">${t(`pdf.${key}`)}</span></a>`;
               }).join("")}
             </div>
-          </div>
-          ` : ''}
+          </div>` : ''}
         </div>
+        ` : ''}
 
       </div>
     </div>
