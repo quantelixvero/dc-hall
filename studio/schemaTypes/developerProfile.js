@@ -5,7 +5,8 @@ export default defineType({
   title: 'Developer Profile',
   type: 'document',
   groups: [
-    { name: 'sections_control', title: '① সেকশন কন্ট্রোল ও ক্রম (Section Visibility & Order)', default: true },
+    { name: 'sections_control',
+      hidden: true, title: '① সেকশন কন্ট্রোল ও ক্রম (Section Visibility & Order)', default: true },
     { name: 'bio', title: '② পরিচিতি ও ছবি (Bio & Portrait)' },
     { name: 'panels', title: '③ তথ্য প্যানেলসমূহ (About, Contact & Focus)' },
     { name: 'skills_projects', title: '④ দক্ষতা ও প্রোজেক্ট (Skills & Projects)' },
@@ -17,6 +18,7 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'sections_control',
+      hidden: true,
       title: 'Developer Page Sections Visibility & Order (ড্র্যাগ করে সেকশন সাজান)',
       type: 'array',
       group: 'sections_control',

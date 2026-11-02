@@ -266,7 +266,21 @@ export const structure = async (S, context) => {
                     .title('Password & Security Management')
                 ),
 
-              // 2. Batch Admin & Moderator Management
+              // 2. Visibility & Order
+              S.listItem()
+                .title('👁️ Visibility & Order (ক্রম ও দৃশ্যমানতা)')
+                .icon(EyeOpenIcon)
+                .child(
+                  S.document()
+                    .schemaType('adminSettings')
+                    .documentId('adminSettings')
+                    .title('Visibility & Order Controls')
+                    .views([
+                      S.view.form()
+                    ])
+                ),
+
+              // 3. Batch Admin & Moderator Management
               S.listItem()
                 .title('👥 Batch Admin & Moderator Management')
                 .icon(UsersIcon)
@@ -276,7 +290,7 @@ export const structure = async (S, context) => {
                     .defaultOrdering([{ field: 'batch', direction: 'asc' }])
                 ),
 
-              // 3. All Edit Requests
+              // 4. All Edit Requests
               S.listItem()
                 .title('📬 All Edit Requests (সকল অনুরোধ)')
                 .icon(EnvelopeIcon)

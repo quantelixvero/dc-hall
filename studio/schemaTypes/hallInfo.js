@@ -5,7 +5,8 @@ export default defineType({
   title: 'Hall History & Super',
   type: 'document',
   groups: [
-    { name: 'sections_control', title: '① সেকশন কন্ট্রোল ও ক্রম (Section Visibility & Order)', default: true },
+    { name: 'sections_control',
+      hidden: true, title: '① সেকশন কন্ট্রোল ও ক্রম (Section Visibility & Order)', default: true },
     { name: 'hostel', title: '② হল ইতিহাস ও পরিচিতি (Hostel & History)' },
     { name: 'super', title: '③ হল সুপার তথ্য ও বাণী (Hall Super)' },
     { name: 'helpdesk', title: '④ অফিস ও হেল্পডেস্ক (Office & Helpdesk)' },
@@ -18,6 +19,7 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'sections_control',
+      hidden: true,
       title: 'Hall Info Page Sections Visibility & Order (ড্র্যাগ করে সেকশন সাজান)',
       type: 'array',
       group: 'sections_control',
