@@ -68,7 +68,7 @@ export default defineType({
   type: 'document',
 
   groups: [
-    { name: 'passwords', title: '🔑 Passwords & Master Key' },
+    { name: 'passwords', title: '🔑 Passwords & Master Key' , default: true },
     { name: 'profile_controls', title: '👤 Profile Fields & Locks' },
     { name: 'homepage_vis', title: '🏠 Home Page Sections' },
     { name: 'developer_vis', title: '🧑‍💻 Developer Sections' },

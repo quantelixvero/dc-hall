@@ -12,14 +12,12 @@ export default defineType({
 
   groups: [
 
-    { name: 'general', title: 'সাধারণ সেটিংস (General)' },
+    { name: 'general', title: 'সাধারণ সেটিংস (General)' , default: true },
 
     { name: 'hero', title: 'হিরো ব্যানার (Hero Banner)' },
 
 
     { name: 'dhaka_college', title: 'ঢাকা কলেজ অফিসিয়াল ও ক্লাব (DC Official & Clubs)' },
-
-    { name: 'footer', title: 'ফুটার ও কুইক লিংক (Footer & Quick Links)' },
 
   ],
 
@@ -441,7 +439,7 @@ export default defineType({
 
       type: 'array',
 
-      group: 'footer',
+      
 
       description: '↕️ ড্র্যাগ করে কলামগুলোর ক্রম সাজান। নতুন কলাম যোগ করতে (+ Add item) ক্লিক করুন। প্রতিটি কলামে ইচ্ছামতো লিংক যোগ ও ড্র্যাগ করে সাজানো যাবে।',
 
@@ -751,7 +749,7 @@ export default defineType({
 
       type: 'array',
 
-      group: 'footer',
+      
 
       hidden: true,
 

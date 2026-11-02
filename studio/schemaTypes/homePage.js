@@ -5,9 +5,7 @@ export default defineType({
   title: 'Home Page Content',
   type: 'document',
   groups: [
-    { name: 'sections_control',
-      hidden: true, title: '① সেকশন কন্ট্রোল ও ক্রম (Section Visibility & Order)', default: true },
-    { name: 'hero', title: '② হিরো সেকশন (Hero Section)' },
+    { name: 'hero', title: '② হিরো সেকশন (Hero Section)' , default: true },
     { name: 'history_info', title: '③ ইতিহাস ও হল তথ্য (History & Info)' },
     { name: 'stats_location', title: '④ সাফল্য ও অবস্থান (Stats & Location)' },
   ],
@@ -20,7 +18,7 @@ export default defineType({
       hidden: true,
       title: 'Homepage Sections Visibility & Order (ড্র্যাগ করে সেকশন সাজান)',
       type: 'array',
-      group: 'sections_control',
+      
       description: '↕️ ড্র্যাগ করে হোমপেজের সেকশনগুলোর ক্রম সাজান। যে সেকশনটি উপরে থাকবে ওয়েবসাইটে সেটি আগে দেখাবে।',
       of: [
         {
