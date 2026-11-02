@@ -4,5 +4,12 @@
 
 [[redirects]]
   from = "/admin"
-  to = "/admin/"
+  to = "https://dchall.sanity.studio/"
   status = 301
+  force = true
+
+[[redirects]]
+  from = "/admin/*"
+  to = "https://dchall.sanity.studio/"
+  status = 301
+  force = true
