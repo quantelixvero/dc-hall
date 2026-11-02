@@ -22,21 +22,14 @@ const SUPER_ADMIN_EMAILS = [
 ]
 
 /**
- * Helper to build the 5 core management items for a Batch Admin:
- * 1. Students
- * 2. Roommates / Rooms
- * 3. Photo Collections (Gallery Items)
- * 4. Events Gallery
- * 5. Password & Moderator Management
+ * Build 4 core content folders for a batch.
  */
-function createBatchSection(S, batchName, isFounder = false, includeModerator = false) {
+function createBatchContentItems(S, batchName) {
   const cleanBatchKey = batchName.toLowerCase().replace(/[^a-z0-9]/g, '')
-  const titleBadge = isFounder ? `${batchName} (Founder Batch)` : batchName
 
-  const items = [
-    // 1. Students Directory for this batch
+  return [
     S.listItem()
-      .title(`${batchName} Students (শিক্ষার্থী তালিকা)`)
+      .title(`📚 ${batchName} Students (শিক্ষার্থী তালিকা)`)
       .icon(UsersIcon)
       .child(
         S.documentTypeList('student')
@@ -52,9 +45,8 @@ function createBatchSection(S, batchName, isFounder = false, includeModerator = 
           ])
       ),
 
-    // 2. Room Allocations
     S.listItem()
-      .title(`${batchName} Rooms & Roommates (রুম ও সিট বণ্টন)`)
+      .title(`🏠 ${batchName} Rooms & Roommates (রুম ও সিট বণ্টন)`)
       .icon(PackageIcon)
       .child(
         S.documentTypeList('room')
@@ -62,9 +54,8 @@ function createBatchSection(S, batchName, isFounder = false, includeModerator = 
           .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
       ),
 
-    // 3. Photo Collections (Gallery Items)
     S.listItem()
-      .title(`${batchName} Photo Collections (ফটো গ্যালারি)`)
+      .title(`🖼️ ${batchName} Photo Collections (ফটো গ্যালারি)`)
       .icon(ImageIcon)
       .child(
         S.documentTypeList('galleryItem')
@@ -80,9 +71,8 @@ function createBatchSection(S, batchName, isFounder = false, includeModerator = 
           .defaultOrdering([{ field: 'position', direction: 'asc' }])
       ),
 
-    // 4. Events Gallery
     S.listItem()
-      .title(`${batchName} Events & Programs (ইভেন্ট গ্যালারি)`)
+      .title(`🎪 ${batchName} Events & Programs (ইভেন্ট গ্যালারি)`)
       .icon(CalendarIcon)
       .child(
         S.documentTypeList('galleryEvent')
@@ -92,29 +82,6 @@ function createBatchSection(S, batchName, isFounder = false, includeModerator = 
           .defaultOrdering([{ field: 'date', direction: 'desc' }])
       ),
   ]
-
-  // 5. Password & Moderator Management (only for Batch Admin)
-  if (includeModerator) {
-    items.push(
-      S.listItem()
-        .title(`🔑 ${batchName} Password & Moderator`)
-        .icon(LockIcon)
-        .child(
-          S.document()
-            .schemaType('siteSettings')
-            .documentId('siteSettings')
-            .title(`${batchName} Password & Moderator Management`)
-            .views([
-              S.view.form()
-                .title('Password & Access')
-            ])
-        )
-    )
-  }
-
-  return S.list()
-    .title(`${titleBadge} Management`)
-    .items(items)
 }
 
 export const structure = async (S, context) => {
@@ -128,51 +95,61 @@ export const structure = async (S, context) => {
     userRoles.includes('administrator') ||
     userRoles.includes('developer')
 
-  // 2. If NOT Super Admin, check role from batch_administration
+  // 2. If NOT Super Admin, check role from batchConfig documents
   let userRole = null // 'batch_admin' or 'moderator'
   let userBatch = null // e.g. 'HSC-28'
 
   if (!isSuperAdmin) {
     try {
       const client = getClient({ apiVersion: '2023-08-01' })
-      const settings = await client.fetch(
-        '*[_type == "siteSettings"][0]{ batch_administration, batch_moderators }'
+      const configs = await client.fetch(
+        '*[_type == "batchConfig"]{ batch, batch_admin_emails, moderator_emails }'
       )
 
-      // Check new batch_administration field first
-      const batchAdmin = settings?.batch_administration || []
-      for (const entry of batchAdmin) {
-        const adminEmails = (entry?.batch_admin_emails || []).map((e) => (e || '').trim().toLowerCase())
-        const modEmails = (entry?.moderator_emails || []).map((e) => (e || '').trim().toLowerCase())
-        
+      for (const cfg of configs) {
+        const adminEmails = (cfg?.batch_admin_emails || []).map((e) => (e || '').trim().toLowerCase())
+        const modEmails = (cfg?.moderator_emails || []).map((e) => (e || '').trim().toLowerCase())
+
         if (adminEmails.includes(userEmail)) {
           userRole = 'batch_admin'
-          userBatch = entry.batch
+          userBatch = cfg.batch
           break
         }
         if (modEmails.includes(userEmail)) {
           userRole = 'moderator'
-          userBatch = entry.batch
+          userBatch = cfg.batch
           break
         }
       }
 
-      // Fallback: check old batch_moderators field (backward compat)
-      if (!userRole && settings?.batch_moderators) {
-        const batchMods = settings.batch_moderators || []
-        for (const entry of batchMods) {
-          const emails = (entry?.emails || []).map((e) => (e || '').trim().toLowerCase())
-          if (emails.includes(userEmail)) {
-            userRole = 'batch_admin' // old moderators become batch_admin
-            userBatch = entry.batch
-            break
+      // Fallback: check old siteSettings.batch_administration / batch_moderators
+      if (!userRole) {
+        const settings = await client.fetch(
+          '*[_type == "siteSettings"][0]{ batch_administration, batch_moderators }'
+        )
+        const batchAdmin = settings?.batch_administration || []
+        for (const entry of batchAdmin) {
+          const adminEmails = (entry?.batch_admin_emails || []).map((e) => (e || '').trim().toLowerCase())
+          const modEmails = (entry?.moderator_emails || []).map((e) => (e || '').trim().toLowerCase())
+          if (adminEmails.includes(userEmail)) { userRole = 'batch_admin'; userBatch = entry.batch; break }
+          if (modEmails.includes(userEmail)) { userRole = 'moderator'; userBatch = entry.batch; break }
+        }
+        if (!userRole) {
+          const batchMods = settings?.batch_moderators || []
+          for (const entry of batchMods) {
+            const emails = (entry?.emails || []).map((e) => (e || '').trim().toLowerCase())
+            if (emails.includes(userEmail)) { userRole = 'batch_admin'; userBatch = entry.batch; break }
           }
         }
       }
     } catch (err) {
-      console.warn('Could not fetch batch administration settings:', err)
+      console.warn('Could not fetch batch config:', err)
     }
   }
+
+  const batchConfigDocId = userBatch
+    ? `batchConfig-${userBatch.toLowerCase().replace(/[^a-z0-9]/g, '')}`
+    : null
 
   // ═════════════════════════════════════════════════════════════════════
   // C. MODERATOR VIEW — Only edit request submission
@@ -212,17 +189,25 @@ export const structure = async (S, context) => {
   // B. BATCH ADMIN VIEW — 5 folders + incoming edit requests
   // ═════════════════════════════════════════════════════════════════════
   if (userRole === 'batch_admin' && userBatch && !isSuperAdmin) {
-    const isFounder = userBatch === 'HSC-27'
-    const batchSection = createBatchSection(S, userBatch, isFounder, true)
-
     return S.list()
       .title(`${userBatch} Batch Admin Portal`)
       .items([
-        ...batchSection.getItems(),
-        
+        ...createBatchContentItems(S, userBatch),
+
+        // 5th folder: ONLY this batch's password & moderator config
+        S.listItem()
+          .title(`🔑 ${userBatch} Password & Moderator`)
+          .icon(LockIcon)
+          .child(
+            S.document()
+              .schemaType('batchConfig')
+              .documentId(batchConfigDocId)
+              .title(`${userBatch} Password & Moderator Management`)
+          ),
+
         S.divider(),
 
-        // Incoming edit requests for this batch
+        // Incoming edit requests
         S.listItem()
           .title('📬 Incoming Edit Requests (আগত অনুরোধসমূহ)')
           .icon(EnvelopeIcon)
@@ -231,7 +216,7 @@ export const structure = async (S, context) => {
               .title('Edit Requests')
               .items([
                 S.listItem()
-                  .title('⏳ Pending Requests (অপেক্ষমান)')
+                  .title('⏳ Pending Requests')
                   .icon(EditIcon)
                   .child(
                     S.documentTypeList('editRequest')
@@ -241,7 +226,7 @@ export const structure = async (S, context) => {
                       .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
                   ),
                 S.listItem()
-                  .title('📋 All Requests (সকল অনুরোধ)')
+                  .title('📋 All Requests')
                   .icon(EnvelopeIcon)
                   .child(
                     S.documentTypeList('editRequest')
@@ -270,13 +255,21 @@ export const structure = async (S, context) => {
             .title('Admin Dashboard')
             .items([
               S.listItem()
-                .title('🔒 Site Passwords & Batch Administration')
+                .title('🔒 Site Passwords & Privacy (সাইট পাসওয়ার্ড)')
                 .icon(LockIcon)
                 .child(
                   S.document()
                     .schemaType('siteSettings')
                     .documentId('siteSettings')
-                    .title('Passwords & Batch Admin')
+                    .title('Site Passwords & Privacy')
+                ),
+              S.listItem()
+                .title('👥 Batch Admin & Moderator Management')
+                .icon(UsersIcon)
+                .child(
+                  S.documentTypeList('batchConfig')
+                    .title('Batch Configurations')
+                    .defaultOrdering([{ field: 'batch', direction: 'asc' }])
                 ),
               S.listItem()
                 .title('📬 All Edit Requests')
@@ -292,7 +285,6 @@ export const structure = async (S, context) => {
             ])
         ),
 
-      // Site Settings (general, hero, footer, clubs — no privacy)
       S.listItem()
         .title('⚙️ Site Settings (সাইট সেটিংস)')
         .icon(CogIcon)
@@ -332,27 +324,72 @@ export const structure = async (S, context) => {
 
       S.divider(),
 
-      // Active Batches — Dedicated Batch Portals
+      // Batch Portals
       S.listItem()
-        .title('📁 HSC-28 Portal (Active Batch)')
+        .title('📁 HSC-28 Portal')
         .icon(FolderIcon)
-        .child(createBatchSection(S, 'HSC-28', false, true)),
+        .child(
+          S.list()
+            .title('HSC-28 Management')
+            .items([
+              ...createBatchContentItems(S, 'HSC-28'),
+              S.listItem()
+                .title('🔑 HSC-28 Password & Moderator')
+                .icon(LockIcon)
+                .child(
+                  S.document()
+                    .schemaType('batchConfig')
+                    .documentId('batchConfig-hsc28')
+                    .title('HSC-28 Configuration')
+                ),
+            ])
+        ),
 
       S.listItem()
-        .title('⭐ HSC-27 Portal (Founder Legacy Batch)')
+        .title('⭐ HSC-27 Portal (Founder)')
         .icon(StarIcon)
-        .child(createBatchSection(S, 'HSC-27', true, true)),
+        .child(
+          S.list()
+            .title('HSC-27 (Founder) Management')
+            .items([
+              ...createBatchContentItems(S, 'HSC-27'),
+              S.listItem()
+                .title('🔑 HSC-27 Password & Moderator')
+                .icon(LockIcon)
+                .child(
+                  S.document()
+                    .schemaType('batchConfig')
+                    .documentId('batchConfig-hsc27')
+                    .title('HSC-27 Configuration')
+                ),
+            ])
+        ),
 
       S.listItem()
-        .title('📁 HSC-29 Portal (Upcoming Batch)')
+        .title('📁 HSC-29 Portal')
         .icon(FolderIcon)
-        .child(createBatchSection(S, 'HSC-29', false, true)),
+        .child(
+          S.list()
+            .title('HSC-29 Management')
+            .items([
+              ...createBatchContentItems(S, 'HSC-29'),
+              S.listItem()
+                .title('🔑 HSC-29 Password & Moderator')
+                .icon(LockIcon)
+                .child(
+                  S.document()
+                    .schemaType('batchConfig')
+                    .documentId('batchConfig-hsc29')
+                    .title('HSC-29 Configuration')
+                ),
+            ])
+        ),
 
       S.divider(),
 
-      // Master Document Lists (All Batches Combined)
+      // Master Lists
       S.listItem()
-        .title('All Students — Master List (সকল শিক্ষার্থী)')
+        .title('All Students (সকল শিক্ষার্থী)')
         .icon(UsersIcon)
         .child(
           S.documentTypeList('student')
@@ -360,11 +397,10 @@ export const structure = async (S, context) => {
             .defaultOrdering([
               { field: 'batch', direction: 'desc' },
               { field: 'position', direction: 'asc' },
-              { field: 'short_roll', direction: 'asc' },
             ])
         ),
       S.listItem()
-        .title('All Rooms & Capacities (সকল রুম)')
+        .title('All Rooms (সকল রুম)')
         .icon(PackageIcon)
         .child(
           S.documentTypeList('room')
@@ -372,7 +408,7 @@ export const structure = async (S, context) => {
             .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
         ),
       S.listItem()
-        .title('All Photo Collections (সকল ফটো গ্যালারি)')
+        .title('All Photo Collections (সকল ফটো)')
         .icon(ImageIcon)
         .child(
           S.documentTypeList('galleryItem')
@@ -380,7 +416,7 @@ export const structure = async (S, context) => {
             .defaultOrdering([{ field: 'position', direction: 'asc' }])
         ),
       S.listItem()
-        .title('All Gallery Events (সকল ইভেন্ট)')
+        .title('All Events (সকল ইভেন্ট)')
         .icon(CalendarIcon)
         .child(
           S.documentTypeList('galleryEvent')

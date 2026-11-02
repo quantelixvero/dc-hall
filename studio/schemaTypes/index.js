@@ -7,6 +7,7 @@ import galleryItem from './galleryItem'
 import galleryEvent from './galleryEvent'
 import developerProfile from './developerProfile'
 import editRequest from './editRequest'
+import batchConfig from './batchConfig'
 
 export const schemaTypes = [
   student,
@@ -18,4 +19,5 @@ export const schemaTypes = [
   galleryEvent,
   developerProfile,
   editRequest,
+  batchConfig,
 ]
