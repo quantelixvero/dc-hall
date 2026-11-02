@@ -6,7 +6,7 @@ export default defineType({
 
   name: 'siteSettings',
 
-  title: 'Site Settings & Privacy',
+  title: 'Site Settings (ওয়েবসাইট সেটিংস)',
 
   type: 'document',
 
@@ -16,7 +16,6 @@ export default defineType({
 
     { name: 'hero', title: 'হিরো ব্যানার (Hero Banner)' },
 
-    { name: 'privacy', title: 'গোপনীয়তা ও পাসওয়ার্ড (Privacy & Passwords)' },
 
     { name: 'dhaka_college', title: 'ঢাকা কলেজ অফিসিয়াল ও ক্লাব (DC Official & Clubs)' },
 
@@ -165,6 +164,7 @@ export default defineType({
       type: 'string',
 
       group: 'privacy',
+      hidden: true,
 
       description: 'এই পাসওয়ার্ড দিয়ে লগইন করলে সমস্ত ব্যাচের সব লক করা তথ্য আনলক হবে। ডিফল্ট: 102103104',
 
@@ -181,6 +181,7 @@ export default defineType({
       type: 'object',
 
       group: 'privacy',
+      hidden: true,
 
       description: 'নির্দিষ্ট ব্যাচের শিক্ষার্থীরা এই পাসওয়ার্ড দিয়ে লগইন করলে শুধুমাত্র তাদের ব্যাচের সংরক্ষিত তথ্য দেখতে পারবে।',
 
@@ -203,6 +204,7 @@ export default defineType({
       title: '🛡️ Batch Administration (ব্যাচ প্রশাসন ও মডারেটর ব্যবস্থাপনা)',
       type: 'array',
       group: 'privacy',
+      hidden: true,
       description: 'প্রতিটি ব্যাচের জন্য Batch Admin ও Moderator ইমেইল নির্ধারণ করুন। Batch Admin নিজ ব্যাচের সব content edit করতে পারবে ও Moderator এর request accept/reject করবে। Moderator শুধু edit request পাঠাতে পারবে।',
       of: [
         {
@@ -265,6 +267,7 @@ export default defineType({
       type: 'string',
 
       group: 'privacy',
+      hidden: true,
 
     }),
 
@@ -277,6 +280,7 @@ export default defineType({
       type: 'boolean',
 
       group: 'privacy',
+      hidden: true,
 
       description: 'ON থাকলে পাসওয়ার্ড ছাড়াই সাধারণ ভিজিটররা মৌলিক তথ্য দেখতে পারবে।',
 
@@ -293,6 +297,7 @@ export default defineType({
       type: 'object',
 
       group: 'privacy',
+      hidden: true,
 
       description: 'যে যে ফিল্ডগুলো সাধারণ ভিজিটরদের কাছে লক থাকবে (লগইন ছাড়া দেখা যাবে না)',
 
@@ -774,7 +779,7 @@ export default defineType({
 
       return {
 
-        title: title || 'Site Settings & Privacy',
+        title: title || 'Site Settings',
 
         subtitle: subtitle || 'Global Configuration',
 
