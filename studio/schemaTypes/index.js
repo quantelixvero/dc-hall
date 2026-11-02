@@ -7,7 +7,7 @@ import galleryItem from './galleryItem'
 import galleryEvent from './galleryEvent'
 import developerProfile from './developerProfile'
 import editRequest from './editRequest'
-import batchConfig from './batchConfig'
+import batchConfig from './batchConfig'
 import adminSettings from './adminSettings'
 
 export const schemaTypes = [
@@ -21,4 +21,5 @@ export const schemaTypes = [
   developerProfile,
   editRequest,
   batchConfig,
+  adminSettings,
 ]
