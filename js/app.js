@@ -2902,7 +2902,17 @@ async function loadCmsContent() {
 
 function applyPageSectionControls() {
   const page = document.body.dataset.page;
-  if (page === "home" && cmsHomeData?.sections_control) {
+  const homeSec = (cmsAdminSettings?.homepage_sections && cmsAdminSettings.homepage_sections.length)
+    ? cmsAdminSettings.homepage_sections
+    : cmsHomeData?.sections_control;
+  const hostelSec = (cmsAdminSettings?.hallinfo_sections && cmsAdminSettings.hallinfo_sections.length)
+    ? cmsAdminSettings.hallinfo_sections
+    : cmsHallData?.sections_control;
+  const devSec = (cmsAdminSettings?.developer_sections && cmsAdminSettings.developer_sections.length)
+    ? cmsAdminSettings.developer_sections
+    : cmsDevData?.sections_control;
+
+  if (page === "home" && homeSec) {
     const homeMap = {
       students_preview: byId("students-preview"),
       roommates_preview: byId("roommates-preview"),
@@ -2913,8 +2923,8 @@ function applyPageSectionControls() {
       resources_preview: byId("dc-resources"),
       location_preview: byId("location")
     };
-    applySectionMap(cmsHomeData.sections_control, homeMap);
-  } else if (page === "hostel" && cmsHallData?.sections_control) {
+    applySectionMap(homeSec, homeMap);
+  } else if (page === "hostel" && hostelSec) {
     const hostelMap = {
       history_nearby: byId("sec-history"),
       campus_photos: byId("sec-campus-photos"),
@@ -2924,8 +2934,8 @@ function applyPageSectionControls() {
       success_chart: byId("sec-admission"),
       location_map: byId("sec-location")
     };
-    applySectionMap(cmsHallData.sections_control, hostelMap);
-  } else if (page === "developer" && cmsDevData?.sections_control) {
+    applySectionMap(hostelSec, hostelMap);
+  } else if (page === "developer" && devSec) {
     const devMap = {
       hero_bio: byId("sec-hero-bio"),
       overview_panels: byId("sec-overview-panels"),
@@ -2933,7 +2943,7 @@ function applyPageSectionControls() {
       skills_timeline: byId("sec-skills-timeline"),
       contributors: byId("sec-contributors")
     };
-    applySectionMap(cmsDevData.sections_control, devMap);
+    applySectionMap(devSec, devMap);
   }
 }
 
@@ -2945,7 +2955,7 @@ function applySectionMap(sectionsConfig, elementMap) {
       const key = item.section_id || item.id || item.key;
       const el = elementMap[key];
       if (!el) return;
-      if (item.enabled === false) {
+      if (item.invisible === true || item.visible === false || item.enabled === false) {
         el.style.display = "none";
       } else {
         el.style.display = "";
@@ -4443,7 +4453,10 @@ function getProfileFieldControl(fieldId) {
 
 function isProfileFieldVisible(fieldId) {
   const ctrl = getProfileFieldControl(fieldId);
-  if (ctrl && ctrl.visible === false) return false;
+  if (ctrl) {
+    if (ctrl.invisible === true) return false;
+    if (ctrl.visible === false) return false;
+  }
   return true;
 }
 

@@ -260,32 +260,18 @@ export const structure = async (S, context) => {
           S.list()
             .title('Admin Dashboard')
             .items([
-              // 1. Password & Security — separate adminSettings doc
+              // 1. Unified Security & Visibility Controls
               S.listItem()
-                .title('🔑 Password & Security (পাসওয়ার্ড ও সিকিউরিটি)')
+                .title('🛡️ Security & Visibility (সিকিউরিটি ও ভিজিবিলিটি)')
                 .icon(LockIcon)
                 .child(
                   S.document()
                     .schemaType('adminSettings')
                     .documentId('adminSettings')
-                    .title('Password & Security Management')
+                    .title('Security & Visibility Controls (সিকিউরিটি ও ভিজিবিলিটি)')
                 ),
 
-              // 2. Visibility & Order
-              S.listItem()
-                .title('👁️ Visibility & Order (ক্রম ও দৃশ্যমানতা)')
-                .icon(EyeOpenIcon)
-                .child(
-                  S.document()
-                    .schemaType('adminSettings')
-                    .documentId('adminSettings')
-                    .title('Visibility & Order Controls')
-                    .views([
-                      S.view.form()
-                    ])
-                ),
-
-              // 3. Batch Admin & Moderator Management
+              // 2. Batch Admin & Moderator Management
               S.listItem()
                 .title('👥 Batch Admin & Moderator Management')
                 .icon(UsersIcon)

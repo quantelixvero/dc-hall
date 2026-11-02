@@ -64,7 +64,7 @@ const HALLINFO_SECTION_OPTIONS = [
 
 export default defineType({
   name: 'adminSettings',
-  title: 'Admin Settings & Controls',
+  title: 'Security & Visibility Controls (সিকিউরিটি ও ভিজিবিলিটি)',
   type: 'document',
 
   groups: [
@@ -106,7 +106,7 @@ export default defineType({
       title: 'Profile Field Controls (Visibility, Order & Locks)',
       type: 'array',
       group: 'profile_controls',
-      description: 'ড্র্যাগ করে প্রোফাইলের ফিল্ডগুলোর ক্রম (Order) উপর-নিচ সাজান। Visible বন্ধ করলে ওই অংশ ওয়েবসাইট থেকে সম্পূর্ণ অদৃশ্য হয়ে যাবে এবং নিচের অংশগুলো উপরে উঠে আসবে। Public Lock ও Batch Lock দিয়ে সংবেদনশীল তথ্য গোপন রাখুন।',
+      description: 'ড্র্যাগ করে প্রোফাইলের ফিল্ডগুলোর ক্রম (Order) উপর-নিচ সাজান। Hide on Website চালু (ON) করলে ওই ফিল্ডটি ওয়েবসাইট থেকে পুরোপুরি অদৃশ্য হয়ে যাবে এবং নিচের অংশগুলো উপরে উঠে আসবে। Public Lock ও Batch Lock দিয়ে সংবেদনশীল তথ্য গোপন রাখুন।',
       of: [
         {
           type: 'object',
@@ -127,27 +127,27 @@ export default defineType({
               name: 'label',
               title: 'Custom Display Name (ঐচ্ছিক নাম)',
               type: 'string',
-              description: 'খালি রাখলে স্বয়ংক্রিয়ভাবে ড্রপডাউনের ডিফল্ট ইংরেজি নামটি ব্যবহার হবে।',
+              description: 'খালি রাখলে স্বয়ংক্রিয়ভাবে ড্রপডাউনের ডিফল্ট নামটি ব্যবহার হবে।',
             }),
             defineField({
-              name: 'visible',
-              title: 'Visible on Website (ওয়েবসাইটে দৃশ্যমান)',
+              name: 'invisible',
+              title: 'Hide on Website (লুকিয়ে রাখুন — Invisible)',
               type: 'boolean',
-              description: 'এটি বন্ধ (OFF) করলে ওয়েবসাইট থেকে এই ফিল্ডটি পুরোপুরি অদৃশ্য হয়ে যাবে এবং নিচের অংশগুলো স্বয়ংক্রিয়ভাবে উপরে উঠে আসবে।',
-              initialValue: true,
+              description: 'অন (ON) করলে ওয়েবসাইট থেকে এই ফিল্ডটি পুরোপুরি অদৃশ্য হয়ে যাবে এবং নিচের অংশগুলো স্বয়ংক্রিয়ভাবে উপরে উঠে আসবে। দৃশ্যমান রাখতে এটি বন্ধ (OFF) রাখুন।',
+              initialValue: false,
             }),
             defineField({
               name: 'public_lock',
               title: 'Lock for Public Visitors (সাধারণ ভিজিটরের জন্য লক)',
               type: 'boolean',
-              description: 'এটি চালু (ON) থাকলে সাধারণ ভিজিটররা (যারা লগইন করেনি) এই তথ্যটি লক/মাস্ক অবস্থায় দেখতে পাবে।',
+              description: 'অন (ON) থাকলে সাধারণ ভিজিটররা (যারা লগইন করেনি) এই তথ্যটি লক/মাস্ক অবস্থায় দেখতে পাবে।',
               initialValue: false,
             }),
             defineField({
               name: 'batch_lock',
               title: 'Lock for Junior Batches (জুনিয়র ব্যাচের জন্য লক)',
               type: 'boolean',
-              description: 'এটি চালু (ON) থাকলে জুনিয়র ব্যাচের শিক্ষার্থী সিনিয়র ব্যাচের প্রোফাইল দেখার সময় এই তথ্যটি লক দেখতে পাবে (সিনিয়ররা জুনিয়রদের সবসময় দেখতে পাবে)।',
+              description: 'অন (ON) থাকলে জুনিয়র ব্যাচের শিক্ষার্থী সিনিয়র ব্যাচের প্রোফাইল দেখার সময় এই তথ্যটি লক দেখতে পাবে (সিনিয়ররা জুনিয়রদের সবসময় দেখতে পাবে)।',
               initialValue: false,
             }),
           ],
@@ -155,22 +155,22 @@ export default defineType({
             select: {
               field_id: 'field_id',
               label: 'label',
-              visible: 'visible',
+              invisible: 'invisible',
               public_lock: 'public_lock',
               batch_lock: 'batch_lock',
             },
-            prepare({ field_id, label, visible, public_lock, batch_lock }) {
+            prepare({ field_id, label, invisible, public_lock, batch_lock }) {
               const matched = PROFILE_FIELD_OPTIONS.find((o) => o.value === field_id)
               const name = label || (matched ? matched.title : field_id) || 'Profile Field'
-              const isVis = visible !== false
-              const icon = isVis ? '🟢' : '⚪'
+              const isHidden = invisible === true
+              const icon = isHidden ? '⚪' : '🟢'
               const pubStr = public_lock ? '🔒 Locked' : '🔓 Open'
               const batchStr = batch_lock ? '🔒 Locked' : '🔓 Open'
               return {
                 title: `${icon} ${name}`,
-                subtitle: isVis
-                  ? `Public: ${pubStr}  |  Batch: ${batchStr}`
-                  : `Hidden from website (সম্পূর্ণ অদৃশ্য)`,
+                subtitle: isHidden
+                  ? `Hidden from website (লুকানো / অদৃশ্য)`
+                  : `Visible  |  Public: ${pubStr}  |  Batch: ${batchStr}`,
               }
             },
           },
@@ -186,7 +186,7 @@ export default defineType({
       title: 'Home Page Sections (Order & Visibility)',
       type: 'array',
       group: 'homepage_vis',
-      description: 'হোম পেজের সেকশনগুলোর ক্রম ড্র্যাগ করে সাজান। কোনো সেকশন বন্ধ করলে হোম পেজ থেকে সেটি পুরোপুরি অদৃশ্য হয়ে যাবে এবং নিচের সেকশনগুলো উপরে উঠে আসবে।',
+      description: 'হোম পেজের সেকশনগুলোর ক্রম ড্র্যাগ করে সাজান। Hide on Home Page চালু করলে হোম পেজ থেকে সেটি পুরোপুরি অদৃশ্য হয়ে যাবে এবং নিচের সেকশনগুলো উপরে উঠে আসবে।',
       of: [
         {
           type: 'object',
@@ -209,27 +209,27 @@ export default defineType({
               description: 'খালি রাখলে স্বয়ংক্রিয়ভাবে ডিফল্ট নামটি প্রদর্শিত হবে।',
             }),
             defineField({
-              name: 'visible',
-              title: 'Visible on Website (হোম পেজে দৃশ্যমান)',
+              name: 'invisible',
+              title: 'Hide on Home Page (হোম পেজ থেকে লুকান — Invisible)',
               type: 'boolean',
-              description: 'এটি বন্ধ (OFF) করলে হোম পেজ থেকে এই সেকশনটি পুরোপুরি বাদ যাবে এবং নিচের সেকশন উপরে চলে আসবে।',
-              initialValue: true,
+              description: 'অন (ON) করলে হোম পেজ থেকে এই সেকশনটি পুরোপুরি বাদ যাবে এবং নিচের সেকশন উপরে চলে আসবে।',
+              initialValue: false,
             }),
           ],
           preview: {
             select: {
               section_id: 'section_id',
               label: 'label',
-              visible: 'visible',
+              invisible: 'invisible',
             },
-            prepare({ section_id, label, visible }) {
+            prepare({ section_id, label, invisible }) {
               const matched = HOMEPAGE_SECTION_OPTIONS.find((o) => o.value === section_id)
               const name = label || (matched ? matched.title : section_id) || 'Home Section'
-              const isVis = visible !== false
-              const icon = isVis ? '🟢' : '⚪'
+              const isHidden = invisible === true
+              const icon = isHidden ? '⚪' : '🟢'
               return {
                 title: `${icon} ${name}`,
-                subtitle: isVis ? 'Visible on Home Page (দৃশ্যমান)' : 'Hidden (অদৃশ্য)',
+                subtitle: isHidden ? 'Hidden from Home Page (লুকানো)' : 'Visible on Home Page (দৃশ্যমান)',
               }
             },
           },
@@ -267,27 +267,27 @@ export default defineType({
               type: 'string',
             }),
             defineField({
-              name: 'visible',
-              title: 'Visible on Website (দৃশ্যমান)',
+              name: 'invisible',
+              title: 'Hide on Developer Page (লুকিয়ে রাখুন — Invisible)',
               type: 'boolean',
-              description: 'বন্ধ করলে ডেভেলপার পেজ থেকে এই সেকশনটি পুরোপুরি লুকানো থাকবে।',
-              initialValue: true,
+              description: 'অন (ON) করলে ডেভেলপার পেজ থেকে এই সেকশনটি পুরোপুরি লুকানো থাকবে।',
+              initialValue: false,
             }),
           ],
           preview: {
             select: {
               section_id: 'section_id',
               label: 'label',
-              visible: 'visible',
+              invisible: 'invisible',
             },
-            prepare({ section_id, label, visible }) {
+            prepare({ section_id, label, invisible }) {
               const matched = DEVELOPER_SECTION_OPTIONS.find((o) => o.value === section_id)
               const name = label || (matched ? matched.title : section_id) || 'Developer Section'
-              const isVis = visible !== false
-              const icon = isVis ? '🟢' : '⚪'
+              const isHidden = invisible === true
+              const icon = isHidden ? '⚪' : '🟢'
               return {
                 title: `${icon} ${name}`,
-                subtitle: isVis ? 'Visible on Developer Page' : 'Hidden',
+                subtitle: isHidden ? 'Hidden (লুকানো)' : 'Visible (দৃশ্যমান)',
               }
             },
           },
@@ -325,27 +325,27 @@ export default defineType({
               type: 'string',
             }),
             defineField({
-              name: 'visible',
-              title: 'Visible on Website (দৃশ্যমান)',
+              name: 'invisible',
+              title: 'Hide on Hall Info Page (লুকিয়ে রাখুন — Invisible)',
               type: 'boolean',
-              description: 'বন্ধ করলে হল পরিচিতি পেজ থেকে এই সেকশনটি লুকানো থাকবে।',
-              initialValue: true,
+              description: 'অন (ON) করলে হল পরিচিতি পেজ থেকে এই সেকশনটি লুকানো থাকবে।',
+              initialValue: false,
             }),
           ],
           preview: {
             select: {
               section_id: 'section_id',
               label: 'label',
-              visible: 'visible',
+              invisible: 'invisible',
             },
-            prepare({ section_id, label, visible }) {
+            prepare({ section_id, label, invisible }) {
               const matched = HALLINFO_SECTION_OPTIONS.find((o) => o.value === section_id)
               const name = label || (matched ? matched.title : section_id) || 'Hall Info Section'
-              const isVis = visible !== false
-              const icon = isVis ? '🟢' : '⚪'
+              const isHidden = invisible === true
+              const icon = isHidden ? '⚪' : '🟢'
               return {
                 title: `${icon} ${name}`,
-                subtitle: isVis ? 'Visible on Hall Info Page' : 'Hidden',
+                subtitle: isHidden ? 'Hidden (লুকানো)' : 'Visible (দৃশ্যমান)',
               }
             },
           },
@@ -502,7 +502,7 @@ export default defineType({
   preview: {
     prepare() {
       return {
-        title: 'Admin Settings & Controls',
+        title: 'Security & Visibility Controls',
         subtitle: 'Password, Locks, Visibility & Footer Management',
       }
     },
