@@ -7,12 +7,51 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'batch',
+      title: 'Batch (ব্যাচ)',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'HSC-27 (Founder Batch)', value: 'HSC-27' },
+          { title: 'HSC-28', value: 'HSC-28' },
+          { title: 'HSC-29', value: 'HSC-29' },
+          { title: 'HSC-30', value: 'HSC-30' },
+        ],
+      },
+      initialValue: 'HSC-27',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'room_no',
       title: 'Room Number (রুম নম্বর)',
       type: 'string',
-      description: 'শুধুমাত্র রুম নম্বর লিখুন (যেমন: 127)। টাইটেল স্বয়ংক্রিয়ভাবে "Room 127" ও "রুম ১২৭" তৈরি হবে।',
-      placeholder: 'e.g. 127',
+      description: 'শুধুমাত্র রুম নম্বর লিখুন (যেমন: 102, 317)। টাইটেল স্বয়ংক্রিয়ভাবে তৈরি হবে।',
+      placeholder: 'e.g. 317',
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'floor',
+      title: 'Floor (তলা)',
+      type: 'string',
+      options: {
+        list: [
+          { title: '1st Floor / Ground Floor (১ম তলা / নিচ তলা — ১০২, ১০৩, ১০৪)', value: '1st Floor (Ground)' },
+          { title: '3rd Floor (৩য় তলা — ৩১৪ থেকে ৩২৯)', value: '3rd Floor' },
+        ],
+      },
+      initialValue: '3rd Floor',
+    }),
+    defineField({
+      name: 'year_type',
+      title: 'Academic Year Type (কোন বর্ষের বরাদ্দ)',
+      type: 'string',
+      options: {
+        list: [
+          { title: '1st Year (১ম বর্ষ)', value: '1st Year' },
+          { title: '2nd Year (২য় বর্ষ)', value: '2nd Year' },
+        ],
+      },
+      initialValue: '2nd Year',
     }),
     defineField({
       name: 'capacity',

@@ -137,11 +137,35 @@ export default defineType({
     }),
     defineField({
       name: 'room_no',
-      title: 'Room Number (ম্যানুয়াল রুম নম্বর — অপশনাল)',
+      title: 'Current / 2nd Year Room Number (বর্তমান / ২য় বর্ষের রুম)',
       type: 'string',
       group: 'academic',
-      description: 'রুম রেফারেন্স সিলেক্ট করা থাকলে এটি স্বয়ংক্রিয়ভাবে সিঙ্ক হবে।',
-      placeholder: 'e.g. 127',
+      description: 'মূল রুম নম্বর (যেমন: ৩১৭, ৩২৫)। রুম রেফারেন্স সিলেক্ট করা থাকলে এটি স্বয়ংক্রিয়ভাবে সিঙ্ক হবে।',
+      placeholder: 'e.g. 317',
+    }),
+    defineField({
+      name: 'room_1st_year',
+      title: '1st Year Room — Ground Floor (১ম বর্ষের রুম — নিচ তলা)',
+      type: 'object',
+      group: 'academic',
+      description: '১ম বর্ষে নিচ তলায় যে রুমে থাকতো (যেমন: ১০২, ১০৩, ১০৪) এবং বেডমেটের তথ্য।',
+      fields: [
+        { name: 'room_no', title: 'Room Number (রুম নং)', type: 'string', placeholder: 'e.g. 102' },
+        { name: 'bedmate_name', title: 'Bedmate Name (বেডমেটের নাম)', type: 'string', placeholder: 'e.g. Md. Shanto' },
+        { name: 'bedmate_ref', title: 'Bedmate Profile (বেডমেট লিংক)', type: 'reference', to: [{ type: 'student' }] },
+      ],
+    }),
+    defineField({
+      name: 'room_2nd_year',
+      title: '2nd Year Room — 3rd Floor (২য় বর্ষের রুম — ৩য় তলা)',
+      type: 'object',
+      group: 'academic',
+      description: '২য় বর্ষে ৩য় তলায় যে রুমে থাকতো (যেমন: ৩১৭, ৩২৫) এবং বেডমেটের তথ্য।',
+      fields: [
+        { name: 'room_no', title: 'Room Number (রুম নং)', type: 'string', placeholder: 'e.g. 317' },
+        { name: 'bedmate_name', title: 'Bedmate Name (বেডমেটের নাম)', type: 'string', placeholder: 'e.g. Kayes' },
+        { name: 'bedmate_ref', title: 'Bedmate Profile (বেডমেট লিংক)', type: 'reference', to: [{ type: 'student' }] },
+      ],
     }),
     defineField({
       name: 'short_roll',

@@ -7,9 +7,10 @@ export function RoomAssignedStudentsInput(props) {
   const { value, onChange, renderDefault } = props
   const client = useClient({ apiVersion: '2023-01-01' })
 
-  // Read current document ID and room_no
+  // Read current document ID, room_no and batch
   const docId = useFormValue(['_id'])
   const roomNo = useFormValue(['room_no'])
+  const roomBatch = useFormValue(['batch'])
   const publishedId = docId ? String(docId).replace(/^drafts\./, '') : null
 
   const [profileStudents, setProfileStudents] = useState([])
@@ -26,7 +27,7 @@ export function RoomAssignedStudentsInput(props) {
         room_ref._ref == $docId || 
         references($pubId) || 
         (defined(room_no) && room_no == $roomNo)
-      )]{
+      )${roomBatch ? ' && batch == $roomBatch' : ''}]{
         _id,
         name_en,
         name_bn,
@@ -39,6 +40,7 @@ export function RoomAssignedStudentsInput(props) {
         pubId: publishedId || '',
         docId: docId || '',
         roomNo: String(roomNo || '').trim(),
+        roomBatch: String(roomBatch || '').trim(),
       })
       setProfileStudents(res || [])
     } catch (e) {

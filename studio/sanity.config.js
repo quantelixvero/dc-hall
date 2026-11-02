@@ -48,6 +48,33 @@ export default defineConfig({
         },
       },
       // ═══════════════════════════════════════════
+      // Pre-filled Batch Room Templates
+      // ═══════════════════════════════════════════
+      {
+        id: 'room-hsc27',
+        title: 'HSC-27 Room (স্বয়ংক্রিয় HSC-27)',
+        schemaType: 'room',
+        value: {
+          batch: 'HSC-27',
+        },
+      },
+      {
+        id: 'room-hsc28',
+        title: 'HSC-28 Room (স্বয়ংক্রিয় HSC-28)',
+        schemaType: 'room',
+        value: {
+          batch: 'HSC-28',
+        },
+      },
+      {
+        id: 'room-hsc29',
+        title: 'HSC-29 Room (স্বয়ংক্রিয় HSC-29)',
+        schemaType: 'room',
+        value: {
+          batch: 'HSC-29',
+        },
+      },
+      // ═══════════════════════════════════════════
       // Pre-filled Batch Gallery Templates
       // ═══════════════════════════════════════════
       {

@@ -11,6 +11,8 @@ const SANITY_CONFIG = {
 };
 
 const SANITY_GROQ_QUERY = `{
+  "adminSettings": *[_type == "adminSettings" && !(_id in path("drafts.**"))][0],
+  "batchConfigs": *[_type == "batchConfig" && !(_id in path("drafts.**"))],
   "settings": *[_type == "siteSettings" && !(_id in path("drafts.**"))][0]{
     ...,
     "logo": coalesce(logo.asset->url, logo),
@@ -23,6 +25,16 @@ const SANITY_GROQ_QUERY = `{
     "room_no": coalesce(room_ref->room_no, room_no),
     "room_title_en": room_ref->title_en,
     "room_title_bn": room_ref->title_bn,
+    "room_1st_year": {
+      "room_no": room_1st_year.room_no,
+      "bedmate_name": coalesce(room_1st_year.bedmate_name, room_1st_year.bedmate_ref->name_en),
+      "bedmate_slug": room_1st_year.bedmate_ref->student_id
+    },
+    "room_2nd_year": {
+      "room_no": room_2nd_year.room_no,
+      "bedmate_name": coalesce(room_2nd_year.bedmate_name, room_2nd_year.bedmate_ref->name_en),
+      "bedmate_slug": room_2nd_year.bedmate_ref->student_id
+    },
     "results_1st_year": {
       ...,
       "ct1_pdf": coalesce(results_1st_year.ct1_pdf.asset->url, results_1st_year.ct1_pdf),
@@ -51,7 +63,7 @@ const SANITY_GROQ_QUERY = `{
     "photos": coalesce(photos[].asset->url, photos),
     "assigned_students": coalesce(
       (coalesce(assigned_students[]->{ _id, name_en, name_bn, short_roll, student_id, batch, "photo": photo.asset->url }, []) +
-      *[_type == "student" && !(_id in path("drafts.**")) && (room_ref._ref == ^._id || references(^._id) || room_no == ^.room_no)]{ _id, name_en, name_bn, short_roll, student_id, batch, "photo": photo.asset->url }),
+      *[_type == "student" && !(_id in path("drafts.**")) && (room_ref._ref == ^._id || references(^._id) || (room_no == ^.room_no && (!defined(^.batch) || batch == ^.batch)))]{ _id, name_en, name_bn, short_roll, student_id, batch, "photo": photo.asset->url }),
       []
     )
   },

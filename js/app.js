@@ -2260,6 +2260,7 @@ const famousProfiles = {
 };
 
 let cmsSettings = null;
+let cmsAdminSettings = null;
 let cmsGalleryData = null;
 let cmsHallData = null;
 let cmsDevData = null;
@@ -2640,6 +2641,9 @@ async function loadCmsContent() {
   }
 
   if (sanityData) {
+    if (sanityData.adminSettings) {
+      cmsAdminSettings = sanityData.adminSettings;
+    }
     settings = sanityData.settings || {};
     studentData = { students: sanityData.students || [] };
     roomsList = { rooms: sanityData.rooms || [] };
@@ -3443,12 +3447,22 @@ function getFilteredStudents() {
 }
 
 function renderSingleStudentCard(student, index) {
+  const showBadge = isProfileFieldVisible("room_badge");
+  const isRoomUnlocked = isProfileFieldUnlocked("room", student);
+  const isRollUnlocked = isProfileFieldUnlocked("roll", student);
+  const roomDisplay = isRoomUnlocked ? (student.room || "-") : maskData(student.room || "-");
+  const rollDisplay = isRollUnlocked ? student.roll : maskData(student.roll);
+
+  const badgeHtml = showBadge
+    ? `<p class="student-room-roll">${t("common.room")} ${roomDisplay} · ${t("common.roll")} ${rollDisplay}</p>`
+    : "";
+
   return `
     <button class="student-card" type="button" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 60, 240)}">
       <img src="${student.img}" alt="${studentValue(student, "name")}" loading="lazy">
       <span class="student-body">
         <h3>${studentValue(student, "name")}</h3>
-        <p>${t("common.room")} ${student.room || "-"} · ${t("common.roll")} ${student.roll}</p>
+        ${badgeHtml}
         <span class="student-meta">
           <span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>
           <span class="pill">${groupLabel(student.group)}</span>
@@ -3778,7 +3792,7 @@ function renderRoomPerson(student, animation) {
     <button class="room-person" type="button" data-student-id="${student.id}" data-aos="${animation}">
       <img src="${student.img}" alt="${studentValue(student, "name")}" loading="lazy">
       <strong>${studentValue(student, "name")}</strong>
-      <span>${classLabel(student.classNo, student)} · ${groupLabel(student.group)}${student.section ? ` · ${student.section}` : ""}</span>
+      <span>${classLabel(student.classNo, student)} · ${groupLabel(student.group)}</span>
     </button>
   `;
 }
@@ -4416,6 +4430,60 @@ function getAuthStatus() {
   return Boolean(role && role !== "guest");
 }
 
+
+// ══════════════════════════════════════════════════════════════
+// Granular Profile Field Controls (Visibility, Order & Locks)
+// ══════════════════════════════════════════════════════════════
+function getProfileFieldControl(fieldId) {
+  if (cmsAdminSettings?.profile_field_controls && Array.isArray(cmsAdminSettings.profile_field_controls)) {
+    return cmsAdminSettings.profile_field_controls.find(c => c.field_id === fieldId);
+  }
+  return null;
+}
+
+function isProfileFieldVisible(fieldId) {
+  const ctrl = getProfileFieldControl(fieldId);
+  if (ctrl && ctrl.visible === false) return false;
+  return true;
+}
+
+function isProfileFieldUnlocked(fieldId, student) {
+  const role = getAuthRole();
+  if (role === "master") return true;
+
+  const ctrl = getProfileFieldControl(fieldId);
+  const isGuest = !role || role === "guest";
+
+  if (isGuest) {
+    if (ctrl) {
+      return !ctrl.public_lock;
+    }
+    // Fallbacks
+    if (fieldId === "phone") return cmsSettings?.locked_fields?.lock_phone === false;
+    if (fieldId === "father_phone") return cmsSettings?.locked_fields?.lock_father_phone === false;
+    if (fieldId === "email") return cmsSettings?.locked_fields?.lock_email === false;
+    if (fieldId === "address") return cmsSettings?.locked_fields?.lock_address === false;
+    if (fieldId === "facebook" || fieldId === "messenger" || fieldId === "whatsapp" || fieldId === "telegram") return cmsSettings?.locked_fields?.lock_socials === false;
+    if (fieldId === "results_1st" || fieldId === "results_2nd") return cmsSettings?.locked_fields?.lock_results === false;
+    return true;
+  }
+
+  // Logged-in user:
+  const userBatchNum = parseBatchNum(role);
+  const studentBatchNum = parseBatchNum(student?.batch || "HSC-27");
+
+  // Same batch or senior viewing junior:
+  if (userBatchNum <= studentBatchNum) {
+    return true;
+  }
+
+  // Junior viewing senior:
+  if (ctrl) {
+    return !ctrl.batch_lock;
+  }
+  return false;
+}
+
 function canViewStudentPrivateData(student) {
   if (cmsSettings?.global_visibility === true) return true;
   const role = getAuthRole();
@@ -4798,10 +4866,22 @@ function openStudentModal(student) {
       <div>
         <p class="eyebrow">${t("common.fullProfile")}</p>
         <h2 id="modalName">${studentValue(student, "name")}</h2>
-        <p class="lead">${t("common.room")} ${student.room} · ${t("common.roll")} ${student.roll}</p>
-        ${contactActions(student, phoneHref, whatsappHref, telegramHref, emailHref, fbHref, messengerHref, lockStatus)}
+        ${isProfileFieldVisible("room_badge") ? `
+        <p class="lead">${t("common.room")} ${isProfileFieldUnlocked("room", student) ? student.room : maskData(student.room)} · ${t("common.roll")} ${isProfileFieldUnlocked("roll", student) ? student.roll : maskData(student.roll)}</p>
+        ` : ''}
+        ${isProfileFieldVisible("quick_actions") ? contactActions(student, phoneHref, whatsappHref, telegramHref, emailHref, fbHref, messengerHref, lockStatus) : ''}
 
         <div class="profile-grid">
+          ${(isProfileFieldVisible("room_1st_year") && student.room_1st_year?.room_no) ? `
+          <div class="profile-item room-item" data-room-id="${student.room_1st_year.room_no}" style="cursor: pointer;">
+            <span>${currentLang === 'bn' ? '১ম বর্ষের রুম (নিচ তলা)' : '1ST YEAR ROOM (GROUND FLOOR)'}</span>
+            <strong>Room ${student.room_1st_year.room_no}${student.room_1st_year.bedmate_name ? ` · Bedmate: ${student.room_1st_year.bedmate_name}` : ''}</strong>
+          </div>` : ''}
+          ${(isProfileFieldVisible("room_2nd_year") && (student.room_2nd_year?.room_no || student.room)) ? `
+          <div class="profile-item room-item" data-room-id="${student.room_2nd_year?.room_no || student.room}" style="cursor: pointer;">
+            <span>${currentLang === 'bn' ? '২য় বর্ষের রুম (৩য় তলা)' : '2ND YEAR ROOM (3RD FLOOR)'}</span>
+            <strong>Room ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Bedmate: ${student.room_2nd_year.bedmate_name}` : ''}</strong>
+          </div>` : ''}
           <div class="profile-item roll-item">
             <span>${t("common.roll")}</span>
             <strong class="roll-copy-wrapper" style="display: inline-flex; align-items: center; gap: 8px;">
@@ -5024,7 +5104,7 @@ function openRoomModal(room) {
                 <img class="occupant-img" src="${photo}" alt="" loading="lazy">
                 <div class="occupant-info">
                   <h4>${studentValue(student, "name")}</h4>
-                  <p>${t("common.roll")} ${student.roll} · Class ${classLabel(student.classNo, student)} · ${groupText}</p>
+                  <p>${classLabel(student.classNo, student)} · ${groupLabel(student.group)}</p>
                 </div>
                 <div class="occupant-action">
                   <span>${currentLang === "bn" ? "প্রোফাইল দেখুন &rarr;" : "View Profile &rarr;"}</span>
@@ -5760,54 +5840,111 @@ function renderHomeGallery(galleryData) {
   const grid = document.getElementById("homeGalleryGrid");
   if (!grid) return;
 
-  let items = [];
-  if (galleryData && galleryData.events && galleryData.events.length) {
-    // 1st photo of each event from newest to oldest
-    const sortedEvents = galleryData.events
-      .slice()
-      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0) || Number(a.position || 0) - Number(b.position || 0));
+  const items = [];
+  const events = (galleryData?.events || []).slice().sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+  const collections = galleryData?.collections || [];
 
-    for (const ev of sortedEvents) {
-      if (ev.photos && ev.photos.length) {
+  // 1. Slots 1 to 4: First photo of each of the 4 most recent events
+  for (let i = 0; i < Math.min(4, events.length); i++) {
+    const ev = events[i];
+    if (ev.photos && ev.photos.length) {
+      items.push({
+        photo: ev.photos[0].photo,
+        title_en: ev.title_en || 'Event Photo',
+        title_bn: ev.title_bn || 'ইভেন্ট ছবি',
+        eventId: ev.id,
+        badge_en: 'Event',
+        badge_bn: 'ইভেন্ট',
+      });
+    }
+  }
+
+  // 2. Slot 5: Latest batch gallery photo (e.g. HSC-28 or newest batch)
+  const nonFounderCollections = collections.filter(c => {
+    const h = (c.heading || '').toUpperCase();
+    return !h.includes('HSC-27') && !h.includes('27');
+  });
+  let latestBatchPhoto = null;
+  if (nonFounderCollections.length && nonFounderCollections[0].photos.length) {
+    const col = nonFounderCollections[0];
+    latestBatchPhoto = {
+      photo: col.photos[0].photo,
+      title_en: col.heading || 'Latest Batch Collection',
+      title_bn: col.heading || 'লেটেস্ট ব্যাচ গ্যালারি',
+      slug: col.slug,
+      badge_en: col.heading || 'Latest Batch',
+      badge_bn: col.heading || 'লেটেস্ট ব্যাচ',
+    };
+  } else if (galleryData?.items && galleryData.items.length) {
+    const p = galleryData.items[0];
+    latestBatchPhoto = {
+      photo: p.photo,
+      title_en: p.caption || 'Campus Memory',
+      title_bn: p.caption || 'ক্যাম্পাস স্মৃতি',
+      badge_en: 'Batch Gallery',
+      badge_bn: 'ব্যাচ গ্যালারি',
+    };
+  }
+  if (latestBatchPhoto) {
+    items.push(latestBatchPhoto);
+  }
+
+  // 3. Slot 6: Fixed HSC-27 (Founder) gallery photo (CONSTANT / ধ্রুবক)
+  const founderCollections = collections.filter(c => {
+    const h = (c.heading || '').toUpperCase();
+    return h.includes('HSC-27') || h.includes('27');
+  });
+  let founderPhoto = null;
+  if (founderCollections.length && founderCollections[0].photos.length) {
+    const col = founderCollections[0];
+    founderPhoto = {
+      photo: col.photos[0].photo,
+      title_en: col.heading || 'HSC-27 Founder Batch',
+      title_bn: col.heading || 'এইচএসসি-২৭ প্রতিষ্ঠাতা ব্যাচ',
+      slug: col.slug,
+      badge_en: 'HSC-27 (Founder)',
+      badge_bn: 'এইচএসসি-২৭ (প্রতিষ্ঠাতা)',
+    };
+  } else if (galleryData?.items && galleryData.items.length > 1) {
+    const p = galleryData.items[galleryData.items.length - 1];
+    founderPhoto = {
+      photo: p.photo,
+      title_en: 'HSC-27 Founder Batch',
+      title_bn: 'এইচএসসি-২৭ প্রতিষ্ঠাতা ব্যাচ',
+      badge_en: 'HSC-27 (Founder)',
+      badge_bn: 'এইচএসসি-২৭ (প্রতিষ্ঠাতা)',
+    };
+  }
+  if (founderPhoto) {
+    items.push(founderPhoto);
+  }
+
+  // Backfill if fewer than 6
+  if (items.length < 6 && galleryData?.items) {
+    for (const p of galleryData.items) {
+      const norm = normalizeCmsPath(p.photo);
+      if (!items.some(it => normalizeCmsPath(it.photo) === norm)) {
         items.push({
-          photo: ev.photos[0].photo,
-          title_en: ev.title_en,
-          title_bn: ev.title_bn,
-          eventId: ev.id
+          photo: p.photo,
+          title_en: p.caption || 'Hall Memory',
+          title_bn: p.caption || 'হল স্মৃতি',
+          badge_en: 'Gallery',
+          badge_bn: 'গ্যালারি',
         });
       }
       if (items.length >= 6) break;
     }
-
-    // If fewer than 6 events, backfill with gallery items (general photos)
-    if (items.length < 6) {
-      const galleryPhotos = (galleryData.items || []).slice().reverse();
-      for (const p of galleryPhotos) {
-        const norm = normalizeCmsPath(p.photo);
-        if (!items.some(it => normalizeCmsPath(it.photo) === norm)) {
-          items.push({
-            photo: p.photo,
-            title_en: p.caption_en || p.title_en || "Hall Memory",
-            title_bn: p.caption_bn || p.title_bn || "হল স্মৃতি",
-            eventId: null
-          });
-        }
-        if (items.length >= 6) break;
-      }
-    }
-  } else if (galleryData && galleryData.items) {
-    items = galleryData.items.slice(0, 6);
   }
 
   if (!items.length) return;
 
-  grid.innerHTML = items.map((item, index) => {
+  grid.innerHTML = items.slice(0, 6).map((item, index) => {
     const photo = normalizeCmsPath(item.photo) || "images/hall/hostel-building.jpg";
     const title = currentLang === "bn" ? (item.title_bn || item.title_en) : (item.title_en || item.title_bn);
-    const linkUrl = item.eventId ? `gallery.html#event=${item.eventId}` : `gallery.html`;
-    const label = item.eventId 
-      ? (currentLang === "bn" ? "ইভেন্ট দেখুন &rarr;" : "View Event &rarr;") 
-      : (currentLang === "bn" ? "গ্যালারি দেখুন &rarr;" : "View Gallery &rarr;");
+    const linkUrl = item.eventId 
+      ? `gallery.html#event=${item.eventId}` 
+      : (item.slug ? `gallery.html#collection=${item.slug}` : `gallery.html`);
+    const badge = currentLang === "bn" ? (item.badge_bn || item.badge_en || "গ্যালারি") : (item.badge_en || item.badge_bn || "Gallery");
 
     return `
       <article class="gallery-card" data-aos="fade-up" data-aos-delay="${(index % 6) * 60}">
@@ -5816,7 +5953,7 @@ function renderHomeGallery(galleryData) {
           <div class="gallery-card-overlay">
             <div>
               <span style="display: block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; margin-bottom: 3px;">
-                ${label}
+                ${badge} &rarr;
               </span>
               <span style="font-size: 0.95rem; font-weight: 700; line-height: 1.3; display: block;">
                 ${title}

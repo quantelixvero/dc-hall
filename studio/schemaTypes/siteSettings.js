@@ -435,6 +435,7 @@ export default defineType({
     defineField({
 
       name: 'footer_columns',
+      hidden: true,
 
       title: 'Footer Columns & Links (ফুটার কলাম ও লিংক ব্যবস্থাপনা)',
 

@@ -52,6 +52,11 @@ function createBatchContentItems(S, batchName) {
       .child(
         S.documentTypeList('room')
           .title(`${batchName} Rooms & Roommates`)
+          .filter('_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
+          .params({ batch: batchName })
+          .initialValueTemplates([
+            S.initialValueTemplateItem(`room-${cleanBatchKey}`),
+          ])
           .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
       ),
 
