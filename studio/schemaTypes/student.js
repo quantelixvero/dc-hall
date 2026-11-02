@@ -145,7 +145,7 @@ export default defineType({
     }),
     defineField({
       name: 'room_1st_year',
-      title: '1st Year Room — Ground Floor (১ম বর্ষের রুম — নিচ তলা)',
+      title: 'Room (1st Year) — ১ম বর্ষের রুম (নিচ তলা)',
       type: 'object',
       group: 'academic',
       description: '১ম বর্ষে নিচ তলায় যে রুমে থাকতো (যেমন: ১০২, ১০৩, ১০৪) এবং বেডমেটের তথ্য।',
@@ -157,7 +157,7 @@ export default defineType({
     }),
     defineField({
       name: 'room_2nd_year',
-      title: '2nd Year Room — 3rd Floor (২য় বর্ষের রুম — ৩য় তলা)',
+      title: 'Room (2nd Year) — ২য় বর্ষের রুম (৩য় তলা)',
       type: 'object',
       group: 'academic',
       description: '২য় বর্ষে ৩য় তলায় যে রুমে থাকতো (যেমন: ৩১৭, ৩২৫) এবং বেডমেটের তথ্য।',

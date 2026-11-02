@@ -5042,13 +5042,13 @@ function openStudentModal(student) {
 
           ${(isProfileFieldVisible("room_1st_year") && student.room_1st_year?.room_no) ? `
           <div class="profile-item room-item" data-room-id="${student.room_1st_year.room_no}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
-            <span>${currentLang === 'bn' ? '১ম বর্ষের রুম (নিচ তলা)' : '1ST YEAR ROOM (GROUND FLOOR)'}</span>
+            <span>${currentLang === 'bn' ? 'রুম (১ম বর্ষ)' : 'ROOM (1st Year)'}</span>
             <strong>${showRoom1 ? `Room ${student.room_1st_year.room_no}${student.room_1st_year.bedmate_name ? ` · Bedmate: ${student.room_1st_year.bedmate_name}` : ''}` : maskData("Room 102") + smallLockIconSvg}</strong>
           </div>` : ''}
 
           ${(isProfileFieldVisible("room_2nd_year") && (student.room_2nd_year?.room_no || student.room)) ? `
           <div class="profile-item room-item" data-room-id="${student.room_2nd_year?.room_no || student.room}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
-            <span>${currentLang === 'bn' ? '২য় বর্ষের রুম (৩য় তলা)' : '2ND YEAR ROOM (3RD FLOOR)'}</span>
+            <span>${currentLang === 'bn' ? 'রুম (২য় বর্ষ)' : 'ROOM (2nd Year)'}</span>
             <strong>${showRoom2 ? `Room ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Bedmate: ${student.room_2nd_year.bedmate_name}` : ''}` : maskData("Room 317") + smallLockIconSvg}</strong>
           </div>` : ''}
 
