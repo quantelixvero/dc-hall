@@ -3799,7 +3799,7 @@ function renderRoommates() {
     grid.innerHTML = visibleRooms.map(([room, pair], index) => `
       <article class="room-pair" data-aos="fade-up" data-aos-delay="${index * 70}">
         ${renderRoomPerson(pair[0], "fade-right")}
-        <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
+        <button class="room-number" type="button" data-room-id="${room}">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
         ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
       </article>
     `).join("");
@@ -3835,7 +3835,7 @@ function renderRoommates() {
         html += `
           <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
             ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
+            <button class="room-number" type="button" data-room-id="${room}">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
             ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
           </article>`;
       });
@@ -3884,7 +3884,7 @@ function renderRoommates() {
         html += `
           <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
             ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
+            <button class="room-number" type="button" data-room-id="${room}">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
             ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
           </article>`;
       });
@@ -3894,7 +3894,7 @@ function renderRoommates() {
         html += `
           <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
             ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}">${t("common.room")}<br>${room}</button>
+            <button class="room-number" type="button" data-room-id="${room}">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
             ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
           </article>`;
       });

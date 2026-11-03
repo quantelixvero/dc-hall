@@ -42,12 +42,17 @@ export default defineType({
     // ═══════════════════════════════════════════
     // Batch Admin Emails
     // ═══════════════════════════════════════════
-    defineField({
+        defineField({
       name: 'batch_admin_emails',
-      title: '👑 Batch Admin Emails (ব্যাচ এডমিন ইমেইল)',
+      title: '👑 Batch Admin Emails (ব্যাচ এডমিন ইমেইল — শুধুমাত্র সুপার অ্যাডমিন দেখতে পাবেন)',
       type: 'array',
       of: [{ type: 'string' }],
-      description: 'এই ইমেইলগুলো দিয়ে Sanity Studio তে login করলে এই ব্যাচের 5টি ফোল্ডারে full edit access পাবে। ⚠️ নতুন email যোগ করার পরে Main Admin কে Sanity project-এ member invite করতে হবে।',
+      hidden: ({ currentUser }) => {
+        const email = (currentUser?.email || '').toLowerCase().trim()
+        const superAdmins = ['drseadib@gmail.com', 'seadibpc@outlook.com']
+        return !superAdmins.includes(email)
+      },
+      description: 'এই ইমেইলগুলো দিয়ে Sanity Studio তে login করলে এই ব্যাচের ফোল্ডারগুলোতে access পাবে। শুধুমাত্র সুপার অ্যাডমিন এটি পরিবর্তন করতে পারবেন।',
     }),
 
     // ═══════════════════════════════════════════
@@ -55,10 +60,15 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'moderator_emails',
-      title: '📝 Moderator Emails (মডারেটর ইমেইল)',
+      title: '📝 Moderator Emails (মডারেটর ইমেইল — শুধুমাত্র সুপার অ্যাডমিন দেখতে পাবেন)',
       type: 'array',
       of: [{ type: 'string' }],
-      description: 'এই ইমেইলগুলো দিয়ে login করলে শুধু Edit Request পাঠাতে পারবে। সরাসরি edit পারবে না। ⚠️ নতুন email যোগ করার পরে Main Admin কে Sanity project-এ member invite করতে হবে।',
+      hidden: ({ currentUser }) => {
+        const email = (currentUser?.email || '').toLowerCase().trim()
+        const superAdmins = ['drseadib@gmail.com', 'seadibpc@outlook.com']
+        return !superAdmins.includes(email)
+      },
+      description: 'এই ইমেইলগুলো দিয়ে login করলে শুধু Edit Request পাঠাতে পারবে। শুধুমাত্র সুপার অ্যাডমিন এটি পরিবর্তন করতে পারবেন।',
     }),
   ],
   preview: {

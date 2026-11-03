@@ -97,7 +97,7 @@ function createBatchPortalItem(S, batchName, isFounder = false) {
         .items([
           ...createBatchContentItems(S, batchName),
           S.listItem()
-            .title(`🔑 ${batchName} Password & Moderator`)
+            .title(`🔑 ${batchName} Website Password (লগইন পাসওয়ার্ড)`)
             .icon(LockIcon)
             .child(
               S.document()
@@ -114,11 +114,8 @@ export const structure = async (S, context) => {
   const userEmail = (currentUser?.email || '').trim().toLowerCase()
   const userRoles = (currentUser?.roles || []).map((r) => r.name)
 
-  // 1. Determine if current user is Super Admin
-  const isSuperAdmin =
-    SUPER_ADMIN_EMAILS.includes(userEmail) ||
-    userRoles.includes('administrator') ||
-    userRoles.includes('developer')
+  // 1. Determine if current user is Super Admin strictly by email
+  const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(userEmail)
 
   // 2. If NOT Super Admin, check role from batchConfig documents
   let userRole = null // 'batch_admin' or 'moderator'
