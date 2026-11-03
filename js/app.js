@@ -1,3 +1,66 @@
+
+// ═══════════════════════════════════════════════════════════════
+// PAGE-LEVEL ACCESS & LOCK CONTROLS (ENFORCEMENT)
+// ═══════════════════════════════════════════════════════════════
+function checkPageAccess() {
+  const path = window.location.pathname.toLowerCase();
+  let pageId = null;
+  if (path.includes("results")) pageId = "results";
+  else if (path.includes("students")) pageId = "students";
+  else if (path.includes("roommates")) pageId = "roommates";
+  else if (path.includes("birthday")) pageId = "birthday";
+  else if (path.includes("gallery")) pageId = "gallery";
+  else if (path.includes("hostel")) pageId = "hostel";
+  else if (path.includes("dc-clubs")) pageId = "dc-clubs";
+  else if (path.includes("dc-social")) pageId = "dc-social";
+
+  if (!pageId) return;
+
+  const pageControls = cmsAdminSettings?.page_access_controls || [];
+  const ctrl = pageControls.find(c => c.page_id === pageId);
+  if (!ctrl) return;
+
+  const role = getAuthRole();
+  const isMaster = role === "master";
+
+  // Master admin bypasses all page restrictions
+  if (isMaster) return;
+
+  // 1. If page is disabled (hidden)
+  if (ctrl.is_visible === false) {
+    const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
+    if (mainEl) {
+      mainEl.innerHTML = `
+        <div class="page-access-banner" style="max-width: 640px; margin: 90px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);">
+          <div style="font-size: 3rem; margin-bottom: 16px;">🚫</div>
+          <h2 style="font-size: 1.4rem; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'পেজটি সাময়িকভাবে বন্ধ রাখা হয়েছে' : 'Page Temporarily Disabled'}</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">${ctrl.lock_message || (currentLang === 'bn' ? 'অ্যাডমিন কর্তৃক এই পেজের তথ্য সাময়িকভাবে বন্ধ রাখা হয়েছে।' : 'This page has been temporarily disabled by the administrator.')}</p>
+          <a href="index.html" class="cta-button" style="display: inline-block; padding: 10px 24px; border-radius: 8px; background: var(--accent); color: #0a1f38; font-weight: 700; text-decoration: none;">← ${currentLang === 'bn' ? 'হোমপেজে ফিরে যান' : 'Back to Home'}</a>
+        </div>
+      `;
+    }
+    return;
+  }
+
+  // 2. If page is locked (requires login)
+  if (ctrl.is_locked === true) {
+    const isAuthed = role && role !== "guest";
+    if (!isAuthed) {
+      const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
+      if (mainEl) {
+        mainEl.innerHTML = `
+          <div class="page-access-banner" style="max-width: 600px; margin: 90px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);">
+            <div style="font-size: 3rem; margin-bottom: 16px;">🔐</div>
+            <h2 style="font-size: 1.4rem; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'এই পেজটি সংরক্ষিত' : 'Protected Page'}</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">${ctrl.lock_message || (currentLang === 'bn' ? 'এই পেজের তথ্য দেখতে অনুগ্রহ করে আপনার ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' : 'Please log in with your batch password or master key to access this page.')}</p>
+            <a href="profile.html?redirect=${encodeURIComponent(window.location.pathname)}" class="cta-button" style="display: inline-block; padding: 12px 28px; border-radius: 8px; background: var(--accent); color: #0a1f38; font-weight: 700; text-decoration: none;">🔑 ${currentLang === 'bn' ? 'লগইন করুন' : 'Login to View'}</a>
+          </div>
+        `;
+      }
+      return;
+    }
+  }
+}
 const i18n = {
   en: {
     pageTitle: {
@@ -3032,7 +3095,12 @@ function studentValue(student, field) {
 }
 
 function groupLabel(group) {
-  return t(`groups.${group}`);
+  if (!group) return "";
+  const g = String(group).toLowerCase().trim();
+  if (g === "science" || g === "sci") return t("groups.science");
+  if (g === "commerce" || g === "business" || g === "b.st" || g === "business studies") return t("groups.commerce");
+  if (g === "arts" || g === "humanities" || g === "hum") return t("groups.arts");
+  return t(`groups.${group}`) || group;
 }
 
 function classLabel(classNo, student) {
@@ -3318,7 +3386,8 @@ function renderFooter() {
         <a href="dc-clubs.html">${currentLang === "bn" ? "কলেজ ক্লাবসমূহ" : "College Clubs"}</a>
         <a href="dc-social.html">${currentLang === "bn" ? "সোশ্যাল মিডিয়া" : "Social Links"}</a>
         <a href="developer.html">${t("nav.developer")}</a>
-        <a href="https://dchall.sanity.studio" target="_blank" rel="noopener">${currentLang === "bn" ? "অ্যাডমিন প্যানেল" : "Admin Panel"}</a>
+        <a href="https://dchall.sanity.studio" target="_blank" rel="noopener">${currentLang === "bn" ? "অ্যাডমিন প্যানেল (Sanity)" : "Admin Panel (Sanity)"}</a>
+        <a href="https://admindchall.vercel.app" target="_blank" rel="noopener">${currentLang === "bn" ? "অ্যাডমিন প্যানেল (Vercel)" : "Admin Panel (Vercel)"}</a>
       </div>
     `;
   }
@@ -3532,7 +3601,8 @@ function renderSingleStudentCard(student, index) {
   const showGroup = isProfileFieldVisible("group");
   const showSection = isProfileFieldVisible("section");
 
-  const photoSrc = showPhoto ? student.img : "images/student-avatar.png";
+  const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
+  const photoSrc = (showPhoto && isPhotoUnlocked) ? student.img : "images/student-avatar.png";
   const nameDisplay = showName ? (isProfileFieldUnlocked("name", student) ? studentValue(student, "name") : maskData(studentValue(student, "name"))) : "";
 
   return `
@@ -3813,7 +3883,7 @@ function renderRoommates() {
     grid.innerHTML = visibleRooms.map(([room, pair], index) => `
       <article class="room-pair" data-aos="fade-up" data-aos-delay="${index * 70}">
         ${renderRoomPerson(pair[0], "fade-right")}
-        <button class="room-number" type="button" data-room-id="${room}">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
+        <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
         ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
       </article>
     `).join("");
@@ -3849,7 +3919,7 @@ function renderRoommates() {
         html += `
           <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
             ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
+            <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
             ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
           </article>`;
       });
@@ -3898,7 +3968,7 @@ function renderRoommates() {
         html += `
           <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
             ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
+            <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
             ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
           </article>`;
       });
@@ -3908,7 +3978,7 @@ function renderRoommates() {
         html += `
           <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
             ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
+            <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
             ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
           </article>`;
       });
@@ -3929,10 +3999,14 @@ function renderRoommates() {
 
 
 function renderRoomPerson(student, animation) {
+  const photoUnlocked = isProfileFieldUnlocked("photo", student);
+  const photoSrc = photoUnlocked ? student.img : "images/student-avatar.png";
+  const nameUnlocked = isProfileFieldUnlocked("name", student);
+  const nameDisplay = nameUnlocked ? studentValue(student, "name") : "••••••••";
   return `
     <button class="room-person" type="button" data-student-id="${student.id}" data-aos="${animation}">
-      <img src="${student.img}" alt="${studentValue(student, "name")}" loading="lazy">
-      <strong>${studentValue(student, "name")}</strong>
+      <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
+      <strong>${nameDisplay}</strong>
       <span>${classLabel(student.classNo, student)} · ${groupLabel(student.group)}</span>
     </button>
   `;
@@ -5117,22 +5191,26 @@ function openStudentModal(student) {
     ? `<p class="lead">${badgeParts.join(" · ")}</p>`
     : "";
 
-  const showPhoto = isProfileFieldVisible("photo");
+    const showPhoto = isProfileFieldVisible("photo");
   const showName = isProfileFieldVisible("name");
+  const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
+  const photoSrc = isPhotoUnlocked ? student.img : "images/student-avatar.png";
+  const isNameUnlocked = isProfileFieldUnlocked("name", student);
+  const nameDisplay = isNameUnlocked ? studentValue(student, "name") : "••••••••";
 
   content.innerHTML = `
     <div class="profile">
       ${showPhoto ? `
       <div class="profile-photo-wrapper">
-        <img src="${student.img}" alt="${studentValue(student, "name")}" loading="lazy">
-        <button type="button" class="expand-photo-btn" data-img="${student.img}" aria-label="${currentLang === 'bn' ? 'সম্পূর্ণ ছবি দেখুন' : 'View Full Photo'}" title="${currentLang === 'bn' ? 'সম্পূর্ণ ছবি দেখুন' : 'View Full Photo'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <polyline points="9 21 3 21 3 15"></polyline>
-            <line x1="21" y1="3" x2="14" y2="10"></line>
-            <line x1="3" y1="21" x2="10" y2="14"></line>
+        <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
+        ${isPhotoUnlocked ? `<button type="button" class="expand-photo-btn" data-img="${student.img}" aria-label="${currentLang === 'bn' ? 'সম্পূর্ণ ছবি দেখুন' : 'View Full Photo'}" title="${currentLang === 'bn' ? 'সম্পূর্ণ ছবি দেখুন' : 'View Full Photo'}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"/>
+            <polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/>
+            <line x1="3" y1="21" x2="10" y2="14"/>
           </svg>
-        </button>
+        </button>` : ''}
       </div>` : ''}
       <div>
         <p class="eyebrow">${t("common.fullProfile")}</p>
@@ -5320,7 +5398,7 @@ function openStudentModal(student) {
                 const targetAttr = isResUnlocked ? 'target="_blank" rel="noopener"' : '';
                 const lockTooltip = isResUnlocked ? (currentLang === "bn" ? "মার্কশিট দেখতে ক্লিক করুন" : "Click to view marksheet") : (currentLang === "bn" ? "লগইন করে দেখতে ক্লিক করুন" : "Click to log in and view");
                 const docIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon doc"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
-                const lockIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+                const lockIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon lock" style="color: var(--accent, #10c9a8) !important; stroke: var(--accent, #10c9a8) !important;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
                 const icon = isResUnlocked ? docIconSvg : lockIconSvg;
                 const linkClass = isResUnlocked ? "result-box" : "result-box locked";
                 return `<a class="${linkClass}" href="${fileHref}" ${targetAttr} title="${lockTooltip}">${icon}<span class="res-name">${t(`pdf.${key}`)}</span></a>`;
@@ -5343,7 +5421,7 @@ function openStudentModal(student) {
                 const targetAttr = isResUnlocked ? 'target="_blank" rel="noopener"' : '';
                 const lockTooltip = isResUnlocked ? (currentLang === "bn" ? "মার্কশিট দেখতে ক্লিক করুন" : "Click to view marksheet") : (currentLang === "bn" ? "লগইন করে দেখতে ক্লিক করুন" : "Click to log in and view");
                 const docIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon doc"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
-                const lockIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+                const lockIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="res-icon lock" style="color: var(--accent, #10c9a8) !important; stroke: var(--accent, #10c9a8) !important;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
                 const icon = isResUnlocked ? docIconSvg : lockIconSvg;
                 const linkClass = isResUnlocked ? "result-box" : "result-box locked";
                 return `<a class="${linkClass}" href="${fileHref}" ${targetAttr} title="${lockTooltip}">${icon}<span class="res-name">${t(`pdf.${key}`)}</span></a>`;
@@ -5364,6 +5442,7 @@ function openStudentModal(student) {
   initImageFallbacks();
 }
 
+window.openRoomModal = openRoomModal;
 function openRoomModal(room) {
   const modal = byId("studentModal");
   const content = byId("modalContent");
@@ -5382,8 +5461,12 @@ function openRoomModal(room) {
   });
   
   const cmsRoom = roomsData && roomsData.find((r) => String(r.room_no) === roomStr);
-  const title = cmsRoom ? (currentLang === "bn" ? cmsRoom.title_bn : cmsRoom.title_en) : `${t("common.room")} ${room}`;
-  const desc = cmsRoom ? (currentLang === "bn" ? cmsRoom.description_bn : cmsRoom.description_en) : "Room details.";
+  const title = cmsRoom
+    ? (currentLang === "bn" ? (cmsRoom.title_bn || cmsRoom.title_en || `রুম ${toBengaliDigits(roomStr)}`) : (cmsRoom.title_en || cmsRoom.title_bn || `ROOM ${roomStr}`))
+    : (currentLang === "bn" ? `রুম ${toBengaliDigits(roomStr)}` : `ROOM ${roomStr}`);
+  const desc = cmsRoom
+    ? (currentLang === "bn" ? (cmsRoom.description_bn || cmsRoom.description_en || "শান্ত ও মনোরম পরিবেশের আদর্শ ছাত্রাবাস কক্ষ।") : (cmsRoom.description_en || cmsRoom.description_bn || "Comfortable living space with quiet academic atmosphere."))
+    : (currentLang === "bn" ? "শান্ত ও মনোরম পরিবেশের আদর্শ ছাত্রাবাস কক্ষ।" : "Comfortable living space with quiet academic atmosphere.");
   
   let roomPhotos = [];
   if (cmsRoom && cmsRoom.photos && cmsRoom.photos.length) {
@@ -5431,7 +5514,10 @@ function openRoomModal(room) {
           </div>
           <div class="occupants-list">
             ${batchStudents.map((student) => {
-              const photo = normalizeCmsPath(student.img || student.photo) || "images/logo.png";
+              const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
+              const photo = isPhotoUnlocked ? (normalizeCmsPath(student.img || student.photo) || "images/logo.png") : "images/student-avatar.png";
+              const isNameUnlocked = isProfileFieldUnlocked("name", student);
+              const nameDisplay = isNameUnlocked ? studentValue(student, "name") : "••••••••";
               const r1 = String(student.room_1st_year?.room_no || "").trim();
               const r2 = String(student.room_2nd_year?.room_no || "").trim();
               let roomStayLabel = "";
@@ -5446,7 +5532,7 @@ function openRoomModal(room) {
                 <div class="occupant-row" onclick="openStudentModalFromRoom('${student.slug}')" tabindex="0" role="button">
                   <img class="occupant-img" src="${photo}" alt="" loading="lazy">
                   <div class="occupant-info">
-                    <h4>${studentValue(student, "name")}</h4>
+                    <h4>${nameDisplay}</h4>
                     <p>
                       ${classLabel(student.classNo, student)} · ${groupLabel(student.group)}
                       ${roomStayLabel ? ` · <span style="color: var(--accent); font-weight: 600;">${roomStayLabel}</span>` : ''}
@@ -5755,8 +5841,12 @@ function renderBirthdays() {
         <div class="batch-birthday-body" style="display: ${isDefaultOpen ? 'grid' : 'none'}; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;">
           ${batchStudents.map((student) => {
             const bInfo = getStudentBirthdayInfo(student);
-            const photo = normalizeCmsPath(student.img || student.photo) || "images/logo.png";
-            const isToday = (bInfo.month === curMonth && bInfo.day === curDay);
+            const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
+            const photo = isPhotoUnlocked ? (normalizeCmsPath(student.img || student.photo) || "images/logo.png") : "images/student-avatar.png";
+            const isNameUnlocked = isProfileFieldUnlocked("name", student);
+            const nameDisplay = isNameUnlocked ? studentValue(student, "name") : "••••••••";
+            const isDobUnlocked = isProfileFieldUnlocked("dob", student);
+            const isToday = isDobUnlocked && (bInfo.month === curMonth && bInfo.day === curDay);
             
             // Upcoming within next 7 days
             let isUpcoming = false;
@@ -5769,9 +5859,9 @@ function renderBirthdays() {
               }
             }
 
-            const monthShort = bInfo.month <= 12 ? (currentLang === "bn" ? monthNamesBn[bInfo.month - 1] : monthNamesEn[bInfo.month - 1]) : "--";
-            const dayStr = bInfo.day <= 31 ? (currentLang === "bn" ? toBengaliDigits(String(bInfo.day)) : String(bInfo.day)) : "--";
-            const fullDateStr = bInfo.month <= 12 ? (currentLang === "bn" ? `${dayStr} ${monthFullBn[bInfo.month - 1]}` : `${dayStr} ${monthFullEn[bInfo.month - 1]}`) : (student.dob || "--");
+            const monthShort = isDobUnlocked ? (bInfo.month <= 12 ? (currentLang === "bn" ? monthNamesBn[bInfo.month - 1] : monthNamesEn[bInfo.month - 1]) : "--") : "••";
+            const dayStr = isDobUnlocked ? (bInfo.day <= 31 ? (currentLang === "bn" ? toBengaliDigits(String(bInfo.day)) : String(bInfo.day)) : "--") : "••";
+            const fullDateStr = isDobUnlocked ? (bInfo.month <= 12 ? (currentLang === "bn" ? `${dayStr} ${monthFullBn[bInfo.month - 1]}` : `${dayStr} ${monthFullEn[bInfo.month - 1]}`) : (student.dob || "--")) : "•• ••••";
 
             const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
             const isRollUnlocked = isProfileFieldUnlocked("roll", student);
@@ -5791,7 +5881,7 @@ function renderBirthdays() {
                 </div>
                 <div class="bday-card-body">
                   <div class="bday-name-row">
-                    <h3 class="bday-name">${studentValue(student, "name")}</h3>
+                    <h3 class="bday-name">${nameDisplay}</h3>
                     ${isToday ? `<span class="bday-pill today-pill">${currentLang === 'bn' ? '🎂 আজ জন্মদিন!' : '🎂 Today!'}</span>` : (isUpcoming ? `<span class="bday-pill upcoming-pill">${currentLang === 'bn' ? 'শীঘ্রই' : 'Soon'}</span>` : '')}
                   </div>
                   <div class="bday-meta-pills">

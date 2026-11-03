@@ -491,7 +491,7 @@ body[data-lang="bn"] h3 {
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
 }
 
 .hero .eyebrow,
@@ -787,7 +787,7 @@ h3 {
   color: var(--text-muted);
   font-size: 0.82rem;
   font-weight: 700;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   letter-spacing: 0.05em;
 }
 
@@ -938,7 +938,7 @@ h3 {
   color: #ffffff;
   font-weight: 800;
   line-height: 1.1;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   letter-spacing: 0.04em;
   text-align: center;
   cursor: pointer;
@@ -1126,7 +1126,7 @@ h3 {
 .result-table th {
   background: var(--surface);
   font-size: 0.85rem;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   letter-spacing: 0;
 }
 
@@ -1466,7 +1466,7 @@ h3 {
   color: var(--muted);
   font-size: 0.78rem;
   font-weight: 800;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   letter-spacing: 0;
 }
 
@@ -1664,12 +1664,14 @@ body:not(.dark) .result-box.locked {
 }
 
 .result-box.locked .res-icon.lock {
-  color: var(--accent, #10c9a8);
+  color: var(--accent, #10c9a8) !important;
+  stroke: var(--accent, #10c9a8) !important;
   opacity: 1;
 }
 
 body:not(.dark) .result-box.locked .res-icon.lock {
-  color: #0f766e;
+  color: #0f766e !important;
+  stroke: #0f766e !important;
   opacity: 1;
 }
 
@@ -1936,7 +1938,7 @@ body:not(.dark) .gallery-ambient-bg {
   display: inline-block;
   font-size: 0.74rem;
   font-weight: 800;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   letter-spacing: 0.08em;
   color: var(--accent);
   margin-bottom: 6px;
@@ -3062,7 +3064,7 @@ body.dark .footer-links a:hover {
   font-size: 0.88rem;
   margin-bottom: 14px;
   color: var(--accent);
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   letter-spacing: 0.05em;
   font-weight: 700;
 }
@@ -3436,7 +3438,7 @@ html.user-logged-in #statusCard {
   color: var(--muted);
   font-size: 0.78rem;
   font-weight: 800;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   letter-spacing: 0;
   margin-bottom: 2px;
   transition: color 0.2s ease;
@@ -3516,7 +3518,7 @@ html.user-logged-in #statusCard {
   align-self: flex-start;
   font-size: 0.72rem;
   font-weight: 700;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   background: var(--accent-soft);
   color: var(--accent-strong);
   padding: 4px 10px;
@@ -3961,7 +3963,7 @@ html.user-logged-in #statusCard {
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   color: var(--accent);
   margin-bottom: 2px;
 }
@@ -4913,7 +4915,7 @@ body.dark .active-batch-header .batch-count-pill {
   font-size: 0.72rem;
   font-weight: 800;
   text-align: center;
-  text-transform: uppercase;
+  text-transform: uppercase !important;
   letter-spacing: 0.04em;
   line-height: 1;
 }

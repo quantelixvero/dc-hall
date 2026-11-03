@@ -22,16 +22,16 @@ const SANITY_GROQ_QUERY = `{
   "students": *[_type == "student" && !(_id in path("drafts.**"))] | order(position asc){
     ...,
     "photo": coalesce(photo.asset->url, photo),
-    "room_no": coalesce(room_ref->room_no, room_no),
-    "room_title_en": room_ref->title_en,
-    "room_title_bn": room_ref->title_bn,
+    "room_no": coalesce(room_2nd_year.room_ref->room_no, room_2nd_year.room_no, room_1st_year.room_ref->room_no, room_1st_year.room_no, room_ref->room_no, room_no),
+    "room_title_en": coalesce(room_2nd_year.room_ref->title_en, room_1st_year.room_ref->title_en, room_ref->title_en),
+    "room_title_bn": coalesce(room_2nd_year.room_ref->title_bn, room_1st_year.room_ref->title_bn, room_ref->title_bn),
     "room_1st_year": {
-      "room_no": room_1st_year.room_no,
+      "room_no": coalesce(room_1st_year.room_ref->room_no, room_1st_year.room_no),
       "bedmate_name": coalesce(room_1st_year.bedmate_name, room_1st_year.bedmate_ref->name_en),
       "bedmate_slug": room_1st_year.bedmate_ref->student_id
     },
     "room_2nd_year": {
-      "room_no": room_2nd_year.room_no,
+      "room_no": coalesce(room_2nd_year.room_ref->room_no, room_2nd_year.room_no),
       "bedmate_name": coalesce(room_2nd_year.bedmate_name, room_2nd_year.bedmate_ref->name_en),
       "bedmate_slug": room_2nd_year.bedmate_ref->student_id
     },

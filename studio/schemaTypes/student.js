@@ -152,23 +152,23 @@ export default defineType({
     }),
     defineField({
       name: 'room_1st_year',
-      title: 'Room (1st Year) - ১ম বর্ষের রুম (গ্রাউন্ড ফ্লোর)',
+      title: 'Room (1st Year) - ১ম বর্ষের রুম ও বেডমেট',
       type: 'object',
       group: 'academic',
-      description: '১ম বর্ষে থাকাকালীন রুম নম্বর (১০২, ১০৩, ১০৪) নির্বাচন করুন এবং নির্দিষ্ট বেডমেট সিলেক্ট করুন।',
+      description: '১ম বর্ষে থাকাকালীন রুম এবং নির্দিষ্ট বেডমেট ড্রপডাউন থেকে নির্বাচন করুন।',
       fields: [
         defineField({
+          name: 'room_ref',
+          title: 'Room Selection (১ম বর্ষের রুম — ড্রপডাউন)',
+          type: 'reference',
+          to: [{ type: 'room' }],
+          description: 'সকল রুমের ড্রপডাউন থেকে ১ম বর্ষের নির্দিষ্ট রুম (১০২, ১০৩, ১০৪ ইত্যাদি) সিলেক্ট করুন।',
+        }),
+        defineField({
           name: 'room_no',
-          title: 'Room Number (১ম বর্ষের রুম নম্বর)',
+          title: 'Room Number (ম্যানুয়াল/লেগ্যাসি)',
           type: 'string',
-          options: {
-            list: [
-              { title: 'ROOM 102 (১ম বর্ষ - নিচ তলা)', value: '102' },
-              { title: 'ROOM 103 (১ম বর্ষ - নিচ তলা)', value: '103' },
-              { title: 'ROOM 104 (১ম বর্ষ - নিচ তলা)', value: '104' },
-            ],
-          },
-          description: '১ম বর্ষের রুম (১০২, ১০৩, ১০৪) ড্রপডাউন থেকে নির্বাচন করুন।',
+          hidden: true,
         }),
         defineField({
           name: 'bedmate_ref',
@@ -190,48 +190,29 @@ export default defineType({
               }
             },
           },
-          description: '১০২, ১০৩, ১০৪ রুমে যিনি আপনার নির্দিষ্ট সিট/বেডমেট তাকে নির্বাচন করুন।',
-        }),
-        defineField({
-          name: 'bedmate_name',
-          title: 'Bedmate Name (বেডমেটের নাম — ব্যাকআপ/ম্যানুয়াল)',
-          type: 'string',
-          placeholder: 'e.g. Md. Shanto',
+          description: '১০২, ১০৩, ১০৪ রুমে যিনি আপনার নির্দিষ্ট সিট/বেডমেট তাকে ড্রপডাউন থেকে নির্বাচন করুন।',
         }),
       ],
     }),
     defineField({
       name: 'room_2nd_year',
-      title: 'Room (2nd Year) - ২য় বর্ষের রুম (৩য় তলা)',
+      title: 'Room (2nd Year) - ২য় বর্ষের রুম ও রুমমেট',
       type: 'object',
       group: 'academic',
-      description: '২য় বর্ষে ওঠার পর ৩১৪ থেকে ৩২৯ রুম এবং রুমমেট নির্বাচন করুন। ১ম বর্ষে থাকাকালীন এটি খালি রাখুন।',
+      description: '২য় বর্ষে ওঠার পর রুম এবং রুমমেট ড্রপডাউন থেকে নির্বাচন করুন। ১ম বর্ষে থাকাকালীন এটি খালি রাখুন।',
       fields: [
         defineField({
+          name: 'room_ref',
+          title: 'Room Selection (২য় বর্ষের রুম — ড্রপডাউন)',
+          type: 'reference',
+          to: [{ type: 'room' }],
+          description: 'সকল রুমের ড্রপডাউন থেকে ২য় বর্ষের নির্দিষ্ট রুম (৩১৪–৩২৯ ইত্যাদি) সিলেক্ট করুন।',
+        }),
+        defineField({
           name: 'room_no',
-          title: 'Room Number (২য় বর্ষের রুম নম্বর)',
+          title: 'Room Number (ম্যানুয়াল/লেগ্যাসি)',
           type: 'string',
-          options: {
-            list: [
-              { title: 'ROOM 314 (৩য় তলা)', value: '314' },
-              { title: 'ROOM 315 (৩য় তলা)', value: '315' },
-              { title: 'ROOM 316 (৩য় তলা)', value: '316' },
-              { title: 'ROOM 317 (৩য় তলা)', value: '317' },
-              { title: 'ROOM 318 (৩য় তলা)', value: '318' },
-              { title: 'ROOM 319 (৩য় তলা)', value: '319' },
-              { title: 'ROOM 320 (৩য় তলা)', value: '320' },
-              { title: 'ROOM 321 (৩য় তলা)', value: '321' },
-              { title: 'ROOM 322 (৩য় তলা)', value: '322' },
-              { title: 'ROOM 323 (৩য় তলা)', value: '323' },
-              { title: 'ROOM 324 (৩য় তলা)', value: '324' },
-              { title: 'ROOM 325 (৩য় তলা)', value: '325' },
-              { title: 'ROOM 326 (৩য় তলা)', value: '326' },
-              { title: 'ROOM 327 (৩য় তলা)', value: '327' },
-              { title: 'ROOM 328 (৩য় তলা)', value: '328' },
-              { title: 'ROOM 329 (৩য় তলা)', value: '329' },
-            ],
-          },
-          description: '২য় বর্ষে ওঠার পর রুম সিলেক্ট করুন। ১ম বর্ষে খালি রাখুন।',
+          hidden: true,
         }),
         defineField({
           name: 'bedmate_ref',
@@ -253,13 +234,7 @@ export default defineType({
               }
             },
           },
-          description: '২য় বর্ষে আপনার রুমে অপর শিক্ষার্থীকে সিলেক্ট করুন।',
-        }),
-        defineField({
-          name: 'bedmate_name',
-          title: 'Roommate Name (রুমমেটের নাম — ব্যাকআপ/ম্যানুয়াল)',
-          type: 'string',
-          placeholder: 'e.g. Kayes',
+          description: '২য় বর্ষে আপনার রুমে অপর শিক্ষার্থীকে ড্রপডাউন থেকে সিলেক্ট করুন।',
         }),
       ],
     }),
@@ -306,14 +281,22 @@ export default defineType({
       group: 'academic',
       options: {
         list: [
-          'A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2',
-          'E1', 'E2', 'F1', 'F2', 'G1', 'G2', 'H1', 'H2',
-          'I1', 'I2', 'J1', 'J2'
+          { title: 'None / কোনো প্র্যাকটিক্যাল গ্রুপ নেই', value: 'none' },
+          { title: 'A1', value: 'A1' }, { title: 'A2', value: 'A2' },
+          { title: 'B1', value: 'B1' }, { title: 'B2', value: 'B2' },
+          { title: 'C1', value: 'C1' }, { title: 'C2', value: 'C2' },
+          { title: 'D1', value: 'D1' }, { title: 'D2', value: 'D2' },
+          { title: 'E1', value: 'E1' }, { title: 'E2', value: 'E2' },
+          { title: 'F1', value: 'F1' }, { title: 'F2', value: 'F2' },
+          { title: 'G1', value: 'G1' }, { title: 'G2', value: 'G2' },
+          { title: 'H1', value: 'H1' }, { title: 'H2', value: 'H2' },
+          { title: 'I1', value: 'I1' }, { title: 'I2', value: 'I2' },
+          { title: 'J1', value: 'J1' }, { title: 'J2', value: 'J2' },
         ],
         layout: 'radio',
         direction: 'horizontal',
       },
-      description: 'ব্যবহারিক গ্রুপের রেডিও বাটন নির্বাচন করুন।',
+      description: 'ব্যবহারিক ক্লাসের গ্রুপ নির্বাচন করুন। নন-সায়েন্স বা গ্রুপ না থাকলে None সিলেক্ট করুন।',
     }),
 
     // ═══════════════════════════════════════════
@@ -573,15 +556,19 @@ export default defineType({
       title: 'name_en',
       roll: 'short_roll',
       room: 'room_no',
+      room_ref: 'room_ref.room_no',
+      room_1st_ref: 'room_1st_year.room_ref.room_no',
+      room_2nd_ref: 'room_2nd_year.room_ref.room_no',
       batch: 'batch',
       group: 'group',
       media: 'photo',
       class_no: 'class_no',
     },
-    prepare({ title, roll, room, batch, group, media, class_no }) {
+    prepare({ title, roll, room, room_ref, room_1st_ref, room_2nd_ref, batch, group, media, class_no }) {
       const groupCode = group === 'science' ? 'Sci' : group === 'commerce' ? 'B.St' : group === 'arts' ? 'Hum' : '';
       const displayBatch = batch || (class_no === '12' ? 'HSC-27' : class_no === '11' ? 'HSC-28' : 'HSC-27');
-      const parts = [displayBatch, groupCode, room ? `R${room}` : '', roll ? `Roll ${roll}` : ''].filter(Boolean);
+      const resolvedRoom = room_2nd_ref || room_1st_ref || room_ref || room;
+      const parts = [displayBatch, groupCode, resolvedRoom ? `R${resolvedRoom}` : '', roll ? `Roll ${roll}` : ''].filter(Boolean);
       return {
         title: title || 'Unnamed Student',
         subtitle: parts.join(' · '),

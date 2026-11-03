@@ -70,6 +70,7 @@ export default defineType({
   groups: [
     { name: 'passwords', title: '🔑 Passwords & Master Key' , default: true },
     { name: 'profile_controls', title: '👤 Profile Fields & Locks' },
+    { name: 'page_access', title: '🔐 Page Access & Locks (পেজ লক ও ভিজিবিলিটি)' },
     { name: 'homepage_vis', title: '🏠 Home Page Sections' },
     { name: 'developer_vis', title: '🧑‍💻 Developer Sections' },
     { name: 'hallinfo_vis', title: '🏛️ Hall Info Sections' },
@@ -97,6 +98,87 @@ export default defineType({
       group: 'profile_controls',
       description: 'চালু (ON) থাকলে সাধারণ ভিজিটররা লগইন ছাড়াই মৌলিক প্রোফাইল তথ্য দেখতে পাবে। বন্ধ করলে সম্পূর্ণ সাইট ব্যক্তিগত হয়ে যাবে।',
       initialValue: true,
+    }),
+
+
+    // ═══════════════════════════════════════════
+    // PAGE-LEVEL ACCESS & LOCK CONTROLS
+    // ═══════════════════════════════════════════
+    defineField({
+      name: 'page_access_controls',
+      title: 'Page Access & Visibility Controls (ওয়েবসাইটের সকল পেজ লক ও হাইড নিয়ন্ত্রণ)',
+      type: 'array',
+      group: 'page_access',
+      description: 'ওয়েবসাইটের প্রতিটি পেজ (যেমন Academic Results, Students, Roommates, Birthdays, Gallery ইত্যাদি) ভিজিটরের জন্য উন্মুক্ত থাকবে নাকি পাসওয়ার্ড দিয়ে লক থাকবে তা এখান থেকে নির্ধারণ করুন।',
+      initialValue: [
+        { page_id: 'results', title: 'Academic Results (results.html)', is_visible: true, is_locked: false, lock_message: 'এই পেজের ফলাফল দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' },
+        { page_id: 'students', title: 'Student Directory (students.html)', is_visible: true, is_locked: false, lock_message: 'শিক্ষার্থীদের সম্পূর্ণ তথ্য দেখতে লগইন করুন।' },
+        { page_id: 'roommates', title: 'Roommates (roommates.html)', is_visible: true, is_locked: false, lock_message: 'রুম ও রুমমেটদের তালিকা দেখতে লগইন করুন।' },
+        { page_id: 'birthday', title: 'Student Birthdays (birthday.html)', is_visible: true, is_locked: false, lock_message: 'জন্মদিন ক্যালেন্ডার দেখতে লগইন করুন।' },
+        { page_id: 'gallery', title: 'Photo Gallery (gallery.html)', is_visible: true, is_locked: false, lock_message: 'ফটো গ্যালারি দেখতে লগইন করুন।' },
+        { page_id: 'hostel', title: 'Hostel Info (hostel.html)', is_visible: true, is_locked: false, lock_message: 'হল তথ্য দেখতে লগইন করুন।' },
+        { page_id: 'dc-clubs', title: 'College Clubs (dc-clubs.html)', is_visible: true, is_locked: false, lock_message: 'ক্লাব তথ্য দেখতে লগইন করুন।' },
+        { page_id: 'dc-social', title: 'Social Links (dc-social.html)', is_visible: true, is_locked: false, lock_message: 'সোশ্যাল মিডিয়া পেজ দেখতে লগইন করুন।' },
+      ],
+      of: [
+        {
+          type: 'object',
+          name: 'pageAccessRule',
+          title: 'Page Access Rule',
+          fields: [
+            defineField({
+              name: 'page_id',
+              title: 'Page Identifier (পেজ শনাক্তকারী)',
+              type: 'string',
+              readOnly: true,
+            }),
+            defineField({
+              name: 'title',
+              title: 'Page Name (পেজের নাম)',
+              type: 'string',
+            }),
+            defineField({
+              name: 'is_visible',
+              title: 'Visible on Website (ওয়েবসাইটে দৃশ্যমান)',
+              type: 'boolean',
+              initialValue: true,
+              description: 'বন্ধ (OFF) করলে এই পেজটি ওয়েবসাইট এবং মেনু থেকে সম্পূর্ণ লুকানো থাকবে।',
+            }),
+            defineField({
+              name: 'is_locked',
+              title: 'Require Login / Locked (পাসওয়ার্ড দিয়ে লক রাখুন)',
+              type: 'boolean',
+              initialValue: false,
+              description: 'চালু (ON) থাকলে ভিজিটরকে অবশ্যই ব্যাচ পাসওয়ার্ড দিয়ে লগইন করতে হবে। লগইন না করলে পেজে লক স্ক্রিন দেখাবে।',
+            }),
+            defineField({
+              name: 'lock_message',
+              title: 'Lock Message (লক স্ক্রিনে প্রদর্শিত বার্তা)',
+              type: 'string',
+              placeholder: 'এই পেজের সংরক্ষিত তথ্য দেখতে অনুগ্রহ করে লগইন করুন।',
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              page_id: 'page_id',
+              is_visible: 'is_visible',
+              is_locked: 'is_locked',
+            },
+            prepare({ title, page_id, is_visible, is_locked }) {
+              const statusParts = [];
+              if (is_visible === false) statusParts.push('🚫 Hidden');
+              else statusParts.push('👁️ Visible');
+              if (is_locked) statusParts.push('🔒 Locked');
+              else statusParts.push('🔓 Public');
+              return {
+                title: title || page_id,
+                subtitle: `${page_id}.html — ${statusParts.join(' · ')}`,
+              }
+            },
+          },
+        },
+      ],
     }),
 
     // ═══════════════════════════════════════════
