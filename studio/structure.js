@@ -345,7 +345,7 @@ export const structure = async (S, context) => {
 
       S.divider(),
 
-      // ─── Batch Portals (HSC-27 Founder, HSC-28 to HSC-35 & Alumni) ───
+      // ─── Batch Portals (HSC-27 Founder to HSC-35) ───
       createBatchPortalItem(S, 'HSC-27', true),
       createBatchPortalItem(S, 'HSC-28'),
       createBatchPortalItem(S, 'HSC-29'),
@@ -355,9 +355,6 @@ export const structure = async (S, context) => {
       createBatchPortalItem(S, 'HSC-33'),
       createBatchPortalItem(S, 'HSC-34'),
       createBatchPortalItem(S, 'HSC-35'),
-      createBatchPortalItem(S, 'HSC-26'),
-      createBatchPortalItem(S, 'HSC-25'),
-      createBatchPortalItem(S, 'HSC-24'),
 
       S.divider(),
 

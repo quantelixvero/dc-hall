@@ -6,8 +6,7 @@ import { structure } from './structure'
 
 const ALL_BATCHES = [
   'HSC-27', 'HSC-28', 'HSC-29', 'HSC-30',
-  'HSC-31', 'HSC-32', 'HSC-33', 'HSC-34', 'HSC-35',
-  'HSC-26', 'HSC-25', 'HSC-24'
+  'HSC-31', 'HSC-32', 'HSC-33', 'HSC-34', 'HSC-35'
 ]
 
 // Generate dynamic batch templates

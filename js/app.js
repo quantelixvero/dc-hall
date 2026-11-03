@@ -5166,14 +5166,13 @@ function openStudentModal(student) {
           ${(isProfileFieldVisible("room_1st_year") && student.room_1st_year?.room_no && !student.room_2nd_year?.room_no) ? `
           <div class="profile-item room-item" data-room-id="${student.room_1st_year.room_no}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
             <span>${currentLang === 'bn' ? 'রুম (১ম বর্ষ)' : 'ROOM (1st Year)'}</span>
-            <strong>${showRoom1 ? `Room ${student.room_1st_year.room_no}${student.room_1st_year.bedmate_name ? ` · Bedmate: ${student.room_1st_year.bedmate_name}` : ''}` : maskData("Room 102") + smallLockIconSvg}</strong>
+            <strong>${showRoom1 ? `ROOM ${student.room_1st_year.room_no}${student.room_1st_year.bedmate_name ? ` · Bedmate: ${student.room_1st_year.bedmate_name}` : ''}` : maskData("ROOM 102") + smallLockIconSvg}</strong>
           </div>` : ''}
 
           ${(isProfileFieldVisible("room_2nd_year") && (student.room_2nd_year?.room_no || student.room)) ? `
           <div class="profile-item room-item" data-room-id="${student.room_2nd_year?.room_no || student.room}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
             <span>${student.room_2nd_year?.room_no ? (currentLang === 'bn' ? 'রুম (২য় বর্ষ)' : 'ROOM (2nd Year)') : (currentLang === 'bn' ? 'রুম' : 'ROOM')}</span>
-            <strong>${showRoom2 ? `Room ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Roommate: ${student.room_2nd_year.bedmate_name}` : ''}` : maskData("Room 317") + smallLockIconSvg}</strong>
-          </div>` : ''}` : maskData("Room 317") + smallLockIconSvg}</strong>
+            <strong>${showRoom2 ? `ROOM ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Roommate: ${student.room_2nd_year.bedmate_name}` : ''}` : maskData("ROOM 317") + smallLockIconSvg}</strong>
           </div>` : ''}
 
           ${(isProfileFieldVisible("whatsapp") && hasVal(whatsappNum)) ? (!showWhatsApp ? `
