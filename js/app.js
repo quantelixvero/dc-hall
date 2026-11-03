@@ -12,7 +12,8 @@ const i18n = {
       profile: "Student Portal & Profile Access | Dhaka College International Hall",
       embed: "Portals, Archives & Campus Resources | Dhaka College International Hall",
       "dc-social": "Official Facebook Pages & Social Directory | Dhaka College International Hall",
-      "dc-clubs": "Clubs & Co-Curricular Directory | Dhaka College International Hall"
+      "dc-clubs": "Clubs & Co-Curricular Directory | Dhaka College International Hall",
+      birthday: "Student Birthdays & Calendar | Dhaka College International Hall" 
     },
     nav: {
       logo: "International Hall",
@@ -268,7 +269,8 @@ const i18n = {
       profile: "শিক্ষার্থী পোর্টাল ও প্রোফাইল | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
       embed: "পোর্টাল, আর্কাইভ ও রিসোর্স | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
       "dc-social": "ফেসবুক পেজ ও সোশ্যাল ডিরেক্টরি | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
-      "dc-clubs": "ক্লাব ও সহশিক্ষা কার্যক্রম | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস"
+      "dc-clubs": "ক্লাব ও সহশিক্ষা কার্যক্রম | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      birthday: "শিক্ষার্থীদের জন্মদিন ও ক্যালেন্ডার | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস" 
     },
     nav: {
       logo: "আন্তর্জাতিক ছাত্রাবাস",
@@ -2652,6 +2654,16 @@ function applyCmsSettings(settings) {
   }
 
   renderFooter();
+  updateBirthdayHeroLanguage();
+}
+
+function updateBirthdayHeroLanguage() {
+  const eyebrow = byId("heroEyebrowText");
+  const title = byId("heroTitleText");
+  const subtitle = byId("heroSubtitleText");
+  if (eyebrow) eyebrow.textContent = currentLang === "bn" ? "ক্যালেন্ডার ও উদযাপন" : "Calendar & Celebrations";
+  if (title) title.textContent = currentLang === "bn" ? "🎂 শিক্ষার্থীদের জন্মদিন" : "🎂 Student Birthdays";
+  if (subtitle) subtitle.textContent = currentLang === "bn" ? "জানুয়ারি থেকে ডিসেম্বর পর্যন্ত আবাসিক শিক্ষার্থীদের জন্মদিন ক্রমানুসারে সাজানো।" : "Residential students' birthdays arranged in chronological order from January to December.";
 }
 
 async function loadCmsContent() {
@@ -3171,7 +3183,7 @@ function ensureNavigation() {
 
   const isHomeActive = page === "home";
   const isDevActive = page === "developer";
-  const isHallActive = ["students", "roommates", "results", "hostel", "hallsuper", "gallery"].includes(page);
+  const isHallActive = ["students", "roommates", "birthday", "results", "hostel", "hallsuper", "gallery"].includes(page);
   const isDcActive = ["embed", "dc-social", "dc-clubs"].includes(page);
 
   // Dynamic Dhaka College URL configurations from settings
@@ -3197,6 +3209,7 @@ function ensureNavigation() {
       <div class="dropdown-content">
         <a href="students.html" class="${page === "students" ? "active" : ""}">${t("nav.students")}</a>
         <a href="roommates.html" class="${page === "roommates" ? "active" : ""}">${t("nav.roommates")}</a>
+        <a href="birthday.html" class="${page === "birthday" ? "active" : ""}">${currentLang === "bn" ? "জন্মদিন" : "Birthdays"}</a>
         <a href="results.html" class="${page === "results" ? "active" : ""}">${t("nav.results")}</a>
         <a href="hostel.html" class="${page === "hostel" ? "active" : ""}">${t("nav.hostel")}</a>
         <a href="hostel.html#hallsuper" class="${page === "hallsuper" ? "active" : ""}">${t("nav.hallSuper")}</a>
@@ -3292,6 +3305,7 @@ function renderFooter() {
         <h3>${t("footer.studentLinks")}</h3>
         <a href="students.html">${t("nav.students")}</a>
         <a href="roommates.html">${t("nav.roommates")}</a>
+        <a href="birthday.html">${currentLang === "bn" ? "জন্মদিন" : "Birthdays"}</a>
         <a href="results.html">${t("nav.results")}</a>
         <a href="profile.html">${currentLang === "bn" ? "প্রোফাইল / লগইন" : "Profile / Login"}</a>
       </div>
@@ -4344,6 +4358,7 @@ function renderDynamicContent() {
   initImageFallbacks();
   renderStudentCards();
   renderRoommates();
+  renderBirthdays();
   renderResults();
   renderDcSocialPage();
   renderDcClubsPage();
@@ -5356,9 +5371,17 @@ function openRoomModal(room) {
 
   activeStudentId = null;
   activeRoomId = room;
-  const occupants = students.filter((student) => student.room === room);
+
+  const roomStr = String(room).trim();
+  // Find all occupants past and present across 1st year, 2nd year or current assignments
+  const occupants = students.filter((student) => {
+    const r1 = String(student.room_1st_year?.room_no || "").trim();
+    const r2 = String(student.room_2nd_year?.room_no || "").trim();
+    const rMain = String(student.room || "").trim();
+    return rMain === roomStr || r1 === roomStr || r2 === roomStr;
+  });
   
-  const cmsRoom = roomsData && roomsData.find((r) => String(r.room_no) === String(room));
+  const cmsRoom = roomsData && roomsData.find((r) => String(r.room_no) === roomStr);
   const title = cmsRoom ? (currentLang === "bn" ? cmsRoom.title_bn : cmsRoom.title_en) : `${t("common.room")} ${room}`;
   const desc = cmsRoom ? (currentLang === "bn" ? cmsRoom.description_bn : cmsRoom.description_en) : "Room details.";
   
@@ -5376,6 +5399,71 @@ function openRoomModal(room) {
          <p>${currentLang === 'bn' ? 'কোনো রুমের ছবি আপলোড করা হয়নি' : 'No photos uploaded for this room yet'}</p>
        </div>`;
 
+  // Group occupants by batch and sort descending (latest batch on top)
+  const batchMap = {};
+  occupants.forEach(student => {
+    const b = student.batch || "HSC-27";
+    if (!batchMap[b]) batchMap[b] = [];
+    batchMap[b].push(student);
+  });
+  const sortedBatchKeys = Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
+
+  let occupantsHtml = "";
+  if (sortedBatchKeys.length === 0) {
+    occupantsHtml = `
+      <div class="empty-state" style="padding: 24px; text-align: center; color: var(--text-muted); background: var(--surface-strong); border-radius: 12px; border: 1px dashed var(--border);">
+        <p style="margin: 0;">${currentLang === 'bn' ? 'এই রুমে বর্তমানে কোনো শিক্ষার্থী তালিকাভুক্ত নেই' : 'No occupants registered for this room yet'}</p>
+      </div>
+    `;
+  } else {
+    occupantsHtml = sortedBatchKeys.map((batchKey, bIdx) => {
+      const batchStudents = batchMap[batchKey];
+      const isLatest = bIdx === 0;
+      return `
+        <div class="occupants-batch-section" style="margin-bottom: 22px;">
+          <div class="occupants-batch-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 6px 12px; background: rgba(16,201,168,0.08); border-left: 3px solid var(--accent); border-radius: 6px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.05rem;">🎓</span>
+              <span style="font-weight: 700; font-size: 0.95rem; color: var(--accent); letter-spacing: 0.02em;">${batchKey}</span>
+              ${isLatest ? `<span style="font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; background: var(--accent); color: #0a1f38; font-weight: 700;">${currentLang === 'bn' ? 'লেটেস্ট ব্যাচ' : 'Latest'}</span>` : ''}
+            </div>
+            <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">${batchStudents.length} ${currentLang === 'bn' ? 'জন' : (batchStudents.length === 1 ? 'Student' : 'Students')}</span>
+          </div>
+          <div class="occupants-list">
+            ${batchStudents.map((student) => {
+              const photo = normalizeCmsPath(student.img || student.photo) || "images/logo.png";
+              const r1 = String(student.room_1st_year?.room_no || "").trim();
+              const r2 = String(student.room_2nd_year?.room_no || "").trim();
+              let roomStayLabel = "";
+              if (r1 === roomStr && r2 === roomStr) {
+                roomStayLabel = currentLang === 'bn' ? '১ম ও ২য় বর্ষ' : '1st & 2nd Year';
+              } else if (r1 === roomStr) {
+                roomStayLabel = currentLang === 'bn' ? '১ম বর্ষ' : '1st Year Room';
+              } else if (r2 === roomStr) {
+                roomStayLabel = currentLang === 'bn' ? '২য় বর্ষ' : '2nd Year Room';
+              }
+              return `
+                <div class="occupant-row" onclick="openStudentModalFromRoom('${student.slug}')" tabindex="0" role="button">
+                  <img class="occupant-img" src="${photo}" alt="" loading="lazy">
+                  <div class="occupant-info">
+                    <h4>${studentValue(student, "name")}</h4>
+                    <p>
+                      ${classLabel(student.classNo, student)} · ${groupLabel(student.group)}
+                      ${roomStayLabel ? ` · <span style="color: var(--accent); font-weight: 600;">${roomStayLabel}</span>` : ''}
+                    </p>
+                  </div>
+                  <div class="occupant-action">
+                    <span>${currentLang === "bn" ? "প্রোফাইল দেখুন &rarr;" : "View Profile &rarr;"}</span>
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+
   content.innerHTML = `
     <div class="room-profile">
       <div>
@@ -5388,25 +5476,8 @@ function openRoomModal(room) {
         <p>${desc}</p>
       </div>
       <div class="room-occupants">
-        <h3>${t("common.roomOccupants") || "Room Occupants"}</h3>
-        <div class="occupants-list">
-          ${occupants.map((student) => {
-            const photo = normalizeCmsPath(student.img || student.photo) || "images/logo.png";
-            const groupText = `${groupLabel(student.group)}${student.section ? ` · Sec: ${student.section}` : ""}${student.practicalGroup ? ` · Gr: ${student.practicalGroup}` : ""}`;
-            return `
-              <div class="occupant-row" onclick="openStudentModalFromRoom('${student.slug}')" tabindex="0" role="button">
-                <img class="occupant-img" src="${photo}" alt="" loading="lazy">
-                <div class="occupant-info">
-                  <h4>${studentValue(student, "name")}</h4>
-                  <p>${classLabel(student.classNo, student)} · ${groupLabel(student.group)}</p>
-                </div>
-                <div class="occupant-action">
-                  <span>${currentLang === "bn" ? "প্রোফাইল দেখুন &rarr;" : "View Profile &rarr;"}</span>
-                </div>
-              </div>
-            `;
-          }).join("")}
-        </div>
+        <h3 style="margin-bottom: 16px;">${t("common.roomOccupants") || "Room Occupants"}</h3>
+        ${occupantsHtml}
       </div>
     </div>
   `;
@@ -5559,6 +5630,247 @@ function initAos() {
   });
 }
 
+
+/* ══════════════════════════════════════════════════════════════
+   BIRTHDAY PAGE LOGIC & CHRONOLOGICAL RENDERER (birthday.html)
+   ══════════════════════════════════════════════════════════════ */
+const monthNamesEn = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const monthFullEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const monthNamesBn = ["জানু", "ফেব্রু", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টে", "অক্টো", "নভে", "ডিসে"];
+const monthFullBn = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+
+function getStudentBirthdayInfo(student) {
+  if (student.dob_date) {
+    const parts = student.dob_date.split('-');
+    if (parts.length === 3) {
+      const m = parseInt(parts[1], 10);
+      const d = parseInt(parts[2], 10);
+      if (!isNaN(m) && !isNaN(d) && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+        return { month: m, day: d, sortVal: m * 100 + d, rawDate: student.dob_date };
+      }
+    }
+  }
+  if (student.dob) {
+    const monthMap = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+    const mMatch = String(student.dob).match(/(\d+)[\s\/-]+([a-zA-Z]+|\d+)/);
+    if (mMatch) {
+      const d = parseInt(mMatch[1], 10);
+      let m = 0;
+      if (/^\d+$/.test(mMatch[2])) {
+        m = parseInt(mMatch[2], 10);
+      } else {
+        const monStr = mMatch[2].toLowerCase().slice(0, 3);
+        m = monthMap[monStr] || 0;
+      }
+      if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+        return { month: m, day: d, sortVal: m * 100 + d, rawDate: student.dob };
+      }
+    }
+  }
+  return { month: 99, day: 99, sortVal: 9999, rawDate: "" };
+}
+
+function renderBirthdays() {
+  const container = byId("birthdayContainer");
+  if (!container) return;
+
+  const searchInput = byId("birthdaySearch");
+  const query = (searchInput?.value || "").trim().toLowerCase();
+  const activeMonthFilter = container.dataset.monthFilter || "all";
+
+  // Filter students based on query and active month filter
+  let list = students.filter(s => {
+    const bInfo = getStudentBirthdayInfo(s);
+    if (activeMonthFilter !== "all" && bInfo.month !== parseInt(activeMonthFilter, 10)) {
+      return false;
+    }
+    if (!query) return true;
+    const nameMatch = (s.name || "").toLowerCase().includes(query) || (s.bn?.name || "").includes(query);
+    const rollMatch = (s.roll || "").includes(query) || (s.fullRoll || "").includes(query);
+    const roomMatch = (s.room || "").includes(query);
+    const monthEn = bInfo.month <= 12 ? monthNamesEn[bInfo.month - 1].toLowerCase() : "";
+    const monthFull = bInfo.month <= 12 ? monthFullEn[bInfo.month - 1].toLowerCase() : "";
+    const monthBn = bInfo.month <= 12 ? monthFullBn[bInfo.month - 1] : "";
+    const monthMatch = monthEn.includes(query) || monthFull.includes(query) || monthBn.includes(query);
+    return nameMatch || rollMatch || roomMatch || monthMatch;
+  });
+
+  // Group by batch
+  const batchMap = {};
+  list.forEach(s => {
+    const b = s.batch || "HSC-27";
+    if (!batchMap[b]) batchMap[b] = [];
+    batchMap[b].push(s);
+  });
+
+  // Sort batches descending (e.g. HSC-28, then HSC-27, then older)
+  const sortedBatches = Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
+
+  if (!sortedBatches.length) {
+    container.innerHTML = `
+      <div class="empty-state" style="padding: 40px; text-align: center; background: var(--surface-strong); border-radius: 14px; border: 1px dashed var(--border);">
+        <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">🎂</span>
+        <h3 style="margin-bottom: 8px;">${currentLang === "bn" ? "কোনো শিক্ষার্থীর জন্মদিন পাওয়া যায়নি" : "No birthdays found"}</h3>
+        <p style="color: var(--text-muted);">${currentLang === "bn" ? "অন্য কোনো নাম বা মাস দিয়ে পুনরায় খুঁজুন।" : "Try searching with a different name or month."}</p>
+      </div>
+    `;
+    return;
+  }
+
+  const now = new Date();
+  const curMonth = now.getMonth() + 1;
+  const curDay = now.getDate();
+
+  let html = "";
+  sortedBatches.forEach((batchKey, bIndex) => {
+    // Within each batch, sort students chronologically from Jan 1 to Dec 31
+    const batchStudents = batchMap[batchKey].slice().sort((a, b) => {
+      const aInfo = getStudentBirthdayInfo(a);
+      const bInfo = getStudentBirthdayInfo(b);
+      return aInfo.sortVal - bInfo.sortVal;
+    });
+
+    // The user requested:
+    // "leatest 2 ta batch er student er bithday pase name etay thakbe serial onujawi. jar birth age tar age janurary theke december porjonoto. tar ager batch off kora thakbe heading e click ba dekte chaile open hobe"
+    const isDefaultOpen = bIndex < 2; // Latest 2 batches open by default!
+    const isLatest = bIndex === 0;
+
+    html += `
+      <div class="batch-birthday-wrapper ${isDefaultOpen ? 'is-open' : 'is-collapsed'}" id="batchSection-${batchKey}" data-batch="${batchKey}" style="margin-bottom: 32px;">
+        <div class="batch-birthday-header" onclick="toggleBirthdayBatch('${batchKey}')" style="cursor: pointer; user-select: none;">
+          <div class="batch-header-inner">
+            <h2 class="batch-heading">
+              <span class="batch-icon">🎂</span>
+              <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : (currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:')}</span>
+              <span class="batch-badge">${batchKey}</span>
+              ${!isDefaultOpen ? `<span class="batch-click-hint" style="font-size: 0.78rem; color: var(--accent); margin-left: 6px; font-weight: 600;">${currentLang === 'bn' ? '(ক্লিক করে দেখুন)' : '(Click to expand)'}</span>` : ''}
+            </h2>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'টি জন্মদিন' : 'Birthdays'}</span>
+              <span class="batch-toggle-arrow" style="font-size: 0.95rem; color: var(--accent); transition: transform 0.2s ease;">${isDefaultOpen ? '▲' : '▼'}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="batch-birthday-body" style="display: ${isDefaultOpen ? 'grid' : 'none'}; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;">
+          ${batchStudents.map((student) => {
+            const bInfo = getStudentBirthdayInfo(student);
+            const photo = normalizeCmsPath(student.img || student.photo) || "images/logo.png";
+            const isToday = (bInfo.month === curMonth && bInfo.day === curDay);
+            
+            // Upcoming within next 7 days
+            let isUpcoming = false;
+            if (!isToday && bInfo.month >= 1 && bInfo.month <= 12) {
+              const bdayThisYear = new Date(now.getFullYear(), bInfo.month - 1, bInfo.day);
+              const diffMs = bdayThisYear - now;
+              const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+              if (diffDays > 0 && diffDays <= 7) {
+                isUpcoming = true;
+              }
+            }
+
+            const monthShort = bInfo.month <= 12 ? (currentLang === "bn" ? monthNamesBn[bInfo.month - 1] : monthNamesEn[bInfo.month - 1]) : "--";
+            const dayStr = bInfo.day <= 31 ? (currentLang === "bn" ? toBengaliDigits(String(bInfo.day)) : String(bInfo.day)) : "--";
+            const fullDateStr = bInfo.month <= 12 ? (currentLang === "bn" ? `${dayStr} ${monthFullBn[bInfo.month - 1]}` : `${dayStr} ${monthFullEn[bInfo.month - 1]}`) : (student.dob || "--");
+
+            const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
+            const isRollUnlocked = isProfileFieldUnlocked("roll", student);
+            const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
+            const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? `রুম ${toBengaliDigits(roomVal)}` : `Room ${roomVal}`) : "ROOM •••";
+            const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? `রোল ${toBengaliDigits(student.roll || "")}` : `Roll ${student.roll || ""}`) : "Roll •••";
+
+            return `
+              <article class="birthday-card ${isToday ? 'is-today-birthday' : ''}" onclick="openStudentModalFromBirthday('${student.slug}')" tabindex="0" role="button" aria-label="${studentValue(student, 'name')}">
+                <div class="bday-date-badge ${isToday ? 'bday-badge-today-glow' : ''}">
+                  <span class="bday-badge-month">${monthShort}</span>
+                  <span class="bday-badge-day">${dayStr}</span>
+                </div>
+                <div class="bday-avatar-wrap">
+                  <img class="bday-avatar" src="${photo}" alt="" loading="lazy">
+                  ${isToday ? `<span class="bday-party-icon" title="Happy Birthday!">🎉</span>` : ''}
+                </div>
+                <div class="bday-card-body">
+                  <div class="bday-name-row">
+                    <h3 class="bday-name">${studentValue(student, "name")}</h3>
+                    ${isToday ? `<span class="bday-pill today-pill">${currentLang === 'bn' ? '🎂 আজ জন্মদিন!' : '🎂 Today!'}</span>` : (isUpcoming ? `<span class="bday-pill upcoming-pill">${currentLang === 'bn' ? 'শীঘ্রই' : 'Soon'}</span>` : '')}
+                  </div>
+                  <div class="bday-meta-pills">
+                    <span class="bday-meta-pill">${rollDisplay}</span>
+                    <span class="bday-meta-pill">${roomDisplay}</span>
+                    <span class="bday-meta-pill">${groupLabel(student.group)}</span>
+                  </div>
+                  <div class="bday-date-label">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <line x1="16" y1="2" x2="16" y2="6"/>
+                      <line x1="8" y1="2" x2="8" y2="6"/>
+                      <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                    <span>${fullDateStr}</span>
+                  </div>
+                </div>
+                <div class="bday-card-action">
+                  <span class="bday-view-arrow">&rarr;</span>
+                </div>
+              </article>
+            `;
+          }).join("")}
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+  initImageFallbacks();
+}
+
+window.openStudentModalFromBirthday = function(slug) {
+  const student = students.find(s => s.slug === slug || String(s.id) === String(slug));
+  if (student) openStudentModal(student);
+};
+
+window.toggleBirthdayBatch = function(batchKey) {
+  const wrapper = byId(`batchSection-${batchKey}`);
+  if (!wrapper) return;
+  const body = wrapper.querySelector('.batch-birthday-body');
+  const arrow = wrapper.querySelector('.batch-toggle-arrow');
+  const hint = wrapper.querySelector('.batch-click-hint');
+  if (!body) return;
+
+  const isOpen = body.style.display !== 'none';
+  if (isOpen) {
+    body.style.display = 'none';
+    wrapper.classList.remove('is-open');
+    wrapper.classList.add('is-collapsed');
+    if (arrow) arrow.textContent = '▼';
+    if (hint) hint.textContent = currentLang === 'bn' ? '(ক্লিক করে দেখুন)' : '(Click to expand)';
+  } else {
+    body.style.display = 'grid';
+    wrapper.classList.remove('is-collapsed');
+    wrapper.classList.add('is-open');
+    if (arrow) arrow.textContent = '▲';
+    if (hint) hint.textContent = currentLang === 'bn' ? '(বন্ধ করতে ক্লিক করুন)' : '(Click to collapse)';
+  }
+};
+
+window.filterBirthdayMonth = function(monthNum) {
+  const container = byId("birthdayContainer");
+  if (!container) return;
+  container.dataset.monthFilter = String(monthNum);
+  document.querySelectorAll('.bday-month-pill').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.month === String(monthNum));
+  });
+  renderBirthdays();
+};
+
+function initBirthdaySearch() {
+  const searchInput = byId("birthdaySearch");
+  if (!searchInput) return;
+  searchInput.addEventListener("input", () => {
+    renderBirthdays();
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
   initLanguage(); // Synchronous translation from saved localStorage language immediately
   ensureNavigation();
@@ -5577,6 +5889,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   renderDynamicContent();
   applyLanguage(); // Re-apply for any CMS-provided titles or labels
   initStudentSearch();
+  initBirthdaySearch();
   initRoommateFilters();
   initStudentClicks();
   initResultClassFilter();

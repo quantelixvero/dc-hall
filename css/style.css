@@ -4822,3 +4822,247 @@ body.dark .active-batch-header .batch-count-pill {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ══════════════════════════════════════════════════════════════
+   BIRTHDAY PAGE & CALENDAR STYLING (birthday.html)
+   ══════════════════════════════════════════════════════════════ */
+.bday-month-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 4px 16px;
+  margin-bottom: 20px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+.bday-month-nav::-webkit-scrollbar {
+  height: 5px;
+}
+.bday-month-nav::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.bday-month-pill {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.bday-month-pill:hover {
+  background: var(--surface-light);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+.bday-month-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0a1f38 !important;
+  box-shadow: 0 4px 14px rgba(16, 201, 168, 0.35);
+}
+
+/* Birthday Cards */
+.birthday-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.birthday-card:hover,
+.birthday-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Desk Calendar Sheet Date Badge */
+.bday-date-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 60px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.bday-badge-month {
+  width: 100%;
+  padding: 3px 0;
+  background: #0f766e;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.bday-badge-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+
+/* Today Birthday Special Highlight */
+.birthday-card.is-today-birthday {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, var(--surface-strong), rgba(245, 158, 11, 0.08));
+  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.35), 0 8px 24px rgba(245, 158, 11, 0.15);
+}
+.bday-badge-today-glow .bday-badge-month {
+  background: #f59e0b;
+  color: #000;
+}
+.bday-badge-today-glow .bday-badge-day {
+  color: #f59e0b;
+}
+
+/* Avatar */
+.bday-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.bday-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  display: block;
+  transition: border-color 0.2s ease;
+}
+.birthday-card:hover .bday-avatar {
+  border-color: var(--accent);
+}
+.bday-party-icon {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  font-size: 0.95rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+/* Card Body */
+.bday-card-body {
+  flex: 1;
+  min-width: 0;
+}
+.bday-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.bday-name {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bday-pill {
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.bday-pill.today-pill {
+  background: #f59e0b;
+  color: #000;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+}
+.bday-pill.upcoming-pill {
+  background: rgba(16, 201, 168, 0.2);
+  color: var(--accent);
+  border: 1px solid rgba(16, 201, 168, 0.35);
+}
+
+.bday-meta-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.bday-meta-pill {
+  font-size: 0.74rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.bday-date-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.bday-card-action {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.birthday-card:hover .bday-card-action {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+@media (max-width: 600px) {
+  .birthday-card {
+    padding: 12px;
+    gap: 10px;
+  }
+  .bday-date-badge {
+    width: 48px;
+    height: 54px;
+  }
+  .bday-badge-day {
+    font-size: 1.2rem;
+  }
+  .bday-avatar {
+    width: 42px;
+    height: 42px;
+  }
+  .bday-name {
+    font-size: 0.92rem;
+  }
+}

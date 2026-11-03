@@ -137,19 +137,18 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'room_ref',
-      title: 'Assigned Room (রুম নির্বাচন — রুম ডিরেক্টরি)',
+      title: 'Assigned Room (Legacy Room Ref)',
       type: 'reference',
       to: [{ type: 'room' }],
       group: 'academic',
-      description: 'বিদ্যমান রুমসমূহ থেকে সিলেক্ট করুন। এটি রুম ডিরেক্টরি ও রুমমেট পেজের সাথে সরাসরি সংযুক্ত।',
+      hidden: true,
     }),
     defineField({
       name: 'room_no',
-      title: 'Current / 2nd Year Room Number (বর্তমান / ২য় বর্ষের রুম)',
+      title: 'Room Number (Legacy Room No)',
       type: 'string',
       group: 'academic',
-      description: 'মূল রুম নম্বর (যেমন: ৩১৭, ৩২৫)। রুম রেফারেন্স সিলেক্ট করা থাকলে এটি স্বয়ংক্রিয়ভাবে সিঙ্ক হবে।',
-      placeholder: 'e.g. 317',
+      hidden: true,
     }),
     defineField({
       name: 'room_1st_year',
