@@ -2662,7 +2662,7 @@ function updateBirthdayHeroLanguage() {
   const title = byId("heroTitleText");
   const subtitle = byId("heroSubtitleText");
   if (eyebrow) eyebrow.textContent = currentLang === "bn" ? "ক্যালেন্ডার ও উদযাপন" : "Calendar & Celebrations";
-  if (title) title.textContent = currentLang === "bn" ? "🎂 শিক্ষার্থীদের জন্মদিন" : "🎂 Student Birthdays";
+  if (title) title.textContent = currentLang === "bn" ? "শিক্ষার্থীদের জন্মদিন" : "Student Birthdays";
   if (subtitle) subtitle.textContent = currentLang === "bn" ? "জানুয়ারি থেকে ডিসেম্বর পর্যন্ত আবাসিক শিক্ষার্থীদের জন্মদিন ক্রমানুসারে সাজানো।" : "Residential students' birthdays arranged in chronological order from January to December.";
 }
 
@@ -3615,7 +3615,7 @@ function renderStudentCards(list = getFilteredStudents()) {
       <div class="batch-archive-banner" data-aos="fade-up">
         <a href="students.html" class="back-to-all-btn">← ${currentLang === 'bn' ? 'সকল ব্যাচ' : 'All Batches'}</a>
         <div class="batch-archive-title-wrap">
-          <h2 class="batch-archive-title">🎓 ${batchLabel}</h2>
+          <h2 class="batch-archive-title">${BATCH_LOGO_SVG} ${batchLabel}</h2>
           <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
         </div>
       </div>`;
@@ -3653,7 +3653,7 @@ function renderStudentCards(list = getFilteredStudents()) {
         <div class="batch-section-header active-batch-header" data-aos="fade-up">
           <div class="batch-header-inner">
             <h2 class="batch-heading">
-              <span class="batch-icon">🎓</span>
+              <span class="batch-icon">${BATCH_LOGO_SVG}</span>
               <span class="batch-label">${currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:'}</span>
               <span class="batch-badge">${batch}</span>
             </h2>
@@ -3671,7 +3671,7 @@ function renderStudentCards(list = getFilteredStudents()) {
         <div class="batch-section-header" data-aos="fade-up">
           <div class="batch-header-inner">
             <h2 class="batch-heading">
-              <span class="batch-icon">🎓</span>
+              <span class="batch-icon">${BATCH_LOGO_SVG}</span>
               <span class="batch-label">Batch:</span>
               <span class="batch-badge">${batch}</span>
             </h2>
@@ -3837,7 +3837,7 @@ function renderRoommates() {
       <div class="batch-archive-banner" data-aos="fade-up" style="grid-column: 1 / -1;">
         <a href="roommates.html" class="back-to-all-btn">← ${currentLang === 'bn' ? 'সকল ব্যাচ' : 'All Batches'}</a>
         <div class="batch-archive-title-wrap">
-          <h2 class="batch-archive-title">🎓 ${batchLabel} — ${currentLang === 'bn' ? 'রুমমেট' : 'Roommates'}</h2>
+          <h2 class="batch-archive-title">${BATCH_LOGO_SVG} ${batchLabel} — ${currentLang === 'bn' ? 'রুমমেট' : 'Roommates'}</h2>
           <span class="batch-count-pill">${rooms.length} ${currentLang === 'bn' ? 'টি রুম' : 'Rooms'}</span>
         </div>
       </div>`;
@@ -3885,7 +3885,7 @@ function renderRoommates() {
       <div class="batch-section-header${isLatest ? ' active-batch-header' : ''}" data-aos="fade-up" style="grid-column: 1 / -1;">
         <div class="batch-header-inner">
           <h2 class="batch-heading">
-            <span class="batch-icon">🎓</span>
+            <span class="batch-icon">${BATCH_LOGO_SVG}</span>
             <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : 'Batch:'}</span>
             <span class="batch-badge">${batch}</span>
           </h2>
@@ -5423,7 +5423,7 @@ function openRoomModal(room) {
         <div class="occupants-batch-section" style="margin-bottom: 22px;">
           <div class="occupants-batch-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding: 6px 12px; background: rgba(16,201,168,0.08); border-left: 3px solid var(--accent); border-radius: 6px;">
             <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 1.05rem;">🎓</span>
+              ${BATCH_LOGO_SVG}
               <span style="font-weight: 700; font-size: 0.95rem; color: var(--accent); letter-spacing: 0.02em;">${batchKey}</span>
               ${isLatest ? `<span style="font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; background: var(--accent); color: #0a1f38; font-weight: 700;">${currentLang === 'bn' ? 'লেটেস্ট ব্যাচ' : 'Latest'}</span>` : ''}
             </div>
@@ -5740,7 +5740,7 @@ function renderBirthdays() {
         <div class="batch-birthday-header" onclick="toggleBirthdayBatch('${batchKey}')" style="cursor: pointer; user-select: none;">
           <div class="batch-header-inner">
             <h2 class="batch-heading">
-              <span class="batch-icon">🎂</span>
+              <span class="batch-icon">${BIRTHDAY_LOGO_SVG}</span>
               <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : (currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:')}</span>
               <span class="batch-badge">${batchKey}</span>
               ${!isDefaultOpen ? `<span class="batch-click-hint" style="font-size: 0.78rem; color: var(--accent); margin-left: 6px; font-weight: 600;">${currentLang === 'bn' ? '(ক্লিক করে দেখুন)' : '(Click to expand)'}</span>` : ''}
