@@ -3664,7 +3664,8 @@ function classLabel(classNo, student) {
 }
 
 function sectionText(student) {
-  return student.section ? `${t("common.section")} ${student.section}` : "";
+  if (!student.section || String(student.section).toLowerCase() === "none") return "";
+  return `${t("common.section")} ${student.section}`;
 }
 
 function studentFirstYearResults(student) {
@@ -4181,7 +4182,7 @@ function renderSingleStudentCard(student, index) {
         <span class="student-meta">
           ${showBatch ? `<span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>` : ''}
           ${showGroup ? `<span class="pill">${groupLabel(student.group)}</span>` : ''}
-          ${(showSection && student.section) ? `<span class="pill">${student.section}</span>` : ""}
+          ${(showSection && student.section && String(student.section).toLowerCase() !== "none") ? `<span class="pill">${student.section}</span>` : ""}
         </span>
       </span>
     </button>
@@ -5708,7 +5709,7 @@ function openStudentModal(student) {
   const hasVal = (val) => {
     if (val === null || val === undefined) return false;
     const s = String(val).trim();
-    return s !== "" && s !== "-" && s !== "--" && s !== "—" && s !== "N/A" && s !== "null" && s !== "undefined";
+    return s !== "" && s !== "-" && s !== "--" && s !== "—" && s !== "N/A" && s !== "null" && s !== "undefined" && s.toLowerCase() !== "none";
   };
 
   // Field Unlocks

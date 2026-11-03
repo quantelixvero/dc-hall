@@ -140,6 +140,15 @@ export default defineType({
       title: 'Assigned Room (Legacy Room Ref)',
       type: 'reference',
       to: [{ type: 'room' }],
+      options: {
+        filter: ({ document }) => {
+          const batch = document?.batch || 'HSC-27'
+          return {
+            filter: '_type == "room" && batch == $batch',
+            params: { batch },
+          }
+        },
+      },
       group: 'academic',
       hidden: true,
     }),
@@ -162,6 +171,15 @@ export default defineType({
           title: 'Room Selection (১ম বর্ষের রুম — ড্রপডাউন)',
           type: 'reference',
           to: [{ type: 'room' }],
+          options: {
+            filter: ({ document }) => {
+              const batch = document?.batch || 'HSC-27'
+              return {
+                filter: '_type == "room" && batch == $batch',
+                params: { batch },
+              }
+            },
+          },
           description: 'সকল রুমের ড্রপডাউন থেকে ১ম বর্ষের নির্দিষ্ট রুম (১০২, ১০৩, ১০৪ ইত্যাদি) সিলেক্ট করুন।',
         }),
         defineField({
@@ -206,6 +224,15 @@ export default defineType({
           title: 'Room Selection (২য় বর্ষের রুম — ড্রপডাউন)',
           type: 'reference',
           to: [{ type: 'room' }],
+          options: {
+            filter: ({ document }) => {
+              const batch = document?.batch || 'HSC-27'
+              return {
+                filter: '_type == "room" && batch == $batch',
+                params: { batch },
+              }
+            },
+          },
           description: 'সকল রুমের ড্রপডাউন থেকে ২য় বর্ষের নির্দিষ্ট রুম (৩১৪–৩২৯ ইত্যাদি) সিলেক্ট করুন।',
         }),
         defineField({
@@ -268,11 +295,23 @@ export default defineType({
       type: 'string',
       group: 'academic',
       options: {
-        list: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'],
+        list: [
+          { title: 'None / কোনো সেকশন নেই', value: 'none' },
+          { title: 'A', value: 'A' },
+          { title: 'B', value: 'B' },
+          { title: 'C', value: 'C' },
+          { title: 'D', value: 'D' },
+          { title: 'E', value: 'E' },
+          { title: 'F', value: 'F' },
+          { title: 'G', value: 'G' },
+          { title: 'H', value: 'H' },
+          { title: 'I', value: 'I' },
+          { title: 'J', value: 'J' },
+        ],
         layout: 'radio',
         direction: 'horizontal',
       },
-      description: 'A–J সেকশন অনুভূমিক রেডিও বাটন থেকে সহজে নির্বাচন করুন।',
+      description: 'A–J সেকশন নির্বাচন করুন। Business Studies বা Humanities-এ কোনো সেকশন না থাকলে None সিলেক্ট করুন।',
     }),
     defineField({
       name: 'practical_group',

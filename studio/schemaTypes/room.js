@@ -37,7 +37,21 @@ export default defineType({
       title: 'Assigned Students (এই রুমের শিক্ষার্থীগণ)',
       type: 'array',
       group: 'main',
-      of: [{ type: 'reference', to: [{ type: 'student' }] }],
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'student' }],
+          options: {
+            filter: ({ document }) => {
+              const batch = document?.batch || 'HSC-27'
+              return {
+                filter: '_type == "student" && batch == $batch',
+                params: { batch },
+              }
+            },
+          },
+        },
+      ],
       description: 'রুমের শিক্ষার্থী সরাসরি এখান থেকেও সিলেক্ট করতে পারেন অথবা রিফ্রেশ দিয়ে স্টুডেন্ট প্রোফাইল থেকে সিঙ্ক করতে পারেন!',
       components: {
         input: RoomAssignedStudentsInput,
