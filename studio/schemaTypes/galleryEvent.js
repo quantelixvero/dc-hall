@@ -56,20 +56,6 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'date_formatted_en',
-      title: 'Custom Date Text (English) — Optional',
-      type: 'string',
-      group: 'info',
-      description: 'Custom display text e.g. "March 2026". If blank, auto-generated from date above.',
-    }),
-    defineField({
-      name: 'date_formatted_bn',
-      title: 'কাস্টম তারিখ টেক্সট (বাংলা) — ঐচ্ছিক',
-      type: 'string',
-      group: 'info',
-      description: 'যেমন: "মার্চ ২০২৬"। খালি রাখলে উপরের তারিখ থেকে স্বয়ংক্রিয়ভাবে তৈরি হবে।',
-    }),
-    defineField({
       name: 'batches',
       title: 'Batch / ব্যাচ',
       type: 'array',

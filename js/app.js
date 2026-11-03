@@ -499,28 +499,29 @@ function initNoticePopup() {
 // ═══════════════════════════════════════════════════════════════
 function checkPageAccess() {
   const path = window.location.pathname.toLowerCase();
+  const page = (document.body.dataset.page || "").toLowerCase();
   let pageId = null;
-  if (path.includes("results")) pageId = "results";
-  else if (path.includes("students")) pageId = "students";
-  else if (path.includes("roommates")) pageId = "roommates";
-  else if (path.includes("birthday")) pageId = "birthday";
-  else if (path.includes("notices")) pageId = "notices";
-  else if (path.includes("gallery")) pageId = "gallery";
-  else if (path.includes("hostel")) pageId = "hostel";
-  else if (path.includes("dc-clubs")) pageId = "dc-clubs";
-  else if (path.includes("dc-social")) pageId = "dc-social";
+  if (page === "results" || path.includes("results")) pageId = "results";
+  else if (page === "students" || path.includes("students")) pageId = "students";
+  else if (page === "roommates" || path.includes("roommates")) pageId = "roommates";
+  else if (page === "birthday" || path.includes("birthday")) pageId = "birthday";
+  else if (page === "notices" || path.includes("notices")) pageId = "notices";
+  else if (page === "gallery" || path.includes("gallery")) pageId = "gallery";
+  else if (page === "hostel" || path.includes("hostel")) pageId = "hostel";
+  else if (page === "dc-clubs" || path.includes("dc-clubs")) pageId = "dc-clubs";
+  else if (page === "dc-social" || path.includes("dc-social")) pageId = "dc-social";
 
-  if (!pageId) return;
+  if (!pageId) return false;
 
   const pageControls = cmsAdminSettings?.page_access_controls || [];
   const ctrl = pageControls.find(c => c.page_id === pageId);
-  if (!ctrl) return;
+  if (!ctrl) return false;
 
   const role = getAuthRole();
   const isMaster = role === "master";
 
   // Master admin bypasses all page restrictions
-  if (isMaster) return;
+  if (isMaster) return false;
 
   // 1. If page is disabled (hidden)
   if (ctrl.is_visible === false) {
@@ -535,28 +536,54 @@ function checkPageAccess() {
         </div>
       `;
     }
-    return;
+    return true; // Access blocked!
   }
 
   // 2. If page is locked (requires login)
   if (ctrl.is_locked === true) {
-    const isAuthed = role && role !== "guest";
+    const isAuthed = Boolean(role && role !== "guest");
     if (!isAuthed) {
       const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
       if (mainEl) {
         mainEl.innerHTML = `
-          <div class="page-access-banner" style="max-width: 600px; margin: 90px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);">
+          <div class="page-access-banner" style="max-width: 580px; margin: 90px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);">
             <div style="font-size: 3rem; margin-bottom: 16px;">🔐</div>
             <h2 style="font-size: 1.4rem; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'এই পেজটি সংরক্ষিত' : 'Protected Page'}</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">${ctrl.lock_message || (currentLang === 'bn' ? 'এই পেজের তথ্য দেখতে অনুগ্রহ করে আপনার ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' : 'Please log in with your batch password or master key to access this page.')}</p>
-            <a href="profile.html?redirect=${encodeURIComponent(window.location.pathname)}" class="cta-button" style="display: inline-block; padding: 12px 28px; border-radius: 8px; background: var(--accent); color: #0a1f38; font-weight: 700; text-decoration: none;">🔑 ${currentLang === 'bn' ? 'লগইন করুন' : 'Login to View'}</a>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">${ctrl.lock_message || (currentLang === 'bn' ? 'এই পেজের তথ্য দেখতে অনুগ্রহ করে আপনার ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' : 'Please enter your batch password or master key to unlock this page.')}</p>
+            <form onsubmit="handleDirectPageLogin(event)" style="max-width: 320px; margin: 0 auto 16px; display: flex; gap: 8px;">
+              <input type="password" id="directPagePassword" placeholder="${currentLang === 'bn' ? 'পাসওয়ার্ড লিখুন...' : 'Enter password...'}" class="search-input" style="flex: 1;" required>
+              <button type="submit" class="cta-button" style="padding: 10px 18px; border-radius: 8px; background: var(--accent); color: #0a1f38; font-weight: 700; border: none; cursor: pointer;">${currentLang === 'bn' ? 'আনলক' : 'Unlock'}</button>
+            </form>
+            <div id="directPageLoginErr" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 12px; display: none;"></div>
+            <p style="font-size: 0.85rem; color: var(--text-muted);"><a href="profile.html" style="color: var(--accent); text-decoration: underline;">${currentLang === 'bn' ? 'প্রোফাইল পেজ থেকে লগইন করুন' : 'Go to Profile Login Page'}</a></p>
           </div>
         `;
       }
-      return;
+      return true; // Access blocked!
     }
   }
+
+  return false; // Access permitted
 }
+
+window.handleDirectPageLogin = function(e) {
+  e.preventDefault();
+  const pwd = document.getElementById("directPagePassword")?.value || "";
+  const errEl = document.getElementById("directPageLoginErr");
+  if (!pwd) return;
+  const result = verifyPassword(pwd);
+  if (result.success) {
+    localStorage.setItem("dc-student-password", pwd);
+    localStorage.setItem("dc-auth-role", result.role);
+    window.location.reload();
+  } else {
+    if (errEl) {
+      errEl.textContent = currentLang === 'bn' ? 'ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।' : 'Incorrect password! Please try again.';
+      errEl.style.display = 'block';
+    }
+  }
+};
+
 const i18n = {
   en: {
     pageTitle: {
@@ -3472,6 +3499,8 @@ function applySanityPayload(sanityData) {
   }
 
   applyPageSectionControls();
+  ensureNavigation();
+  checkPageAccess();
 }
 
 async function loadCmsContent() {
@@ -3791,6 +3820,19 @@ function ensureNavigation() {
 
   const dcDropdownLabel = window.innerWidth <= 480 ? "DC" : t("nav.dhakaCollege");
 
+    const pageControls = cmsAdminSettings?.page_access_controls || [];
+  const isPageVisible = (pid) => {
+    const c = pageControls.find(x => x.page_id === pid);
+    return !c || c.is_visible !== false;
+  };
+  const isPageLocked = (pid) => {
+    const c = pageControls.find(x => x.page_id === pid);
+    return c && c.is_locked === true;
+  };
+  const role = getAuthRole();
+  const isGuest = !role || role === "guest";
+  const lockBadge = (pid) => (isPageLocked(pid) && isGuest ? " 🔒" : "");
+
   nav.innerHTML = `
     <a href="index.html" class="${isHomeActive ? "active" : ""}" data-i18n="nav.home">${t("nav.home")}</a>
     
@@ -3799,14 +3841,14 @@ function ensureNavigation() {
         <span>${t("nav.hall")}</span>
       </button>
       <div class="dropdown-content">
-        <a href="students.html" class="${page === "students" ? "active" : ""}">${t("nav.students")}</a>
-        <a href="roommates.html" class="${page === "roommates" ? "active" : ""}">${t("nav.roommates")}</a>
-        <a href="birthday.html" class="${page === "birthday" ? "active" : ""}">${currentLang === "bn" ? "জন্মদিন" : "Birthdays"}</a>
-        <a href="notices.html" class="${page === "notices" ? "active" : ""}">${currentLang === "bn" ? "নোটিশ ও ঘোষণা" : "Notices"}</a>
-        <a href="results.html" class="${page === "results" ? "active" : ""}">${t("nav.results")}</a>
-        <a href="hostel.html" class="${page === "hostel" ? "active" : ""}">${t("nav.hostel")}</a>
-        <a href="hostel.html#hallsuper" class="${page === "hallsuper" ? "active" : ""}">${t("nav.hallSuper")}</a>
-        <a href="gallery.html" class="${page === "gallery" ? "active" : ""}">${t("nav.gallery")}</a>
+        ${isPageVisible("students") ? `<a href="students.html" class="${page === "students" ? "active" : ""}">${t("nav.students")}${lockBadge("students")}</a>` : ""}
+        ${isPageVisible("roommates") ? `<a href="roommates.html" class="${page === "roommates" ? "active" : ""}">${t("nav.roommates")}${lockBadge("roommates")}</a>` : ""}
+        ${isPageVisible("birthday") ? `<a href="birthday.html" class="${page === "birthday" ? "active" : ""}">${currentLang === "bn" ? "জন্মদিন" : "Birthdays"}${lockBadge("birthday")}</a>` : ""}
+        ${isPageVisible("notices") ? `<a href="notices.html" class="${page === "notices" ? "active" : ""}">${currentLang === "bn" ? "নোটিশ" : "Notices"}${lockBadge("notices")}</a>` : ""}
+        ${isPageVisible("results") ? `<a href="results.html" class="${page === "results" ? "active" : ""}">${t("nav.results")}${lockBadge("results")}</a>` : ""}
+        ${isPageVisible("hostel") ? `<a href="hostel.html" class="${page === "hostel" ? "active" : ""}">${t("nav.hostel")}${lockBadge("hostel")}</a>` : ""}
+        ${isPageVisible("hallsuper") ? `<a href="hostel.html#hallsuper" class="${page === "hallsuper" ? "active" : ""}">${t("nav.hallSuper")}</a>` : ""}
+        ${isPageVisible("gallery") ? `<a href="gallery.html" class="${page === "gallery" ? "active" : ""}">${t("nav.gallery")}${lockBadge("gallery")}</a>` : ""}
       </div>
     </div>
 
@@ -4954,6 +4996,7 @@ function renderHomeDcResources() {
 
 
 function renderDynamicContent() {
+  if (checkPageAccess()) return;
   initImageFallbacks();
   renderStudentCards();
   renderRoommates();
@@ -6515,6 +6558,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   checkSessionValidity();
   initAuth();
   updateProfileNavButton();
+  ensureNavigation();
+  if (checkPageAccess()) return;
   renderDynamicContent();
   applyLanguage(); // Re-apply for any CMS-provided titles or labels
   initStudentSearch();
