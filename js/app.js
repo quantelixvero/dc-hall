@@ -2261,6 +2261,7 @@ const famousProfiles = {
 
 let cmsSettings = null;
 let cmsAdminSettings = null;
+let cmsBatchConfigs = [];
 let cmsGalleryData = null;
 let cmsHallData = null;
 let cmsDevData = null;
@@ -2657,6 +2658,9 @@ async function loadCmsContent() {
     if (sanityData.adminSettings) {
       cmsAdminSettings = sanityData.adminSettings;
     }
+    if (sanityData.batchConfigs) {
+      cmsBatchConfigs = sanityData.batchConfigs;
+    }
     settings = sanityData.settings || {};
     studentData = { students: sanityData.students || [] };
     roomsList = { rooms: sanityData.rooms || [] };
@@ -2911,6 +2915,9 @@ async function loadCmsContent() {
 
   // Apply Multi-Page Section Controls (Visibility & Reordering)
   applyPageSectionControls();
+  applyMenuVisibility();
+  checkSessionValidity();
+  updateProfileNavButton();
 }
 
 function applyPageSectionControls() {
@@ -3210,9 +3217,13 @@ function renderFooter() {
 
   let columnsHtml = "";
 
-  if (cmsSettings && Array.isArray(cmsSettings.footer_columns) && cmsSettings.footer_columns.length > 0) {
+  const footerCols = (cmsAdminSettings?.footer_columns && cmsAdminSettings.footer_columns.length > 0)
+    ? cmsAdminSettings.footer_columns
+    : (cmsSettings?.footer_columns && cmsSettings.footer_columns.length > 0 ? cmsSettings.footer_columns : null);
+
+  if (footerCols) {
     // Dynamic columns from Sanity CMS
-    columnsHtml = cmsSettings.footer_columns
+    columnsHtml = footerCols
       .filter((col) => col && col.is_active !== false)
       .map((col) => {
         const colTitle = currentLang === "bn" && col.title_bn ? col.title_bn : (col.title_en || "Links");
@@ -4452,22 +4463,59 @@ function parseBatchNum(batch) {
   return m ? parseInt(m[1], 10) : 27;
 }
 
+function getAllBatchPasswords() {
+  const result = {
+    "hsc24": "dc24hall",
+    "hsc25": "dc25hall",
+    "hsc26": "dc26hall",
+    "hsc27": "dc27hall",
+    "hsc28": "dc28hall",
+    "hsc29": "dc29hall",
+    "hsc30": "dc30hall"
+  };
+  if (cmsSettings?.batch_passwords) {
+    for (const [k, v] of Object.entries(cmsSettings.batch_passwords)) {
+      if (v) result[k.toLowerCase()] = String(v).trim();
+    }
+  }
+  if (cmsAdminSettings?.batch_passwords) {
+    for (const [k, v] of Object.entries(cmsAdminSettings.batch_passwords)) {
+      if (v) result[k.toLowerCase()] = String(v).trim();
+    }
+  }
+  if (Array.isArray(cmsBatchConfigs)) {
+    for (const bc of cmsBatchConfigs) {
+      if (bc?.batch && bc?.batch_password) {
+        const cleanKey = bc.batch.toLowerCase().replace(/[^a-z0-9]/g, '');
+        result[cleanKey] = String(bc.batch_password).trim();
+      }
+    }
+  }
+  return result;
+}
+
+function getMasterPassword() {
+  return cmsAdminSettings?.master_password || cmsSettings?.master_password || cmsSettings?.password || "102103104";
+}
+
+function isGlobalVisibilityOn() {
+  if (cmsAdminSettings && typeof cmsAdminSettings.global_visibility === "boolean") {
+    return cmsAdminSettings.global_visibility;
+  }
+  if (cmsSettings && typeof cmsSettings.global_visibility === "boolean") {
+    return cmsSettings.global_visibility;
+  }
+  return true;
+}
+
 function getAuthRole() {
   const role = localStorage.getItem("dc-auth-role");
   if (role && role !== "guest") return role;
   const savedPassword = localStorage.getItem("dc-student-password");
   if (savedPassword) {
-    const masterPass = cmsSettings?.master_password || cmsSettings?.password || "102103104";
+    const masterPass = getMasterPassword();
     if (savedPassword === masterPass) return "master";
-    const batchPasswords = cmsSettings?.batch_passwords || {
-      "hsc24": "dc24hall",
-      "hsc25": "dc25hall",
-      "hsc26": "dc26hall",
-      "hsc27": "dc27hall",
-      "hsc28": "dc28hall",
-      "hsc29": "dc29hall",
-      "hsc30": "dc30hall"
-    };
+    const batchPasswords = getAllBatchPasswords();
     for (const [bKey, bPass] of Object.entries(batchPasswords)) {
       if (savedPassword === bPass) return bKey;
     }
@@ -4476,7 +4524,7 @@ function getAuthRole() {
 }
 
 function getAuthStatus() {
-  if (cmsSettings?.global_visibility === true) return true;
+  if (isGlobalVisibilityOn()) return true;
   const role = getAuthRole();
   return Boolean(role && role !== "guest");
 }
@@ -4505,7 +4553,9 @@ function getProfileFieldControl(fieldId) {
       batch: "class",
       room: "room_2nd_year",
       room_no: "room_2nd_year",
-      results: "results_1st"
+      results: "results_1st",
+      results_1st: "results",
+      results_2nd: "results"
     };
 
     const alt = aliases[fieldId];
@@ -4549,6 +4599,10 @@ function isProfileFieldUnlocked(fieldId, student) {
   const isGuest = !role || role === "guest";
 
   if (isGuest) {
+    if (!isGlobalVisibilityOn()) {
+      // Global Public Visibility is OFF: All sensitive fields locked for guests/visitors
+      return false;
+    }
     if (ctrl) {
       return ctrl.public_lock !== true;
     }
@@ -4579,7 +4633,7 @@ function isProfileFieldUnlocked(fieldId, student) {
 }
 
 function canViewStudentPrivateData(student) {
-  if (cmsSettings?.global_visibility === true) return true;
+  if (isGlobalVisibilityOn()) return true;
   const role = getAuthRole();
   if (role === "master") return true; // Master Admin sees all batches
   if (!role || role === "guest") return false;
@@ -4587,22 +4641,18 @@ function canViewStudentPrivateData(student) {
   const userBatchNum = parseBatchNum(role);
   const studentBatchNum = parseBatchNum(student?.batch || "HSC-27");
   return userBatchNum <= studentBatchNum;
-  return uRole === sBatch;
 }
 
 function checkSessionValidity() {
-  if (!cmsSettings) return;
   const role = getAuthRole();
   if (!role || role === "guest") return;
   const savedPassword = localStorage.getItem("dc-student-password");
   if (!savedPassword) return;
-  const masterPass = cmsSettings.master_password || cmsSettings.password || "102103104";
+  const masterPass = getMasterPassword();
   let isValid = (savedPassword === masterPass);
-  if (!isValid && cmsSettings.batch_passwords) {
-    isValid = Object.values(cmsSettings.batch_passwords).includes(savedPassword);
-  }
-  if (!isValid && (savedPassword === "dc24hall" || savedPassword === "dc25hall" || savedPassword === "dc26hall" || savedPassword === "dc27hall" || savedPassword === "dc28hall" || savedPassword === "dc29hall" || savedPassword === "dc30hall")) {
-    isValid = true;
+  if (!isValid) {
+    const allBatchPass = getAllBatchPasswords();
+    isValid = Object.values(allBatchPass).includes(savedPassword);
   }
   if (!isValid) {
     localStorage.removeItem("dc-student-password");
@@ -4713,16 +4763,8 @@ function initAuth() {
       const enteredPassword = (passwordInput ? passwordInput.value : "").trim();
       if (!enteredPassword) return;
 
-      const masterPass = cmsSettings?.master_password || cmsSettings?.password || "102103104";
-      const batchPasswords = cmsSettings?.batch_passwords || {
-        "hsc24": "dc24hall",
-        "hsc25": "dc25hall",
-        "hsc26": "dc26hall",
-        "hsc27": "dc27hall",
-        "hsc28": "dc28hall",
-        "hsc29": "dc29hall",
-        "hsc30": "dc30hall"
-      };
+      const masterPass = getMasterPassword();
+      const batchPasswords = getAllBatchPasswords();
 
       if (enteredPassword === masterPass) {
         localStorage.setItem("dc-auth-role", "master");
@@ -4800,7 +4842,7 @@ function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHre
     whatsapp: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.012 2c-5.506 0-9.988 4.482-9.988 9.988 0 1.761.459 3.472 1.332 4.988L2 22l5.163-1.355c1.464.798 3.111 1.218 4.793 1.218 5.506 0 9.988-4.482 9.988-9.988 0-2.662-1.036-5.164-2.918-7.046A9.923 9.923 0 0 0 12.012 2zm5.727 14.126c-.237.668-1.378 1.285-1.921 1.343-.492.052-1.127.086-1.808-.13-2.946-.931-4.992-3.83-5.139-4.026-.147-.197-1.203-1.603-1.203-3.059 0-1.456.759-2.171 1.03-2.464.271-.293.593-.367.791-.367.198 0 .395.003.568.011.183.008.431-.071.674.512.249.599.852 2.072.926 2.219.074.147.124.317.025.513-.099.197-.149.317-.297.492-.149.176-.312.39-.446.524-.149.149-.304.312-.13.612.174.3.774 1.277 1.66 2.067.886.79 1.636 1.036 1.933 1.183.297.147.469.122.642-.078.174-.2.742-.862.94-1.159.198-.297.395-.247.668-.147.272.099 1.73.816 2.027.964.297.149.495.223.568.349.074.127.074.729-.163 1.396z"/></svg>`,
     telegram: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.77-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>`,
     email: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>`,
-    facebook: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`,
+    facebook: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5c0-.988.18-1.5 1.5-1.5h2.5V2h-3.334C10.292 2 9.198 3.656 9.198 6.5v3.01H6.5v3.98h2.698v8.01z"/></svg>`,
     messenger: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.914 1.455 5.518 3.734 7.214V22l3.355-1.843c.902.25 1.859.386 2.911.386 5.523 0 10-4.146 10-9.258C22 6.145 17.523 2 12 2zm1.096 11.903L10.36 11.13l-4.903 2.695 5.385-5.719 2.736 2.77 4.903-2.695-5.385 5.722z"/></svg>`
   };
 
@@ -6456,3 +6498,37 @@ async function downloadGalleryImage(url, title) {
 }
 
 window.downloadGalleryImage = downloadGalleryImage;
+
+
+// ══════════════════════════════════════════════════════════════
+// Dynamic Menu Visibility (Navbar & Mobile Drawer)
+// ══════════════════════════════════════════════════════════════
+function applyMenuVisibility() {
+  const menuVis = cmsAdminSettings?.menu_visibility || cmsSettings?.menu_visibility;
+  if (!menuVis || typeof menuVis !== "object") return;
+
+  const menuMapping = {
+    menu_home: ['a[href="index.html"]', 'a[href="./"]'],
+    menu_students: ['a[href="students.html"]'],
+    menu_roommates: ['a[href="roommates.html"]'],
+    menu_results: ['a[href="results.html"]'],
+    menu_gallery: ['a[href="gallery.html"]'],
+    menu_hostel: ['a[href="hostel.html"]'],
+    menu_hallsuper: ['a[href="hostel.html#hallsuper"]', 'a[href="hallsuper.html"]'],
+    menu_developer: ['a[href="developer.html"]'],
+    menu_dc_social: ['a[href="dc-social.html"]'],
+    menu_dc_clubs: ['a[href="dc-clubs.html"]'],
+    menu_profile: ['a[href="profile.html"]']
+  };
+
+  Object.entries(menuMapping).forEach(([key, selectors]) => {
+    const isHidden = menuVis[key] === false;
+    selectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        if (el.closest('.nav-links') || el.closest('.nav-drawer') || el.closest('.dropdown-content')) {
+          el.style.display = isHidden ? 'none' : '';
+        }
+      });
+    });
+  });
+}

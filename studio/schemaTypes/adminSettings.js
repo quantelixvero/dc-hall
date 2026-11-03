@@ -91,9 +91,9 @@ export default defineType({
 
     defineField({
       name: 'global_visibility',
-      title: 'Global Public Visibility',
+      title: 'Global Public Visibility (সবার জন্য আনলক)',
       type: 'boolean',
-      group: 'passwords',
+      group: 'profile_controls',
       description: 'চালু (ON) থাকলে সাধারণ ভিজিটররা লগইন ছাড়াই মৌলিক প্রোফাইল তথ্য দেখতে পাবে। বন্ধ করলে সম্পূর্ণ সাইট ব্যক্তিগত হয়ে যাবে।',
       initialValue: true,
     }),

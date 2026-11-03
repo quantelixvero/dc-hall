@@ -35,7 +35,7 @@ function createBatchContentItems(S, batchName) {
       .child(
         S.documentTypeList('student')
           .title(`${batchName} Students`)
-          .filter('_type == "student" && batch == $batch')
+          .filter('_type == "student" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
           .params({ batch: batchName })
           .initialValueTemplates([
             S.initialValueTemplateItem(`student-${cleanBatchKey}`),
@@ -66,7 +66,7 @@ function createBatchContentItems(S, batchName) {
       .child(
         S.documentTypeList('galleryItem')
           .title(`${batchName} Photo Collections`)
-          .filter('_type == "galleryItem" && (batch == $batch || heading match $matchHeading)')
+          .filter('_type == "galleryItem" && (batch == $batch || heading match $matchHeading || (!defined(batch) && $batch == "HSC-27"))')
           .params({
             batch: batchName,
             matchHeading: `*${batchName.replace('HSC-', '')}*`,
@@ -83,7 +83,7 @@ function createBatchContentItems(S, batchName) {
       .child(
         S.documentTypeList('galleryEvent')
           .title(`${batchName} Events`)
-          .filter('_type == "galleryEvent" && ($batch in batches || "all" in batches)')
+          .filter('_type == "galleryEvent" && ($batch in batches || "all" in batches || (!defined(batches) && $batch == "HSC-27"))')
           .params({ batch: batchName })
           .defaultOrdering([{ field: 'date', direction: 'desc' }])
       ),
@@ -340,26 +340,6 @@ export const structure = async (S, context) => {
 
       // ─── Batch Portals ───────────────────────────────────────────
       S.listItem()
-        .title('📁 HSC-28 Portal')
-        .icon(FolderIcon)
-        .child(
-          S.list()
-            .title('HSC-28 Management')
-            .items([
-              ...createBatchContentItems(S, 'HSC-28'),
-              S.listItem()
-                .title('🔑 HSC-28 Password & Moderator')
-                .icon(LockIcon)
-                .child(
-                  S.document()
-                    .schemaType('batchConfig')
-                    .documentId('batchConfig-hsc28')
-                    .title('HSC-28 Configuration')
-                ),
-            ])
-        ),
-
-      S.listItem()
         .title('⭐ HSC-27 Portal (Founder)')
         .icon(StarIcon)
         .child(
@@ -375,6 +355,26 @@ export const structure = async (S, context) => {
                     .schemaType('batchConfig')
                     .documentId('batchConfig-hsc27')
                     .title('HSC-27 Configuration')
+                ),
+            ])
+        ),
+
+      S.listItem()
+        .title('📁 HSC-28 Portal')
+        .icon(FolderIcon)
+        .child(
+          S.list()
+            .title('HSC-28 Management')
+            .items([
+              ...createBatchContentItems(S, 'HSC-28'),
+              S.listItem()
+                .title('🔑 HSC-28 Password & Moderator')
+                .icon(LockIcon)
+                .child(
+                  S.document()
+                    .schemaType('batchConfig')
+                    .documentId('batchConfig-hsc28')
+                    .title('HSC-28 Configuration')
                 ),
             ])
         ),
@@ -399,11 +399,31 @@ export const structure = async (S, context) => {
             ])
         ),
 
+      S.listItem()
+        .title('📁 HSC-30 Portal')
+        .icon(FolderIcon)
+        .child(
+          S.list()
+            .title('HSC-30 Management')
+            .items([
+              ...createBatchContentItems(S, 'HSC-30'),
+              S.listItem()
+                .title('🔑 HSC-30 Password & Moderator')
+                .icon(LockIcon)
+                .child(
+                  S.document()
+                    .schemaType('batchConfig')
+                    .documentId('batchConfig-hsc30')
+                    .title('HSC-30 Configuration')
+                ),
+            ])
+        ),
+
       S.divider(),
 
       // ─── Master Lists ────────────────────────────────────────────
       S.listItem()
-        .title('All Students (সকল শিক্ষার্থী)')
+        .title('All Students (সকল শিক্ষার্থী - অটোমেটেড)')
         .icon(UsersIcon)
         .child(
           S.documentTypeList('student')
@@ -414,7 +434,7 @@ export const structure = async (S, context) => {
             ])
         ),
       S.listItem()
-        .title('All Rooms (সকল রুম)')
+        .title('All Rooms (সকল রুম - অটোমেটেড)')
         .icon(PackageIcon)
         .child(
           S.documentTypeList('room')
@@ -422,7 +442,7 @@ export const structure = async (S, context) => {
             .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
         ),
       S.listItem()
-        .title('All Photo Collections (সকল ফটো)')
+        .title('All Photo Collections (সকল ফটো - অটোমেটেড)')
         .icon(ImageIcon)
         .child(
           S.documentTypeList('galleryItem')
@@ -430,7 +450,7 @@ export const structure = async (S, context) => {
             .defaultOrdering([{ field: 'position', direction: 'asc' }])
         ),
       S.listItem()
-        .title('All Events (সকল ইভেন্ট)')
+        .title('All Events (সকল ইভেন্ট - অটোমেটেড)')
         .icon(CalendarIcon)
         .child(
           S.documentTypeList('galleryEvent')
