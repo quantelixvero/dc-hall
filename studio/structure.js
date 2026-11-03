@@ -313,13 +313,12 @@ export const structure = async (S, context) => {
             .title('Website Settings')
         ),
       S.listItem()
-        .title('🔗 Footer & Quick Links (ফুটার কলাম ও লিংক)')
-        .icon(CaseIcon)
+        .title('📢 Notices & Announcements (নোটিশ ও ঘোষণা)')
+        .icon(BellIcon)
         .child(
-          S.document()
-            .schemaType('adminSettings')
-            .documentId('adminSettings')
-            .title('Footer Columns & Links Management (ফুটার কলাম ও লিংক ব্যবস্থাপনা)')
+          S.documentTypeList('notice')
+            .title('All Notices & Announcements (সকল নোটিশ ও ঘোষণা)')
+            .defaultOrdering([{ field: 'date', direction: 'desc' }])
         ),
       S.listItem()
         .title('Home Page Content (হোম পেজ)')

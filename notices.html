@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notices & Announcements | Dhaka College International Hall</title>
+  <meta name="title" content="Notices & Announcements | Dhaka College International Hall">
+  <meta name="description" content="Official notices, urgent circulars, seat allocation results, and campus updates for Dhaka College International Hall.">
+  <meta name="keywords" content="dhaka college hostel notice, dc hall circulars, seat allocation notice, international hall announcements">
+  <meta name="author" content="Abdullah Al Adib (SE Adib)">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://dchall.pro.bd/notices.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dchall.pro.bd/notices.html">
+  <meta property="og:title" content="Notices & Announcements | Dhaka College International Hall">
+  <meta property="og:description" content="Official notices, urgent circulars and hostel announcements.">
+  <meta property="og:image" content="https://dchall.pro.bd/images/hostel-hero.jpg">
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="favicon-192x192.png">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+  <link rel="stylesheet" href="css/style.css?v=5.8">
+</head>
+<body data-page="notices">
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html">
+        <img class="logo-img" src="images/logo.png" alt="International Hall logo" loading="lazy">
+        <span data-i18n="nav.logo">International Hall</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation"></nav>
+      <div class="nav-actions">
+        <div class="language-switch" aria-label="Language selector">
+          <button type="button" data-lang-option="en" title="English">EN</button>
+          <button type="button" data-lang-option="bn" title="বাংলা">BN</button>
+        </div>
+        <a href="profile.html" class="profile-toggle" id="profileBtn" aria-label="Profile Status / Login">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+        </a>
+        <button class="theme-toggle" id="toggle" type="button" aria-label="Toggle dark mode">
+          <span aria-hidden="true">&#9789;</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="page-hero" data-aos="fade-down">
+      <div class="container">
+        <p class="eyebrow">Official Announcements & Circulars</p>
+        <h1>হলের নোটিশ ও ঘোষণা</h1>
+        <p class="hero-desc">ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাসের সর্বশেষ জরুরি নোটিশ, সিট বরাদ্দ, ছুটির বিজ্ঞপ্তি ও অফিশিয়াল নির্দেশনাবলী।</p>
+      </div>
+    </section>
+
+    <!-- Filter & Search Section -->
+    <section class="section">
+      <div class="container">
+        <div class="search-wrap" data-aos="fade-up" style="max-width: 680px; margin: 0 auto 20px;">
+          <label for="noticeSearch" class="sr-only">Search notices</label>
+          <input id="noticeSearch" class="search-input" type="search" placeholder="নোটিশের শিরোনাম বা বিষয়বস্তু দিয়ে খুঁজুন...">
+        </div>
+
+        <!-- Category Pills -->
+        <div class="bday-month-nav" id="noticeCategoryNav" data-aos="fade-up" style="margin-bottom: 28px;">
+          <button type="button" class="bday-month-pill active" data-cat="all">সকল নোটিশ</button>
+          <button type="button" class="bday-month-pill" data-cat="urgent">🚨 জরুরি</button>
+          <button type="button" class="bday-month-pill" data-cat="hostel">🏛️ ছাত্রাবাস</button>
+          <button type="button" class="bday-month-pill" data-cat="general">📢 সাধারণ</button>
+          <button type="button" class="bday-month-pill" data-cat="event">🎪 ইভেন্ট</button>
+        </div>
+
+        <!-- Notices Container -->
+        <div id="noticesContainer" class="notices-grid" data-aos="fade-up">
+          <!-- Populated dynamically by app.js?v=5.8 -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner"></div>
+  </footer>
+
+  <!-- Notice Details Modal -->
+  <div class="modal" id="studentModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalName">
+    <div class="modal-backdrop" data-close-modal></div>
+    <article class="modal-panel">
+      <button class="modal-close" type="button" aria-label="Close modal" data-close-modal>&times;</button>
+      <div id="modalContent"></div>
+    </article>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="js/sanity-client.js?v=5.8"></script>
+  <script src="js/app.js?v=5.8"></script>
+</body>
+</html>

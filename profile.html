@@ -79,7 +79,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=5.7">
+  <link rel="stylesheet" href="css/style.css?v=5.8">
   <style>
     .auth-container {
       display: flex;
@@ -284,7 +284,7 @@
           <p id="successMessage" data-i18n="auth.successMessage">You are logged in as a student! All locked contact numbers and locations are now visible.</p>
         </div>
         <div id="statusActionLinks" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
-          <a id="adminStudioBtn" href="https://dchall.sanity.studio/" target="_blank" rel="noopener" class="auth-btn" style="display: none; align-items: center; justify-content: center; gap: 8px; text-decoration: none; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; font-weight: 700;">
+          <a id="adminStudioBtn" href="https://admindchall.vercel.app" target="_blank" rel="noopener" class="auth-btn" style="display: none; align-items: center; justify-content: center; gap: 8px; text-decoration: none; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; font-weight: 700;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
               <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
             </svg>
@@ -334,14 +334,72 @@
         <a href="dc-clubs.html">College Clubs</a>
         <a href="dc-social.html">Social Links</a>
         <a href="developer.html">Developer</a>
-        <a href="https://dchall.sanity.studio" target="_blank" rel="noopener">Admin Panel (Sanity)</a>
-        <a href="https://admindchall.vercel.app" target="_blank" rel="noopener">Admin Panel (Vercel)</a>
+        <a href="https://admindchall.vercel.app" target="_blank" rel="noopener">Admin Panel</a>
       </div>
     </div>
   </footer>
 
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="js/sanity-client.js?v=5.7"></script>
-  <script src="js/app.js?v=5.7"></script>
+  <script src="js/sanity-client.js?v=5.8"></script>
+  <script src="js/app.js?v=5.8"></script>
+</body>
+</html><a id="adminPanelBtn" href="https://admindchall.vercel.app" target="_blank" rel="noopener" class="auth-btn" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; background: #0f172a; border: 1.5px solid var(--accent); color: var(--accent); font-weight: 700; padding: 12px 20px; border-radius: 10px; margin-bottom: 6px;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+            </svg>
+            <span>অ্যাডমিন প্যানেল (admindchall.vercel.app)</span>
+          </a>
+          <a href="students.html" class="auth-btn" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; background: var(--accent); color: #fff;">
+            <span data-i18n="auth.viewStudents">View Student Directory</span> &rarr;
+          </a>
+          <a href="roommates.html" class="auth-btn" style="display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; background: var(--surface); color: var(--text); border: 1px solid var(--border);">
+            <span data-i18n="auth.viewRoommates">View Roommates</span> &rarr;
+          </a>
+        </div>
+        <button id="logoutBtn" class="auth-btn" style="background: var(--warm);" data-i18n="auth.logout">Logout</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="images/logo.png" alt="International Hall logo" loading="lazy"><strong>International Hall</strong></div>
+        <p class="footer-about">Official student portal of Dhaka College International Hall. Built with dedication by Abdullah Al Adib.</p>
+      </div>
+            <div class="footer-links">
+        <h3>Quick Links</h3>
+        <a href="index.html#students-preview">Students Preview</a>
+        <a href="index.html#roommates-preview">Roommate Preview</a>
+        <a href="index.html#hallsuper-preview">Hall Super</a>
+        <a href="index.html#gallery-preview">Gallery</a>
+        <a href="index.html#dc-resources">College Resources</a>
+        <a href="index.html#location">Location</a>
+      </div>
+      <div class="footer-links">
+        <h3>Student</h3>
+        <a href="students.html">Students</a>
+        <a href="roommates.html">Roommates</a>
+        <a href="birthday.html">Birthdays</a>
+        <a href="results.html">Results</a>
+        <a href="profile.html">Profile / Login</a>
+      </div>
+      <div class="footer-links">
+        <h3>Hall</h3>
+        <a href="hostel.html">Hall Info</a>
+        <a href="hostel.html#hallsuper">Hall Super</a>
+        <a href="hostel.html#famous">Notable Alumni</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="dc-clubs.html">College Clubs</a>
+        <a href="dc-social.html">Social Links</a>
+        <a href="developer.html">Developer</a>
+        <a href="https://admindchall.vercel.app" target="_blank" rel="noopener">Admin Panel</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="js/sanity-client.js?v=5.8"></script>
+  <script src="js/app.js?v=5.8"></script>
 </body>
 </html>

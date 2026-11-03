@@ -9,6 +9,7 @@ import developerProfile from './developerProfile'
 import editRequest from './editRequest'
 import batchConfig from './batchConfig'
 import adminSettings from './adminSettings'
+import notice from './notice'
 
 export const schemaTypes = [
   student,
@@ -22,4 +23,5 @@ export const schemaTypes = [
   editRequest,
   batchConfig,
   adminSettings,
+  notice,
 ]

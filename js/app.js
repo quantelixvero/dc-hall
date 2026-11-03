@@ -1,5 +1,485 @@
 
 // ═══════════════════════════════════════════════════════════════
+// BIRTHDAY CELEBRATION POPUP & MUSIC SYSTEM
+// ═══════════════════════════════════════════════════════════════
+const BIRTHDAY_WISHES_BN = [
+  "শুভ জন্মদিন! আন্তর্জাতিক ছাত্রাবাস পরিবারের পক্ষ থেকে তোমার জন্য রইল প্রাণঢালা অভিনন্দন ও উষ্ণ ভালোবাসা। জীবনের প্রতিটি পদক্ষেপে সাফল্য তোমার সঙ্গী হোক!",
+  "জন্মদিনের অনেক অনেক শুভেচ্ছা! তোমার প্রতিটি স্বপ্ন ও লক্ষ্য পূরণ হোক, ঢাকা কলেজ পরিবারের গর্ব হয়ে ওঠো।",
+  "শুভ জন্মদিন! সামনের দিনগুলো ভরে উঠুক অনাবিল আনন্দ, সুস্বাস্থ্য এবং অবিস্মরণীয় সব অর্জনে। ভবিষ্যৎ হোক অত্যন্ত উজ্জ্বল ও সমৃদ্ধ।",
+  "আজকের এই বিশেষ দিনে ছাত্রাবাস পরিবারের পক্ষ থেকে অফুরন্ত শুভকামনা। সততা ও নিষ্ঠায় গড়ে ওঠুক তোমার সুন্দর ভবিষ্যৎ।",
+  "শুভ জন্মদিন! ছাত্রাবাসের এই দিনগুলো আজীবন স্মৃতিময় হোক এবং সামনের প্রতিটি পথচলা হোক সাফল্যমণ্ডিত।",
+  "জন্মদিনের আন্তরিক অভিনন্দন! জ্ঞান, প্রজ্ঞা আর মানবিক গুণে বিকশিত হোক তোমার সুন্দর জীবন।",
+  "শুভ জন্মদিন! পড়াশোনা ও ক্যারিয়ারে সর্বোচ্চ শিখর স্পর্শ করো — আন্তর্জাতিক ছাত্রাবাস পরিবার সবসময় তোমার সাথে আছে।",
+  "আজকের দিনটি তোমার জন্য বয়ে আনুক অফুরন্ত আনন্দ আর নতুন অপার সম্ভাবনার বার্তা। শুভ জন্মদিন!",
+  "জন্মদিনের শুভেচ্ছা! আন্তর্জাতিক ছাত্রাবাসের আনন্দঘন স্মৃতি তোমার জীবনের এক অমূল্য প্রেরণা হয়ে থাকুক।",
+  "শুভ জন্মদিন! নিজের মেধা ও পরিশ্রমে দেশ ও দশের মুখ উজ্জ্বল করো — উজ্জ্বল আগামী তোমার অপেক্ষায়।"
+];
+
+function playBirthdayMelody() {
+  try {
+    const audioEl = document.getElementById("birthdayAudio");
+    if (audioEl) {
+      audioEl.volume = 0.6;
+      const p = audioEl.play();
+      if (p !== undefined) {
+        p.catch(() => synthesizeHappyBirthday());
+        return;
+      }
+    }
+  } catch (e) {}
+  synthesizeHappyBirthday();
+}
+
+function synthesizeHappyBirthday() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+
+    const notes = [
+      { f: 261.63, d: 0.35 },
+      { f: 261.63, d: 0.35 },
+      { f: 293.66, d: 0.6 },
+      { f: 261.63, d: 0.6 },
+      { f: 349.23, d: 0.6 },
+      { f: 329.63, d: 0.95 },
+      { f: 261.63, d: 0.35 },
+      { f: 261.63, d: 0.35 },
+      { f: 293.66, d: 0.6 },
+      { f: 261.63, d: 0.6 },
+      { f: 392.00, d: 0.6 },
+      { f: 349.23, d: 0.95 }
+    ];
+
+    let start = ctx.currentTime + 0.1;
+    notes.forEach(n => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(n.f, start);
+      gain.gain.setValueAtTime(0.18, start);
+      gain.gain.exponentialRampToValueAtTime(0.001, start + n.d);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(start);
+      osc.stop(start + n.d);
+      start += n.d + 0.08;
+    });
+  } catch (e) {}
+}
+
+function showStudentBirthdayModal(bdayStudents, sessionKey) {
+  let currentIndex = 0;
+
+  function renderCard() {
+    const student = bdayStudents[currentIndex];
+    const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
+    const photo = isPhotoUnlocked ? (normalizeCmsPath(student.img || student.photo) || "images/logo.png") : "images/student-avatar.png";
+    const isNameUnlocked = isProfileFieldUnlocked("name", student);
+    const nameDisplay = isNameUnlocked ? studentValue(student, "name") : "••••••••";
+    const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "";
+    const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
+    const roomDisplay = roomVal ? (isRoomUnlocked ? `ROOM ${roomVal}` : "ROOM •••") : "";
+
+    const wishText = BIRTHDAY_WISHES_BN[Math.floor(Math.random() * BIRTHDAY_WISHES_BN.length)];
+
+    let overlay = document.getElementById("birthdayPopupOverlay");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "birthdayPopupOverlay";
+      overlay.className = "bday-popup-overlay";
+      document.body.appendChild(overlay);
+    }
+
+    const multiNav = bdayStudents.length > 1 ? `
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <button type="button" id="bdayPrevBtn" style="background: var(--surface-strong); border: 1px solid var(--border); color: var(--accent); padding: 4px 12px; border-radius: 8px; cursor: pointer; font-weight: 700;">&larr; Previous</button>
+        <span style="font-size: 0.82rem; color: var(--text-muted); font-weight: 600;">${currentIndex + 1} of ${bdayStudents.length}</span>
+        <button type="button" id="bdayNextBtn" style="background: var(--surface-strong); border: 1px solid var(--border); color: var(--accent); padding: 4px 12px; border-radius: 8px; cursor: pointer; font-weight: 700;">Next &rarr;</button>
+      </div>
+    ` : "";
+
+    overlay.innerHTML = `
+      <div class="bday-popup-card" role="dialog" aria-modal="true">
+        <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody">🔔</button>
+        <button type="button" class="bday-popup-close" id="bdayCloseBtn" aria-label="Close">&times;</button>
+        
+        <div class="bday-avatar-large-wrap">
+          <img class="bday-avatar-large" src="${photo}" alt="" loading="lazy">
+          <span class="bday-crown-icon">👑</span>
+        </div>
+
+        <p class="eyebrow" style="color: var(--accent); margin-bottom: 4px;">🎂 Happy Birthday Today!</p>
+        <h2 class="bday-popup-title">${nameDisplay}</h2>
+        <div class="bday-popup-meta">
+          <span>${student.batch || 'HSC-27'}</span>
+          <span>·</span>
+          <span>${groupLabel(student.group)}</span>
+          ${roomDisplay ? `<span>·</span><span>${roomDisplay}</span>` : ''}
+        </div>
+
+        <div class="bday-wish-quote">
+          <p style="margin: 0;">"${wishText}"</p>
+        </div>
+
+        <div class="bday-wish-signature">
+          — শুভেচ্ছা ও ভালোবাসান্তে:<br>
+          <strong>আব্দুল্লাহ আল আদিব</strong><br>
+          <span style="font-size: 0.78rem;">(ওয়েবসাইট ডেভেলপার ও শিক্ষার্থী, ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস)</span>
+        </div>
+
+        ${multiNav}
+
+        <button type="button" class="bday-popup-cta" id="bdayDoneBtn">
+          🎉 ধন্যবাদ ও শুভকামনা
+        </button>
+      </div>
+    `;
+
+    setTimeout(() => overlay.classList.add("is-active"), 100);
+
+    // Audio
+    playBirthdayMelody();
+
+    // Sound toggle
+    const soundBtn = document.getElementById("bdaySoundToggle");
+    if (soundBtn) {
+      soundBtn.onclick = () => {
+        playBirthdayMelody();
+      };
+    }
+
+    // Close actions
+    const closeBtn = document.getElementById("bdayCloseBtn");
+    const doneBtn = document.getElementById("bdayDoneBtn");
+    const closePopup = () => {
+      overlay.classList.remove("is-active");
+      sessionStorage.setItem(sessionKey, "true");
+      setTimeout(() => overlay.remove(), 400);
+    };
+    if (closeBtn) closeBtn.onclick = closePopup;
+    if (doneBtn) doneBtn.onclick = closePopup;
+
+    // Multi-nav
+    const prevBtn = document.getElementById("bdayPrevBtn");
+    const nextBtn = document.getElementById("bdayNextBtn");
+    if (prevBtn) prevBtn.onclick = () => {
+      currentIndex = (currentIndex - 1 + bdayStudents.length) % bdayStudents.length;
+      renderCard();
+    };
+    if (nextBtn) nextBtn.onclick = () => {
+      currentIndex = (currentIndex + 1) % bdayStudents.length;
+      renderCard();
+    };
+  }
+
+  renderCard();
+}
+
+function showDeveloperBirthdayModal(isEve) {
+  let overlay = document.getElementById("birthdayPopupOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "birthdayPopupOverlay";
+    overlay.className = "bday-popup-overlay";
+    document.body.appendChild(overlay);
+  }
+
+  const devTitle = isEve ? "🌟 আগামীকাল (৪ অক্টোবর) ডেভেলপার আদিব-এর জন্মদিন!" : "🎉 আজ আমাদের ওয়েবসাইট ডেভেলপার আদিব-এর শুভ জন্মদিন! 🎂";
+  const devDesc = isEve
+    ? "আগামীকাল ৪ঠা অক্টোবর ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস পোর্টালের নির্মাতা ও শিক্ষার্থী <strong>আব্দুল্লাহ আল আদিব</strong>-এর শুভ জন্মদিন। অগ্রিম শুভেচ্ছা জানাতে প্রস্তুত থাকুন!"
+    : "আজ ৪ঠা অক্টোবর আন্তর্জাতিক ছাত্রাবাস ওয়েবসাইটের প্রতিষ্ঠাতা ডেভেলপার ও শিক্ষার্থী <strong>আব্দুল্লাহ আল আদিব</strong>-এর শুভ জন্মদিন। হলের সার্বিক ডিজিটালাইজেশন ও ছাত্রাবাস পরিবারের সেবায় তাঁর অবদানের জন্য জানাই উষ্ণ অভিনন্দন!";
+
+  const whatsappMsg = encodeURIComponent("শুভ জন্মদিন আদিব ভাই! ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস ওয়েবসাইটের পক্ষ থেকে আপনাকে জানাই প্রাণঢালা শুভেচ্ছা ও উষ্ণ অভিনন্দন। আপনার সুস্থতা, দীর্ঘায়ু ও সার্বিক সাফল্য কামনা করি! 🎉🎂");
+  const whatsappUrl = `https://wa.me/8801700000000?text=${whatsappMsg}`;
+
+  overlay.innerHTML = `
+    <div class="bday-popup-card" role="dialog" aria-modal="true" style="border-color: #f59e0b; box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 45px rgba(245,158,11,0.3);">
+      <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody">🔔</button>
+      <button type="button" class="bday-popup-close" id="bdayCloseBtn" aria-label="Close">&times;</button>
+
+      <div class="bday-avatar-large-wrap" style="background: linear-gradient(135deg, #f59e0b, #ef4444, #10c9a8);">
+        <img class="bday-avatar-large" src="images/logo.png" alt="Abdullah Al Adib" loading="lazy">
+        <span class="bday-crown-icon">👑</span>
+      </div>
+
+      <p class="eyebrow" style="color: #f59e0b; margin-bottom: 4px;">${isEve ? 'Birthday Countdown' : 'Founder & Developer Birthday'}</p>
+      <h2 class="bday-popup-title">${devTitle}</h2>
+      
+      <div class="bday-wish-quote" style="border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.06); text-align: left;">
+        <p style="margin: 0; line-height: 1.65;">${devDesc}</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px;">
+        <a href="${whatsappUrl}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; border-radius: 12px; background: #25D366; color: #fff; font-weight: 700; text-decoration: none;">
+          💬 হোয়াটসঅ্যাপে উইশ করুন (Instant Wish)
+        </a>
+        <a href="developer.html" class="cta-button" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px 20px; border-radius: 12px; background: var(--surface-strong); border: 1.5px solid var(--border); color: var(--text); font-weight: 600; text-decoration: none;">
+          🧑‍💻 ডেভেলপার প্রোফাইল দেখুন
+        </a>
+      </div>
+
+      <button type="button" class="bday-popup-cta" id="bdayDoneBtn" style="background: var(--surface-strong); border: 1px solid var(--border); color: var(--text-muted);">
+        বন্ধ করুন
+      </button>
+    </div>
+  `;
+
+  setTimeout(() => overlay.classList.add("is-active"), 100);
+  if (!isEve) playBirthdayMelody();
+
+  const closePopup = () => {
+    overlay.classList.remove("is-active");
+    if (isEve) sessionStorage.setItem("dev_bday_eve_seen", "true");
+    else sessionStorage.setItem("dev_bday_popup_seen", "true");
+    setTimeout(() => overlay.remove(), 400);
+  };
+  const closeBtn = document.getElementById("bdayCloseBtn");
+  const doneBtn = document.getElementById("bdayDoneBtn");
+  if (closeBtn) closeBtn.onclick = closePopup;
+  if (doneBtn) doneBtn.onclick = closePopup;
+}
+
+function initBirthdayCelebrationPopup() {
+  const page = document.body.dataset.page;
+  const isHomeOrBirthday = page === "home" || page === "birthday" || window.location.pathname === "/" || window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("birthday.html");
+  if (!isHomeOrBirthday) return;
+
+  const now = new Date();
+  const curMonth = now.getMonth() + 1;
+  const curDay = now.getDate();
+
+  // Developer Birthday: Oct 4 (and Oct 3 eve)
+  if (curMonth === 10 && curDay === 4) {
+    if (!sessionStorage.getItem("dev_bday_popup_seen")) {
+      showDeveloperBirthdayModal(false);
+      return;
+    }
+  } else if (curMonth === 10 && curDay === 3) {
+    if (!sessionStorage.getItem("dev_bday_eve_seen")) {
+      showDeveloperBirthdayModal(true);
+      return;
+    }
+  }
+
+  // Students birthday in latest 3 batches
+  if (!students || !students.length) return;
+  const batchSet = new Set(students.map(s => s.batch || "HSC-27"));
+  const sortedBatches = Array.from(batchSet).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
+  const latest3Batches = sortedBatches.slice(0, 3);
+
+  const bdayStudents = students.filter(s => {
+    const b = s.batch || "HSC-27";
+    if (!latest3Batches.includes(b)) return false;
+    const bInfo = getStudentBirthdayInfo(s);
+    return bInfo.month === curMonth && bInfo.day === curDay;
+  });
+
+  if (!bdayStudents.length) return;
+  const sessionKey = `bday_popup_seen_${curMonth}_${curDay}`;
+  if (!sessionStorage.getItem(sessionKey)) {
+    showStudentBirthdayModal(bdayStudents, sessionKey);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NOTICES & ANNOUNCEMENTS SYSTEM (Archive Page & Popup)
+// ═══════════════════════════════════════════════════════════════
+function renderNoticesPage() {
+  if (document.body.dataset.page !== "notices") return;
+  const container = document.getElementById("noticesContainer");
+  if (!container) return;
+
+  const noticesList = window.__SANITY_DATA__?.notices || [];
+  const searchInput = document.getElementById("noticeSearch");
+  const query = (searchInput?.value || "").trim().toLowerCase();
+  const activeCat = container.dataset.activeCat || "all";
+
+  let filtered = noticesList.filter(n => {
+    if (activeCat !== "all" && n.category !== activeCat) return false;
+    if (!query) return true;
+    const tBn = (n.title_bn || "").toLowerCase();
+    const tEn = (n.title_en || "").toLowerCase();
+    const dBn = (n.notice_text_bn || "").toLowerCase();
+    const dEn = (n.notice_text_en || "").toLowerCase();
+    return tBn.includes(query) || tEn.includes(query) || dBn.includes(query) || dEn.includes(query);
+  });
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px; text-align: center; background: var(--surface-strong); border-radius: 16px; border: 1px dashed var(--border);">
+        <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">📢</span>
+        <h3>${currentLang === 'bn' ? 'কোনো নোটিশ পাওয়া যায়নি' : 'No notices found'}</h3>
+        <p style="color: var(--text-muted);">${currentLang === 'bn' ? 'অন্য কোনো বিষয় বা ক্যাটাগরি দিয়ে পুনরায় খুঁজুন।' : 'Try searching with a different keyword or category.'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(n => {
+    const title = currentLang === 'bn' ? (n.title_bn || n.title_en) : (n.title_en || n.title_bn);
+    const desc = currentLang === 'bn' ? (n.notice_text_bn || n.notice_text_en || '') : (n.notice_text_en || n.notice_text_bn || '');
+    const excerpt = desc.length > 140 ? desc.substring(0, 140) + '...' : desc;
+    const catClass = n.category === 'urgent' ? 'notice-cat-urgent' : n.category === 'hostel' ? 'notice-cat-hostel' : n.category === 'event' ? 'notice-cat-event' : 'notice-cat-general';
+    const catLabel = n.category === 'urgent' ? '🚨 জরুরি' : n.category === 'hostel' ? '🏛️ ছাত্রাবাস' : n.category === 'event' ? '🎪 ইভেন্ট' : '📢 সাধারণ';
+
+    return `
+      <article class="notice-card" onclick="openNoticeModal('${n._id}')" tabindex="0" role="button">
+        <div class="notice-badge-row">
+          <span class="notice-cat-badge ${catClass}">${catLabel}</span>
+          <span class="notice-date-text">📅 ${n.date || ''}</span>
+        </div>
+        <h3>${title}</h3>
+        <p class="notice-card-desc">${excerpt}</p>
+        <div class="notice-card-footer">
+          <span>${currentLang === 'bn' ? 'বিস্তারিত দেখুন &rarr;' : 'Read Notice &rarr;'}</span>
+          ${n.file_url ? `<span style="font-size: 0.8rem; color: #ef4444;">📥 PDF</span>` : ''}
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  // Category filter tabs
+  const catNav = document.getElementById("noticeCategoryNav");
+  if (catNav && !catNav._initListener) {
+    catNav._initListener = true;
+    catNav.addEventListener("click", e => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      catNav.querySelectorAll("button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      container.dataset.activeCat = btn.dataset.cat || "all";
+      renderNoticesPage();
+    });
+  }
+
+  if (searchInput && !searchInput._initListener) {
+    searchInput._initListener = true;
+    searchInput.addEventListener("input", () => renderNoticesPage());
+  }
+}
+
+window.openNoticeModal = function(noticeId) {
+  const noticesList = window.__SANITY_DATA__?.notices || [];
+  const notice = noticesList.find(n => n._id === noticeId);
+  if (!notice) return;
+
+  const modal = byId("studentModal");
+  const content = byId("modalContent");
+  if (!modal || !content) return;
+
+  const title = currentLang === 'bn' ? (notice.title_bn || notice.title_en) : (notice.title_en || notice.title_bn);
+  const fullText = (currentLang === 'bn' ? (notice.notice_text_bn || notice.notice_text_en) : (notice.notice_text_en || notice.notice_text_bn) || '').replace(/\n/g, '<br>');
+  const photo = normalizeCmsPath(notice.photo);
+
+  content.innerHTML = `
+    <div class="notice-modal-inner" style="padding: 10px 0;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+        <span class="notice-cat-badge notice-cat-urgent" style="font-size: 0.8rem;">📢 Notice</span>
+        <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">📅 ${notice.date || ''}</span>
+      </div>
+      <h2 style="font-size: 1.45rem; line-height: 1.35; margin-bottom: 18px; color: var(--text);">${title}</h2>
+      
+      ${photo ? `<div style="margin-bottom: 20px; border-radius: 14px; overflow: hidden; border: 1px solid var(--border);"><img src="${photo}" alt="" style="width: 100%; max-height: 380px; object-fit: contain; background: #000;"></div>` : ''}
+
+      <div style="font-size: 0.98rem; line-height: 1.75; color: var(--text); margin-bottom: 24px; white-space: pre-line;">${fullText}</div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+        ${notice.file_url ? `<a href="${notice.file_url}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; background: #ef4444; color: #fff; font-weight: 700; text-decoration: none;">📥 ডাউনলোড নোটিশ (PDF)</a>` : ''}
+        ${notice.link_url ? `<a href="${notice.link_url}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; background: var(--accent); color: #0a1f38; font-weight: 700; text-decoration: none;">🔗 ${notice.link_text || 'বিস্তারিত দেখুন'}</a>` : ''}
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove("is-gallery-modal", "is-room-modal");
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+};
+
+function initNoticePopup() {
+  const noticesList = window.__SANITY_DATA__?.notices || [];
+  if (!noticesList.length) return;
+
+  const now = new Date();
+
+  // Find active popup notices
+  const activeNotice = noticesList.find(n => {
+    if (n.is_popup_active !== true) return false;
+    if (n.popup_duration_type === 'always') return true;
+    if (n.popup_duration_type === '1_day') {
+      const todayStr = now.toISOString().split('T')[0];
+      return n.date === todayStr;
+    }
+    if (n.popup_duration_type === 'date_range') {
+      const start = n.start_date ? new Date(n.start_date) : null;
+      const end = n.end_date ? new Date(n.end_date) : null;
+      if (start && now < start) return false;
+      if (end && now > end) return false;
+      return true;
+    }
+    return true;
+  });
+
+  if (!activeNotice) return;
+  const sessionKey = `notice_dismissed_${activeNotice._id}`;
+  if (sessionStorage.getItem(sessionKey)) return;
+
+  // Render Notice Popup Overlay
+  let overlay = document.getElementById("noticePopupOverlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "noticePopupOverlay";
+    overlay.className = "bday-popup-overlay";
+    document.body.appendChild(overlay);
+  }
+
+  const title = currentLang === 'bn' ? (activeNotice.title_bn || activeNotice.title_en) : (activeNotice.title_en || activeNotice.title_bn);
+  const textDesc = currentLang === 'bn' ? (activeNotice.notice_text_bn || activeNotice.notice_text_en) : (activeNotice.notice_text_en || activeNotice.notice_text_bn);
+  const photo = normalizeCmsPath(activeNotice.photo);
+
+  overlay.innerHTML = `
+    <div class="bday-popup-card notice-popup-card" role="dialog" aria-modal="true">
+      <button type="button" class="bday-popup-close" id="noticeCloseBtn" aria-label="Close">&times;</button>
+      
+      <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px;">
+        <span class="notice-cat-badge notice-cat-urgent" style="font-size: 0.8rem;">🚨 জরুরি নোটিশ</span>
+        <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">📅 ${activeNotice.date || ''}</span>
+      </div>
+
+      <h2 style="font-size: 1.35rem; line-height: 1.35; margin-bottom: 12px; color: var(--text);">${title}</h2>
+      
+      ${photo ? `<div style="margin-bottom: 14px; border-radius: 12px; overflow: hidden;"><img src="${photo}" alt="" style="width: 100%; max-height: 220px; object-fit: cover;"></div>` : ''}
+
+      <div style="font-size: 0.92rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 18px; max-height: 140px; overflow-y: auto;">
+        ${textDesc}
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        ${activeNotice.file_url ? `<a href="${activeNotice.file_url}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 20px; border-radius: 10px; background: #ef4444; color: #fff; font-weight: 700; text-decoration: none;">📥 ডাউনলোড পিডিএফ নোটিশ</a>` : ''}
+        ${activeNotice.link_url ? `<a href="${activeNotice.link_url}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 20px; border-radius: 10px; background: var(--accent); color: #0a1f38; font-weight: 700; text-decoration: none;">🔗 ${activeNotice.link_text || 'বিস্তারিত দেখুন'}</a>` : ''}
+        <button type="button" id="noticeDismissBtn" style="background: none; border: 0; color: var(--text-muted); font-size: 0.85rem; padding: 6px; cursor: pointer; text-decoration: underline;">
+          নোটিশটি বন্ধ করুন (Dismiss)
+        </button>
+      </div>
+    </div>
+  `;
+
+  setTimeout(() => overlay.classList.add("is-active"), 120);
+
+  const dismiss = () => {
+    overlay.classList.remove("is-active");
+    sessionStorage.setItem(sessionKey, "true");
+    setTimeout(() => overlay.remove(), 400);
+  };
+  const cBtn = document.getElementById("noticeCloseBtn");
+  const dBtn = document.getElementById("noticeDismissBtn");
+  if (cBtn) cBtn.onclick = dismiss;
+  if (dBtn) dBtn.onclick = dismiss;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // PAGE-LEVEL ACCESS & LOCK CONTROLS (ENFORCEMENT)
 // ═══════════════════════════════════════════════════════════════
 function checkPageAccess() {
@@ -9,6 +489,7 @@ function checkPageAccess() {
   else if (path.includes("students")) pageId = "students";
   else if (path.includes("roommates")) pageId = "roommates";
   else if (path.includes("birthday")) pageId = "birthday";
+  else if (path.includes("notices")) pageId = "notices";
   else if (path.includes("gallery")) pageId = "gallery";
   else if (path.includes("hostel")) pageId = "hostel";
   else if (path.includes("dc-clubs")) pageId = "dc-clubs";
@@ -76,7 +557,8 @@ const i18n = {
       embed: "Portals, Archives & Campus Resources | Dhaka College International Hall",
       "dc-social": "Official Facebook Pages & Social Directory | Dhaka College International Hall",
       "dc-clubs": "Clubs & Co-Curricular Directory | Dhaka College International Hall",
-      birthday: "Student Birthdays & Calendar | Dhaka College International Hall" 
+      birthday: "Student Birthdays & Calendar | Dhaka College International Hall",
+      notices: "Notices & Announcements | Dhaka College International Hall" 
     },
     nav: {
       logo: "International Hall",
@@ -90,6 +572,7 @@ const i18n = {
       hostel: "Hall Info",
       hallSuper: "Hall Super",
       gallery: "Gallery",
+      notices: "Notices",
       dcSocial: "DC Facebook Pages",
       dcClubs: "Dhaka College Clubs"
     },
@@ -333,7 +816,8 @@ const i18n = {
       embed: "পোর্টাল, আর্কাইভ ও রিসোর্স | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
       "dc-social": "ফেসবুক পেজ ও সোশ্যাল ডিরেক্টরি | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
       "dc-clubs": "ক্লাব ও সহশিক্ষা কার্যক্রম | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
-      birthday: "শিক্ষার্থীদের জন্মদিন ও ক্যালেন্ডার | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস" 
+      birthday: "শিক্ষার্থীদের জন্মদিন ও ক্যালেন্ডার | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস",
+      notices: "নোটিশ ও ঘোষণা | ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস" 
     },
     nav: {
       logo: "আন্তর্জাতিক ছাত্রাবাস",
@@ -347,6 +831,7 @@ const i18n = {
       hostel: "হল তথ্য",
       hallSuper: "হল সুপার",
       gallery: "গ্যালারি",
+      notices: "নোটিশ",
       dcSocial: "ডিসি ফেসবুক পেজ",
       dcClubs: "ঢাকা কলেজ ক্লাবসমূহ"
     },
@@ -3160,6 +3645,7 @@ function setTheme(isDark) {
 
 function initTheme() {
   setTheme(localStorage.getItem("dc-hostel-theme") === "dark");
+  checkPageAccess();
 
   const toggle = byId("toggle");
   if (!toggle) return;
@@ -3251,7 +3737,7 @@ function ensureNavigation() {
 
   const isHomeActive = page === "home";
   const isDevActive = page === "developer";
-  const isHallActive = ["students", "roommates", "birthday", "results", "hostel", "hallsuper", "gallery"].includes(page);
+  const isHallActive = ["students", "roommates", "birthday", "notices", "results", "hostel", "hallsuper", "gallery"].includes(page);
   const isDcActive = ["embed", "dc-social", "dc-clubs"].includes(page);
 
   // Dynamic Dhaka College URL configurations from settings
@@ -3278,6 +3764,7 @@ function ensureNavigation() {
         <a href="students.html" class="${page === "students" ? "active" : ""}">${t("nav.students")}</a>
         <a href="roommates.html" class="${page === "roommates" ? "active" : ""}">${t("nav.roommates")}</a>
         <a href="birthday.html" class="${page === "birthday" ? "active" : ""}">${currentLang === "bn" ? "জন্মদিন" : "Birthdays"}</a>
+        <a href="notices.html" class="${page === "notices" ? "active" : ""}">${currentLang === "bn" ? "নোটিশ ও ঘোষণা" : "Notices"}</a>
         <a href="results.html" class="${page === "results" ? "active" : ""}">${t("nav.results")}</a>
         <a href="hostel.html" class="${page === "hostel" ? "active" : ""}">${t("nav.hostel")}</a>
         <a href="hostel.html#hallsuper" class="${page === "hallsuper" ? "active" : ""}">${t("nav.hallSuper")}</a>
@@ -3386,7 +3873,7 @@ function renderFooter() {
         <a href="dc-clubs.html">${currentLang === "bn" ? "কলেজ ক্লাবসমূহ" : "College Clubs"}</a>
         <a href="dc-social.html">${currentLang === "bn" ? "সোশ্যাল মিডিয়া" : "Social Links"}</a>
         <a href="developer.html">${t("nav.developer")}</a>
-        <a href="https://dchall.sanity.studio" target="_blank" rel="noopener">${currentLang === "bn" ? "অ্যাডমিন প্যানেল (Sanity)" : "Admin Panel (Sanity)"}</a>
+        <a href="https://admindchall.vercel.app" target="_blank" rel="noopener">${currentLang === "bn" ? "অ্যাডমিন প্যানেল (Sanity)" : "Admin Panel (Sanity)"}</a>
         <a href="https://admindchall.vercel.app" target="_blank" rel="noopener">${currentLang === "bn" ? "অ্যাডমিন প্যানেল (Vercel)" : "Admin Panel (Vercel)"}</a>
       </div>
     `;
@@ -4450,6 +4937,9 @@ function renderDynamicContent() {
     renderDeveloperPage(cmsDevData);
   }
   renderHomeDcResources();
+  renderNoticesPage();
+  initBirthdayCelebrationPopup();
+  initNoticePopup();
 
   if (activeStudentId) {
     const student = students.find((item) => item.id === activeStudentId);
@@ -4694,7 +5184,6 @@ function getAuthRole() {
 }
 
 function getAuthStatus() {
-  if (isGlobalVisibilityOn()) return true;
   const role = getAuthRole();
   return Boolean(role && role !== "guest");
 }
@@ -4890,17 +5379,17 @@ function initAuth() {
     if (loginFormCard) loginFormCard.style.display = "none";
     if (statusCard) {
       statusCard.style.display = "block";
+      const adminPanelBtn = byId("adminPanelBtn") || byId("adminStudioBtn");
+      if (adminPanelBtn) adminPanelBtn.style.display = "flex";
       if (successMsg) {
         if (currentRole === "master") {
           successMsg.textContent = currentLang === "bn"
             ? "তুমি মাস্টার এডমিন হিসেবে লগইন করে আছো! সকল ব্যাচের যাবতীয় তথ্য ও লক করা নম্বর আনলক রয়েছে।"
             : "You are logged in as Master Admin. Full access unlocked across all batches.";
-          if (adminStudioBtn) adminStudioBtn.style.display = "flex";
         } else {
           successMsg.textContent = currentLang === "bn"
             ? `তুমি ${currentRole.toUpperCase()} ব্যাচ হিসেবে লগইন আছো! তোমার ব্যাচ এবং জুনিয়র ব্যাচসমূহের সংরক্ষিত তথ্য আনলক রয়েছে।`
             : `You are logged in under ${currentRole.toUpperCase()}. Your batch and junior batches' records are unlocked.`;
-          if (adminStudioBtn) adminStudioBtn.style.display = "none";
         }
       }
     }
@@ -4908,7 +5397,7 @@ function initAuth() {
     document.documentElement.classList.remove("user-logged-in");
     if (loginFormCard) loginFormCard.style.display = "block";
     if (statusCard) statusCard.style.display = "none";
-    if (adminStudioBtn) adminStudioBtn.style.display = "none";
+    const adminPanelBtn = byId("adminPanelBtn") || byId("adminStudioBtn"); if (adminPanelBtn) adminPanelBtn.style.display = "none";
   }
 
   if (togglePasswordBtn && passwordInput && !togglePasswordBtn._hasToggleListener) {
@@ -6750,14 +7239,22 @@ async function renderDeveloperPage(devData) {
   const projectsGrid = document.querySelector(".project-grid");
   if (projectsGrid && dev.projects) {
     projectsGrid.innerHTML = dev.projects.map((p, index) => {
-      const pTitle = currentLang === "bn" ? (p.title_bn || p.title || p.title_en) : (p.title || p.title_en || p.title_bn);
+      const pCategory = p.category || (p.title && !p.title.includes('http') ? p.title : "Featured Project");
+      const pName = currentLang === "bn" ? (p.title_bn || p.title || "প্রোজেক্ট") : (p.title || p.title_en || "Project");
+      const cleanTitle = (!pName || pName.startsWith('http') || pName === pCategory)
+        ? (p.desc_en ? p.desc_en.split(',')[0] : "Web Project")
+        : pName;
       const pLink = p.url || p.link || "#";
-      const pDisplay = p.domain_display || p.url || pLink.replace(/^https?:\/\//, '');
-      const pDesc = currentLang === "bn" ? (p.desc_bn || p.desc_en) : (p.desc_en || p.desc_bn);
+      const cleanDomain = p.domain_display || pLink.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      const pDesc = currentLang === "bn" ? (p.desc_bn || p.desc_en || "") : (p.desc_en || p.desc_bn || "");
       return `
         <a class="project-tile" href="${pLink}" target="_blank" rel="noopener" data-aos="fade-up" data-aos-delay="${index * 80}">
-          <span>${pTitle}</span>
-          <strong>${pDisplay}</strong>
+          <div class="project-tile-top">
+            <span class="project-category-pill">${pCategory}</span>
+            <span style="font-size: 0.85rem; color: var(--accent); font-weight: 700;">↗</span>
+          </div>
+          <h3>${cleanTitle}</h3>
+          <span class="project-domain-link">🌐 ${cleanDomain}</span>
           <p>${pDesc}</p>
         </a>
       `;

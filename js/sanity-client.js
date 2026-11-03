@@ -133,6 +133,11 @@ const SANITY_GROQ_QUERY = `{
       ...,
       "video_file_url": coalesce(video_file.asset->url, null)
     }
+  },
+  "notices": *[_type == "notice" && !(_id in path("drafts.**"))] | order(is_pinned desc, date desc){
+    ...,
+    "photo": coalesce(photo.asset->url, photo),
+    "file_url": coalesce(file.asset->url, null)
   }
 }`;
 

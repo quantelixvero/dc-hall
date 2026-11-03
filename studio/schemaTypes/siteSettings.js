@@ -731,7 +731,7 @@ export default defineType({
 
             { _key: 'l17', title_en: 'Developer', title_bn: 'ডেভেলপার প্রোফাইল', url: 'developer.html', is_active: true },
 
-            { _key: 'l18', title_en: 'Admin Panel', title_bn: 'অ্যাডমিন প্যানেল', url: 'https://dchall.sanity.studio', is_active: true, open_in_new_tab: true },
+            { _key: 'l18', title_en: 'Admin Panel', title_bn: 'অ্যাডমিন প্যানেল', url: 'https://admindchall.vercel.app', is_active: true, open_in_new_tab: true },
 
           ],
 

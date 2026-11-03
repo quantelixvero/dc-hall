@@ -254,11 +254,12 @@ export default defineType({
         {
           type: 'object',
           fields: [
-            { name: 'title', title: 'Project Title EN', type: 'string' },
-            { name: 'title_bn', title: 'প্রোজেক্ট নাম বাংলা', type: 'string' },
-            { name: 'url', title: 'Project URL', type: 'url' },
-            { name: 'domain_display', title: 'Display URL / Label', type: 'string', placeholder: 'e.g. adi.pro.bd/courselink' },
-            { name: 'desc_en', title: 'Description EN', type: 'text', rows: 2 },
+            { name: 'category', title: 'Category / ট্যাগ (যেমন: Blog, Literature, Web Tool, Portal)', type: 'string', placeholder: 'e.g. Web App' },
+            { name: 'title', title: 'Project Title EN (প্রোজেক্ট শিরোনাম ইংরেজি)', type: 'string' },
+            { name: 'title_bn', title: 'প্রোজেক্ট শিরোনাম বাংলা', type: 'string' },
+            { name: 'url', title: 'Project URL (সম্পূর্ণ লিংক)', type: 'url' },
+            { name: 'domain_display', title: 'Clean Domain / Display Link (ক্লিন ডোমেইন — যেমন: seadib.blogspot.com)', type: 'string', placeholder: 'e.g. seadib.blogspot.com' },
+            { name: 'desc_en', title: 'Description EN (সংক্ষিপ্ত বিবরণ ইংরেজি)', type: 'text', rows: 2 },
             { name: 'desc_bn', title: 'বিবরণ বাংলা', type: 'text', rows: 2 },
           ],
           preview: {
