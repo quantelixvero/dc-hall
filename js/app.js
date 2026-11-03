@@ -1,4 +1,11 @@
 
+// ═══════════════════════════════════════════════════════════════
+// SVG BADGES & ICONS (Batches & Birthdays)
+// ═══════════════════════════════════════════════════════════════
+const BATCH_LOGO_SVG = `<svg class="batch-svg-badge" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" style="vertical-align: middle; display: inline-block;"><path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/></svg>`;
+const BIRTHDAY_LOGO_SVG = `<svg class="birthday-svg-badge" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true" style="vertical-align: middle; display: inline-block;"><path d="M12 6a2 2 0 100-4 2 2 0 000 4zm7 5h-1V9a2 2 0 00-2-2h-3V5.8a3 3 0 10-2 0V7H8a2 2 0 00-2 2v2H5a3 3 0 00-3 3v2h20v-2a3 3 0 00-3-3zM4 18v2a2 2 0 002 2h12a2 2 0 002-2v-2H4z"/></svg>`;
+
+
 function normalizeRoomNumber(val) {
   if (!val) return "";
   const s = String(val).trim();
@@ -4980,6 +4987,8 @@ function renderDynamicContent() {
   if (activeRoomId) {
     openRoomModal(activeRoomId);
   }
+
+  refreshAos();
 }
 
 function initStudentClicks() {
