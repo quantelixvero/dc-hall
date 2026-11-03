@@ -75,7 +75,7 @@ const i18n = {
       physics: "Physics",
       results: "Results",
       roll: "Roll",
-      room: "Room",
+      room: "ROOM",
       rooms: "Rooms",
       roomOccupants: "Room Occupants",
       section: "Section",
@@ -5110,7 +5110,7 @@ function openStudentModal(student) {
   const isRollVisible = isProfileFieldVisible("roll") && student.roll;
 
   let badgeParts = [];
-  if (isRoomVisible) badgeParts.push(`${t("common.room")} ${badgeRoomText}`);
+  if (isRoomVisible) badgeParts.push(`ROOM ${badgeRoomText}`);
   if (isRollVisible) badgeParts.push(`${t("common.roll")} ${badgeRollText}`);
 
   const badgeHtml = (showRoomBadge && badgeParts.length)
@@ -5776,7 +5776,7 @@ function renderBirthdays() {
             const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
             const isRollUnlocked = isProfileFieldUnlocked("roll", student);
             const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
-            const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? `রুম ${toBengaliDigits(roomVal)}` : `Room ${roomVal}`) : "ROOM •••";
+            const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? `ROOM ${toBengaliDigits(roomVal)}` : `ROOM ${roomVal}`) : "ROOM •••";
             const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? `রোল ${toBengaliDigits(student.roll || "")}` : `Roll ${student.roll || ""}`) : "Roll •••";
 
             return `
@@ -5795,7 +5795,6 @@ function renderBirthdays() {
                     ${isToday ? `<span class="bday-pill today-pill">${currentLang === 'bn' ? '🎂 আজ জন্মদিন!' : '🎂 Today!'}</span>` : (isUpcoming ? `<span class="bday-pill upcoming-pill">${currentLang === 'bn' ? 'শীঘ্রই' : 'Soon'}</span>` : '')}
                   </div>
                   <div class="bday-meta-pills">
-                    <span class="bday-meta-pill">${rollDisplay}</span>
                     <span class="bday-meta-pill">${roomDisplay}</span>
                     <span class="bday-meta-pill">${groupLabel(student.group)}</span>
                   </div>

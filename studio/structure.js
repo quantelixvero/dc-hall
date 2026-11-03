@@ -313,6 +313,15 @@ export const structure = async (S, context) => {
             .title('Website Settings')
         ),
       S.listItem()
+        .title('🔗 Footer & Quick Links (ফুটার কলাম ও লিংক)')
+        .icon(CaseIcon)
+        .child(
+          S.document()
+            .schemaType('adminSettings')
+            .documentId('adminSettings')
+            .title('Footer Columns & Links Management (ফুটার কলাম ও লিংক ব্যবস্থাপনা)')
+        ),
+      S.listItem()
         .title('Home Page Content (হোম পেজ)')
         .icon(HomeIcon)
         .child(
