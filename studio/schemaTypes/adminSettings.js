@@ -90,6 +90,28 @@ export default defineType({
     }),
 
     defineField({
+      name: 'batch_passwords',
+      title: 'Batch Login Passwords (সব ব্যাচের ওয়েবসাইট লগইন পাসওয়ার্ড একনজরে)',
+      type: 'object',
+      group: 'passwords',
+      description: 'ওয়েবসাইটে প্রতিটি ব্যাচের শিক্ষার্থীরা কোন পাসওয়ার্ড দিয়ে লগইন করে সংরক্ষিত তথ্য দেখবে তা এখান থেকেই সেট করুন।',
+      fields: [
+        defineField({ name: 'hsc27', title: 'HSC-27 Password', type: 'string', initialValue: '102103104' }),
+        defineField({ name: 'hsc28', title: 'HSC-28 Password', type: 'string', initialValue: 'dc28hall' }),
+        defineField({ name: 'hsc29', title: 'HSC-29 Password', type: 'string', initialValue: 'dc29hall' }),
+        defineField({ name: 'hsc30', title: 'HSC-30 Password', type: 'string', initialValue: 'dc30hall' }),
+        defineField({ name: 'hsc31', title: 'HSC-31 Password', type: 'string', initialValue: 'dc31hall' }),
+        defineField({ name: 'hsc32', title: 'HSC-32 Password', type: 'string', initialValue: 'dc32hall' }),
+        defineField({ name: 'hsc33', title: 'HSC-33 Password', type: 'string', initialValue: 'dc33hall' }),
+        defineField({ name: 'hsc34', title: 'HSC-34 Password', type: 'string', initialValue: 'dc34hall' }),
+        defineField({ name: 'hsc35', title: 'HSC-35 Password', type: 'string', initialValue: 'dc35hall' }),
+        defineField({ name: 'hsc26', title: 'HSC-26 Password', type: 'string', initialValue: 'dc26hall' }),
+        defineField({ name: 'hsc25', title: 'HSC-25 Password', type: 'string', initialValue: 'dc25hall' }),
+        defineField({ name: 'hsc24', title: 'HSC-24 Password', type: 'string', initialValue: 'dc24hall' }),
+      ],
+    }),
+
+    defineField({
       name: 'global_visibility',
       title: 'Global Public Visibility (সবার জন্য আনলক)',
       type: 'boolean',

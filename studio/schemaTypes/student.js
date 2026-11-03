@@ -113,10 +113,18 @@ export default defineType({
       group: 'basic',
       options: {
         list: [
-          { title: 'HSC-27 (2025-26 Batch)', value: 'HSC-27' },
+          { title: 'HSC-27 (Founder Batch)', value: 'HSC-27' },
           { title: 'HSC-28 (2026-27 Batch)', value: 'HSC-28' },
           { title: 'HSC-29 (2027-28 Batch)', value: 'HSC-29' },
           { title: 'HSC-30 (2028-29 Batch)', value: 'HSC-30' },
+          { title: 'HSC-31 (2029-30 Batch)', value: 'HSC-31' },
+          { title: 'HSC-32 (2030-31 Batch)', value: 'HSC-32' },
+          { title: 'HSC-33 (2031-32 Batch)', value: 'HSC-33' },
+          { title: 'HSC-34 (2032-33 Batch)', value: 'HSC-34' },
+          { title: 'HSC-35 (2033-34 Batch)', value: 'HSC-35' },
+          { title: 'HSC-26 (Alumni)', value: 'HSC-26' },
+          { title: 'HSC-25 (Alumni)', value: 'HSC-25' },
+          { title: 'HSC-24 (Alumni)', value: 'HSC-24' },
         ],
         layout: 'dropdown',
       },
@@ -145,26 +153,115 @@ export default defineType({
     }),
     defineField({
       name: 'room_1st_year',
-      title: 'Room (1st Year) — ১ম বর্ষের রুম (নিচ তলা)',
+      title: 'Room (1st Year) - ১ম বর্ষের রুম (গ্রাউন্ড ফ্লোর)',
       type: 'object',
       group: 'academic',
-      description: '১ম বর্ষে নিচ তলায় যে রুমে থাকতো (যেমন: ১০২, ১০৩, ১০৪) এবং বেডমেটের তথ্য।',
+      description: '১ম বর্ষে থাকাকালীন রুম নম্বর (১০২, ১০৩, ১০৪) নির্বাচন করুন এবং নির্দিষ্ট বেডমেট সিলেক্ট করুন।',
       fields: [
-        { name: 'room_no', title: 'Room Number (রুম নং)', type: 'string', placeholder: 'e.g. 102' },
-        { name: 'bedmate_name', title: 'Bedmate Name (বেডমেটের নাম)', type: 'string', placeholder: 'e.g. Md. Shanto' },
-        { name: 'bedmate_ref', title: 'Bedmate Profile (বেডমেট লিংক)', type: 'reference', to: [{ type: 'student' }] },
+        defineField({
+          name: 'room_no',
+          title: 'Room Number (১ম বর্ষের রুম নম্বর)',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Room 102 (১ম বর্ষ - নিচ তলা)', value: '102' },
+              { title: 'Room 103 (১ম বর্ষ - নিচ তলা)', value: '103' },
+              { title: 'Room 104 (১ম বর্ষ - নিচ তলা)', value: '104' },
+            ],
+          },
+          description: '১ম বর্ষের রুম (১০২, ১০৩, ১০৪) ড্রপডাউন থেকে নির্বাচন করুন।',
+        }),
+        defineField({
+          name: 'bedmate_ref',
+          title: 'Bedmate Selection (১ম বর্ষের নির্দিষ্ট বেডমেট নির্বাচন)',
+          type: 'reference',
+          to: [{ type: 'student' }],
+          options: {
+            filter: ({ document }) => {
+              const batch = document?.batch || 'HSC-27'
+              const rawId = document?._id || ''
+              const cleanId = rawId.replace(/^drafts\./, '')
+              return {
+                filter: '_type == "student" && batch == $batch && !(_id in [$id1, $id2])',
+                params: {
+                  batch,
+                  id1: cleanId,
+                  id2: `drafts.${cleanId}`,
+                },
+              }
+            },
+          },
+          description: '১০২, ১০৩, ১০৪ রুমে যিনি আপনার নির্দিষ্ট সিট/বেডমেট তাকে নির্বাচন করুন।',
+        }),
+        defineField({
+          name: 'bedmate_name',
+          title: 'Bedmate Name (বেডমেটের নাম — ব্যাকআপ/ম্যানুয়াল)',
+          type: 'string',
+          placeholder: 'e.g. Md. Shanto',
+        }),
       ],
     }),
     defineField({
       name: 'room_2nd_year',
-      title: 'Room (2nd Year) — ২য় বর্ষের রুম (৩য় তলা)',
+      title: 'Room (2nd Year) - ২য় বর্ষের রুম (৩য় তলা)',
       type: 'object',
       group: 'academic',
-      description: '২য় বর্ষে ৩য় তলায় যে রুমে থাকতো (যেমন: ৩১৭, ৩২৫) এবং বেডমেটের তথ্য।',
+      description: '২য় বর্ষে ওঠার পর ৩১৪ থেকে ৩২৯ রুম এবং রুমমেট নির্বাচন করুন। ১ম বর্ষে থাকাকালীন এটি খালি রাখুন।',
       fields: [
-        { name: 'room_no', title: 'Room Number (রুম নং)', type: 'string', placeholder: 'e.g. 317' },
-        { name: 'bedmate_name', title: 'Bedmate Name (বেডমেটের নাম)', type: 'string', placeholder: 'e.g. Kayes' },
-        { name: 'bedmate_ref', title: 'Bedmate Profile (বেডমেট লিংক)', type: 'reference', to: [{ type: 'student' }] },
+        defineField({
+          name: 'room_no',
+          title: 'Room Number (২য় বর্ষের রুম নম্বর)',
+          type: 'string',
+          options: {
+            list: [
+              { title: 'Room 314 (৩য় তলা)', value: '314' },
+              { title: 'Room 315 (৩য় তলা)', value: '315' },
+              { title: 'Room 316 (৩য় তলা)', value: '316' },
+              { title: 'Room 317 (৩য় তলা)', value: '317' },
+              { title: 'Room 318 (৩য় তলা)', value: '318' },
+              { title: 'Room 319 (৩য় তলা)', value: '319' },
+              { title: 'Room 320 (৩য় তলা)', value: '320' },
+              { title: 'Room 321 (৩য় তলা)', value: '321' },
+              { title: 'Room 322 (৩য় তলা)', value: '322' },
+              { title: 'Room 323 (৩য় তলা)', value: '323' },
+              { title: 'Room 324 (৩য় তলা)', value: '324' },
+              { title: 'Room 325 (৩য় তলা)', value: '325' },
+              { title: 'Room 326 (৩য় তলা)', value: '326' },
+              { title: 'Room 327 (৩য় তলা)', value: '327' },
+              { title: 'Room 328 (৩য় তলা)', value: '328' },
+              { title: 'Room 329 (৩য় তলা)', value: '329' },
+            ],
+          },
+          description: '২য় বর্ষে ওঠার পর রুম সিলেক্ট করুন। ১ম বর্ষে খালি রাখুন।',
+        }),
+        defineField({
+          name: 'bedmate_ref',
+          title: 'Roommate Selection (২য় বর্ষের রুমমেট নির্বাচন)',
+          type: 'reference',
+          to: [{ type: 'student' }],
+          options: {
+            filter: ({ document }) => {
+              const batch = document?.batch || 'HSC-27'
+              const rawId = document?._id || ''
+              const cleanId = rawId.replace(/^drafts\./, '')
+              return {
+                filter: '_type == "student" && batch == $batch && !(_id in [$id1, $id2])',
+                params: {
+                  batch,
+                  id1: cleanId,
+                  id2: `drafts.${cleanId}`,
+                },
+              }
+            },
+          },
+          description: '২য় বর্ষে আপনার রুমে অপর শিক্ষার্থীকে সিলেক্ট করুন।',
+        }),
+        defineField({
+          name: 'bedmate_name',
+          title: 'Roommate Name (রুমমেটের নাম — ব্যাকআপ/ম্যানুয়াল)',
+          type: 'string',
+          placeholder: 'e.g. Kayes',
+        }),
       ],
     }),
     defineField({

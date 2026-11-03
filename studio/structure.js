@@ -83,6 +83,32 @@ function createBatchContentItems(S, batchName) {
   ]
 }
 
+/**
+ * Build complete Portal item for a batch
+ */
+function createBatchPortalItem(S, batchName, isFounder = false) {
+  const cleanBatchKey = batchName.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return S.listItem()
+    .title(`${isFounder ? '⭐' : '📁'} ${batchName} Portal${isFounder ? ' (Founder)' : ''}`)
+    .icon(isFounder ? StarIcon : FolderIcon)
+    .child(
+      S.list()
+        .title(`${batchName}${isFounder ? ' (Founder)' : ''} Management`)
+        .items([
+          ...createBatchContentItems(S, batchName),
+          S.listItem()
+            .title(`🔑 ${batchName} Password & Moderator`)
+            .icon(LockIcon)
+            .child(
+              S.document()
+                .schemaType('batchConfig')
+                .documentId(`batchConfig-${cleanBatchKey}`)
+                .title(`${batchName} Configuration`)
+            ),
+        ])
+    )
+}
+
 export const structure = async (S, context) => {
   const { currentUser, getClient } = context
   const userEmail = (currentUser?.email || '').trim().toLowerCase()
@@ -319,86 +345,19 @@ export const structure = async (S, context) => {
 
       S.divider(),
 
-      // ─── Batch Portals ───────────────────────────────────────────
-      S.listItem()
-        .title('⭐ HSC-27 Portal (Founder)')
-        .icon(StarIcon)
-        .child(
-          S.list()
-            .title('HSC-27 (Founder) Management')
-            .items([
-              ...createBatchContentItems(S, 'HSC-27'),
-              S.listItem()
-                .title('🔑 HSC-27 Password & Moderator')
-                .icon(LockIcon)
-                .child(
-                  S.document()
-                    .schemaType('batchConfig')
-                    .documentId('batchConfig-hsc27')
-                    .title('HSC-27 Configuration')
-                ),
-            ])
-        ),
-
-      S.listItem()
-        .title('📁 HSC-28 Portal')
-        .icon(FolderIcon)
-        .child(
-          S.list()
-            .title('HSC-28 Management')
-            .items([
-              ...createBatchContentItems(S, 'HSC-28'),
-              S.listItem()
-                .title('🔑 HSC-28 Password & Moderator')
-                .icon(LockIcon)
-                .child(
-                  S.document()
-                    .schemaType('batchConfig')
-                    .documentId('batchConfig-hsc28')
-                    .title('HSC-28 Configuration')
-                ),
-            ])
-        ),
-
-      S.listItem()
-        .title('📁 HSC-29 Portal')
-        .icon(FolderIcon)
-        .child(
-          S.list()
-            .title('HSC-29 Management')
-            .items([
-              ...createBatchContentItems(S, 'HSC-29'),
-              S.listItem()
-                .title('🔑 HSC-29 Password & Moderator')
-                .icon(LockIcon)
-                .child(
-                  S.document()
-                    .schemaType('batchConfig')
-                    .documentId('batchConfig-hsc29')
-                    .title('HSC-29 Configuration')
-                ),
-            ])
-        ),
-
-      S.listItem()
-        .title('📁 HSC-30 Portal')
-        .icon(FolderIcon)
-        .child(
-          S.list()
-            .title('HSC-30 Management')
-            .items([
-              ...createBatchContentItems(S, 'HSC-30'),
-              S.listItem()
-                .title('🔑 HSC-30 Password & Moderator')
-                .icon(LockIcon)
-                .child(
-                  S.document()
-                    .schemaType('batchConfig')
-                    .documentId('batchConfig-hsc30')
-                    .title('HSC-30 Configuration')
-                ),
-            ])
-        ),
+      // ─── Batch Portals (HSC-27 Founder, HSC-28 to HSC-35 & Alumni) ───
+      createBatchPortalItem(S, 'HSC-27', true),
+      createBatchPortalItem(S, 'HSC-28'),
+      createBatchPortalItem(S, 'HSC-29'),
+      createBatchPortalItem(S, 'HSC-30'),
+      createBatchPortalItem(S, 'HSC-31'),
+      createBatchPortalItem(S, 'HSC-32'),
+      createBatchPortalItem(S, 'HSC-33'),
+      createBatchPortalItem(S, 'HSC-34'),
+      createBatchPortalItem(S, 'HSC-35'),
+      createBatchPortalItem(S, 'HSC-26'),
+      createBatchPortalItem(S, 'HSC-25'),
+      createBatchPortalItem(S, 'HSC-24'),
 
       S.divider(),
 

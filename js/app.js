@@ -2493,7 +2493,20 @@ function mapCmsStudent(item, index) {
   const batch = item.batch || "HSC-27";
 
   // Auto-generate full roll: 120 + batchCode + groupCode + paddedRoll
-  const batchCodeMap = { 'HSC-27': '2526', 'HSC-28': '2627', 'HSC-29': '2728', 'HSC-30': '2829' };
+  const batchCodeMap = {
+    'HSC-24': '2223',
+    'HSC-25': '2324',
+    'HSC-26': '2425',
+    'HSC-27': '2526',
+    'HSC-28': '2627',
+    'HSC-29': '2728',
+    'HSC-30': '2829',
+    'HSC-31': '2930',
+    'HSC-32': '3031',
+    'HSC-33': '3132',
+    'HSC-34': '3233',
+    'HSC-35': '3334'
+  };
   const groupCodeMap = { 'science': '01', 'commerce': '02', 'arts': '03' };
   const batchCode = batchCodeMap[batch] || '2526';
   const groupCode = groupCodeMap[group] || '01';
@@ -3697,11 +3710,74 @@ function filteredRoommateStudents() {
 }
 
 function groupByRoom(list) {
-  return list.reduce((rooms, student) => {
-    rooms[student.room] = rooms[student.room] || [];
-    rooms[student.room].push(student);
-    return rooms;
-  }, {});
+  // Groups students into render-ready pairs [ [roomNumber, [studentA, studentB]], ... ]
+  // For 1st Year shared rooms (102, 103, 104): pairs mutual/selected bedmates together!
+  // For 2nd Year rooms (314–329): pairs 2 students per room card.
+  const byRoom = {};
+  list.forEach(student => {
+    const rm = student.room || "Unassigned";
+    if (!byRoom[rm]) byRoom[rm] = [];
+    byRoom[rm].push(student);
+  });
+
+  const pairs = [];
+  const sortedRoomKeys = Object.keys(byRoom).sort((a, b) => {
+    const numA = parseInt(a, 10) || 999;
+    const numB = parseInt(b, 10) || 999;
+    return numA - numB;
+  });
+
+  sortedRoomKeys.forEach(roomNum => {
+    const roomStudents = byRoom[roomNum];
+    const isShared1stYear = ['102', '103', '104'].includes(String(roomNum));
+
+    if (!isShared1stYear) {
+      // 2nd Year standard 2-person room (314-329)
+      for (let i = 0; i < roomStudents.length; i += 2) {
+        const pair = [roomStudents[i]];
+        if (roomStudents[i + 1]) pair.push(roomStudents[i + 1]);
+        pairs.push([roomNum, pair]);
+      }
+    } else {
+      // 1st Year shared room (102, 103, 104) with explicit Bedmate pairing
+      const pairedIds = new Set();
+      const roomPairs = [];
+
+      // Pass 1: Explicit bedmate links
+      roomStudents.forEach(s1 => {
+        const id1 = s1.slug || s1.id;
+        if (pairedIds.has(id1)) return;
+        const bedSlug = s1.room_1st_year?.bedmate_slug;
+        const bedName = (s1.room_1st_year?.bedmate_name || '').trim().toLowerCase();
+
+        let match = null;
+        if (bedSlug) {
+          match = roomStudents.find(s2 => (s2.slug || s2.id) === bedSlug && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
+        }
+        if (!match && bedName) {
+          match = roomStudents.find(s2 => (s2.name || '').trim().toLowerCase() === bedName && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
+        }
+
+        if (match) {
+          pairedIds.add(id1);
+          pairedIds.add(match.slug || match.id);
+          roomPairs.push([roomNum, [s1, match]]);
+        }
+      });
+
+      // Pass 2: Remaining students in shared room
+      const remaining = roomStudents.filter(s => !pairedIds.has(s.slug || s.id));
+      for (let i = 0; i < remaining.length; i += 2) {
+        const pair = [remaining[i]];
+        if (remaining[i + 1]) pair.push(remaining[i + 1]);
+        roomPairs.push([roomNum, pair]);
+      }
+
+      pairs.push(...roomPairs);
+    }
+  });
+
+  return pairs;
 }
 
 function renderRoommates() {
@@ -3714,7 +3790,7 @@ function renderRoommates() {
   // === HOMEPAGE: show latest batch rooms ===
   if (isHomePage) {
     const limit = Number(grid.dataset.limit || 2);
-    const rooms = Object.entries(groupByRoom(source));
+    const rooms = groupByRoom(source);
     const visibleRooms = rooms.slice(0, limit);
     if (!visibleRooms.length) {
       grid.innerHTML = `<div class="empty-state">${t("common.noStudent")}</div>`;
@@ -3741,7 +3817,7 @@ function renderRoommates() {
       return sb === normalizedParam;
     });
     const batchLabel = singleBatchParam.toUpperCase().replace("HSC", "HSC-");
-    const rooms = Object.entries(groupByRoom(batchSource));
+    const rooms = groupByRoom(batchSource);
 
     let html = `
       <div class="batch-archive-banner" data-aos="fade-up" style="grid-column: 1 / -1;">
@@ -3785,7 +3861,7 @@ function renderRoommates() {
   let html = "";
   batchKeys.forEach((batch, batchIndex) => {
     const batchStudents = batchMap[batch];
-    const rooms = Object.entries(groupByRoom(batchStudents));
+    const rooms = groupByRoom(batchStudents);
     if (!rooms.length) return;
 
     const isLatest = batchIndex === 0;
@@ -4468,10 +4544,15 @@ function getAllBatchPasswords() {
     "hsc24": "dc24hall",
     "hsc25": "dc25hall",
     "hsc26": "dc26hall",
-    "hsc27": "dc27hall",
+    "hsc27": "102103104",
     "hsc28": "dc28hall",
     "hsc29": "dc29hall",
-    "hsc30": "dc30hall"
+    "hsc30": "dc30hall",
+    "hsc31": "dc31hall",
+    "hsc32": "dc32hall",
+    "hsc33": "dc33hall",
+    "hsc34": "dc34hall",
+    "hsc35": "dc35hall"
   };
   if (cmsSettings?.batch_passwords) {
     for (const [k, v] of Object.entries(cmsSettings.batch_passwords)) {
@@ -5082,7 +5163,7 @@ function openStudentModal(student) {
             <strong>${showPractical ? student.practicalGroup : maskData(student.practicalGroup) + smallLockIconSvg}</strong>
           </div>` : ''}
 
-          ${(isProfileFieldVisible("room_1st_year") && student.room_1st_year?.room_no) ? `
+          ${(isProfileFieldVisible("room_1st_year") && student.room_1st_year?.room_no && !student.room_2nd_year?.room_no) ? `
           <div class="profile-item room-item" data-room-id="${student.room_1st_year.room_no}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
             <span>${currentLang === 'bn' ? 'রুম (১ম বর্ষ)' : 'ROOM (1st Year)'}</span>
             <strong>${showRoom1 ? `Room ${student.room_1st_year.room_no}${student.room_1st_year.bedmate_name ? ` · Bedmate: ${student.room_1st_year.bedmate_name}` : ''}` : maskData("Room 102") + smallLockIconSvg}</strong>
@@ -5090,8 +5171,9 @@ function openStudentModal(student) {
 
           ${(isProfileFieldVisible("room_2nd_year") && (student.room_2nd_year?.room_no || student.room)) ? `
           <div class="profile-item room-item" data-room-id="${student.room_2nd_year?.room_no || student.room}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
-            <span>${currentLang === 'bn' ? 'রুম (২য় বর্ষ)' : 'ROOM (2nd Year)'}</span>
-            <strong>${showRoom2 ? `Room ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Bedmate: ${student.room_2nd_year.bedmate_name}` : ''}` : maskData("Room 317") + smallLockIconSvg}</strong>
+            <span>${student.room_2nd_year?.room_no ? (currentLang === 'bn' ? 'রুম (২য় বর্ষ)' : 'ROOM (2nd Year)') : (currentLang === 'bn' ? 'রুম' : 'ROOM')}</span>
+            <strong>${showRoom2 ? `Room ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Roommate: ${student.room_2nd_year.bedmate_name}` : ''}` : maskData("Room 317") + smallLockIconSvg}</strong>
+          </div>` : ''}` : maskData("Room 317") + smallLockIconSvg}</strong>
           </div>` : ''}
 
           ${(isProfileFieldVisible("whatsapp") && hasVal(whatsappNum)) ? (!showWhatsApp ? `

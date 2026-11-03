@@ -4,6 +4,46 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
 import { structure } from './structure'
 
+const ALL_BATCHES = [
+  'HSC-27', 'HSC-28', 'HSC-29', 'HSC-30',
+  'HSC-31', 'HSC-32', 'HSC-33', 'HSC-34', 'HSC-35',
+  'HSC-26', 'HSC-25', 'HSC-24'
+]
+
+// Generate dynamic batch templates
+const batchStudentTemplates = ALL_BATCHES.map((batch) => {
+  const cleanKey = batch.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return {
+    id: `student-${cleanKey}`,
+    title: `${batch} Student (স্বয়ংক্রিয় ${batch})`,
+    schemaType: 'student',
+    value: { batch },
+  }
+})
+
+const batchRoomTemplates = ALL_BATCHES.map((batch) => {
+  const cleanKey = batch.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return {
+    id: `room-${cleanKey}`,
+    title: `${batch} Room (স্বয়ংক্রিয় ${batch})`,
+    schemaType: 'room',
+    value: { batch },
+  }
+})
+
+const batchGalleryTemplates = ALL_BATCHES.map((batch) => {
+  const cleanKey = batch.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return {
+    id: `galleryItem-${cleanKey}`,
+    title: `${batch} Photo Collection`,
+    schemaType: 'galleryItem',
+    value: {
+      batch,
+      heading: batch,
+    },
+  }
+})
+
 export default defineConfig({
   name: 'default',
   title: 'Dhaka College International Hall',
@@ -20,93 +60,9 @@ export default defineConfig({
     types: schemaTypes,
     templates: (prev) => [
       ...prev,
-      // ═══════════════════════════════════════════
-      // Pre-filled Batch Student Templates
-      // ═══════════════════════════════════════════
-      {
-        id: 'student-hsc27',
-        title: 'HSC-27 Student (স্বয়ংক্রিয় HSC-27)',
-        schemaType: 'student',
-        value: {
-          batch: 'HSC-27',
-        },
-      },
-      {
-        id: 'student-hsc28',
-        title: 'HSC-28 Student (স্বয়ংক্রিয় HSC-28)',
-        schemaType: 'student',
-        value: {
-          batch: 'HSC-28',
-        },
-      },
-      {
-        id: 'student-hsc29',
-        title: 'HSC-29 Student (স্বয়ংক্রিয় HSC-29)',
-        schemaType: 'student',
-        value: {
-          batch: 'HSC-29',
-        },
-      },
-      // ═══════════════════════════════════════════
-      // Pre-filled Batch Room Templates
-      // ═══════════════════════════════════════════
-      {
-        id: 'room-hsc27',
-        title: 'HSC-27 Room (স্বয়ংক্রিয় HSC-27)',
-        schemaType: 'room',
-        value: {
-          batch: 'HSC-27',
-        },
-      },
-      {
-        id: 'room-hsc28',
-        title: 'HSC-28 Room (স্বয়ংক্রিয় HSC-28)',
-        schemaType: 'room',
-        value: {
-          batch: 'HSC-28',
-        },
-      },
-      {
-        id: 'room-hsc29',
-        title: 'HSC-29 Room (স্বয়ংক্রিয় HSC-29)',
-        schemaType: 'room',
-        value: {
-          batch: 'HSC-29',
-        },
-      },
-      // ═══════════════════════════════════════════
-      // Pre-filled Batch Gallery Templates
-      // ═══════════════════════════════════════════
-      {
-        id: 'galleryItem-hsc27',
-        title: 'HSC-27 Photo Collection',
-        schemaType: 'galleryItem',
-        value: {
-          batch: 'HSC-27',
-          heading: 'HSC-27',
-        },
-      },
-      {
-        id: 'galleryItem-hsc28',
-        title: 'HSC-28 Photo Collection',
-        schemaType: 'galleryItem',
-        value: {
-          batch: 'HSC-28',
-          heading: 'HSC-28',
-        },
-      },
-      {
-        id: 'galleryItem-hsc29',
-        title: 'HSC-29 Photo Collection',
-        schemaType: 'galleryItem',
-        value: {
-          batch: 'HSC-29',
-          heading: 'HSC-29',
-        },
-      },
-      // ═══════════════════════════════════════════
-      // Edit Request Template (auto-status pending)
-      // ═══════════════════════════════════════════
+      ...batchStudentTemplates,
+      ...batchRoomTemplates,
+      ...batchGalleryTemplates,
       {
         id: 'editRequest-pending',
         title: 'New Edit Request (নতুন সম্পাদনা অনুরোধ)',
