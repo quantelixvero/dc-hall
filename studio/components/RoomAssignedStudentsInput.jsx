@@ -26,8 +26,10 @@ export function RoomAssignedStudentsInput(props) {
         room_ref._ref == $pubId || 
         room_ref._ref == $docId || 
         references($pubId) || 
-        (defined(room_no) && room_no == $roomNo)
-      )${roomBatch ? ' && batch == $roomBatch' : ''}]{
+        room_no == $roomNo || 
+        room_2nd_year.room_no == $roomNo || 
+        room_1st_year.room_no == $roomNo
+      )${roomBatch ? ' && (batch == $roomBatch || (!defined(batch) && $roomBatch == "HSC-27"))' : ''}]{
         _id,
         name_en,
         name_bn,
@@ -48,7 +50,7 @@ export function RoomAssignedStudentsInput(props) {
     } finally {
       setLoading(false)
     }
-  }, [client, publishedId, docId, roomNo])
+  }, [client, publishedId, docId, roomNo, roomBatch])
 
   useEffect(() => {
     fetchConnectedStudents()

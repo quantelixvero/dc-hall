@@ -61,20 +61,13 @@ function createBatchContentItems(S, batchName) {
       ),
 
     S.listItem()
-      .title(`🖼️ ${batchName} Photo Collections (ফটো গ্যালারি)`)
+      .title(`🖼️ ${batchName} Photo Collection (ফটো গ্যালারি)`)
       .icon(ImageIcon)
       .child(
-        S.documentTypeList('galleryItem')
-          .title(`${batchName} Photo Collections`)
-          .filter('_type == "galleryItem" && (batch == $batch || heading match $matchHeading || (!defined(batch) && $batch == "HSC-27"))')
-          .params({
-            batch: batchName,
-            matchHeading: `*${batchName.replace('HSC-', '')}*`,
-          })
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`galleryItem-${cleanBatchKey}`),
-          ])
-          .defaultOrdering([{ field: 'position', direction: 'asc' }])
+        S.document()
+          .schemaType('galleryItem')
+          .documentId(batchName === 'HSC-27' ? 'gallery-item-2' : `galleryItem-${cleanBatchKey}`)
+          .title(`${batchName} Photo Collection`)
       ),
 
     S.listItem()
@@ -252,47 +245,35 @@ export const structure = async (S, context) => {
   return S.list()
     .title('DC Hall Administration')
     .items([
-      // ─── Dashboard ───────────────────────────────────────────────
+      // ─── Root Administration (বাইরে রাখা হলো) ────────────────────
       S.listItem()
-        .title('📊 Dashboard (অ্যাডমিন ড্যাশবোর্ড)')
-        .icon(DashboardIcon)
+        .title('🛡️ Security & Visibility (সিকিউরিটি ও ভিজিবিলিটি)')
+        .icon(LockIcon)
         .child(
-          S.list()
-            .title('Admin Dashboard')
-            .items([
-              // 1. Unified Security & Visibility Controls
-              S.listItem()
-                .title('🛡️ Security & Visibility (সিকিউরিটি ও ভিজিবিলিটি)')
-                .icon(LockIcon)
-                .child(
-                  S.document()
-                    .schemaType('adminSettings')
-                    .documentId('adminSettings')
-                    .title('Security & Visibility Controls (সিকিউরিটি ও ভিজিবিলিটি)')
-                ),
+          S.document()
+            .schemaType('adminSettings')
+            .documentId('adminSettings')
+            .title('Security & Visibility Controls (সিকিউরিটি ও ভিজিবিলিটি)')
+        ),
 
-              // 2. Batch Admin & Moderator Management
-              S.listItem()
-                .title('👥 Batch Admin & Moderator Management')
-                .icon(UsersIcon)
-                .child(
-                  S.documentTypeList('batchConfig')
-                    .title('Batch Configurations')
-                    .defaultOrdering([{ field: 'batch', direction: 'asc' }])
-                ),
+      S.listItem()
+        .title('👥 Batch Admin & Moderator (ব্যাচ অ্যাডমিন ও মডারেটর)')
+        .icon(UsersIcon)
+        .child(
+          S.documentTypeList('batchConfig')
+            .title('Batch Configurations')
+            .defaultOrdering([{ field: 'batch', direction: 'asc' }])
+        ),
 
-              // 4. All Edit Requests
-              S.listItem()
-                .title('📬 All Edit Requests (সকল অনুরোধ)')
-                .icon(EnvelopeIcon)
-                .child(
-                  S.documentTypeList('editRequest')
-                    .title('All Edit Requests')
-                    .defaultOrdering([
-                      { field: 'status', direction: 'asc' },
-                      { field: '_createdAt', direction: 'desc' },
-                    ])
-                ),
+      S.listItem()
+        .title('📬 All Edit Requests (সকল এডিট অনুরোধ)')
+        .icon(EnvelopeIcon)
+        .child(
+          S.documentTypeList('editRequest')
+            .title('All Edit Requests')
+            .defaultOrdering([
+              { field: 'status', direction: 'asc' },
+              { field: '_createdAt', direction: 'desc' },
             ])
         ),
 
