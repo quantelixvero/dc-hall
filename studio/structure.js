@@ -14,6 +14,7 @@ import {
   EnvelopeIcon,
   DashboardIcon,
   EyeOpenIcon,
+  BellIcon,
 } from '@sanity/icons'
 
 // Hardcoded Super Admin emails (always have full access)
