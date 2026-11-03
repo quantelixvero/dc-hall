@@ -1,4 +1,12 @@
 
+function normalizeRoomNumber(val) {
+  if (!val) return "";
+  const s = String(val).trim();
+  const digits = s.replace(/[^0-9]/g, "");
+  return digits ? String(parseInt(digits, 10)) : s.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+
 // ═══════════════════════════════════════════════════════════════
 // BIRTHDAY CELEBRATION POPUP & MUSIC SYSTEM
 // ═══════════════════════════════════════════════════════════════
@@ -3166,6 +3174,7 @@ function mapCmsStudent(item, index) {
     bio: item.bio_en || defaultBio,
     dob: dobEn,
     dobBn: dobBnVal,
+    dob_date: item.dob_date || "",
     pdfs: oldPdfs,
     results_1st: r1,
     results_2nd: r2,
@@ -3214,20 +3223,10 @@ function updateBirthdayHeroLanguage() {
   if (subtitle) subtitle.textContent = currentLang === "bn" ? "জানুয়ারি থেকে ডিসেম্বর পর্যন্ত আবাসিক শিক্ষার্থীদের জন্মদিন ক্রমানুসারে সাজানো।" : "Residential students' birthdays arranged in chronological order from January to December.";
 }
 
-async function loadCmsContent() {
+function applySanityPayload(sanityData) {
+  if (!sanityData) return;
   let settings, studentData, roomsList, homeData, devData, galleryData, hallData;
 
-  // Try fetching live dynamic data from Sanity CMS
-  let sanityData = null;
-  if (typeof fetchSanityCms === "function") {
-    try {
-      sanityData = await fetchSanityCms();
-    } catch (e) {
-      console.warn("fetchSanityCms error:", e);
-    }
-  }
-
-  if (sanityData) {
     if (sanityData.adminSettings) {
       cmsAdminSettings = sanityData.adminSettings;
     }
@@ -3312,18 +3311,7 @@ async function loadCmsContent() {
       items: galleryItems,
       collections: galleryCollections,
     };
-  } else {
-    // Fallback to local static JSON files
-    [settings, studentData, roomsList, homeData, devData, galleryData, hallData] = await Promise.all([
-      fetchJson("data/settings.json"),
-      fetchJson("data/students.json"),
-      fetchJson("data/rooms.json"),
-      fetchJson("data/home.json"),
-      fetchJson("data/developer.json"),
-      fetchJson("data/gallery.json"),
-      fetchJson("data/hall.json")
-    ]);
-  }
+  
 
   applyCmsSettings(settings);
 
@@ -3415,10 +3403,8 @@ async function loadCmsContent() {
       i18n.bn.hallSuper.bio = hallData.hall_super_bio_bn || i18n.bn.hallSuper.bio;
       i18n.bn.hallSuper.subtitle = hallData.hall_super_subtitle_bn || i18n.bn.hallSuper.subtitle;
     }
-    // Store hall data globally for hostel page rendering
     cmsHallData = hallData;
 
-    // Update home page hall preview photo from CMS (home_page_photo → hall_photo fallback)
     const homePhoto = hallData.home_page_photo || hallData.hall_photo;
     if (homePhoto) {
       const homeHallImg = document.querySelector('.hostel-preview-photo img');
@@ -3451,46 +3437,91 @@ async function loadCmsContent() {
           });
         }
       });
-      // Bidirectional sync: if student profile has room assigned, sync it into room.assigned_students
-      students.forEach((s) => {
-        if (!s.room) return;
-        const targetRoom = roomsList.rooms.find((r) => String(r.room_no || "").trim() === String(s.room).trim());
-        if (targetRoom) {
-          if (!targetRoom.assigned_students) targetRoom.assigned_students = [];
-          const already = targetRoom.assigned_students.some((as) => as.student_id === s.slug || (as.short_roll && String(as.short_roll) === String(s.roll)) || as.name_en === s.name);
-          if (!already) {
-            targetRoom.assigned_students.push({
-              student_id: s.slug,
-              name_en: s.name,
-              name_bn: s.bn?.name || s.name,
-              short_roll: s.roll
-            });
-          }
+
+      // Bidirectional sync: make sure room docs have current students listed
+      roomsList.rooms.forEach((room) => {
+        const roomNum = normalizeRoomNumber(room.room_no);
+        const assignedInRoom = students.filter(s => normalizeRoomNumber(s.room) === roomNum);
+        if (assignedInRoom.length && (!room.assigned_students || !room.assigned_students.length)) {
+          room.assigned_students = assignedInRoom.map(s => ({
+            _id: s.slug,
+            student_id: s.slug,
+            name_en: s.name,
+            name_bn: s.bn?.name || s.name,
+            short_roll: s.roll,
+            batch: s.batch,
+            photo: s.img
+          }));
         }
       });
     }
   }
 
-  cmsGalleryData = galleryData;
-  cmsHallData = hallData;
-  cmsDevData = devData;
-  cmsHomeData = homeData;
+  if (devData) {
+    cmsDevData = devData;
+  }
+  if (galleryData) {
+    cmsGalleryData = galleryData;
+  }
 
-  // Render CMS page data
-  await renderGalleryPage(galleryData);
-  renderHomeGallery(galleryData);
-  await renderAlumniList(hallData?.alumni_profiles);
-  await renderDeveloperPage(devData);
-  await renderHallInfoPage(hallData);
-  await renderHallSuperPage(hallData);
-  renderHomeHallSuper(hallData);
-  renderDynamicContent();
-
-  // Apply Multi-Page Section Controls (Visibility & Reordering)
   applyPageSectionControls();
-  applyMenuVisibility();
-  checkSessionValidity();
-  updateProfileNavButton();
+}
+
+async function loadCmsContent() {
+  // ⚡ 1. FAST CACHE-FIRST HYDRATION (Instant 0ms render without waiting for network!)
+  try {
+    const cachedRaw = localStorage.getItem("dc_sanity_cache_v58");
+    if (cachedRaw) {
+      const cached = JSON.parse(cachedRaw);
+      if (cached && cached.students && cached.students.length) {
+        applySanityPayload(cached);
+        renderDynamicContent();
+      }
+    }
+  } catch (e) {
+    console.warn("CMS cache hydration notice:", e);
+  }
+
+  // ⚡ 2. LIVE ASYNC FETCH FROM SANITY LAKE
+  let sanityData = null;
+  if (typeof fetchSanityCms === "function") {
+    try {
+      sanityData = await fetchSanityCms();
+    } catch (e) {
+      console.warn("fetchSanityCms error:", e);
+    }
+  }
+
+  if (sanityData && sanityData.students && sanityData.students.length) {
+    try {
+      localStorage.setItem("dc_sanity_cache_v58", JSON.stringify(sanityData));
+    } catch (e) {}
+    applySanityPayload(sanityData);
+  } else if (!students || !students.length) {
+    // Fallback only if both live and cache were unavailable
+    try {
+      const [settings, studentData, roomsList, homeData, devData, galleryData, hallData] = await Promise.all([
+        fetchJson("data/settings.json"),
+        fetchJson("data/students.json"),
+        fetchJson("data/rooms.json"),
+        fetchJson("data/home.json"),
+        fetchJson("data/developer.json"),
+        fetchJson("data/gallery.json"),
+        fetchJson("data/hall.json")
+      ]);
+      applySanityPayload({
+        settings,
+        students: studentData?.students || [],
+        rooms: roomsList?.rooms || [],
+        home: homeData || {},
+        developer: devData || {},
+        hall: hallData || {},
+        galleries: galleryData?.collections || []
+      });
+    } catch (err) {
+      console.warn("Local static fallback fetch failed:", err);
+    }
+  }
 }
 
 function applyPageSectionControls() {
@@ -4049,10 +4080,10 @@ function studentPassesFilters(student, filters = getActiveFilters()) {
     const normStudent = (student.batch || 'HSC-27').toLowerCase().replace(/[^a-z0-9]/g, '');
     if (normFilter && normStudent !== normFilter) return false;
   }
-  if (filters.classNo && student.classNo !== filters.classNo) return false;
-  if (filters.group && student.group !== filters.group) return false;
-  if (filters.section && student.section !== filters.section) return false;
-  if (filters.blood && student.blood !== filters.blood) return false;
+  if (filters.classNo && String(student.classNo || "").toLowerCase() !== String(filters.classNo).toLowerCase()) return false;
+  if (filters.group && String(student.group || "").toLowerCase() !== String(filters.group).toLowerCase()) return false;
+  if (filters.section && String(student.section || "").toLowerCase() !== String(filters.section).toLowerCase()) return false;
+  if (filters.blood && String(student.blood || "").toLowerCase().replace(/[\s\+]/g, '') !== String(filters.blood).toLowerCase().replace(/[\s\+]/g, '')) return false;
   return true;
 }
 
@@ -5941,15 +5972,26 @@ function openRoomModal(room) {
   activeRoomId = room;
 
   const roomStr = String(room).trim();
+  const normTarget = normalizeRoomNumber(room);
+
   // Find all occupants past and present across 1st year, 2nd year or current assignments
   const occupants = students.filter((student) => {
-    const r1 = String(student.room_1st_year?.room_no || "").trim();
-    const r2 = String(student.room_2nd_year?.room_no || "").trim();
-    const rMain = String(student.room || "").trim();
-    return rMain === roomStr || r1 === roomStr || r2 === roomStr;
+    const r1 = normalizeRoomNumber(student.room_1st_year?.room_no);
+    const r2 = normalizeRoomNumber(student.room_2nd_year?.room_no);
+    const rMain = normalizeRoomNumber(student.room);
+    const rRef = normalizeRoomNumber(student.room_no);
+    return Boolean(normTarget && (rMain === normTarget || r1 === normTarget || r2 === normTarget || rRef === normTarget));
   });
   
-  const cmsRoom = roomsData && roomsData.find((r) => String(r.room_no) === roomStr);
+  const cmsRoom = roomsData && roomsData.find((r) => normalizeRoomNumber(r.room_no) === normTarget);
+  if (cmsRoom && Array.isArray(cmsRoom.assigned_students)) {
+    cmsRoom.assigned_students.forEach(as => {
+      const match = students.find(s => (as.student_id && s.slug === as.student_id) || (as.short_roll && String(s.roll) === String(as.short_roll)) || (as._id && s._id === as._id));
+      if (match && !occupants.some(o => o.id === match.id)) {
+        occupants.push(match);
+      }
+    });
+  }
   const title = cmsRoom
     ? (currentLang === "bn" ? (cmsRoom.title_bn || cmsRoom.title_en || `রুম ${toBengaliDigits(roomStr)}`) : (cmsRoom.title_en || cmsRoom.title_bn || `ROOM ${roomStr}`))
     : (currentLang === "bn" ? `রুম ${toBengaliDigits(roomStr)}` : `ROOM ${roomStr}`);

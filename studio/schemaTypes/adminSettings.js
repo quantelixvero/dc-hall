@@ -69,6 +69,7 @@ export default defineType({
 
   groups: [
     { name: 'passwords', title: '🔑 Passwords & Master Key' , default: true },
+    { name: 'batch_rotation', title: '🔄 Batch Email Slots & Rotation (ব্যাচ অ্যাডমিন ইমেইল ও রোটেশন)' },
     { name: 'profile_controls', title: '👤 Profile Fields & Locks' },
     { name: 'page_access', title: '🔐 Page Access & Locks (পেজ লক ও ভিজিবিলিটি)' },
     { name: 'homepage_vis', title: '🏠 Home Page Sections' },
@@ -79,7 +80,122 @@ export default defineType({
   ],
 
   fields: [
+
     // ═══════════════════════════════════════════
+    // BATCH EMAIL SLOTS & ANNUAL ROTATION SYSTEM
+    // ═══════════════════════════════════════════
+    defineField({
+      name: 'batch_rotation_enabled',
+      title: 'Annual Auto-Rotation on January 1st (১লা জানুয়ারি বার্ষিক স্বয়ংক্রিয় রোটেশন)',
+      type: 'boolean',
+      group: 'batch_rotation',
+      description: 'চালু থাকলে প্রতি বছর ১লা জানুয়ারি স্বয়ংক্রিয়ভাবে সবচেয়ে পুরোনো ব্যাচের অ্যাক্সেস শেষ হবে এবং তাদের ইমেইল স্লটটি নতুন আগত ব্যাচের জন্য অ্যাসাইন হয়ে যাবে।',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'batch_email_slots',
+      title: 'Batch Admin Email Slots (৩টি ব্যাচ অ্যাডমিন ইমেইল স্লট ও অ্যাসাইনমেন্ট)',
+      type: 'array',
+      group: 'batch_rotation',
+      description: 'স্টুডিওতে ব্যাচভিত্তিক অ্যাক্সেস লিমিটেশনের জন্য নির্ধারিত ৩টি ইমেইল স্লট। যেকোনো সময় এখান থেকেই ইমেইল পরিবর্তন বা ব্যাচ অ্যাসাইনমেন্ট বদল করা যাবে।',
+      initialValue: [
+        {
+          _key: 'slot_1_sr',
+          slot_name: 'Slot 1 (Senior Batch / Founder)',
+          admin_email: 'dchall.hsc27@gmail.com',
+          assigned_batch: 'HSC-27',
+          is_active: true,
+          notes: 'HSC-27 ব্যাচ অ্যাডমিন ইমেইল স্লট। পাস আউট হলে এই স্লটটি HSC-30 ব্যাচকে হ্যান্ডওভার করা যাবে।'
+        },
+        {
+          _key: 'slot_2_mid',
+          slot_name: 'Slot 2 (Mid Batch / Current 2nd Year)',
+          admin_email: 'dchall.hsc28@gmail.com',
+          assigned_batch: 'HSC-28',
+          is_active: true,
+          notes: 'HSC-28 ব্যাচ অ্যাডমিন ইমেইল স্লট।'
+        },
+        {
+          _key: 'slot_3_jr',
+          slot_name: 'Slot 3 (Junior Batch / 1st Year)',
+          admin_email: 'dchall.hsc29@gmail.com',
+          assigned_batch: 'HSC-29',
+          is_active: true,
+          notes: 'HSC-29 ব্যাচ অ্যাডমিন ইমেইল স্লট।'
+        }
+      ],
+      of: [
+        {
+          type: 'object',
+          name: 'batchEmailSlot',
+          title: 'Batch Admin Slot',
+          fields: [
+            defineField({
+              name: 'slot_name',
+              title: 'Slot Label (স্লটের নাম / ভূমিকা)',
+              type: 'string',
+              description: 'যেমন: Slot 1 (Senior Batch), Slot 2 (Mid Batch), Slot 3 (Junior / Incoming Batch)',
+            }),
+            defineField({
+              name: 'admin_email',
+              title: 'Admin Email (অ্যাডমিন ইমেইল এড্রেস)',
+              type: 'string',
+              description: 'যে ইমেইলটি Sanity Studio-তে লগইন করার জন্য দেওয়া হবে। কোনো ইমেইলে সমস্যা হলে এখান থেকে পরিবর্তন করুন।',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'assigned_batch',
+              title: 'Assigned Batch (নির্ধারিত ব্যাচ)',
+              type: 'string',
+              description: 'এই ইমেইলটি দিয়ে লগইন করলে শুধুমাত্র এই ব্যাচের ডেটা এডিট করা যাবে।',
+              options: {
+                list: [
+                  { title: 'HSC-27 (Founder / 2025-26)', value: 'HSC-27' },
+                  { title: 'HSC-28 (2026-27)', value: 'HSC-28' },
+                  { title: 'HSC-29 (2027-28)', value: 'HSC-29' },
+                  { title: 'HSC-30 (2028-29)', value: 'HSC-30' },
+                  { title: 'HSC-31 (2029-30)', value: 'HSC-31' },
+                  { title: 'HSC-32 (2030-31)', value: 'HSC-32' },
+                ],
+              },
+            }),
+            defineField({
+              name: 'is_active',
+              title: 'Active Access (অ্যাক্সেস সক্রিয় আছে?)',
+              type: 'boolean',
+              initialValue: true,
+            }),
+            defineField({
+              name: 'expiry_date',
+              title: 'Access Expiry Date (মেয়াদ শেষ হওয়ার তারিখ - ঐচ্ছিক)',
+              type: 'date',
+              description: 'যদি কোনো নির্দিষ্ট তারিখে স্বয়ংক্রিয়ভাবে মেয়াদ শেষ করতে চান।',
+            }),
+            defineField({
+              name: 'notes',
+              title: 'Notes / Handover Details (নোট / দায়িত্ব হস্তান্তর বিবরণ)',
+              type: 'string',
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'slot_name',
+              subtitle: 'admin_email',
+              batch: 'assigned_batch',
+              active: 'is_active',
+            },
+            prepare({ title, subtitle, batch, active }) {
+              return {
+                title: `${active ? '🟢' : '🔴'} ${title || 'Slot'}: ${batch || 'Unassigned'}`,
+                subtitle: subtitle || 'No email assigned',
+              }
+            },
+          },
+        },
+      ],
+    }),
+
+        // ═══════════════════════════════════════════
     // 1. MASTER PASSWORD
     // ═══════════════════════════════════════════
     defineField({
@@ -111,10 +227,11 @@ export default defineType({
       group: 'page_access',
       description: 'ওয়েবসাইটের প্রতিটি পেজ (যেমন Academic Results, Students, Roommates, Birthdays, Gallery ইত্যাদি) ভিজিটরের জন্য উন্মুক্ত থাকবে নাকি পাসওয়ার্ড দিয়ে লক থাকবে তা এখান থেকে নির্ধারণ করুন।',
       initialValue: [
-        { page_id: 'results', title: 'Academic Results (results.html)', is_visible: true, is_locked: false, lock_message: 'এই পেজের ফলাফল দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' },
+        { page_id: 'results', title: 'Academic Results (results.html)', is_visible: true, is_locked: true, lock_message: 'এই পেজের ফলাফল দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' },
         { page_id: 'students', title: 'Student Directory (students.html)', is_visible: true, is_locked: false, lock_message: 'শিক্ষার্থীদের সম্পূর্ণ তথ্য দেখতে লগইন করুন।' },
         { page_id: 'roommates', title: 'Roommates (roommates.html)', is_visible: true, is_locked: false, lock_message: 'রুম ও রুমমেটদের তালিকা দেখতে লগইন করুন।' },
         { page_id: 'birthday', title: 'Student Birthdays (birthday.html)', is_visible: true, is_locked: false, lock_message: 'জন্মদিন ক্যালেন্ডার দেখতে লগইন করুন।' },
+        { page_id: 'notices', title: 'Notices & Circulars (notices.html)', is_visible: true, is_locked: false, lock_message: 'হলের অফিশিয়াল নোটিশ দেখতে লগইন করুন।' },
         { page_id: 'gallery', title: 'Photo Gallery (gallery.html)', is_visible: true, is_locked: false, lock_message: 'ফটো গ্যালারি দেখতে লগইন করুন।' },
         { page_id: 'hostel', title: 'Hostel Info (hostel.html)', is_visible: true, is_locked: false, lock_message: 'হল তথ্য দেখতে লগইন করুন।' },
         { page_id: 'dc-clubs', title: 'College Clubs (dc-clubs.html)', is_visible: true, is_locked: false, lock_message: 'ক্লাব তথ্য দেখতে লগইন করুন।' },

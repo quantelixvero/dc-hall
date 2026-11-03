@@ -124,23 +124,45 @@ export const structure = async (S, context) => {
   if (!isSuperAdmin) {
     try {
       const client = getClient({ apiVersion: '2023-08-01' })
-      const configs = await client.fetch(
-        '*[_type == "batchConfig"]{ batch, batch_admin_emails, moderator_emails }'
+
+      // Check adminSettings for dynamic revolving batch email slots & rotation first!
+      const adminDoc = await client.fetch(
+        '*[_type == "adminSettings"][0]{ batch_email_slots, batch_rotation_enabled }'
       )
-
-      for (const cfg of configs) {
-        const adminEmails = (cfg?.batch_admin_emails || []).map((e) => (e || '').trim().toLowerCase())
-        const modEmails = (cfg?.moderator_emails || []).map((e) => (e || '').trim().toLowerCase())
-
-        if (adminEmails.includes(userEmail)) {
-          userRole = 'batch_admin'
-          userBatch = cfg.batch
-          break
+      if (adminDoc?.batch_email_slots && Array.isArray(adminDoc.batch_email_slots)) {
+        for (const slot of adminDoc.batch_email_slots) {
+          const slotEmail = (slot?.admin_email || '').trim().toLowerCase()
+          if (slotEmail === userEmail && slot.is_active !== false) {
+            if (slot.expiry_date) {
+              const exp = new Date(slot.expiry_date)
+              if (!isNaN(exp.getTime()) && new Date() > exp) continue
+            }
+            userRole = 'batch_admin'
+            userBatch = slot.assigned_batch
+            break
+          }
         }
-        if (modEmails.includes(userEmail)) {
-          userRole = 'moderator'
-          userBatch = cfg.batch
-          break
+      }
+
+      if (!userRole) {
+        const configs = await client.fetch(
+          '*[_type == "batchConfig"]{ batch, batch_admin_emails, moderator_emails }'
+        )
+
+        for (const cfg of configs) {
+          const adminEmails = (cfg?.batch_admin_emails || []).map((e) => (e || '').trim().toLowerCase())
+          const modEmails = (cfg?.moderator_emails || []).map((e) => (e || '').trim().toLowerCase())
+
+          if (adminEmails.includes(userEmail)) {
+            userRole = 'batch_admin'
+            userBatch = cfg.batch
+            break
+          }
+          if (modEmails.includes(userEmail)) {
+            userRole = 'moderator'
+            userBatch = cfg.batch
+            break
+          }
         }
       }
 
