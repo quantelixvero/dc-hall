@@ -4944,20 +4944,65 @@ body.dark .active-batch-header .batch-count-pill {
   color: #f59e0b;
 }
 
-/* Avatar */
+/* Birthday Grid Container */
+.birthday-grid,
+.birthday-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+  gap: 16px !important;
+}
+
+@media (max-width: 640px) {
+  .birthday-grid,
+  .birthday-list {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* Avatar Defensive Constraints */
 .bday-avatar-wrap {
   position: relative;
-  flex-shrink: 0;
+  flex-shrink: 0 !important;
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
 }
-.bday-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
+.bday-avatar,
+.bday-avatar-wrap img,
+img.bday-avatar {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
   background: var(--surface);
-  border: 2px solid var(--border);
-  display: block;
+  border: 2px solid var(--border) !important;
+  display: block !important;
+  flex-shrink: 0 !important;
   transition: border-color 0.2s ease;
+}
+
+@media (max-width: 600px) {
+  .bday-avatar-wrap,
+  .bday-avatar,
+  .bday-avatar-wrap img,
+  img.bday-avatar {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+    min-height: 42px !important;
+    max-width: 42px !important;
+    max-height: 42px !important;
+  }
 }
 .birthday-card:hover .bday-avatar {
   border-color: var(--accent);
@@ -5840,6 +5885,9 @@ body.dark .active-batch-header .batch-count-pill {
 }
 
 .student-grid.view-compact .compact-view-arrow {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
   color: var(--accent);
   font-size: 1.1rem;
   font-weight: 800;

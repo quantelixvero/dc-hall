@@ -6584,12 +6584,14 @@ function renderBirthdays() {
     });
 
     html += `
-      <div class="birthday-batch-block" data-aos="fade-up">
-        <div class="batch-section-header" style="margin: 28px 0 16px;">
-          <h2 class="batch-title" style="display:flex; align-items:center; gap:8px;">${BATCH_LOGO_SVG} ${batchKey}</h2>
-          <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন' : 'Students'}</span>
+      <div class="birthday-batch-block" data-aos="fade-up" style="margin-bottom: 36px;">
+        <div class="batch-section-header" style="margin: 28px 0 16px; display: flex; align-items: center; justify-content: space-between;">
+          <h2 class="batch-title" style="display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1.35rem; font-weight: 800;">
+            ${BATCH_LOGO_SVG} ${batchKey}
+          </h2>
+          <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
         </div>
-        <div class="birthday-list">
+        <div class="birthday-grid">
     `;
 
     batchStudents.forEach((student, index) => {
@@ -6597,14 +6599,9 @@ function renderBirthdays() {
       const hasValidDate = bInfo.month <= 12;
       const isToday = hasValidDate && bInfo.month === currentMonth && bInfo.day === currentDay;
 
-      let dateDisplay = "-";
-      if (hasValidDate) {
-        if (currentLang === "bn") {
-          dateDisplay = `${toBengaliDigits(bInfo.day)} ${monthFullBn[bInfo.month - 1]}`;
-        } else {
-          dateDisplay = `${bInfo.day} ${monthNamesEn[bInfo.month - 1]}`;
-        }
-      }
+      const monthShort = hasValidDate ? (currentLang === "bn" ? monthNamesBn[bInfo.month - 1] : monthNamesEn[bInfo.month - 1]) : "--";
+      const dayStr = hasValidDate ? (currentLang === "bn" ? toBengaliDigits(String(bInfo.day)) : String(bInfo.day)) : "--";
+      const fullDateStr = hasValidDate ? (currentLang === "bn" ? `${dayStr} ${monthFullBn[bInfo.month - 1]}` : `${dayStr} ${monthFullEn[bInfo.month - 1]}`) : (student.dob || "--");
 
       const showPhoto = isProfileFieldVisible("photo");
       const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
@@ -6612,25 +6609,40 @@ function renderBirthdays() {
       const name = isProfileFieldUnlocked("name", student) ? studentValue(student, "name") : maskData(studentValue(student, "name"));
       const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
       const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
-      const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : maskData(roomVal);
+      const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? `রুম ${toBengaliDigits(roomVal)}` : `Room ${roomVal}`) : maskData(roomVal);
+      const rollDisplay = isProfileFieldUnlocked("roll", student) ? (currentLang === "bn" ? `রোল ${toBengaliDigits(student.roll || "")}` : `Roll ${student.roll || ""}`) : maskData(student.roll);
 
       html += `
-        <article class="birthday-card ${isToday ? 'birthday-today' : ''}" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 40, 200)}">
+        <article class="birthday-card ${isToday ? 'is-today-birthday' : ''}" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 30, 240)}" role="button" tabindex="0">
+          <div class="bday-date-badge ${isToday ? 'bday-badge-today-glow' : ''}">
+            <span class="bday-badge-month">${monthShort}</span>
+            <span class="bday-badge-day">${dayStr}</span>
+          </div>
           <div class="bday-avatar-wrap">
-            <img src="${photoSrc}" alt="${name}" loading="lazy">
-            ${isToday ? `<span class="today-badge">${BIRTHDAY_LOGO_SVG}</span>` : ''}
+            <img class="bday-avatar" src="${photoSrc}" alt="${name}" loading="lazy">
           </div>
-          <div class="bday-info">
-            <h3 class="bday-name">${name}</h3>
-            <p class="bday-meta">
-              <span class="pill">${student.batch || 'HSC-27'}</span>
-              <span class="pill">${groupLabel(student.group)}</span>
-              ${roomVal !== '-' ? `<span class="pill">${t("common.room")} ${roomDisplay}</span>` : ''}
-            </p>
+          <div class="bday-card-body">
+            <div class="bday-name-row">
+              <h3 class="bday-name">${name}</h3>
+              ${isToday ? `<span class="bday-pill today-pill">${currentLang === 'bn' ? 'শুভ জন্মদিন!' : 'Today!'}</span>` : ''}
+            </div>
+            <div class="bday-meta-pills">
+              ${student.roll ? `<span class="bday-meta-pill">${rollDisplay}</span>` : ''}
+              ${roomVal !== '-' ? `<span class="bday-meta-pill">${roomDisplay}</span>` : ''}
+              <span class="bday-meta-pill">${groupLabel(student.group)}</span>
+            </div>
+            <div class="bday-date-label">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span>${fullDateStr}</span>
+            </div>
           </div>
-          <div class="bday-date-wrap">
-            <span class="bday-date-text ${isToday ? 'today-highlight' : ''}">${dateDisplay}</span>
-            ${isToday ? `<span class="today-pill">${currentLang === 'bn' ? 'শুভ জন্মদিন!' : 'Today!'}</span>` : ''}
+          <div class="bday-card-action">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg>
           </div>
         </article>
       `;
@@ -6644,12 +6656,19 @@ function renderBirthdays() {
 
   container.innerHTML = html;
 
-  // Add click listeners to open student modal
+  // Add click and keyboard listeners to open student modal
   container.querySelectorAll('.birthday-card').forEach(card => {
-    card.addEventListener('click', () => {
+    const handleOpen = () => {
       const id = card.getAttribute('data-student-id');
       const st = students.find(s => String(s.id) === String(id));
       if (st) openStudentModal(st);
+    };
+    card.addEventListener('click', handleOpen);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleOpen();
+      }
     });
   });
 }
