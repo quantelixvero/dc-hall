@@ -76,7 +76,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=6.2">
+  <link rel="stylesheet" href="css/style.css?v=6.3">
   <!-- Schema.org BreadcrumbList for Google Sitelinks & Hierarchy -->
   <script type="application/ld+json">
   {
@@ -142,65 +142,102 @@
 
     <section class="section">
       <div class="container">
-        <div class="filter-panel" data-aos="fade-up">
-          <label>
-            <span>Batch</span>
-            <select id="filterBatch">
-              <option value="" selected>All Batches</option>
-              <option value="hsc27">HSC-27 (Founder)</option>
-              <option value="hsc28">HSC-28</option>
-              <option value="hsc29">HSC-29</option>
-              <option value="hsc30">HSC-30</option>
-              <option value="hsc31">HSC-31</option>
-              <option value="hsc32">HSC-32</option>
-              <option value="hsc33">HSC-33</option>
-              <option value="hsc34">HSC-34</option>
-              <option value="hsc35">HSC-35</option>
-            </select>
-          </label>
-          <label>
-            <span data-i18n="filters.group">Group</span>
-            <select id="filterGroup">
-              <option value="" data-i18n="filters.allGroups">All Groups</option>
-              <option value="science" data-i18n="groups.science">Science</option>
-              <option value="commerce" data-i18n="groups.commerce">Business Studies</option>
-              <option value="arts" data-i18n="groups.arts">Humanities</option>
-            </select>
-          </label>
-          <label>
-            <span data-i18n="filters.section">Section</span>
-            <select id="filterSection">
-              <option value="" data-i18n="filters.allSections">All Sections</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-              <option value="D">D</option>
-              <option value="E">E</option>
-              <option value="F">F</option>
-              <option value="G">G</option>
-              <option value="H">H</option>
-              <option value="I">I</option>
-              <option value="J">J</option>
-            </select>
-          </label>
-          <label>
-            <span data-i18n="filters.blood">Blood Group</span>
-            <select id="filterBlood">
-              <option value="" data-i18n="filters.allBlood">All Blood Groups</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
-            </select>
-          </label>
+        <!-- Compact Search, Filter & View Controls -->
+        <div class="search-filter-view-bar" data-aos="fade-up">
+          <div class="search-wrap">
+            <label for="studentSearch" class="sr-only" data-i18n="common.searchStudents">Search students</label>
+            <input id="studentSearch" class="search-input" type="search" placeholder="Search by name, room, phone, blood group or address" data-i18n-placeholder="common.searchPlaceholderFull">
+          </div>
+          <div class="bar-actions">
+            <!-- Filter Button with active count badge -->
+            <button type="button" class="compact-filter-btn" id="openStudentFilterBtn" aria-label="Open Filters">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+              <span>Filters</span>
+              <span class="active-filter-badge" id="studentFilterCount" style="display:none;">0</span>
+            </button>
+            <!-- Dual View Switcher (Detailed Grid vs Compact Short List) -->
+            <div class="view-toggle-group" role="group" aria-label="View Switcher">
+              <button type="button" class="view-toggle-btn active" id="viewGridModeBtn" title="Detailed Grid View">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4 11h5V5H4v6zm0 7h5v-6H4v6zm6 0h5v-6h-5v6zm6 0h5v-6h-5v6zm-6-7h5V5h-5v6zm6-6v6h5V5h-5z"/></svg>
+              </button>
+              <button type="button" class="view-toggle-btn" id="viewListModeBtn" title="Compact Short View">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M4 14h4v-4H4v4zm0 5h4v-4H4v4zM4 9h4V5H4v4zm5 5h12v-4H9v4zm0 5h12v-4H9v4zM9 5v4h12V5H9z"/></svg>
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="search-wrap" data-aos="fade-up">
-          <label for="studentSearch" class="sr-only" data-i18n="common.searchStudents">Search students</label>
-          <input id="studentSearch" class="search-input" type="search" placeholder="Search by name, room, phone, blood group or address" data-i18n-placeholder="common.searchPlaceholderFull">
+
+        <!-- Filter Drawer / Modal -->
+        <div class="filter-drawer-overlay" id="studentFilterOverlay" style="display: none;">
+          <div class="filter-drawer-card">
+            <div class="filter-drawer-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--accent)"><path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/></svg>
+                <h3>Filter Students</h3>
+              </div>
+              <button type="button" class="filter-drawer-close" id="closeStudentFilterBtn" aria-label="Close filters">&times;</button>
+            </div>
+            <div class="filter-drawer-body">
+              <div class="filter-field">
+                <label for="filterBatch">Batch</label>
+                <select id="filterBatch" class="filter-select">
+                  <option value="">All Batches</option>
+                  <option value="hsc27">HSC-27 (Founder)</option>
+                  <option value="hsc28">HSC-28</option>
+                  <option value="hsc29">HSC-29</option>
+                  <option value="hsc30">HSC-30</option>
+                  <option value="hsc31">HSC-31</option>
+                  <option value="hsc32">HSC-32</option>
+                  <option value="hsc33">HSC-33</option>
+                  <option value="hsc34">HSC-34</option>
+                  <option value="hsc35">HSC-35</option>
+                </select>
+              </div>
+              <div class="filter-field">
+                <label for="filterGroup" data-i18n="filters.group">Group</label>
+                <select id="filterGroup" class="filter-select">
+                  <option value="" data-i18n="filters.allGroups">All Groups</option>
+                  <option value="science" data-i18n="groups.science">Science (বিজ্ঞান)</option>
+                  <option value="commerce" data-i18n="groups.commerce">Business Studies (ব্যবসায় শিক্ষা)</option>
+                  <option value="arts" data-i18n="groups.arts">Humanities (মানবিক)</option>
+                </select>
+              </div>
+              <div class="filter-field">
+                <label for="filterSection" data-i18n="filters.section">Section</label>
+                <select id="filterSection" class="filter-select">
+                  <option value="" data-i18n="filters.allSections">All Sections</option>
+                  <option value="A">Section A</option>
+                  <option value="B">Section B</option>
+                  <option value="C">Section C</option>
+                  <option value="D">Section D</option>
+                  <option value="E">Section E</option>
+                  <option value="F">Section F</option>
+                  <option value="G">Section G</option>
+                  <option value="H">Section H</option>
+                  <option value="I">Section I</option>
+                  <option value="J">Section J</option>
+                </select>
+              </div>
+              <div class="filter-field">
+                <label for="filterBlood" data-i18n="filters.blood">Blood Group</label>
+                <select id="filterBlood" class="filter-select">
+                  <option value="" data-i18n="filters.allBlood">All Blood Groups</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                </select>
+              </div>
+            </div>
+            <div class="filter-drawer-footer">
+              <button type="button" class="btn-filter-reset" id="resetStudentFilterBtn">Reset</button>
+              <button type="button" class="btn-filter-apply" id="applyStudentFilterBtn">Apply Filters</button>
+            </div>
+          </div>
         </div>
         <div class="student-grid" id="studentGrid"></div>
       </div>
@@ -253,7 +290,7 @@
   </div>
 
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="js/sanity-client.js?v=6.2"></script>
-  <script src="js/app.js?v=6.2"></script>
+  <script src="js/sanity-client.js?v=6.3"></script>
+  <script src="js/app.js?v=6.3"></script>
 </body>
 </html>

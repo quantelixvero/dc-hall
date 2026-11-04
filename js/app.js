@@ -4177,12 +4177,17 @@ function renderSingleStudentCard(student, index) {
     <button class="student-card" type="button" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 60, 240)}">
       <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
       <span class="student-body">
-        ${nameDisplay ? `<h3>${nameDisplay}</h3>` : ''}
-        ${badgeHtml}
-        <span class="student-meta">
-          ${showBatch ? `<span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>` : ''}
-          ${showGroup ? `<span class="pill">${groupLabel(student.group)}</span>` : ''}
-          ${(showSection && student.section && String(student.section).toLowerCase() !== "none") ? `<span class="pill">${student.section}</span>` : ""}
+        <span class="student-info-col">
+          ${nameDisplay ? `<h3>${nameDisplay}</h3>` : ''}
+          <span class="student-meta">
+            ${showBatch ? `<span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>` : ''}
+            ${showGroup ? `<span class="pill">${groupLabel(student.group)}</span>` : ''}
+            ${(showSection && student.section && String(student.section).toLowerCase() !== "none") ? `<span class="pill">${student.section}</span>` : ""}
+          </span>
+        </span>
+        <span class="student-badge-col">
+          ${badgeHtml}
+          <span class="compact-view-arrow">→</span>
         </span>
       </span>
     </button>
@@ -5311,14 +5316,11 @@ function getProfileFieldControl(fieldId) {
 }
 
 function isProfileFieldVisible(fieldId) {
-  // If general "results" is queried, check if either 1st or 2nd year results is visible
   if (fieldId === "results") {
     const r1 = isProfileFieldVisible("results_1st");
     const r2 = isProfileFieldVisible("results_2nd");
     return r1 || r2;
   }
-
-  // If general "room" is queried, check if either 1st or 2nd year room is visible
   if (fieldId === "room") {
     const rm1 = isProfileFieldVisible("room_1st_year");
     const rm2 = isProfileFieldVisible("room_2nd_year");
@@ -5327,6 +5329,7 @@ function isProfileFieldVisible(fieldId) {
 
   const ctrl = getProfileFieldControl(fieldId);
   if (ctrl) {
+    if (ctrl.visibility_tier === "hide") return false;
     if (ctrl.invisible === true) return false;
     if (ctrl.visible === false) return false;
     return true;
@@ -5339,16 +5342,23 @@ function isProfileFieldUnlocked(fieldId, student) {
   if (role === "master") return true; // Master Admin sees everything unlocked
 
   const ctrl = getProfileFieldControl(fieldId);
+  const tier = ctrl?.visibility_tier;
+
+  // 1. If tier is explicitly 'hide', always locked/hidden
+  if (tier === "hide" || ctrl?.invisible === true) return false;
+
+  // 2. If tier is 'lock_all', only master admin can view
+  if (tier === "lock_all") return false;
+
+  const globalMode = cmsAdminSettings?.global_visibility_mode || "junior_safe";
   const isGuest = !role || role === "guest";
 
+  // 3. Guest / Visitor access rules
   if (isGuest) {
-    if (!isGlobalVisibilityOn()) {
-      // Global Public Visibility is OFF: All sensitive fields locked for guests/visitors
-      return false;
-    }
-    if (ctrl) {
-      return ctrl.public_lock !== true;
-    }
+    if (tier === "public") return true;
+    if (tier === "lock_normal" || tier === "lock_junior") return false;
+    if (!isGlobalVisibilityOn()) return false;
+    if (ctrl) return ctrl.public_lock !== true;
     // Fallbacks to legacy settings
     if (fieldId === "phone") return cmsSettings?.locked_fields?.lock_phone === false;
     if (fieldId === "father_phone" || fieldId === "fatherPhone") return cmsSettings?.locked_fields?.lock_father_phone === false;
@@ -5359,18 +5369,21 @@ function isProfileFieldUnlocked(fieldId, student) {
     return true;
   }
 
-  // Logged-in student:
+  // 4. Logged-in Student access rules
+  if (globalMode === "full_unlock") return true; // Full Unlock across all batches
+  if (tier === "public" || tier === "lock_normal") return true;
+
   const userBatchNum = parseBatchNum(role);
   const studentBatchNum = parseBatchNum(student?.batch || student?.classNo || "HSC-27");
 
-  // Same batch or senior viewing junior:
+  // Same batch or senior viewing junior: always unlocked
   if (userBatchNum <= studentBatchNum) {
     return true;
   }
 
-  // Junior viewing senior:
-  if (ctrl) {
-    return ctrl.batch_lock !== true;
+  // Junior viewing senior: locked if tier is lock_junior or batch_lock
+  if (tier === "lock_junior" || ctrl?.batch_lock === true) {
+    return false;
   }
   return true;
 }
@@ -5697,6 +5710,76 @@ function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHre
   `;
 }
 
+
+function findStudentByNameOrSlug(nameOrSlug) {
+  if (!nameOrSlug || !students || !students.length) return null;
+  const q = String(nameOrSlug).trim().toLowerCase();
+  return students.find(s => 
+    (s.id && String(s.id).toLowerCase() === q) ||
+    (s.slug && String(s.slug).toLowerCase() === q) ||
+    (s.name && s.name.trim().toLowerCase() === q) ||
+    (s.bn?.name && s.bn.name.trim() === q) ||
+    (s.nameEn && s.nameEn.trim().toLowerCase() === q) ||
+    (s.nameBn && s.nameBn.trim() === q)
+  );
+}
+
+function buildProfileRoomBox(yearLabel, roomNo, mateName, mateStudent, isUnlocked, isVisible) {
+  if (!isVisible || !roomNo) return '';
+
+  const smallLockIconSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="#10b981" style="display:inline-block; vertical-align:middle; margin-left:6px;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`;
+  
+  const roomDisplay = isUnlocked 
+    ? (currentLang === "bn" ? `ROOM ${toBengaliDigits(roomNo)}` : `ROOM ${roomNo}`)
+    : maskData(`ROOM ${roomNo}`) + smallLockIconSvg;
+
+  let mateHtml = '';
+  if (isUnlocked && (mateName || mateStudent)) {
+    if (mateStudent) {
+      const matePhoto = mateStudent.img || 'images/student-avatar.png';
+      const mateDisplayName = studentValue(mateStudent, 'name');
+      mateHtml = `
+        <button type="button" class="profile-roommate-pill-link" data-open-mate-id="${mateStudent.id}" title="${currentLang === 'bn' ? 'প্রোফাইল দেখতে ক্লিক করুন' : 'Click to view profile'}">
+          <img src="${matePhoto}" alt="${mateDisplayName}" style="width:22px; height:22px; border-radius:50%; object-fit:cover;">
+          <span>${mateDisplayName}</span>
+          <span style="font-size:0.75rem; color:var(--muted);">&rarr;</span>
+        </button>
+      `;
+    } else {
+      mateHtml = `
+        <span class="profile-roommate-pill-link" style="cursor:default;">
+          <span style="color:var(--muted); font-size:0.8rem;">${currentLang === 'bn' ? 'রুমমেট:' : 'Mate:'}</span>
+          <span>${mateName}</span>
+        </span>
+      `;
+    }
+  } else if (!isUnlocked && mateName) {
+    mateHtml = `<span style="color:var(--muted); font-size:0.85rem;">•••••••• ${smallLockIconSvg}</span>`;
+  }
+
+  return `
+    <div class="profile-room-box" style="grid-column: 1 / -1; margin-top: 6px;">
+      <div class="profile-room-box-header">
+        <span>${yearLabel}</span>
+        ${isUnlocked ? `<span style="font-size:0.75rem; color:var(--accent); font-weight:600;">${currentLang === 'bn' ? 'ক্লিক করে রুম দেখুন' : 'Click to inspect room'}</span>` : ''}
+      </div>
+      <div class="profile-room-box-content">
+        ${isUnlocked ? `
+          <button type="button" class="profile-room-badge-link" data-room-id="${roomNo}">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>${roomDisplay}</span>
+          </button>
+        ` : `
+          <a href="profile.html" class="profile-room-badge-link" style="background:var(--surface); color:var(--muted); border-color:var(--border);">
+            <span>${roomDisplay}</span>
+          </a>
+        `}
+        ${mateHtml}
+      </div>
+    </div>
+  `;
+}
+
 function openStudentModal(student) {
   const modal = byId("studentModal");
   const content = byId("modalContent");
@@ -5829,17 +5912,35 @@ function openStudentModal(student) {
             <strong>${showPractical ? student.practicalGroup : maskData(student.practicalGroup) + smallLockIconSvg}</strong>
           </div>` : ''}
 
-          ${(isProfileFieldVisible("room_1st_year") && student.room_1st_year?.room_no && !student.room_2nd_year?.room_no) ? `
-          <div class="profile-item room-item" data-room-id="${student.room_1st_year.room_no}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
-            <span>${currentLang === 'bn' ? 'রুম (১ম বর্ষ)' : 'ROOM (1st Year)'}</span>
-            <strong>${showRoom1 ? `ROOM ${student.room_1st_year.room_no}${student.room_1st_year.bedmate_name ? ` · Bedmate: ${student.room_1st_year.bedmate_name}` : ''}` : maskData("ROOM 102") + smallLockIconSvg}</strong>
-          </div>` : ''}
+          ${(() => {
+            const r1No = student.room_1st_year?.room_no;
+            const r1MateName = student.room_1st_year?.bedmate_name;
+            const r1Mate = findStudentByNameOrSlug(student.room_1st_year?.bedmate_slug || r1MateName);
+            const isR1Vis = isProfileFieldVisible("room_1st_year");
+            return buildProfileRoomBox(
+              currentLang === 'bn' ? 'রুম ও বেডমেট (১ম বর্ষ)' : 'Room & Bedmate (1st Year)',
+              r1No,
+              r1MateName,
+              r1Mate,
+              showRoom1,
+              isR1Vis
+            );
+          })()}
 
-          ${(isProfileFieldVisible("room_2nd_year") && (student.room_2nd_year?.room_no || student.room)) ? `
-          <div class="profile-item room-item" data-room-id="${student.room_2nd_year?.room_no || student.room}" style="cursor: pointer;" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to view room details'}">
-            <span>${student.room_2nd_year?.room_no ? (currentLang === 'bn' ? 'রুম (২য় বর্ষ)' : 'ROOM (2nd Year)') : (currentLang === 'bn' ? 'রুম' : 'ROOM')}</span>
-            <strong>${showRoom2 ? `ROOM ${student.room_2nd_year?.room_no || student.room}${student.room_2nd_year?.bedmate_name ? ` · Roommate: ${student.room_2nd_year.bedmate_name}` : ''}` : maskData("ROOM 317") + smallLockIconSvg}</strong>
-          </div>` : ''}
+          ${(() => {
+            const r2No = student.room_2nd_year?.room_no || student.room;
+            const r2MateName = student.room_2nd_year?.bedmate_name;
+            const r2Mate = findStudentByNameOrSlug(student.room_2nd_year?.bedmate_slug || r2MateName);
+            const isR2Vis = isProfileFieldVisible("room_2nd_year");
+            return buildProfileRoomBox(
+              currentLang === 'bn' ? 'রুম ও রুমমেট (২য় বর্ষ)' : 'Room & Roommate (2nd Year)',
+              r2No,
+              r2MateName,
+              r2Mate,
+              showRoom2,
+              isR2Vis
+            );
+          })()}
 
           ${(isProfileFieldVisible("whatsapp") && hasVal(whatsappNum)) ? (!showWhatsApp ? `
           <a href="profile.html" class="profile-item locked-item" title="${currentLang === 'bn' ? 'লগইন করে দেখতে ক্লিক করুন' : 'Click to log in and view'}">
@@ -6007,6 +6108,28 @@ function openStudentModal(student) {
       </div>
     </div>
   `;
+
+  
+  // Attach room button clicks
+  content.querySelectorAll('.profile-room-badge-link[data-room-id]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const rId = btn.getAttribute('data-room-id');
+      if (rId) openRoomModal(rId);
+    });
+  });
+
+  // Attach roommate button clicks to open that student's profile directly
+  content.querySelectorAll('.profile-roommate-pill-link[data-open-mate-id]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const mId = btn.getAttribute('data-open-mate-id');
+      const targetStudent = students.find(s => String(s.id) === String(mId));
+      if (targetStudent) openStudentModal(targetStudent);
+    });
+  });
 
   modal.classList.remove("is-gallery-modal", "is-room-modal");
   modal.classList.add("open");
@@ -6346,13 +6469,42 @@ function renderBirthdays() {
 
   const searchInput = byId("birthdaySearch");
   const query = (searchInput?.value || "").trim().toLowerCase();
-  const activeMonthFilter = container.dataset.monthFilter || "all";
 
-  // Filter students based on query and active month filter
+  const monthSelect = byId("bdayMonthFilter");
+  const batchSelect = byId("bdayBatchFilter");
+  const groupSelect = byId("bdayGroupFilter");
+  const bloodSelect = byId("bdayBloodFilter");
+  const todayToggle = byId("bdayTodayToggle");
+
+  const monthFilter = monthSelect?.value || container.dataset.monthFilter || "all";
+  const batchFilter = batchSelect?.value || "all";
+  const groupFilter = groupSelect?.value || "all";
+  const bloodFilter = bloodSelect?.value || "all";
+  const onlyToday = !!todayToggle?.checked;
+
+  const today = new Date();
+  const currentMonth = today.getMonth() + 1;
+  const currentDay = today.getDate();
+
+  // Filter students
   let list = students.filter(s => {
     const bInfo = getStudentBirthdayInfo(s);
-    if (activeMonthFilter !== "all" && bInfo.month !== parseInt(activeMonthFilter, 10)) {
+
+    if (monthFilter !== "all" && bInfo.month !== parseInt(monthFilter, 10)) {
       return false;
+    }
+    if (batchFilter !== "all") {
+      const sBatch = s.batch || "HSC-27";
+      if (sBatch !== batchFilter) return false;
+    }
+    if (groupFilter !== "all") {
+      if (s.group !== groupFilter) return false;
+    }
+    if (bloodFilter !== "all") {
+      if ((s.blood || s.blood_group) !== bloodFilter) return false;
+    }
+    if (onlyToday) {
+      if (bInfo.month !== currentMonth || bInfo.day !== currentDay) return false;
     }
     if (!query) return true;
     const nameMatch = (s.name || "").toLowerCase().includes(query) || (s.bn?.name || "").includes(query);
@@ -6373,168 +6525,93 @@ function renderBirthdays() {
     batchMap[b].push(s);
   });
 
-  // Sort batches descending (e.g. HSC-28, then HSC-27, then older)
+  // Sort batches descending
   const sortedBatches = Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
 
   if (!sortedBatches.length) {
-    container.innerHTML = `
-      <div class="empty-state" style="padding: 40px; text-align: center; background: var(--surface-strong); border-radius: 14px; border: 1px dashed var(--border);">
-        <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">🎂</span>
-        <h3 style="margin-bottom: 8px;">${currentLang === "bn" ? "কোনো শিক্ষার্থীর জন্মদিন পাওয়া যায়নি" : "No birthdays found"}</h3>
-        <p style="color: var(--text-muted);">${currentLang === "bn" ? "অন্য কোনো নাম বা মাস দিয়ে পুনরায় খুঁজুন।" : "Try searching with a different name or month."}</p>
-      </div>
-    `;
+    container.innerHTML = `<div class="empty-state">${currentLang === "bn" ? "কোনো শিক্ষার্থীর জন্মদিন পাওয়া যায়নি।" : "No student birthdays found."}</div>`;
     return;
   }
 
-  const now = new Date();
-  const curMonth = now.getMonth() + 1;
-  const curDay = now.getDate();
-
   let html = "";
-  sortedBatches.forEach((batchKey, bIndex) => {
-    // Within each batch, sort students chronologically from Jan 1 to Dec 31
-    const batchStudents = batchMap[batchKey].slice().sort((a, b) => {
+  sortedBatches.forEach(batchKey => {
+    const batchStudents = batchMap[batchKey];
+    batchStudents.sort((a, b) => {
       const aInfo = getStudentBirthdayInfo(a);
       const bInfo = getStudentBirthdayInfo(b);
       return aInfo.sortVal - bInfo.sortVal;
     });
 
-    // The user requested:
-    // "leatest 2 ta batch er student er bithday pase name etay thakbe serial onujawi. jar birth age tar age janurary theke december porjonoto. tar ager batch off kora thakbe heading e click ba dekte chaile open hobe"
-    const isDefaultOpen = bIndex < 2; // Latest 2 batches open by default!
-    const isLatest = bIndex === 0;
+    html += `
+      <div class="birthday-batch-block" data-aos="fade-up">
+        <div class="batch-section-header" style="margin: 28px 0 16px;">
+          <h2 class="batch-title" style="display:flex; align-items:center; gap:8px;">${BATCH_LOGO_SVG} ${batchKey}</h2>
+          <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন' : 'Students'}</span>
+        </div>
+        <div class="birthday-list">
+    `;
+
+    batchStudents.forEach((student, index) => {
+      const bInfo = getStudentBirthdayInfo(student);
+      const hasValidDate = bInfo.month <= 12;
+      const isToday = hasValidDate && bInfo.month === currentMonth && bInfo.day === currentDay;
+
+      let dateDisplay = "-";
+      if (hasValidDate) {
+        if (currentLang === "bn") {
+          dateDisplay = `${toBengaliDigits(bInfo.day)} ${monthFullBn[bInfo.month - 1]}`;
+        } else {
+          dateDisplay = `${bInfo.day} ${monthNamesEn[bInfo.month - 1]}`;
+        }
+      }
+
+      const showPhoto = isProfileFieldVisible("photo");
+      const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
+      const photoSrc = (showPhoto && isPhotoUnlocked) ? student.img : "images/student-avatar.png";
+      const name = isProfileFieldUnlocked("name", student) ? studentValue(student, "name") : maskData(studentValue(student, "name"));
+      const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
+      const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
+      const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : maskData(roomVal);
+
+      html += `
+        <article class="birthday-card ${isToday ? 'birthday-today' : ''}" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 40, 200)}">
+          <div class="bday-avatar-wrap">
+            <img src="${photoSrc}" alt="${name}" loading="lazy">
+            ${isToday ? `<span class="today-badge">${BIRTHDAY_LOGO_SVG}</span>` : ''}
+          </div>
+          <div class="bday-info">
+            <h3 class="bday-name">${name}</h3>
+            <p class="bday-meta">
+              <span class="pill">${student.batch || 'HSC-27'}</span>
+              <span class="pill">${groupLabel(student.group)}</span>
+              ${roomVal !== '-' ? `<span class="pill">${t("common.room")} ${roomDisplay}</span>` : ''}
+            </p>
+          </div>
+          <div class="bday-date-wrap">
+            <span class="bday-date-text ${isToday ? 'today-highlight' : ''}">${dateDisplay}</span>
+            ${isToday ? `<span class="today-pill">${currentLang === 'bn' ? 'শুভ জন্মদিন!' : 'Today!'}</span>` : ''}
+          </div>
+        </article>
+      `;
+    });
 
     html += `
-      <div class="batch-birthday-wrapper ${isDefaultOpen ? 'is-open' : 'is-collapsed'}" id="batchSection-${batchKey}" data-batch="${batchKey}" style="margin-bottom: 32px;">
-        <div class="batch-birthday-header" onclick="toggleBirthdayBatch('${batchKey}')" style="cursor: pointer; user-select: none;">
-          <div class="batch-header-inner">
-            <h2 class="batch-heading">
-              <span class="batch-icon">${BIRTHDAY_LOGO_SVG}</span>
-              <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : (currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:')}</span>
-              <span class="batch-badge">${batchKey}</span>
-              ${!isDefaultOpen ? `<span class="batch-click-hint" style="font-size: 0.78rem; color: var(--accent); margin-left: 6px; font-weight: 600;">${currentLang === 'bn' ? '(ক্লিক করে দেখুন)' : '(Click to expand)'}</span>` : ''}
-            </h2>
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'টি জন্মদিন' : 'Birthdays'}</span>
-              <span class="batch-toggle-arrow" style="font-size: 0.95rem; color: var(--accent); transition: transform 0.2s ease;">${isDefaultOpen ? '▲' : '▼'}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="batch-birthday-body" style="display: ${isDefaultOpen ? 'grid' : 'none'}; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px;">
-          ${batchStudents.map((student) => {
-            const bInfo = getStudentBirthdayInfo(student);
-            const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
-            const photo = isPhotoUnlocked ? (normalizeCmsPath(student.img || student.photo) || "images/logo.png") : "images/student-avatar.png";
-            const isNameUnlocked = isProfileFieldUnlocked("name", student);
-            const nameDisplay = isNameUnlocked ? studentValue(student, "name") : "••••••••";
-            const isDobUnlocked = isProfileFieldUnlocked("dob", student);
-            const isToday = isDobUnlocked && (bInfo.month === curMonth && bInfo.day === curDay);
-            
-            // Upcoming within next 7 days
-            let isUpcoming = false;
-            if (!isToday && bInfo.month >= 1 && bInfo.month <= 12) {
-              const bdayThisYear = new Date(now.getFullYear(), bInfo.month - 1, bInfo.day);
-              const diffMs = bdayThisYear - now;
-              const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-              if (diffDays > 0 && diffDays <= 7) {
-                isUpcoming = true;
-              }
-            }
-
-            const monthShort = isDobUnlocked ? (bInfo.month <= 12 ? (currentLang === "bn" ? monthNamesBn[bInfo.month - 1] : monthNamesEn[bInfo.month - 1]) : "--") : "••";
-            const dayStr = isDobUnlocked ? (bInfo.day <= 31 ? (currentLang === "bn" ? toBengaliDigits(String(bInfo.day)) : String(bInfo.day)) : "--") : "••";
-            const fullDateStr = isDobUnlocked ? (bInfo.month <= 12 ? (currentLang === "bn" ? `${dayStr} ${monthFullBn[bInfo.month - 1]}` : `${dayStr} ${monthFullEn[bInfo.month - 1]}`) : (student.dob || "--")) : "•• ••••";
-
-            const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
-            const isRollUnlocked = isProfileFieldUnlocked("roll", student);
-            const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
-            const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? `ROOM ${toBengaliDigits(roomVal)}` : `ROOM ${roomVal}`) : "ROOM •••";
-            const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? `রোল ${toBengaliDigits(student.roll || "")}` : `Roll ${student.roll || ""}`) : "Roll •••";
-
-            return `
-              <article class="birthday-card ${isToday ? 'is-today-birthday' : ''}" onclick="openStudentModalFromBirthday('${student.slug}')" tabindex="0" role="button" aria-label="${studentValue(student, 'name')}">
-                <div class="bday-date-badge ${isToday ? 'bday-badge-today-glow' : ''}">
-                  <span class="bday-badge-month">${monthShort}</span>
-                  <span class="bday-badge-day">${dayStr}</span>
-                </div>
-                <div class="bday-avatar-wrap">
-                  <img class="bday-avatar" src="${photo}" alt="" loading="lazy">
-                  ${isToday ? `<span class="bday-party-icon" title="Happy Birthday!">🎉</span>` : ''}
-                </div>
-                <div class="bday-card-body">
-                  <div class="bday-name-row">
-                    <h3 class="bday-name">${nameDisplay}</h3>
-                    ${isToday ? `<span class="bday-pill today-pill">${currentLang === 'bn' ? '🎂 আজ জন্মদিন!' : '🎂 Today!'}</span>` : (isUpcoming ? `<span class="bday-pill upcoming-pill">${currentLang === 'bn' ? 'শীঘ্রই' : 'Soon'}</span>` : '')}
-                  </div>
-                  <div class="bday-meta-pills">
-                    <span class="bday-meta-pill">${roomDisplay}</span>
-                    <span class="bday-meta-pill">${groupLabel(student.group)}</span>
-                  </div>
-                  <div class="bday-date-label">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                      <line x1="16" y1="2" x2="16" y2="6"/>
-                      <line x1="8" y1="2" x2="8" y2="6"/>
-                      <line x1="3" y1="10" x2="21" y2="10"/>
-                    </svg>
-                    <span>${fullDateStr}</span>
-                  </div>
-                </div>
-                <div class="bday-card-action">
-                  <span class="bday-view-arrow">&rarr;</span>
-                </div>
-              </article>
-            `;
-          }).join("")}
         </div>
       </div>
     `;
   });
 
   container.innerHTML = html;
-  initImageFallbacks();
-}
 
-window.openStudentModalFromBirthday = function(slug) {
-  const student = students.find(s => s.slug === slug || String(s.id) === String(slug));
-  if (student) openStudentModal(student);
-};
-
-window.toggleBirthdayBatch = function(batchKey) {
-  const wrapper = byId(`batchSection-${batchKey}`);
-  if (!wrapper) return;
-  const body = wrapper.querySelector('.batch-birthday-body');
-  const arrow = wrapper.querySelector('.batch-toggle-arrow');
-  const hint = wrapper.querySelector('.batch-click-hint');
-  if (!body) return;
-
-  const isOpen = body.style.display !== 'none';
-  if (isOpen) {
-    body.style.display = 'none';
-    wrapper.classList.remove('is-open');
-    wrapper.classList.add('is-collapsed');
-    if (arrow) arrow.textContent = '▼';
-    if (hint) hint.textContent = currentLang === 'bn' ? '(ক্লিক করে দেখুন)' : '(Click to expand)';
-  } else {
-    body.style.display = 'grid';
-    wrapper.classList.remove('is-collapsed');
-    wrapper.classList.add('is-open');
-    if (arrow) arrow.textContent = '▲';
-    if (hint) hint.textContent = currentLang === 'bn' ? '(বন্ধ করতে ক্লিক করুন)' : '(Click to collapse)';
-  }
-};
-
-window.filterBirthdayMonth = function(monthNum) {
-  const container = byId("birthdayContainer");
-  if (!container) return;
-  container.dataset.monthFilter = String(monthNum);
-  document.querySelectorAll('.bday-month-pill').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.month === String(monthNum));
+  // Add click listeners to open student modal
+  container.querySelectorAll('.birthday-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.getAttribute('data-student-id');
+      const st = students.find(s => String(s.id) === String(id));
+      if (st) openStudentModal(st);
+    });
   });
-  renderBirthdays();
-};
+}
 
 function initBirthdaySearch() {
   const searchInput = byId("birthdaySearch");
@@ -6566,6 +6643,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   initStudentSearch();
   initBirthdaySearch();
   initRoommateFilters();
+  initStudentViewToggle();
+  initCompactFilterDrawers();
   initStudentClicks();
   initResultClassFilter();
   initModal();
@@ -6711,7 +6790,10 @@ async function renderGalleryPage(galleryData) {
     const date = currentLang === "bn" ? (ev.date_formatted_bn || ev.date_formatted_en) : (ev.date_formatted_en || ev.date_formatted_bn);
     const batchLabel = ev.batches && ev.batches.length ? ev.batches.join(' · ') : '';
 
-    const previewPhotos = ev.photos || [];
+    const allPhotos = ev.photos || [];
+    const maxPreview = 5;
+    const previewPhotos = allPhotos.slice(0, maxPreview);
+    const remainingCount = allPhotos.length - maxPreview;
     const defaultCap = currentLang === "bn" ? (ev.default_caption_bn || ev.default_caption_en) : (ev.default_caption_en || ev.default_caption_bn);
     const photosHtml = previewPhotos.map((p, pIdx) => {
       const photoSrc = normalizeCmsPath(p.photo) || "images/hall/hostel-building.jpg";
@@ -6730,7 +6812,17 @@ async function renderGalleryPage(galleryData) {
           </button>
         </article>
       `;
-    }).join("");
+    }).join("") + (remainingCount > 0 ? `
+        <article class="dcsc-photo-card dcsc-photo-card-more" data-aos="fade-up" data-aos-delay="300">
+          <button type="button" class="dcsc-more-photos-tile" data-event-id="${ev.id}" style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:linear-gradient(135deg, rgba(16,185,129,0.12), rgba(16,185,129,0.22)); border:2px dashed var(--accent); border-radius:12px; cursor:pointer; color:var(--accent); transition:all 0.25s ease;">
+            <div style="width:48px; height:48px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.1rem; box-shadow:0 4px 12px rgba(16,185,129,0.35);">
+              +${remainingCount}
+            </div>
+            <span style="font-weight:700; font-size:0.95rem; color:var(--text);">${currentLang === 'bn' ? `আরও ${toBengaliDigits(remainingCount)}টি ছবি` : `${remainingCount} More Photos`}</span>
+            <span style="font-size:0.78rem; color:var(--accent); font-weight:600;">${currentLang === 'bn' ? 'সব দেখতে ক্লিক করুন &rarr;' : 'View all &rarr;'}</span>
+          </button>
+        </article>
+      ` : "");
 
     return `
       <section class="dcsc-event-section" data-event-id="${ev.id}">
@@ -6920,6 +7012,14 @@ async function renderGalleryPage(galleryData) {
     });
   });
 
+  
+  eventsContainer.querySelectorAll('.dcsc-more-photos-tile').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const eid = btn.getAttribute('data-event-id');
+      if (eid) showEventDetailView(eid);
+    });
+  });
+
   initGalleryFilters();
 
   // Check URL hash for direct event link (e.g. #event=freshers-2025)
@@ -7059,6 +7159,10 @@ function showEventDetailView(eventId) {
         ${batchLabel ? `<span class="event-meta-pill event-meta-batch">${GALLERY_ICONS.batch}<span>${batchLabel}</span></span>` : ""}
         ${photos.length ? `<span class="event-meta-pill event-meta-count">${GALLERY_ICONS.photos}<span>${photos.length} ${currentLang === "bn" ? "টি ফটো" : "Photos"}</span></span>` : ""}
         ${videos.length ? `<span class="event-meta-pill event-meta-count">${GALLERY_ICONS.videos}<span>${videos.length} ${currentLang === "bn" ? "টি ভিডিও" : "Videos"}</span></span>` : ""}
+        <button type="button" class="event-meta-pill event-meta-share" id="eventShareBtn" style="cursor:pointer; background:var(--surface-strong); border:1px solid var(--border); color:var(--text); padding:3px 12px; font-size:0.78rem; display:inline-flex; align-items:center; gap:6px;">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+          <span>${currentLang === "bn" ? "শেয়ার করুন" : "Share Event"}</span>
+        </button>
         ${allLocations.map(loc => `
           <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}" target="_blank" rel="noopener noreferrer" class="event-meta-pill event-meta-location" title="${currentLang === "bn" ? "গুগল ম্যাপে অনুসন্ধান করুন" : "Search on Google Maps"}">
             ${GALLERY_ICONS.location}<span>${loc}</span>${GALLERY_ICONS.external}
@@ -7075,6 +7179,25 @@ function showEventDetailView(eventId) {
   detailView.style.display = "block";
   window.location.hash = `#event=${eventId}`;
   window.scrollTo({ top: 0, behavior: "smooth" });
+
+  
+  const shareBtn = document.getElementById("eventShareBtn");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", () => {
+      const shareUrl = `${window.location.origin}/event/${eventId}`;
+      if (navigator.share) {
+        navigator.share({
+          title: title,
+          text: `${title} — International Hall Gallery`,
+          url: shareUrl
+        }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast(currentLang === "bn" ? "ইভেন্টের লিংক কপি করা হয়েছে!" : "Event link copied to clipboard!");
+        });
+      }
+    });
+  }
 
   const backBtn = document.getElementById("eventBackBtn");
   if (backBtn) {
@@ -7608,4 +7731,181 @@ function applyMenuVisibility() {
       });
     });
   });
+}
+
+
+// ==============================================================================
+// COMPACT FILTER DRAWERS & VIEW TOGGLE CONTROLLER
+// ==============================================================================
+
+function initStudentViewToggle() {
+  const gridBtn = byId("viewGridModeBtn");
+  const listBtn = byId("viewListModeBtn");
+  const grid = byId("studentGrid");
+  if (!grid || !gridBtn || !listBtn) return;
+
+  const savedMode = localStorage.getItem("student_view_mode") || "grid";
+  if (savedMode === "list") {
+    grid.classList.add("view-compact");
+    listBtn.classList.add("active");
+    gridBtn.classList.remove("active");
+  } else {
+    grid.classList.remove("view-compact");
+    gridBtn.classList.add("active");
+    listBtn.classList.remove("active");
+  }
+
+  gridBtn.addEventListener("click", () => {
+    grid.classList.remove("view-compact");
+    gridBtn.classList.add("active");
+    listBtn.classList.remove("active");
+    localStorage.setItem("student_view_mode", "grid");
+  });
+
+  listBtn.addEventListener("click", () => {
+    grid.classList.add("view-compact");
+    listBtn.classList.add("active");
+    gridBtn.classList.remove("active");
+    localStorage.setItem("student_view_mode", "list");
+  });
+}
+
+function initCompactFilterDrawers() {
+  // 1. Student Filter Drawer
+  const openStudentBtn = byId("openStudentFilterBtn");
+  const closeStudentBtn = byId("closeStudentFilterBtn");
+  const studentOverlay = byId("studentFilterOverlay");
+  const applyStudentBtn = byId("applyStudentFilterBtn");
+  const resetStudentBtn = byId("resetStudentFilterBtn");
+
+  if (openStudentBtn && studentOverlay) {
+    openStudentBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      studentOverlay.classList.add("active");
+    });
+    if (closeStudentBtn) {
+      closeStudentBtn.addEventListener("click", () => studentOverlay.classList.remove("active"));
+    }
+    studentOverlay.addEventListener("click", (e) => {
+      if (e.target === studentOverlay) studentOverlay.classList.remove("active");
+    });
+    if (applyStudentBtn) {
+      applyStudentBtn.addEventListener("click", () => {
+        studentOverlay.classList.remove("active");
+        renderStudents();
+      });
+    }
+    if (resetStudentBtn) {
+      resetStudentBtn.addEventListener("click", () => {
+        const batchSel = byId("studentBatchFilter");
+        const groupSel = byId("studentGroupFilter");
+        const secSel = byId("studentSectionFilter");
+        const bloodSel = byId("studentBloodFilter");
+        if (batchSel) batchSel.value = "all";
+        if (groupSel) groupSel.value = "all";
+        if (secSel) secSel.value = "all";
+        if (bloodSel) bloodSel.value = "all";
+        studentOverlay.classList.remove("active");
+        renderStudents();
+      });
+    }
+
+    // Live update when selecting in student drawer
+    ["studentBatchFilter", "studentGroupFilter", "studentSectionFilter", "studentBloodFilter"].forEach(id => {
+      const el = byId(id);
+      if (el) el.addEventListener("change", () => renderStudents());
+    });
+  }
+
+  // 2. Roommate Filter Drawer
+  const openRoomBtn = byId("openRoomFilterBtn");
+  const closeRoomBtn = byId("closeRoomFilterBtn");
+  const roomOverlay = byId("roomFilterOverlay");
+  const applyRoomBtn = byId("applyRoomFilterBtn");
+  const resetRoomBtn = byId("resetRoomFilterBtn");
+
+  if (openRoomBtn && roomOverlay) {
+    openRoomBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      roomOverlay.classList.add("active");
+    });
+    if (closeRoomBtn) {
+      closeRoomBtn.addEventListener("click", () => roomOverlay.classList.remove("active"));
+    }
+    roomOverlay.addEventListener("click", (e) => {
+      if (e.target === roomOverlay) roomOverlay.classList.remove("active");
+    });
+    if (applyRoomBtn) {
+      applyRoomBtn.addEventListener("click", () => {
+        roomOverlay.classList.remove("active");
+        renderRoommates();
+      });
+    }
+    if (resetRoomBtn) {
+      resetRoomBtn.addEventListener("click", () => {
+        const bSel = byId("roomBatchFilter");
+        const ySel = byId("roomYearFilter");
+        const fSel = byId("roomFloorFilter");
+        const cSel = byId("roomCapacityFilter");
+        if (bSel) bSel.value = "all";
+        if (ySel) ySel.value = "all";
+        if (fSel) fSel.value = "all";
+        if (cSel) cSel.value = "all";
+        roomOverlay.classList.remove("active");
+        renderRoommates();
+      });
+    }
+
+    ["roomBatchFilter", "roomYearFilter", "roomFloorFilter", "roomCapacityFilter"].forEach(id => {
+      const el = byId(id);
+      if (el) el.addEventListener("change", () => renderRoommates());
+    });
+  }
+
+  // 3. Birthday Filter Drawer
+  const openBdayBtn = byId("openBdayFilterBtn");
+  const closeBdayBtn = byId("closeBdayFilterBtn");
+  const bdayOverlay = byId("bdayFilterOverlay");
+  const applyBdayBtn = byId("applyBdayFilterBtn");
+  const resetBdayBtn = byId("resetBdayFilterBtn");
+
+  if (openBdayBtn && bdayOverlay) {
+    openBdayBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      bdayOverlay.classList.add("active");
+    });
+    if (closeBdayBtn) {
+      closeBdayBtn.addEventListener("click", () => bdayOverlay.classList.remove("active"));
+    }
+    bdayOverlay.addEventListener("click", (e) => {
+      if (e.target === bdayOverlay) bdayOverlay.classList.remove("active");
+    });
+    if (applyBdayBtn) {
+      applyBdayBtn.addEventListener("click", () => {
+        bdayOverlay.classList.remove("active");
+        renderBirthdays();
+      });
+    }
+    if (resetBdayBtn) {
+      resetBdayBtn.addEventListener("click", () => {
+        const mSel = byId("bdayMonthFilter");
+        const bSel = byId("bdayBatchFilter");
+        const gSel = byId("bdayGroupFilter");
+        const blSel = byId("bdayBloodFilter");
+        const tTog = byId("bdayTodayToggle");
+        if (mSel) mSel.value = "all";
+        if (bSel) bSel.value = "all";
+        if (gSel) gSel.value = "all";
+        if (blSel) blSel.value = "all";
+        if (tTog) tTog.checked = false;
+        bdayOverlay.classList.remove("active");
+        renderBirthdays();
+      });
+    }
+
+    ["bdayMonthFilter", "bdayBatchFilter", "bdayGroupFilter", "bdayBloodFilter", "bdayTodayToggle"].forEach(id => {
+      const el = byId(id);
+      if (el) el.addEventListener("change", () => renderBirthdays());
+    });
+  }
 }

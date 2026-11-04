@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forms & Applications | Dhaka College International Hall</title>
+  <meta name="description" content="Online forms, surveys, seat applications and student submissions for Dhaka College International Hall.">
+  <meta name="author" content="Abdullah Al Adib (SE Adib)">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://dchall.pro.bd/form.html">
+
+  <link rel="icon" type="image/png" sizes="512x512" href="./favicon-512x512.png">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <meta name="theme-color" content="#0a1f38">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8XPR9LTKTM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8XPR9LTKTM');
+  </script>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("dc-hostel-theme") === "dark") {
+          document.documentElement.classList.add("dark");
+          document.documentElement.dataset.theme = "dark";
+        }
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=6.3">
+
+  <style>
+    .form-page-container {
+      max-width: 920px;
+      margin: 30px auto 60px;
+      padding: 0 16px;
+    }
+    .form-header-card {
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+    .form-batch-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      font-size: 0.8rem;
+      font-weight: 700;
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .form-main-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .form-description-text {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .form-direct-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 6px;
+      transition: color 0.2s ease;
+      width: fit-content;
+    }
+    .form-direct-btn:hover {
+      color: var(--accent);
+    }
+    .form-iframe-wrapper {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+      position: relative;
+      min-height: 700px;
+    }
+    .form-iframe-element {
+      width: 100%;
+      height: 900px;
+      border: none;
+      display: block;
+    }
+    .form-state-card {
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 50px 30px;
+      text-align: center;
+      max-width: 580px;
+      margin: 60px auto;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+    }
+    .form-state-card svg {
+      margin-bottom: 18px;
+    }
+    .form-state-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .form-state-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .form-btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+    .form-btn-primary:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body data-page="form">
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html" aria-label="DC Hostel home">
+        <img class="logo-img" src="images/logo.png" alt="International Hall logo" loading="lazy">
+        <span data-i18n="nav.logo">International Hall</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="students.html" data-i18n="nav.students">Students</a>
+        <a href="roommates.html" data-i18n="nav.roommates">Roommates</a>
+        <a href="notices.html" data-i18n="nav.notices">Notices</a>
+        <a href="birthday.html" data-i18n="nav.birthday">Birthdays</a>
+        <a href="results.html" data-i18n="nav.results">Results</a>
+        <a href="hostel.html" data-i18n="nav.hostel">Hostel Info</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="language-switch" aria-label="Language selector">
+          <button type="button" data-lang-option="en" title="English">EN</button>
+          <button type="button" data-lang-option="bn" title="বাংলা">BN</button>
+        </div>
+        <a href="profile.html" class="profile-toggle" id="profileBtn" aria-label="Profile Status / Login">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+        </a>
+        <button class="theme-toggle" id="toggle" type="button" aria-label="Toggle dark mode">
+          <span aria-hidden="true">&#9789;</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="form-page-container" id="formContainer">
+      <div class="form-state-card" id="formLoading">
+        <div class="spinner" style="margin: 0 auto 16px; width: 40px; height: 40px; border: 3px solid rgba(16,185,129,0.2); border-top-color: #10b981; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+        <h2 class="form-state-title">Loading Form...</h2>
+        <p class="form-state-desc">Connecting to Google Forms secure portal</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner"></div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="js/sanity-client.js?v=6.3"></script>
+  <script src="js/app.js?v=6.3"></script>
+
+  <script>
+    (async function initFormEmbed() {
+      const container = document.getElementById('formContainer');
+      const params = new URLSearchParams(window.location.search);
+      let slug = params.get('f') || params.get('slug');
+
+      // Also support pathname /form/:slug
+      if (!slug) {
+        const pathParts = window.location.pathname.split('/').filter(Boolean);
+        if (pathParts.length >= 2 && pathParts[0] === 'form') {
+          slug = pathParts[1].replace('.html', '');
+        }
+      }
+
+      if (!slug) {
+        container.innerHTML = `
+          <div class="form-state-card" data-aos="fade-up">
+            <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#ef4444" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <h2 class="form-state-title">Form Not Specified</h2>
+            <p class="form-state-desc">Please access the form through its assigned direct link (e.g. <code>dchall.pro.bd/form/hsc27</code>).</p>
+            <a href="index.html" class="form-btn-primary">Return to Home</a>
+          </div>`;
+        return;
+      }
+
+      try {
+        const query = encodeURIComponent(`*[_type == "hallForm" && slug.current == "${slug}"][0]`);
+        const url = `https://w16kaeyg.api.sanity.io/v2023-08-01/data/query/production?query=${query}`;
+        const res = await fetch(url);
+        const json = await res.json();
+        const formDoc = json.result;
+
+        if (!formDoc || formDoc.is_active === false) {
+          container.innerHTML = `
+            <div class="form-state-card" data-aos="fade-up">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#f59e0b" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <h2 class="form-state-title">Form Closed or Not Found</h2>
+              <p class="form-state-desc">This form is currently not accepting responses or does not exist.</p>
+              <a href="index.html" class="form-btn-primary">Return to Home</a>
+            </div>`;
+          return;
+        }
+
+        // Check if login required
+        if (formDoc.requires_login) {
+          const authUser = JSON.parse(localStorage.getItem('dc-hostel-auth-user') || 'null');
+          if (!authUser) {
+            container.innerHTML = `
+              <div class="form-state-card" data-aos="fade-up">
+                <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="#10b981" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <h2 class="form-state-title">Student Login Required</h2>
+                <p class="form-state-desc">This form is restricted to verified hostel students. Please login to your portal to proceed.</p>
+                <a href="profile.html" class="form-btn-primary">Login via Student Portal</a>
+              </div>`;
+            return;
+          }
+        }
+
+        const title = (window.currentLang === 'bn' && formDoc.title_bn) ? formDoc.title_bn : formDoc.title_en;
+        const desc = (window.currentLang === 'bn' && formDoc.description_bn) ? formDoc.description_bn : (formDoc.description_en || '');
+        const formUrl = formDoc.google_form_url.includes('?') ? `${formDoc.google_form_url}&embedded=true` : `${formDoc.google_form_url}?embedded=true`;
+
+        container.innerHTML = `
+          <div class="form-header-card" data-aos="fade-up">
+            <span class="form-batch-badge">${formDoc.batch || 'DC Hall'}</span>
+            <h1 class="form-main-title">${title}</h1>
+            ${desc ? `<p class="form-description-text">${desc}</p>` : ''}
+            <a href="${formDoc.google_form_url}" target="_blank" rel="noopener noreferrer" class="form-direct-btn">
+              <span>Open in new tab if form does not display properly</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+          </div>
+
+          <div class="form-iframe-wrapper" data-aos="fade-up">
+            <iframe class="form-iframe-element" src="${formUrl}" frameborder="0" marginheight="0" marginwidth="0">Loading form…</iframe>
+          </div>
+        `;
+      } catch (err) {
+        console.error('Error loading form:', err);
+        container.innerHTML = `
+          <div class="form-state-card">
+            <h2 class="form-state-title">Network Connection Notice</h2>
+            <p class="form-state-desc">Could not connect to the form database. Please check your internet connection.</p>
+            <a href="index.html" class="form-btn-primary">Return to Home</a>
+          </div>`;
+      }
+    })();
+  </script>
+</body>
+</html>

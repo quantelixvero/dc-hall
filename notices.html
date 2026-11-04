@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notices & Announcements | Dhaka College International Hall</title>
   <meta name="title" content="Notices & Announcements | Dhaka College International Hall">
-  <meta name="description" content="Official notices, urgent circulars, seat allocation results, and campus updates for Dhaka College International Hall.">
+  <meta name="description" content="Official notices, urgent circulars, seat allocation results, and administrative announcements for Dhaka College International Hall.">
   <meta name="keywords" content="dhaka college hostel notice, dc hall circulars, seat allocation notice, international hall announcements">
   <meta name="author" content="Abdullah Al Adib (SE Adib)">
   <meta name="robots" content="index, follow">
@@ -15,7 +15,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dchall.pro.bd/notices.html">
   <meta property="og:title" content="Notices & Announcements | Dhaka College International Hall">
-  <meta property="og:description" content="Official notices, urgent circulars and hostel announcements.">
+  <meta property="og:description" content="Official notices, urgent circulars, and hostel announcements.">
   <meta property="og:image" content="https://dchall.pro.bd/images/hostel-hero.jpg">
 
   <!-- Favicons -->
@@ -23,9 +23,36 @@
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
   <link rel="apple-touch-icon" sizes="192x192" href="favicon-192x192.png">
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
-  <link rel="stylesheet" href="css/style.css?v=6.2">
+  <link rel="stylesheet" href="css/style.css?v=6.3">
+
+  <!-- Schema.org BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://dchall.pro.bd/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Notices",
+        "item": "https://dchall.pro.bd/notices.html"
+      }
+    ]
+  }
+  </script>
 </head>
 <body data-page="notices">
   <header class="navbar" id="navbar">
@@ -56,32 +83,46 @@
     <!-- Hero Section -->
     <section class="page-hero" data-aos="fade-down">
       <div class="container">
-        <p class="eyebrow">Official Announcements & Circulars</p>
-        <h1>হলের নোটিশ ও ঘোষণা</h1>
-        <p class="hero-desc">ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাসের সর্বশেষ জরুরি নোটিশ, সিট বরাদ্দ, ছুটির বিজ্ঞপ্তি ও অফিশিয়াল নির্দেশনাবলী।</p>
+        <p class="eyebrow" data-i18n="notices.eyebrow">Official Announcements & Circulars</p>
+        <h1 data-i18n="notices.heroTitle">Notices & Circulars</h1>
+        <p class="hero-desc" data-i18n="notices.heroDesc">Official announcements, urgent circulars, seat allocation schedules, and administrative guidelines for Dhaka College International Hall.</p>
       </div>
     </section>
 
     <!-- Filter & Search Section -->
     <section class="section">
       <div class="container">
-        <div class="search-wrap" data-aos="fade-up" style="max-width: 680px; margin: 0 auto 20px;">
+        <div class="search-wrap" data-aos="fade-up" style="max-width: 680px; margin: 0 auto 24px; position: relative;">
           <label for="noticeSearch" class="sr-only">Search notices</label>
-          <input id="noticeSearch" class="search-input" type="search" placeholder="নোটিশের শিরোনাম বা বিষয়বস্তু দিয়ে খুঁজুন...">
+          <input id="noticeSearch" class="search-input" type="search" placeholder="Search notices by title, keyword, or date..." data-i18n-placeholder="notices.searchPlaceholder">
         </div>
 
-        <!-- Category Pills -->
-        <div class="bday-month-nav" id="noticeCategoryNav" data-aos="fade-up" style="margin-bottom: 28px;">
-          <button type="button" class="bday-month-pill active" data-cat="all">সকল নোটিশ</button>
-          <button type="button" class="bday-month-pill" data-cat="urgent">🚨 জরুরি</button>
-          <button type="button" class="bday-month-pill" data-cat="hostel">🏛️ ছাত্রাবাস</button>
-          <button type="button" class="bday-month-pill" data-cat="general">📢 সাধারণ</button>
-          <button type="button" class="bday-month-pill" data-cat="event">🎪 ইভেন্ট</button>
+        <!-- Clean Category Filter Pills (Zero Emojis, Pure SVGs) -->
+        <div class="bday-month-nav" id="noticeCategoryNav" data-aos="fade-up" style="margin-bottom: 32px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;">
+          <button type="button" class="bday-month-pill active" data-cat="all">
+            <span>All Notices</span>
+          </button>
+          <button type="button" class="bday-month-pill" data-cat="urgent">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <span>Urgent</span>
+          </button>
+          <button type="button" class="bday-month-pill" data-cat="hostel">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+            <span>Hostel & Seats</span>
+          </button>
+          <button type="button" class="bday-month-pill" data-cat="general">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/></svg>
+            <span>General</span>
+          </button>
+          <button type="button" class="bday-month-pill" data-cat="event">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+            <span>Events</span>
+          </button>
         </div>
 
         <!-- Notices Container -->
         <div id="noticesContainer" class="notices-grid" data-aos="fade-up">
-          <!-- Populated dynamically by app.js?v=6.2 -->
+          <!-- Populated dynamically by app.js?v=6.3 -->
         </div>
       </div>
     </section>
@@ -101,7 +142,7 @@
   </div>
 
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="js/sanity-client.js?v=6.2"></script>
-  <script src="js/app.js?v=6.2"></script>
+  <script src="js/sanity-client.js?v=6.3"></script>
+  <script src="js/app.js?v=6.3"></script>
 </body>
 </html>

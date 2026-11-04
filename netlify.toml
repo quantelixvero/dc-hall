@@ -3,6 +3,31 @@
   publish = "."
 
 [[redirects]]
+  from = "/form/:slug"
+  to = "/form.html?f=:slug"
+  status = 200
+
+[[redirects]]
+  from = "/form/*"
+  to = "/form.html?f=:splat"
+  status = 200
+
+[[redirects]]
+  from = "/event/:slug"
+  to = "/event/:slug.html"
+  status = 200
+
+[[redirects]]
+  from = "/event"
+  to = "/gallery.html"
+  status = 301
+
+[[redirects]]
+  from = "/event/*"
+  to = "/event/:splat.html"
+  status = 200
+
+[[redirects]]
   from = "/admin"
   to = "https://dchall.sanity.studio/"
   status = 301

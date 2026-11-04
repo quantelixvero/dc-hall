@@ -1,1430 +1,1217 @@
 {
   "students": [
     {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-adib1",
-      "_rev": "pibNmnyRwtkv8icCT9s5wf",
-      "_system": {
-        "base": {
-          "id": "student-adib1",
-          "rev": "w6dxIbU7uqwmxAcfE4BM5g"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-11-02T22:55:35Z",
-      "address_bn": "হাতিয়া, নোয়াখালী",
-      "address_en": "Hatia, Noakhali",
-      "batch": "HSC-27",
-      "bio_bn": "লক্ষ্য — এমন কিছু তৈরি করা যা আগে কেউ কখনও করেনি!",
-      "bio_en": "Goal — to create something no one has done before! ",
-      "blood_group": "A+",
-      "class_no": "12",
-      "dob": "04-Oct",
-      "dob_date": "2026-10-04",
-      "email": "quantelixvero@gmail.com",
-      "facebook": "https://www.facebook.com/seadix",
-      "full_roll": "1202526010139",
-      "group": "science",
-      "name_bn": "আবদুল্যাহ আল আদিব",
-      "name_en": "Abdullah Al Adib",
-      "phone": "01625329874",
-      "phone_has_telegram": true,
-      "phone_has_whatsapp": false,
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-91c3b44ee468a942b6c5f28f4de8658c6f12c8d9-1086x1448-png",
-          "_type": "reference"
-        }
-      },
-      "position": 1,
-      "practical_group": "A1",
-      "room_no": "325",
-      "room_ref": {
-        "_ref": "room-325",
-        "_type": "reference"
-      },
-      "section": "A",
       "short_roll": "139",
+      "name_bn": "আবদুল্যাহ আল আদিব",
+      "bio_en": "Goal — to create something no one has done before! ",
+      "pdfs": {
+        "ct1": "pdfs/adib1-11-ct1.pdf",
+        "ct2": "pdfs/adib1-11-ct2.pdf",
+        "hy": "pdfs/adib1-11-hy.pdf",
+        "ct3": "pdfs/adib1-11-ct3.pdf",
+        "yearly": "pdfs/adib1-11-y.pdf"
+      },
+      "bio_bn": "লক্ষ্য — এমন কিছু তৈরি করা যা আগে কেউ কখনও করেনি!",
+      "section": "A",
+      "room_no": "325",
+      "facebook": "https://www.facebook.com/seadix",
+      "class_no": "12",
+      "position": 1,
+      "group_en": "Science",
+      "father_phone": "-",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/adib1-12-ct1.pdf",
+        "ct2": "pdfs/adib1-12-ct2.pdf",
+        "hy": "pdfs/adib1-12-hy.pdf",
+        "ct3": "pdfs/adib1-12-ct3.pdf",
+        "yearly": "pdfs/adib1-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010139",
+      "phone": "01625329874",
+      "photo": "images/adib1.jpg",
+      "messenger": "seadix/",
+      "address_en": "Hatia, Noakhali",
+      "practical_group": "A2",
+      "address_bn": "হাতিয়া, নোয়াখালী",
+      "roommate_ids": [
+        "sakil4"
+      ],
+      "blood_group": "A+",
+      "email": "quantelixvero@gmail.com",
+      "name_en": "Abdullah Al Adib",
       "student_id": "adib1",
-      "whatsapp_alt": "01629014218"
+      "group": "science"
     },
     {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-santo2",
-      "_rev": "bWAWEe5pFZEk6wmJZ3yCqq",
-      "_system": {
-        "base": {
-          "id": "student-santo2",
-          "rev": "EzOmQIcRdlGhDyrGok4D6S"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:15:20Z",
-      "address_bn": "হাতিয়া, নোয়াখালী",
-      "address_en": "Hatia, Noakhali",
-      "batch": "HSC-27",
-      "bio_bn": "ঢাকা কলেজের একজন ডেডিকেটেড শিক্ষার্থী, যিনি একাডেমিক উৎকর্ষতা অর্জন এবং ভবিষ্যতের লক্ষ্যকে সামনে রেখে নিজের সামগ্রিক উন্নয়নে বিশ্বাসী।",
+      "short_roll": "161",
+      "name_bn": "নাইমুল ইসলাম (সান্ত)",
       "bio_en": "A dedicated student of Dhaka College, striving for academic excellence and pursuing personal growth with a focus on future goals",
-      "blood_group": "O+",
-      "class_no": "12",
-      "custom_links": [],
-      "dob": "08-Dec",
-      "dob_bn": "০৮ ডিসেম্বর",
-      "dob_date": "2026-12-08",
-      "email": "mistersanto1000@gmail.com",
-      "facebook": "https://www.facebook.com/naimul.islam55",
-      "father_phone": "-",
-      "full_roll": "1202526010161",
-      "generated_pdf_names": {
+      "pdfs": {
         "ct1": "pdfs/santo2-11-ct1.pdf",
         "ct2": "pdfs/santo2-11-ct2.pdf",
-        "ct3": "pdfs/santo2-11-ct3.pdf",
         "hy": "pdfs/santo2-11-hy.pdf",
+        "ct3": "pdfs/santo2-11-ct3.pdf",
         "yearly": "pdfs/santo2-11-y.pdf"
       },
-      "group": "science",
-      "group_bn": "বিজ্ঞান",
-      "group_en": "Science",
-      "messenger": "naimul.islam55/",
-      "name_bn": "নাইমুল ইসলাম (সান্ত)",
-      "name_en": "Naimul Islam (Shanto)",
-      "phone": "01613601161",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-0a912cb1fab320ba9330c90f008308bf78b7d813-1086x1449-png",
-          "_type": "reference"
-        }
-      },
-      "position": 2,
-      "practical_group": "B1",
+      "bio_bn": "ঢাকা কলেজের একজন ডেডিকেটেড শিক্ষার্থী, যিনি একাডেমিক উৎকর্ষতা অর্জন এবং ভবিষ্যতের লক্ষ্যকে সামনে রেখে নিজের সামগ্রিক উন্নয়নে বিশ্বাসী।",
+      "section": "B",
       "room_no": "317",
-      "room_ref": {
-        "_ref": "room-317",
-        "_type": "reference"
+      "facebook": "https://www.facebook.com/naimul.islam55",
+      "class_no": "12",
+      "position": 2,
+      "group_en": "Science",
+      "father_phone": "-",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/santo2-12-ct1.pdf",
+        "ct2": "pdfs/santo2-12-ct2.pdf",
+        "hy": "pdfs/santo2-12-hy.pdf",
+        "ct3": "pdfs/santo2-12-ct3.pdf",
+        "yearly": "pdfs/santo2-12-y.pdf"
       },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010161",
+      "phone": "01613601161",
+      "photo": "assets/uploads/shanto.png",
+      "messenger": "naimul.islam55/",
+      "address_en": "Hatia, Noakhali",
+      "practical_group": "B1",
+      "address_bn": "হাতিয়া, নোয়াখালী",
       "roommate_ids": [
         "jahid3"
       ],
-      "section": "B",
-      "short_roll": "161",
-      "student_id": "santo2"
+      "blood_group": "O+",
+      "email": "mistersanto1000@gmail.com",
+      "name_en": "Naimul Islam (Shanto)",
+      "student_id": "santo2",
+      "group": "science"
     },
     {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-jahid3",
-      "_rev": "IKKIB31tTDKSiCa5T1DrBU",
-      "_system": {
-        "base": {
-          "id": "student-jahid3",
-          "rev": "IKKIB31tTDKSiCa5T0y2b8"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:15:27Z",
-      "address_bn": "হাতিয়া, নোয়াখালী",
-      "address_en": "Hatia, Noakhali",
-      "batch": "HSC-27",
-      "bio_bn": "I'm SIGMA The Zahid",
+      "short_roll": "164",
+      "name_bn": "মোঃ জাহিদুল ইসলাম",
       "bio_en": "I'm SIGMA The Zahid",
-      "blood_group": "A+",
-      "class_no": "12",
-      "custom_links": [],
-      "dob": "07-Jan",
-      "dob_bn": "০৭ জানুয়ারি",
-      "dob_date": "2026-01-07",
-      "email": "zahidsigma164@gmail.com",
-      "facebook": "https://www.facebook.com/share/1BABcH2cjn/",
-      "father_phone": "-",
-      "full_roll": "1202526010164",
-      "generated_pdf_names": {
+      "pdfs": {
         "ct1": "pdfs/jahid3-11-ct1.pdf",
         "ct2": "pdfs/jahid3-11-ct2.pdf",
-        "ct3": "pdfs/jahid3-11-ct3.pdf",
         "hy": "pdfs/jahid3-11-hy.pdf",
+        "ct3": "pdfs/jahid3-11-ct3.pdf",
         "yearly": "pdfs/jahid3-11-y.pdf"
       },
-      "group": "science",
-      "group_bn": "বিজ্ঞান",
-      "group_en": "Science",
-      "messenger": "1BABcH2cjn",
-      "name_bn": "মোঃ জাহিদুল ইসলাম",
-      "name_en": "Md Zahidul Islam",
-      "phone": "01844474892",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-dd8138c9b81a93df9930deaf10ce24cfd2c55003-1086x1448-png",
-          "_type": "reference"
-        }
-      },
-      "position": 3,
-      "practical_group": "B1",
+      "bio_bn": "I'm SIGMA The Zahid",
+      "section": "B",
       "room_no": "317",
-      "room_ref": {
-        "_ref": "room-317",
-        "_type": "reference"
+      "facebook": "https://www.facebook.com/share/1BABcH2cjn/",
+      "class_no": "12",
+      "position": 3,
+      "group_en": "Science",
+      "father_phone": "-",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/jahid3-12-ct1.pdf",
+        "ct2": "pdfs/jahid3-12-ct2.pdf",
+        "hy": "pdfs/jahid3-12-hy.pdf",
+        "ct3": "pdfs/jahid3-12-ct3.pdf",
+        "yearly": "pdfs/jahid3-12-y.pdf"
       },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010164",
+      "phone": "01844474892",
+      "photo": "assets/uploads/jahid.jpg",
+      "messenger": "1BABcH2cjn",
+      "address_en": "Hatia, Noakhali",
+      "practical_group": "B1",
+      "address_bn": "হাতিয়া, নোয়াখালী",
       "roommate_ids": [
         "santo2"
       ],
-      "section": "B",
-      "short_roll": "164",
-      "student_id": "jahid3"
+      "blood_group": "A+",
+      "email": "zahidsigma164@gmail.com",
+      "name_en": "Md Zahidul Islam",
+      "student_id": "jahid3",
+      "group": "science"
     },
     {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-sakil4",
-      "_rev": "bWAWEe5pFZEk6wmJZ3xJ56",
-      "_system": {
-        "base": {
-          "id": "student-sakil4",
-          "rev": "bWAWEe5pFZEk6wmJYxnsVo"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:06:26Z",
-      "address_bn": "কাঞ্চন, রূপগঞ্জ, নারায়ণগঞ্জ",
-      "address_en": "Kanchan, Rupganj, Narayanganj",
-      "batch": "HSC-27",
-      "bio_bn": "CT-1 Pass",
-      "bio_en": "CT-1 Pass",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "08-Oct",
-      "dob_date": "2026-10-08",
-      "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01758684640",
-      "full_roll": "1202526010326",
-      "group": "science",
-      "name_bn": "মোঃ শাকিল শেখ",
-      "name_en": "Md. Shakil Sheikh",
-      "phone": "01739554600",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-c201800776c7dda13c910fabc9774b5abeb28681-964x1280-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 4,
-      "practical_group": "C1",
-      "room_no": "325",
-      "room_ref": {
-        "_ref": "room-325",
-        "_type": "reference"
-      },
-      "section": "C",
       "short_roll": "326",
-      "student_id": "sakil4"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-sasfkat5",
-      "_rev": "bWAWEe5pFZEk6wmJZ3yJU8",
-      "_system": {
-        "base": {
-          "id": "student-sasfkat5",
-          "rev": "EzOmQIcRdlGhDyrGok4FAk"
-        }
+      "name_bn": "মোঃ শাকিল শেখ",
+      "bio_en": "CT-1 Pass",
+      "pdfs": {
+        "ct1": "pdfs/sakil4-11-ct1.pdf",
+        "ct2": "pdfs/sakil4-11-ct2.pdf",
+        "hy": "pdfs/sakil4-11-hy.pdf",
+        "ct3": "pdfs/sakil4-11-ct3.pdf",
+        "yearly": "pdfs/sakil4-11-y.pdf"
       },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:15:35Z",
-      "address_bn": "দেবই, রূপগঞ্জ, নারায়ণগঞ্জ",
-      "address_en": "Deboi, Rupganj, Narayanganj",
-      "batch": "HSC-27",
-      "bio_bn": "CT-1= Absent, CT-2= Absent, Half yearly = Absent, CT-3= loading, Year FINAL= Loading",
-      "bio_en": "CT-1= Absent, CT-2= Absent, Half yearly = Absent, CT-3= loading, Year FINAL= Loading",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "01-Jan",
-      "dob_date": "2026-01-01",
-      "email": "shafkatrahmandkam@gmail.com",
-      "facebook": "https://www.facebook.com/share/18oRrju5zF/",
-      "father_phone": "-",
-      "full_roll": "1202526010008",
-      "group": "science",
-      "messenger": "18oRrju5zF",
-      "name_bn": "শাফকাত রহমান",
-      "name_en": "Shafkat Rahman",
-      "phone": "01996569688",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-ade1768b79fed045d91315c2be87bf2958964f76-1474x1843-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 5,
-      "practical_group": "A1",
-      "room_no": "318",
-      "room_ref": {
-        "_ref": "room-318",
-        "_type": "reference"
-      },
-      "section": "A",
-      "short_roll": "008",
-      "student_id": "sasfkat5"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-munsi6",
-      "_rev": "bWAWEe5pFZEk6wmJZ3yBum",
-      "_system": {
-        "base": {
-          "id": "student-munsi6",
-          "rev": "EzOmQIcRdlGhDyrGojoeFc"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:13:47Z",
-      "address_bn": "ছোট আলমপুর, দেবিদ্বার, কুমিল্লা",
-      "address_en": "Choto Alampur, Debidwar, Cumilla",
-      "batch": "HSC-27",
-      "blood_group": "B+",
-      "class_no": "12",
-      "dob": "23-Dec",
-      "dob_date": "2026-12-23",
-      "email": "usage3913@gmail.com",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01319061472",
-      "full_roll": "1202526010022",
-      "group": "science",
-      "name_bn": "শাহরিয়ার আল সাকিব মুন্সি",
-      "name_en": "Shahriar Al Sakib Munshi",
-      "phone": "01577203120",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-4de4d8676398bccf9ac7bd066c5ec1ba80c43329-857x1280-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 6,
-      "practical_group": "A1",
-      "room_no": "315",
-      "room_ref": {
-        "_ref": "room-315",
-        "_type": "reference"
-      },
-      "section": "A",
-      "short_roll": "022",
-      "student_id": "munsi6"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-musfik7",
-      "_rev": "EzOmQIcRdlGhDyrGokFGc6",
-      "_system": {
-        "base": {
-          "id": "student-musfik7",
-          "rev": "EzOmQIcRdlGhDyrGok1qas"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:14:56Z",
-      "address_bn": "দক্ষিণ সাকুচিয়া, মনপুরা, ভোলা",
-      "address_en": "South Sakuchia, Monpura, Bhola",
-      "batch": "HSC-27",
-      "blood_group": "A+",
-      "class_no": "12",
-      "dob": "21-Aug",
-      "dob_date": "2026-08-21",
-      "email": "mushfiq88bd@gmail.com",
-      "facebook": "https://www.facebook.com/share/18osDPmvYU/",
-      "father_phone": "-",
-      "full_roll": "1202526010122",
-      "group": "science",
-      "messenger": "18osDPmvYU",
-      "name_bn": "মোঃ মুশফিকুর রহমান",
-      "name_en": "Md. Mushfiqur Rahman",
-      "phone": "01577390514",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-70e24f390f793ee907730b95eecce80473450dd0-1468x1806-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 7,
-      "practical_group": "A2",
-      "room_no": "316",
-      "room_ref": {
-        "_ref": "room-316",
-        "_type": "reference"
-      },
-      "section": "A",
-      "short_roll": "122",
-      "student_id": "musfik7"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-riyad19",
-      "_rev": "bWAWEe5pFZEk6wmJZ3vHaS",
-      "_system": {
-        "base": {
-          "id": "student-riyad19",
-          "rev": "bWAWEe5pFZEk6wmJYyCzia"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T21:54:03Z",
-      "address_bn": "পূর্বাচল, রূপগঞ্জ, নারায়ণগঞ্জ",
-      "address_en": "Purbachal, Rupganj , Narayanganj ",
-      "batch": "HSC-27",
-      "bio_bn": "আমার আইনজীবী আমাকে এই অংশটি খালি রাখতে বলেছেন। ⚖️🤐",
-      "bio_en": "My lawyer told me to leave this section blank. ⚖️🤐",
-      "blood_group": "B+",
-      "class_no": "12",
-      "dob": "17-May",
-      "dob_date": "2026-05-17",
-      "email": "tashfiqurrahmanriyad2009@gmail.com",
-      "facebook": "https://facebook.com/1C6xNqU8bA/",
-      "father_phone": "01732168077",
-      "full_roll": "1202526010596",
-      "group": "science",
-      "messenger": "m.me/1C6xNqU8bA/",
-      "name_bn": "তাশফিকুর রহমান রিয়াদ",
-      "name_en": "Tashfiqur Rahman Riyad",
-      "phone": "01871571833",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-126b5409f77ef7be00f76c075da61b6ab03a3388-1309x1600-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 8,
-      "practical_group": "D2",
-      "room_no": "318",
-      "room_ref": {
-        "_ref": "room-318",
-        "_type": "reference"
-      },
-      "section": "D",
-      "short_roll": "596",
-      "student_id": "riyad19"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-nafis9",
-      "_rev": "EzOmQIcRdlGhDyrGokFHJu",
-      "_system": {
-        "base": {
-          "id": "student-nafis9",
-          "rev": "bWAWEe5pFZEk6wmJZ3v7Cu"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:15:09Z",
-      "address_bn": "রাণীশংকৈল, ঠাকুরগাঁও",
-      "address_en": "Ranisonkail, Thakurgaon",
-      "batch": "HSC-27",
-      "bio_bn": "Competition, I'm The Competition....",
-      "bio_en": "Competition, I'm The Competition....",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "12-Oct",
-      "dob_date": "2026-10-12",
-      "email": "tarifalam265@gmail.com",
-      "facebook": "https://www.facebook.com/share/1EDVSWD95F/",
-      "father_phone": "01738770330",
-      "full_roll": "1202526010141",
-      "group": "science",
-      "messenger": "1EDVSWD95F",
-      "name_bn": "নাফিস আলম তারিফ",
-      "name_en": "Nafis Alam Tarif",
-      "phone": "01346588124",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-91c128bcf3e64876f8c794fcf815aae7c1e9a200-766x1013-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 9,
-      "practical_group": "A2",
-      "room_no": "316",
-      "room_ref": {
-        "_ref": "room-316",
-        "_type": "reference"
-      },
-      "section": "A",
-      "short_roll": "141",
-      "student_id": "nafis9"
-    },
-    {
-      "_createdAt": "2026-09-29T00:20:02Z",
-      "_id": "student-sabit27",
-      "_rev": "bWAWEe5pFZEk6wmJZ3xNKK",
-      "_system": {
-        "base": {
-          "id": "student-sabit27",
-          "rev": "EzOmQIcRdlGhDyrGoREqs4"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:08:29Z",
-      "address_bn": "মরিচ পাশা, লোহাগড়া, নড়াইল",
-      "address_en": "Marich Pasha, Lohagara, Narail\n",
-      "batch": "HSC-27",
-      "blood_group": "AB+",
-      "class_no": "12",
-      "dob": "11-Feb",
-      "dob_date": "2026-02-11",
-      "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01971444941",
-      "full_roll": "1202526010171",
-      "group": "science",
-      "name_bn": "মুহাম্মদ রায়হানুর সাবিত ",
-      "name_en": "Muhammad Rayhanoor Sabit",
-      "phone": "01852223068",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-37bdb5dc463f02d9e09ea542d026d2f946bb65bd-1600x1200-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 10,
-      "practical_group": "B1",
-      "room_no": "327",
-      "room_ref": {
-        "_ref": "room-327",
-        "_type": "reference"
-      },
-      "section": "B",
-      "short_roll": "171",
-      "student_id": "sabit27"
-    },
-    {
-      "_createdAt": "2026-09-29T00:20:02Z",
-      "_id": "student-riasad23",
-      "_rev": "EzOmQIcRdlGhDyrGokDHpA",
-      "_system": {
-        "base": {
-          "id": "student-riasad23",
-          "rev": "bWAWEe5pFZEk6wmJYyCHEW"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:09:22Z",
-      "address_bn": "নতুন আমদহ আল্লারদর্গা, দৌলতপুর, কুষ্টিয়া ",
-      "address_en": "Notun Amdoho Allardarga, Daulatpur, Kushtia",
-      "batch": "HSC-27",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "26-Jul",
-      "dob_date": "2026-07-26",
-      "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01739269792",
-      "full_roll": "1202526010337",
-      "group": "science",
-      "name_bn": "সোবহান মাহমুদ খাঁন (রিয়াসাদ)",
-      "name_en": "Sobhan Mahmud Khan (Riasad)",
-      "phone": "01922407329",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-cd1615c51f8463982537a9dda9b277abe7761d35-1088x1445-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 11,
-      "practical_group": "C1",
-      "room_no": "327",
-      "room_ref": {
-        "_ref": "room-327",
-        "_type": "reference"
-      },
+      "bio_bn": "CT-1 Pass",
       "section": "C",
-      "short_roll": "337",
-      "student_id": "riasad23"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-siam12",
-      "_rev": "IKKIB31tTDKSiCa5T0y9rc",
-      "_system": {
-        "base": {
-          "id": "student-siam12",
-          "rev": "EzOmQIcRdlGhDyrGoa5yYi"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T21:54:56Z",
-      "address_bn": "মশিন্দা মাঝপাড়া, গুরুদাসপুর, নাটোর",
-      "address_en": "Moshinda Majpara, Gurudaspur, Natore",
-      "batch": "HSC-27",
-      "bio_bn": " I'm The Crazy Boy",
-      "bio_en": " I'm The Crazy Boy",
-      "blood_group": "B+",
-      "class_no": "12",
-      "dob": "17-Dec",
-      "dob_date": "2026-12-17",
-      "email": "siamhasananik01@gmail.com",
-      "facebook": "https://www.facebook.com/siam.hasan.anik.402132",
-      "father_phone": "01761866285",
-      "full_roll": "1202526010195",
-      "group": "science",
-      "messenger": "siam.hasan.anik.402132",
-      "name_bn": "সিয়াম হাসান (নাটোর)",
-      "name_en": "Siam Hasan (Natore)",
-      "phone": "01720265179",
-      "phone_has_whatsapp": false,
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-7d23ca2d76c54841ea8f5f8f5d7e05b14539a8f5-896x1195-png",
-          "_type": "reference"
-        }
-      },
-      "position": 12,
-      "practical_group": "B1",
-      "room_no": "319",
-      "room_ref": {
-        "_ref": "room-319",
-        "_type": "reference"
-      },
-      "section": "B",
-      "short_roll": "195",
-      "student_id": "siam12",
-      "telegram_alt": "01804692801",
-      "whatsapp_alt": "01804692801"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-siam13",
-      "_rev": "IKKIB31tTDKSiCa5T1DjJ4",
-      "_system": {
-        "base": {
-          "id": "student-siam13",
-          "rev": "IKKIB31tTDKSiCa5T0Xlae"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:13:08Z",
-      "address_bn": "খোরদা আইলচারা, কুষ্টিয়া সদর, কুষ্টিয়া",
-      "address_en": "Khorda Ailchara, Kushtia Sadar, Kushtia",
-      "batch": "HSC-27",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "05-Oct",
-      "dob_date": "2026-10-05",
-      "email": "-",
+      "room_no": "325",
       "facebook": "https://facebook.com/",
-      "father_phone": "01705633292",
-      "full_roll": "1202526010881",
-      "group": "science",
-      "name_bn": "মোঃ সিয়াম আলী (কুষ্টিয়া)",
-      "name_en": "Md. Siam Ali (Kustia)",
-      "phone": "01705310841",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-dad12f594384a5207e78e86204279a17eab80097-595x700-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 13,
-      "practical_group": "F2",
-      "room_no": "314",
-      "room_ref": {
-        "_ref": "room-314",
-        "_type": "reference"
-      },
-      "section": "F",
-      "short_roll": "881",
-      "student_id": "siam13"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-saimun14",
-      "_rev": "bWAWEe5pFZEk6wmJZ3vqAy",
-      "_system": {
-        "base": {
-          "id": "student-saimun14",
-          "rev": "bWAWEe5pFZEk6wmJZ3vpmm"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T21:59:44Z",
-      "address_bn": "বাইপাইল, সাভার, ঢাকা",
-      "address_en": "Baipail, Savar, Dhaka",
-      "batch": "HSC-27",
-      "blood_group": "AB+",
       "class_no": "12",
-      "dob": "15-Sep",
-      "dob_date": "2026-09-15",
-      "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "-",
-      "full_roll": "1202526010322",
-      "group": "science",
-      "name_bn": "সাইমুন ইসলাম",
-      "name_en": "Saimun Islam",
-      "phone": "01772589255",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-c2f9b2d1de2bb6ceebb1cd31d53a8fc0a7fbeb6a-1542x2048-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 14,
-      "practical_group": "C1",
-      "room_no": "321",
-      "room_ref": {
-        "_ref": "room-321",
-        "_type": "reference"
-      },
-      "section": "C",
-      "short_roll": "322",
-      "student_id": "saimun14"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-pranto15",
-      "_rev": "EzOmQIcRdlGhDyrGokAv74",
-      "_system": {
-        "base": {
-          "id": "student-pranto15",
-          "rev": "bWAWEe5pFZEk6wmJYxntGG"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:02:45Z",
-      "address_bn": "কুষ্টিয়া সদর, কুষ্টিয়া",
-      "address_en": "Kushtia Sadar, Kushtia",
-      "batch": "HSC-27",
-      "blood_group": "O+",
-      "class_no": "12",
+      "position": 4,
+      "group_en": "Science",
+      "father_phone": "01758684640",
       "custom_links": [],
-      "dob": "07-Feb",
-      "dob_date": "2026-02-07",
-      "email": "rh597040@gmail.com",
-      "facebook": "https://www.facebook.com/share/1T3gCxVk6J/",
-      "father_phone": "01755729078",
-      "full_roll": "1202526010863",
-      "group": "science",
-      "messenger": "1T3gCxVk6J",
-      "name_bn": "রাতুল হাসান প্রান্ত",
-      "name_en": "Ratul Hassan Pranto",
-      "phone": "01995393323",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-a5a005ff8ea2831f096cf0efa4ba488192215b51-1200x1581-jpg",
-          "_type": "reference"
-        }
+      "generated_pdf_names": {
+        "ct1": "pdfs/sakil4-12-ct1.pdf",
+        "ct2": "pdfs/sakil4-12-ct2.pdf",
+        "hy": "pdfs/sakil4-12-hy.pdf",
+        "ct3": "pdfs/sakil4-12-ct3.pdf",
+        "yearly": "pdfs/sakil4-12-y.pdf"
       },
-      "position": 15,
-      "practical_group": "F2",
-      "room_no": "323",
-      "room_ref": {
-        "_ref": "room-323",
-        "_type": "reference"
-      },
-      "section": "F",
-      "short_roll": "863",
-      "student_id": "pranto15"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-nayem18",
-      "_rev": "IKKIB31tTDKSiCa5T15mzE",
-      "_system": {
-        "base": {
-          "id": "student-nayem18",
-          "rev": "bWAWEe5pFZEk6wmJYxnuuq"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:03:45Z",
-      "address_bn": "আলমডাঙ্গা, চুয়াডাঙ্গা",
-      "address_en": "Alamdanga, Chuadanga",
-      "batch": "HSC-27",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "31-Dec",
-      "dob_date": "2026-12-31",
-      "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01711985399",
-      "full_roll": "1202526010639",
-      "group": "science",
-      "name_bn": "নাঈম সরওয়ার",
-      "name_en": "Nayeem Sarwar",
-      "phone": "01331198715",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-f11079d66f4b5100f9569efd996b66e4d0f65244-450x570-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 16,
-      "practical_group": "E1",
-      "room_no": "323",
-      "room_ref": {
-        "_ref": "room-323",
-        "_type": "reference"
-      },
-      "section": "E",
-      "short_roll": "639",
-      "student_id": "nayem18"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-alauddin17",
-      "_rev": "EzOmQIcRdlGhDyrGok9FbQ",
-      "_system": {
-        "base": {
-          "id": "student-alauddin17",
-          "rev": "EzOmQIcRdlGhDyrGoPv5UA"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:00:56Z",
-      "address_bn": "কালিশংকরপুর, যশোবন্তপুর, মোহাম্মদপুর, মাগুরা",
-      "address_en": "Kalisongkorpur, Joshobontopur, Mohammadpur, Magura",
-      "batch": "HSC-27",
-      "blood_group": "O+",
-      "class_no": "13",
-      "dob": "09-Sep",
-      "dob_date": "2026-09-09",
-      "email": "ah247556@gmail.com",
-      "facebook": "https://www.facebook.com/share/1EPCEFWqMG/",
-      "father_phone": "01956324329",
-      "full_roll": "1202526030140",
-      "group": "arts",
-      "messenger": "1EPCEFWqMG/",
-      "name_bn": "মোঃ আলাউদ্দীন মোল্যা",
-      "name_en": "Md. Alauddin Mollah",
-      "phone": "01914476860",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-fe6804f3aa494737d3fd333059d6eeaf7c25eb07-2620x3480-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 17,
-      "practical_group": "-",
-      "room_no": "322",
-      "room_ref": {
-        "_ref": "room-322",
-        "_type": "reference"
-      },
-      "section": "-",
-      "short_roll": "140",
-      "student_id": "alauddin17"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-rafiq18",
-      "_rev": "EzOmQIcRdlGhDyrGok54u0",
-      "_system": {
-        "base": {
-          "id": "student-rafiq18",
-          "rev": "IKKIB31tTDKSiCa5SWYM1e"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T21:55:35Z",
-      "address_bn": "রিফায়েতপুর, দৌলতপুর, কুষ্টিয়া",
-      "address_en": "Rifaitpur, Daulatpur, Kushtia",
-      "batch": "HSC-27",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "24-Dec",
-      "dob_date": "2026-12-24",
-      "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01775208547",
-      "full_roll": "1202526010872",
-      "group": "science",
-      "name_bn": "মো: রফিক বিন নিজাম",
-      "name_en": "Md. Rafiq Bin Nizam",
-      "phone": "01342909383",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-1b7a23cf33eec0e2052b9cfd6590d4f76665a9fd-756x1008-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 18,
-      "practical_group": "F2",
-      "room_no": "319",
-      "room_ref": {
-        "_ref": "room-319",
-        "_type": "reference"
-      },
-      "section": "F",
-      "short_roll": "872",
-      "student_id": "rafiq18"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-esty8",
-      "_rev": "EzOmQIcRdlGhDyrGokAsRE",
-      "_system": {
-        "base": {
-          "id": "student-esty8",
-          "rev": "bWAWEe5pFZEk6wmJZ3whhM"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:01:37Z",
-      "address_bn": "চট্টগ্রাম",
-      "address_en": "Chattogram",
-      "batch": "HSC-27",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "21-Aug",
-      "dob_date": "2026-08-21",
-      "email": "dhakaiyyaesty@gmail.com",
-      "facebook": "",
-      "father_phone": "01714097613",
-      "full_roll": "1202526010870",
-      "group": "science",
-      "name_bn": "তাসকিন রহমান ইশতি",
-      "name_en": "Taskin Rahman Esty",
-      "phone": "01974097612",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-ec20f655c9ee921d116cc80ac793e8f7abcc6150-456x576-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 19,
-      "practical_group": "F2",
-      "room_no": "322",
-      "room_ref": {
-        "_ref": "room-322",
-        "_type": "reference"
-      },
-      "section": "F",
-      "short_roll": "870",
-      "student_id": "esty8"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-mosih20",
-      "_rev": "EzOmQIcRdlGhDyrGok6mHQ",
-      "_system": {
-        "base": {
-          "id": "student-mosih20",
-          "rev": "bWAWEe5pFZEk6wmJYxntxo"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T21:56:22Z",
-      "address_bn": "দক্ষিণ লালপুর, লালপুর, নাটোর",
-      "address_en": "Dokkin Lalpur, Lalpur, Natore",
-      "batch": "HSC-27",
-      "blood_group": "A+",
-      "class_no": "12",
-      "dob": "30-May",
-      "dob_date": "2026-05-30",
-      "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01763073516",
-      "full_roll": "1202526010332",
-      "group": "science",
-      "name_bn": "মোঃ চিশতী ইসলাম মসীহ",
-      "name_en": "Md. Chisty Islam Mosih",
-      "phone": "01320823354",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-6e31da83de0d2269d51cfa06e9a111b0884bbfca-472x591-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 20,
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010326",
+      "phone": "01739554600",
+      "photo": "images/sakil4.jpg",
+      "address_en": "Kanchan, Rupganj, Narayanganj",
       "practical_group": "C1",
-      "room_no": "320",
-      "room_ref": {
-        "_ref": "room-320",
-        "_type": "reference"
-      },
-      "section": "C",
-      "short_roll": "332",
-      "student_id": "mosih20"
-    },
-    {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-abrar21",
-      "_rev": "EzOmQIcRdlGhDyrGok7Moq",
-      "_system": {
-        "base": {
-          "id": "student-abrar21",
-          "rev": "bWAWEe5pFZEk6wmJYxntfQ"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T21:56:58Z",
-      "address_bn": "৪২৯/বি মালিবাগ চৌধুরী পাড়া, মাটির মসজিদের কাছে, রামপুরা, ঢাকা",
-      "address_en": "429/B Malibag Chowdhury para, Near by Matir Mosjid, Rampura, Dhaka",
-      "batch": "HSC-27",
-      "blood_group": "B+",
-      "class_no": "12",
-      "dob": "01-Jan",
-      "dob_date": "2026-01-01",
-      "email": "abrarislam0723@gmail.com",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01723510651",
-      "full_roll": "1202526010200",
-      "group": "science",
-      "name_bn": "মো: আহনাফ আবরার",
-      "name_en": "Md. Ahanaf Abrar",
-      "phone": "01515288692",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-66a85cf25744c5b702b12bf797c57dbb814cf4db-461x579-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 21,
-      "practical_group": "B1",
-      "room_no": "320",
-      "room_ref": {
-        "_ref": "room-320",
-        "_type": "reference"
-      },
-      "section": "B",
-      "short_roll": "200",
-      "student_id": "abrar21"
-    },
-    {
-      "_createdAt": "2026-09-29T00:20:02Z",
-      "_id": "student-rudro22",
-      "_rev": "bWAWEe5pFZEk6wmJZ3vq1I",
-      "_system": {
-        "base": {
-          "id": "student-rudro22",
-          "rev": "EzOmQIcRdlGhDyrGoRAFj2"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T21:59:01Z",
-      "address_bn": "বোয়ালিয়া, সুজানগর, পাবনা",
-      "address_en": "Boalia, Sujanagar, Pabna",
-      "batch": "HSC-27",
-      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
-      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
-      "blood_group": "B+",
-      "class_no": "12",
-      "dob": "04-Jun",
-      "dob_date": "2026-01-04",
+      "address_bn": "কাঞ্চন, রূপগঞ্জ, নারায়ণগঞ্জ",
+      "roommate_ids": [
+        "adib1"
+      ],
+      "blood_group": "O+",
       "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01751723978",
-      "full_roll": "1202526020100",
-      "group": "commerce",
-      "name_bn": "এম এম তানভীর (রুদ্র)",
-      "name_en": "M M Tanvir (Rudro)",
-      "phone": "01516547125",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-899944f8336d523782d4ed7b50430c26328cf253-1280x960-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 22,
-      "practical_group": "-",
-      "room_no": "321",
-      "room_ref": {
-        "_ref": "room-321",
-        "_type": "reference"
-      },
-      "section": "-",
-      "short_roll": "100",
-      "student_id": "rudro22"
+      "name_en": "Md. Shakil Sheikh",
+      "student_id": "sakil4",
+      "group": "science"
     },
     {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-jahid11",
-      "_rev": "bWAWEe5pFZEk6wmJZ3xPq8",
-      "_system": {
-        "base": {
-          "id": "student-jahid11",
-          "rev": "bWAWEe5pFZEk6wmJYyCSc0"
-        }
+      "short_roll": "008",
+      "name_bn": "শাফকাত রহমান",
+      "bio_en": "CT-1= Absent, CT-2= Absent, Half yearly = Absent, CT-3= loading, Year FINAL= Loading",
+      "pdfs": {
+        "ct1": "pdfs/sasfkat5-11-ct1.pdf",
+        "ct2": "pdfs/sasfkat5-11-ct2.pdf",
+        "hy": "pdfs/sasfkat5-11-hy.pdf",
+        "ct3": "pdfs/sasfkat5-11-ct3.pdf",
+        "yearly": "pdfs/sasfkat5-11-y.pdf"
       },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:10:29Z",
-      "address_bn": "নরসিংদী",
-      "address_en": "Narsingdi",
-      "batch": "HSC-27",
-      "blood_group": "O+",
+      "bio_bn": "CT-1= Absent, CT-2= Absent, Half yearly = Absent, CT-3= loading, Year FINAL= Loading",
+      "section": "A",
+      "room_no": "318",
+      "facebook": "https://www.facebook.com/share/18oRrju5zF/",
       "class_no": "12",
-      "dob": "04-Apr",
-      "dob_date": "2026-04-04",
-      "email": " jkjahidultaskin10@gmail.com",
-      "facebook": "https://facebook.com/",
+      "position": 5,
+      "group_en": "Science",
       "father_phone": "-",
-      "full_roll": "1202526010223",
-      "group": "science",
-      "name_bn": "মোঃ জাহিদুল ইসলাম",
-      "name_en": "Md. Jahidul Islam",
-      "phone": "01828246239",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-fdd4ee364c198d22a2e8bf54b4229ab830dff07f-1080x1320-jpg",
-          "_type": "reference"
-        }
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/sasfkat5-12-ct1.pdf",
+        "ct2": "pdfs/sasfkat5-12-ct2.pdf",
+        "hy": "pdfs/sasfkat5-12-hy.pdf",
+        "ct3": "pdfs/sasfkat5-12-ct3.pdf",
+        "yearly": "pdfs/sasfkat5-12-y.pdf"
       },
-      "position": 23,
-      "practical_group": "B1",
-      "room_no": "328",
-      "room_ref": {
-        "_ref": "room-328",
-        "_type": "reference"
-      },
-      "section": "B",
-      "short_roll": "223",
-      "student_id": "jahid11"
-    },
-    {
-      "_createdAt": "2026-09-29T00:20:02Z",
-      "_id": "student-musa24",
-      "_rev": "EzOmQIcRdlGhDyrGokEw1S",
-      "_system": {
-        "base": {
-          "id": "student-musa24",
-          "rev": "EzOmQIcRdlGhDyrGoPv0UO"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:11:23Z",
-      "address_bn": "ঝালকাঠি \n",
-      "address_en": "Jhalakati\n",
-      "batch": "HSC-27",
-      "blood_group": "A+",
-      "class_no": "12",
-      "dob": "10-Apr",
-      "dob_date": "2026-04-10",
-      "email": "mahbuburrahmanmusa99@gmail.com",
-      "facebook": "https://www.facebook.com/mahbubur.rahman.musa.2024",
-      "father_phone": "01718450916",
-      "full_roll": "1202526010213",
-      "group": "science",
-      "messenger": "mahbubur.rahman.musa.2024",
-      "name_bn": "মাহবুবুর রহমান মুছা ",
-      "name_en": "Mahbubur Rahman Musa",
-      "phone": "01737844314",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-ec502d43a9e566163de4810cdad3cea54112464e-572x572-png",
-          "_type": "reference"
-        }
-      },
-      "position": 24,
-      "practical_group": "B1",
-      "room_no": "328",
-      "room_ref": {
-        "_ref": "room-328",
-        "_type": "reference"
-      },
-      "section": "B",
-      "short_roll": "213",
-      "student_id": "musa24"
-    },
-    {
-      "_createdAt": "2026-09-29T00:20:02Z",
-      "_id": "student-ariful25",
-      "_rev": "bWAWEe5pFZEk6wmJZ3wm2O",
-      "_system": {
-        "base": {
-          "id": "student-ariful25",
-          "rev": "bWAWEe5pFZEk6wmJYxnoZw"
-        }
-      },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:04:58Z",
-      "address_bn": "রোহনপুর, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ",
-      "address_en": "Rohanpur, Gomastapur, Chapainawabganj",
-      "batch": "HSC-27",
-      "blood_group": "O+",
-      "class_no": "12",
-      "dob": "21-Sep",
-      "dob_date": "2026-09-21",
-      "email": "arifulislam20238086@gmail.com",
-      "facebook": "https://www.facebook.com/profile.php?id=100093029856067",
-      "father_phone": "-",
-      "full_roll": "1202526010050",
-      "group": "science",
-      "messenger": "100093029856067",
-      "name_bn": "আরিফুল ইসলাম",
-      "name_en": "Ariful Islam",
-      "phone": "01848631025",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-b5330b885c62b2caad651176751ef13241779c0c-1080x1440-webp",
-          "_type": "reference"
-        }
-      },
-      "position": 25,
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010008",
+      "phone": "01996569688",
+      "photo": "images/sasfkat5.jpg",
+      "messenger": "18oRrju5zF",
+      "address_en": "Deboi, Rupganj, Narayanganj",
       "practical_group": "A1",
-      "room_no": "324",
-      "room_ref": {
-        "_ref": "room-324",
-        "_type": "reference"
-      },
-      "section": "A",
-      "short_roll": "50",
-      "student_id": "ariful25"
+      "address_bn": "দেবই, রূপগঞ্জ, নারায়ণগঞ্জ",
+      "roommate_ids": [
+        "riyad19"
+      ],
+      "blood_group": "O+",
+      "email": "shafkatrahmandkam@gmail.com",
+      "name_en": "Shafkat Rahman",
+      "student_id": "sasfkat5",
+      "group": "science"
     },
     {
-      "_createdAt": "2026-09-29T00:20:02Z",
-      "_id": "student-rejawl26",
-      "_rev": "EzOmQIcRdlGhDyrGokFFo2",
-      "_system": {
-        "base": {
-          "id": "student-rejawl26",
-          "rev": "IKKIB31tTDKSiCa5T0agOa"
-        }
+      "short_roll": "022",
+      "name_bn": "শাহরিয়ার আল সাকিব মুন্সি",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/munsi6-11-ct1.pdf",
+        "ct2": "pdfs/munsi6-11-ct2.pdf",
+        "hy": "pdfs/munsi6-11-hy.pdf",
+        "ct3": "pdfs/munsi6-11-ct3.pdf",
+        "yearly": "pdfs/munsi6-11-y.pdf"
       },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:14:34Z",
-      "address_bn": "তিতাস, কুমিল্লা",
-      "address_en": "Titas, Cumilla",
-      "batch": "HSC-27",
-      "bio_bn": "Sports lover",
-      "bio_en": "Sports lover",
-      "blood_group": "A+",
-      "class_no": "12",
-      "dob": "10-Sep",
-      "dob_date": "2026-09-10",
-      "email": "rkdc8989@gmail.com",
-      "facebook": "https://facebook.com/",
-      "father_phone": "-",
-      "full_roll": "1202526030098",
-      "group": "arts",
-      "name_bn": "মোঃ রেজাউল করিম",
-      "name_en": "Md Rezaul Karim",
-      "phone": "01641659606",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-2d6ac19f373bcfe9dd051b48c1224095e95ac6c0-1200x1600-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 26,
-      "practical_group": "",
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "A",
       "room_no": "315",
-      "room_ref": {
-        "_ref": "room-315",
-        "_type": "reference"
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 6,
+      "group_en": "Science",
+      "father_phone": "01319061472",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/munsi6-12-ct1.pdf",
+        "ct2": "pdfs/munsi6-12-ct2.pdf",
+        "hy": "pdfs/munsi6-12-hy.pdf",
+        "ct3": "pdfs/munsi6-12-ct3.pdf",
+        "yearly": "pdfs/munsi6-12-y.pdf"
       },
-      "section": "",
-      "short_roll": "098",
-      "student_id": "rejawl26"
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010022",
+      "phone": "01577203120",
+      "photo": "assets/uploads/munsi.png",
+      "address_en": "Choto Alampur, Debidwar, Cumilla",
+      "practical_group": "A1",
+      "address_bn": "ছোট আলমপুর, দেবিদ্বার, কুমিল্লা",
+      "roommate_ids": [
+        "rejawl26"
+      ],
+      "blood_group": "B+",
+      "email": "usage3913@gmail.com",
+      "name_en": "Shahriar Al Sakib Munshi",
+      "student_id": "munsi6",
+      "group": "science"
     },
     {
-      "_createdAt": "2026-09-29T00:19:59Z",
-      "_id": "student-kayes10",
-      "_rev": "bWAWEe5pFZEk6wmJZ3yAyi",
-      "_system": {
-        "base": {
-          "id": "student-kayes10",
-          "rev": "IKKIB31tTDKSiCa5T0WjQA"
-        }
+      "short_roll": "122",
+      "name_bn": "মোঃ মুশফিকুর রহমান",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/musfik7-11-ct1.pdf",
+        "ct2": "pdfs/musfik7-11-ct2.pdf",
+        "hy": "pdfs/musfik7-11-hy.pdf",
+        "ct3": "pdfs/musfik7-11-ct3.pdf",
+        "yearly": "pdfs/musfik7-11-y.pdf"
       },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:12:30Z",
-      "address_bn": "চকরিয়া, কক্সবাজার",
-      "address_en": "Chakaria, Cox's bazar.",
-      "batch": "HSC-27",
-      "bio_bn": "\"প্রত্যেক প্রাণীই মৃত্যুর স্বাদ গ্রহণ করবে\"",
-      "bio_en": "\"Every soul shall taste death.\"",
-      "blood_group": "A+",
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "A",
+      "room_no": "316",
+      "facebook": "https://www.facebook.com/share/18osDPmvYU/",
       "class_no": "12",
-      "dob": "13-Dec",
-      "dob_date": "2026-12-13",
-      "email": "riasadulislamkayes@gmail.com",
-      "facebook": "https://facebook.com/",
+      "position": 7,
+      "group_en": "Science",
       "father_phone": "-",
-      "full_roll": "1202526010882",
-      "group": "science",
-      "name_bn": "রিয়াসাদুল ইসলাম কায়েস",
-      "name_en": "Riasadul Islam Kayes",
-      "phone": "01629171207",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-57a7a834422711a37f7cd0405ff17521f30eabd8-800x1280-jpg",
-          "_type": "reference"
-        }
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/musfik7-12-ct1.pdf",
+        "ct2": "pdfs/musfik7-12-ct2.pdf",
+        "hy": "pdfs/musfik7-12-hy.pdf",
+        "ct3": "pdfs/musfik7-12-ct3.pdf",
+        "yearly": "pdfs/musfik7-12-y.pdf"
       },
-      "position": 27,
-      "practical_group": "F2",
-      "room_no": "314",
-      "room_ref": {
-        "_ref": "room-314",
-        "_type": "reference"
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010122",
+      "phone": "01577390514",
+      "photo": "images/musfik7.jpg",
+      "messenger": "18osDPmvYU",
+      "address_en": "South Sakuchia, Monpura, Bhola",
+      "practical_group": "A2",
+      "address_bn": "দক্ষিণ সাকুচিয়া, মনপুরা, ভোলা",
+      "roommate_ids": [
+        "nafis9"
+      ],
+      "blood_group": "A+",
+      "email": "mushfiq88bd@gmail.com",
+      "name_en": "Md. Mushfiqur Rahman",
+      "student_id": "musfik7",
+      "group": "science"
+    },
+    {
+      "short_roll": "870",
+      "name_bn": "তাসকিন রহমান ইশতি",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/esty8-11-ct1.pdf",
+        "ct2": "pdfs/esty8-11-ct2.pdf",
+        "hy": "pdfs/esty8-11-hy.pdf",
+        "ct3": "pdfs/esty8-11-ct3.pdf",
+        "yearly": "pdfs/esty8-11-y.pdf"
       },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
       "section": "F",
+      "room_no": "322",
+      "facebook": "",
+      "class_no": "12",
+      "position": 8,
+      "group_en": "Science",
+      "father_phone": "01714097613",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/esty8-12-ct1.pdf",
+        "ct2": "pdfs/esty8-12-ct2.pdf",
+        "hy": "pdfs/esty8-12-hy.pdf",
+        "ct3": "pdfs/esty8-12-ct3.pdf",
+        "yearly": "pdfs/esty8-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010870",
+      "phone": "01974097612",
+      "photo": "assets/uploads/taskin.jpg",
+      "address_en": "Chattogram",
+      "practical_group": "F2",
+      "address_bn": "চট্টগ্রাম",
+      "roommate_ids": [
+        "alauddin17"
+      ],
+      "blood_group": "O+",
+      "email": "dhakaiyyaesty@gmail.com",
+      "name_en": "Taskin Rahman Esty",
+      "student_id": "esty8",
+      "group": "science"
+    },
+    {
+      "short_roll": "141",
+      "name_bn": "নাফিস আলম তারিফ",
+      "bio_en": "Competition, I'm The Competition....",
+      "pdfs": {
+        "ct1": "pdfs/nafis9-11-ct1.pdf",
+        "ct2": "pdfs/nafis9-11-ct2.pdf",
+        "hy": "pdfs/nafis9-11-hy.pdf",
+        "ct3": "pdfs/nafis9-11-ct3.pdf",
+        "yearly": "pdfs/nafis9-11-y.pdf"
+      },
+      "bio_bn": "Competition, I'm The Competition....",
+      "section": "A",
+      "room_no": "316",
+      "facebook": "https://www.facebook.com/share/1EDVSWD95F/",
+      "class_no": "12",
+      "position": 9,
+      "group_en": "Science",
+      "father_phone": "01738770330",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/nafis9-12-ct1.pdf",
+        "ct2": "pdfs/nafis9-12-ct2.pdf",
+        "hy": "pdfs/nafis9-12-hy.pdf",
+        "ct3": "pdfs/nafis9-12-ct3.pdf",
+        "yearly": "pdfs/nafis9-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010141",
+      "phone": "01346588124",
+      "photo": "assets/uploads/img_20260509_184212-tarif-alam-1-.jpg",
+      "messenger": "1EDVSWD95F",
+      "address_en": "Ranisonkail, Thakurgaon",
+      "practical_group": "A2",
+      "address_bn": "রাণীশংকৈল, ঠাকুরগাঁও",
+      "roommate_ids": [
+        "musfiq7"
+      ],
+      "blood_group": "O+",
+      "email": "tarifalam265@gmail.com",
+      "name_en": "Nafis Alam Tarif",
+      "student_id": "nafis9",
+      "group": "science"
+    },
+    {
       "short_roll": "882",
-      "student_id": "kayes10"
+      "name_bn": "রিয়াসাদুল ইসলাম কায়েস",
+      "bio_en": "\"Every soul shall taste death.\"",
+      "pdfs": {
+        "ct1": "pdfs/kayes10-11-ct1.pdf",
+        "ct2": "pdfs/kayes10-11-ct2.pdf",
+        "hy": "pdfs/kayes10-11-hy.pdf",
+        "ct3": "pdfs/kayes10-11-ct3.pdf",
+        "yearly": "pdfs/kayes10-11-y.pdf"
+      },
+      "bio_bn": "\"প্রত্যেক প্রাণীই মৃত্যুর স্বাদ গ্রহণ করবে\"",
+      "section": "F",
+      "room_no": "314",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 10,
+      "group_en": "Science",
+      "father_phone": "-",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/kayes10-12-ct1.pdf",
+        "ct2": "pdfs/kayes10-12-ct2.pdf",
+        "hy": "pdfs/kayes10-12-hy.pdf",
+        "ct3": "pdfs/kayes10-12-ct3.pdf",
+        "yearly": "pdfs/kayes10-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010882",
+      "phone": "01629171207",
+      "photo": "assets/uploads/whatsapp-image-2026-05-09-at-7.20.39-pm-naimul-islam-1-.jpeg",
+      "address_en": "Chakaria, Cox's bazar.",
+      "practical_group": "F2",
+      "address_bn": "চকরিয়া, কক্সবাজার",
+      "roommate_ids": [
+        "siam12"
+      ],
+      "blood_group": "A+",
+      "email": "riasadulislamkayes@gmail.com",
+      "name_en": "Riasadul Islam Kayes",
+      "student_id": "kayes10",
+      "group": "science"
     },
     {
-      "_createdAt": "2026-09-29T00:20:02Z",
-      "_id": "student-alif28",
-      "_rev": "bWAWEe5pFZEk6wmJZ3xMmS",
-      "_system": {
-        "base": {
-          "id": "student-alif28",
-          "rev": "EzOmQIcRdlGhDyrGoPv1x8"
-        }
+      "short_roll": "223",
+      "name_bn": "মোঃ জাহিদুল ইসলাম",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/jahid11-11-ct1.pdf",
+        "ct2": "pdfs/jahid11-11-ct2.pdf",
+        "hy": "pdfs/jahid11-11-hy.pdf",
+        "ct3": "pdfs/jahid11-11-ct3.pdf",
+        "yearly": "pdfs/jahid11-11-y.pdf"
       },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:07:12Z",
-      "address_bn": "সুন্দরগঞ্জ, গাইবান্ধা",
-      "address_en": "Sundarganj, Gaibandha",
-      "batch": "HSC-27",
-      "bio_bn": "What an amazing website it is for our international hall which created by meritorious adib. Keep going higher. Truly appreciating for such kind of initiatives. With all are staying with it . Hoping main target Will fulfill with it's modern development.",
-      "bio_en": "What an amazing website it is for our international hall which created by meritorious adib. Keep going higher. Truly appreciating for such kind of initiatives. With all are staying with it . Hoping main target Will fulfill with it's modern development.",
-      "blood_group": "AB+",
-      "class_no": "12",
-      "dob": "11-Nov",
-      "dob_date": "2026-11-11",
-      "email": "mdalimuzzamanalif890@gmail.com",
-      "facebook": "https://www.facebook.com/share/18MFvaQuS2/",
-      "father_phone": "01540759625",
-      "full_roll": "1202526010153",
-      "group": "science",
-      "messenger": "18MFvaQuS2",
-      "name_bn": "আলিমুজ্জামান আলিফ",
-      "name_en": "Alimuzzamann Alif",
-      "phone": "01758173284",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-7e9e2f71a6c174f41b7de4c88f07b9c99fe9b601-368x491-jpg",
-          "_type": "reference"
-        }
-      },
-      "position": 28,
-      "practical_group": "B1",
-      "room_no": "326",
-      "room_ref": {
-        "_ref": "room-326",
-        "_type": "reference"
-      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
       "section": "B",
-      "short_roll": "153",
-      "student_id": "alif28"
+      "room_no": "328",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 11,
+      "group_en": "Science",
+      "father_phone": "-",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/jahid11-12-ct1.pdf",
+        "ct2": "pdfs/jahid11-12-ct2.pdf",
+        "hy": "pdfs/jahid11-12-hy.pdf",
+        "ct3": "pdfs/jahid11-12-ct3.pdf",
+        "yearly": "pdfs/jahid11-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010223",
+      "phone": "01828246239",
+      "photo": "assets/uploads/jahidvay.jpg",
+      "address_en": "Narsingdi",
+      "practical_group": "B1",
+      "address_bn": "নরসিংদী",
+      "roommate_ids": [
+        "musa24"
+      ],
+      "blood_group": "O+",
+      "email": " jkjahidultaskin10@gmail.com",
+      "name_en": "Md. Jahidul Islam",
+      "student_id": "jahid11",
+      "group": "science"
     },
     {
-      "_createdAt": "2026-10-08T05:06:06Z",
-      "_id": "student-sohan29",
-      "_rev": "bWAWEe5pFZEk6wmJZ3xN1w",
-      "_system": {
-        "base": {
-          "id": "student-sohan29",
-          "rev": "bWAWEe5pFZEk6wmJYxnqlQ"
-        }
+      "short_roll": "195",
+      "name_bn": "সিয়াম হাসান (নাটোর)",
+      "bio_en": "I am a Crazy Boy.",
+      "pdfs": {
+        "ct1": "pdfs/siam12-11-ct1.pdf",
+        "ct2": "pdfs/siam12-11-ct2.pdf",
+        "hy": "pdfs/siam12-11-hy.pdf",
+        "ct3": "pdfs/siam12-11-ct3.pdf",
+        "yearly": "pdfs/siam12-11-y.pdf"
       },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:07:46Z",
-      "address_bn": "পাইকা, ধলডাঙ্গা, সাদুল্লাপুর, গাইবান্ধা",
-      "address_en": "Paika, Dholdanga, Sadullapur, Gaibandha",
-      "batch": "HSC-27",
-      "bio_bn": "",
-      "bio_en": "",
-      "blood_group": "B+",
+      "bio_bn": "I am a Crazy Boy.",
+      "section": "B",
+      "room_no": "319",
+      "facebook": "https://www.facebook.com/siam.hasan.anik.402132",
       "class_no": "12",
-      "dob": "31-Dec",
-      "dob_date": "2026-12-31",
-      "email": "-",
-      "facebook": "https://facebook.com/",
-      "father_phone": "01747206790",
-      "full_roll": "1202526020031",
-      "group": "commerce",
-      "messenger": "",
-      "name_bn": "মোঃ সোহরাব হোসেন প্রামানিক",
-      "name_en": "Md. Shohoorab Hossen Pramanik",
-      "phone": "01827048355",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-9783808fddec6b963934712f25048e296a116b88-480x600-jpg",
-          "_type": "reference"
-        }
+      "position": 12,
+      "group_en": "Science",
+      "father_phone": "01761866285",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/siam12-12-ct1.pdf",
+        "ct2": "pdfs/siam12-12-ct2.pdf",
+        "hy": "pdfs/siam12-12-hy.pdf",
+        "ct3": "pdfs/siam12-12-ct3.pdf",
+        "yearly": "pdfs/siam12-12-y.pdf"
       },
-      "position": 29,
-      "practical_group": "-",
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010195",
+      "phone": "01804692801",
+      "photo": "images/siam12.jpg",
+      "messenger": "siam.hasan.anik.402132",
+      "address_en": "Moshinda Majpara, Gurudaspur, Natore",
+      "practical_group": "B1",
+      "address_bn": "মশিন্দা মাঝপাড়া, গুরুদাসপুর, নাটোর",
+      "roommate_ids": [],
+      "blood_group": "B+",
+      "email": "siamhasananik01@gmail.com",
+      "name_en": "Siam Hasan (Nator)",
+      "student_id": "siam12",
+      "group": "science"
+    },
+    {
+      "short_roll": "881",
+      "name_bn": "মোঃ সিয়াম আলী (কুষ্টিয়া)",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/siam13-11-ct1.pdf",
+        "ct2": "pdfs/siam13-11-ct2.pdf",
+        "hy": "pdfs/siam13-11-hy.pdf",
+        "ct3": "pdfs/siam13-11-ct3.pdf",
+        "yearly": "pdfs/siam13-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "F",
+      "room_no": "314",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 13,
+      "group_en": "Science",
+      "father_phone": "01705633292",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/siam13-12-ct1.pdf",
+        "ct2": "pdfs/siam13-12-ct2.pdf",
+        "hy": "pdfs/siam13-12-hy.pdf",
+        "ct3": "pdfs/siam13-12-ct3.pdf",
+        "yearly": "pdfs/siam13-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010881",
+      "phone": "01705310841",
+      "photo": "assets/uploads/siamkustia.jpg",
+      "address_en": "Khorda Ailchara, Kushtia Sadar, Kushtia",
+      "practical_group": "F2",
+      "address_bn": "খোরদা আইলচারা, কুষ্টিয়া সদর, কুষ্টিয়া",
+      "roommate_ids": [
+        "kayes10"
+      ],
+      "blood_group": "O+",
+      "email": "-",
+      "name_en": "Md. Siam Ali (Kustia)",
+      "student_id": "siam13",
+      "group": "science"
+    },
+    {
+      "short_roll": "322",
+      "name_bn": "সাইমুন ইসলাম",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/saimun14-11-ct1.pdf",
+        "ct2": "pdfs/saimun14-11-ct2.pdf",
+        "hy": "pdfs/saimun14-11-hy.pdf",
+        "ct3": "pdfs/saimun14-11-ct3.pdf",
+        "yearly": "pdfs/saimun14-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "C",
       "room_no": "326",
-      "room_ref": {
-        "_ref": "room-326",
-        "_type": "reference"
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 14,
+      "group_en": "Science",
+      "father_phone": "-",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/saimun14-12-ct1.pdf",
+        "ct2": "pdfs/saimun14-12-ct2.pdf",
+        "hy": "pdfs/saimun14-12-hy.pdf",
+        "ct3": "pdfs/saimun14-12-ct3.pdf",
+        "yearly": "pdfs/saimun14-12-y.pdf"
       },
-      "section": "A",
-      "short_roll": "031",
-      "student_id": "sohan29"
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010322",
+      "phone": "01772589255",
+      "photo": "assets/uploads/saimun3.jpg",
+      "address_en": "Baipail, Savar, Dhaka",
+      "practical_group": "C1",
+      "address_bn": "বাইপাইল, সাভার, ঢাকা",
+      "roommate_ids": [
+        "alif28"
+      ],
+      "blood_group": "AB+",
+      "email": "-",
+      "name_en": "Saimun Islam",
+      "student_id": "saimun14",
+      "group": "science"
     },
     {
-      "_createdAt": "2026-10-08T05:06:06Z",
-      "_id": "student-bayezid30",
-      "_rev": "EzOmQIcRdlGhDyrGokBR0c",
-      "_system": {
-        "base": {
-          "id": "student-bayezid30",
-          "rev": "IKKIB31tTDKSiCa5T16DDi"
-        }
+      "short_roll": "863",
+      "name_bn": "রাতুল হাসান প্রান্ত",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/pranto15-11-ct1.pdf",
+        "ct2": "pdfs/pranto15-11-ct2.pdf",
+        "hy": "pdfs/pranto15-11-hy.pdf",
+        "ct3": "pdfs/pranto15-11-ct3.pdf",
+        "yearly": "pdfs/pranto15-11-y.pdf"
       },
-      "_type": "student",
-      "_updatedAt": "2026-10-11T22:05:36Z",
-      "address_bn": "সিরাজগঞ্জ",
-      "address_en": "Sirajganj",
-      "batch": "HSC-27",
-      "bio_bn": "",
-      "bio_en": "",
-      "blood_group": "B+",
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "F",
+      "room_no": "323",
+      "facebook": "https://www.facebook.com/share/1T3gCxVk6J/",
       "class_no": "12",
-      "dob": "15-May",
-      "dob_date": "2026-05-15",
-      "email": "-",
+      "position": 15,
+      "group_en": "Science",
+      "father_phone": "01755729078",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/pranto15-12-ct1.pdf",
+        "ct2": "pdfs/pranto15-12-ct2.pdf",
+        "hy": "pdfs/pranto15-12-hy.pdf",
+        "ct3": "pdfs/pranto15-12-ct3.pdf",
+        "yearly": "pdfs/pranto15-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010863",
+      "phone": "01995393323",
+      "photo": "images/pranto15.jpg",
+      "messenger": "1T3gCxVk6J",
+      "address_en": "Kushtia Sadar, Kushtia",
+      "practical_group": "F2",
+      "address_bn": "কুষ্টিয়া সদর, কুষ্টিয়া",
+      "roommate_ids": [
+        "nayem18"
+      ],
+      "blood_group": "O+",
+      "email": "rh597040@gmail.com",
+      "name_en": "Ratul Hassan Pranto",
+      "student_id": "pranto15",
+      "group": "science"
+    },
+    {
+      "short_roll": "639",
+      "name_bn": "নাঈম সরওয়ার",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/nayem18-11-ct1.pdf",
+        "ct2": "pdfs/nayem18-11-ct2.pdf",
+        "hy": "pdfs/nayem18-11-hy.pdf",
+        "ct3": "pdfs/nayem18-11-ct3.pdf",
+        "yearly": "pdfs/nayem18-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "E",
+      "room_no": "323",
       "facebook": "https://facebook.com/",
-      "father_phone": "01758682413",
-      "full_roll": "1202526020001",
-      "group": "commerce",
-      "messenger": "",
-      "name_bn": "মোঃ বায়েজিদ",
-      "name_en": "Md. Bayazid",
-      "phone": "01822724598",
-      "photo": {
-        "_type": "image",
-        "asset": {
-          "_ref": "image-37969817f3aa1c6455e617c1c19a6380aab6a48d-1500x1109-jpg",
-          "_type": "reference"
-        }
+      "class_no": "12",
+      "position": 16,
+      "group_en": "Science",
+      "father_phone": "01711985399",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/nayem18-12-ct1.pdf",
+        "ct2": "pdfs/nayem18-12-ct2.pdf",
+        "hy": "pdfs/nayem18-12-hy.pdf",
+        "ct3": "pdfs/nayem18-12-ct3.pdf",
+        "yearly": "pdfs/nayem18-12-y.pdf"
       },
-      "position": 30,
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010639",
+      "phone": "01331198715",
+      "photo": "assets/uploads/nayeem.jpg",
+      "address_en": "Alamdanga, Chuadanga",
+      "practical_group": "E1",
+      "address_bn": "আলমডাঙ্গা, চুয়াডাঙ্গা",
+      "roommate_ids": [
+        "pranto15"
+      ],
+      "blood_group": "O+",
+      "email": "-",
+      "name_en": "Nayeem Sarwar",
+      "student_id": "nayem18",
+      "group": "science"
+    },
+    {
+      "short_roll": "140",
+      "name_bn": "মোঃ আলাউদ্দীন মোল্যা",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/alauddin17-11-ct1.pdf",
+        "ct2": "pdfs/alauddin17-11-ct2.pdf",
+        "hy": "pdfs/alauddin17-11-hy.pdf",
+        "ct3": "pdfs/alauddin17-11-ct3.pdf",
+        "yearly": "pdfs/alauddin17-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "-",
+      "room_no": "322",
+      "facebook": "https://www.facebook.com/share/1EPCEFWqMG/",
+      "class_no": "13",
+      "position": 17,
+      "group_en": "Humanities",
+      "father_phone": "01956324329",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/alauddin17-13-ct1.pdf",
+        "ct2": "pdfs/alauddin17-13-ct2.pdf",
+        "hy": "pdfs/alauddin17-13-hy.pdf",
+        "ct3": "pdfs/alauddin17-13-ct3.pdf",
+        "yearly": "pdfs/alauddin17-13-y.pdf"
+      },
+      "group_bn": "মানবিক",
+      "full_roll": "1202526030140",
+      "phone": "01914476860",
+      "photo": "assets/uploads/alauddin-hosain.jpg",
+      "messenger": "1EPCEFWqMG/",
+      "address_en": "Kalisongkorpur, Joshobontopur, Mohammadpur, Magura",
       "practical_group": "-",
-      "room_no": "324",
-      "room_ref": {
-        "_ref": "room-324",
-        "_type": "reference"
+      "address_bn": "কালিশংকরপুর, যশোবন্তপুর, মোহাম্মদপুর, মাগুরা",
+      "roommate_ids": [
+        "esty8"
+      ],
+      "blood_group": "O+",
+      "email": "ah247556@gmail.com",
+      "name_en": "Md. Alauddin Mollah",
+      "student_id": "alauddin17",
+      "group": "arts"
+    },
+    {
+      "short_roll": "872",
+      "name_bn": "মো: রফিক বিন নিজাম",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/rafiq18-11-ct1.pdf",
+        "ct2": "pdfs/rafiq18-11-ct2.pdf",
+        "hy": "pdfs/rafiq18-11-hy.pdf",
+        "ct3": "pdfs/rafiq18-11-ct3.pdf",
+        "yearly": "pdfs/rafiq18-11-y.pdf"
       },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "F",
+      "room_no": "321",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 18,
+      "group_en": "Science",
+      "father_phone": "01775208547",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/rafiq18-12-ct1.pdf",
+        "ct2": "pdfs/rafiq18-12-ct2.pdf",
+        "hy": "pdfs/rafiq18-12-hy.pdf",
+        "ct3": "pdfs/rafiq18-12-ct3.pdf",
+        "yearly": "pdfs/rafiq18-12-y.pdf"
+      },
+      "group_bn": "মানবিক",
+      "full_roll": "1202526010872",
+      "phone": "01342909383",
+      "photo": "assets/uploads/rafi.jpg",
+      "address_en": "Rifaitpur, Daulatpur, Kushtia",
+      "practical_group": "F2",
+      "address_bn": "রিফায়েতপুর, দৌলতপুর, কুষ্টিয়া",
+      "roommate_ids": [],
+      "blood_group": "O+",
+      "email": "-",
+      "name_en": "Md. Rafiq Bin Nizam",
+      "student_id": "rafiq18",
+      "group": "science"
+    },
+    {
+      "short_roll": "596",
+      "name_bn": "তাশফিকুর রহমান রিয়াদ",
+      "bio_en": "My lawyer told me to leave this section blank. ⚖️🤐",
+      "pdfs": {
+        "ct1": "pdfs/riyad19-11-ct1.pdf",
+        "ct2": "pdfs/riyad19-11-ct2.pdf",
+        "hy": "pdfs/riyad19-11-hy.pdf",
+        "ct3": "pdfs/riyad19-11-ct3.pdf",
+        "yearly": "pdfs/riyad19-11-y.pdf"
+      },
+      "bio_bn": "আমার আইনজীবী আমাকে এই অংশটি খালি রাখতে বলেছেন। ⚖️🤐",
+      "section": "D",
+      "room_no": "318",
+      "facebook": "https://facebook.com/1C6xNqU8bA/",
+      "class_no": "12",
+      "position": 19,
+      "group_en": "Science",
+      "father_phone": "01732168077",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/riyad19-12-ct1.pdf",
+        "ct2": "pdfs/riyad19-12-ct2.pdf",
+        "hy": "pdfs/riyad19-12-hy.pdf",
+        "ct3": "pdfs/riyad19-12-ct3.pdf",
+        "yearly": "pdfs/riyad19-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010596",
+      "phone": "01871571833",
+      "photo": "assets/uploads/img-20260625-wa0006-tashfiqur-rahman-riyad-1-.jpg",
+      "messenger": "m.me/1C6xNqU8bA/",
+      "address_en": "Purbachal, Rupganj , Narayanganj ",
+      "practical_group": "D2",
+      "address_bn": "পূর্বাচল, রূপগঞ্জ, নারায়ণগঞ্জ",
+      "roommate_ids": [
+        "sasfkat5"
+      ],
+      "blood_group": "B+",
+      "email": "tashfiqurrahmanriyad2009@gmail.com",
+      "name_en": "Tashfiqur Rahman Riyad",
+      "student_id": "riyad19",
+      "group": "science"
+    },
+    {
+      "short_roll": "332",
+      "name_bn": "মোঃ চিশতী ইসলাম মসীহ",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/mosih20-11-ct1.pdf",
+        "ct2": "pdfs/mosih20-11-ct2.pdf",
+        "hy": "pdfs/mosih20-11-hy.pdf",
+        "ct3": "pdfs/mosih20-11-ct3.pdf",
+        "yearly": "pdfs/mosih20-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "C",
+      "room_no": "320",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 20,
+      "group_en": "Science",
+      "father_phone": "01763073516",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/mosih20-12-ct1.pdf",
+        "ct2": "pdfs/mosih20-12-ct2.pdf",
+        "hy": "pdfs/mosih20-12-hy.pdf",
+        "ct3": "pdfs/mosih20-12-ct3.pdf",
+        "yearly": "pdfs/mosih20-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010332",
+      "phone": "01320823354",
+      "photo": "assets/uploads/mosih.jpg",
+      "address_en": "Dokkin Lalpur, Lalpur, Natore",
+      "practical_group": "C1",
+      "address_bn": "দক্ষিণ লালপুর, লালপুর, নাটোর",
+      "roommate_ids": [
+        "abrar21"
+      ],
+      "blood_group": "A+",
+      "email": "-",
+      "name_en": "Md. Chisty Islam Mosih",
+      "student_id": "mosih20",
+      "group": "science"
+    },
+    {
+      "short_roll": "200",
+      "name_bn": "মো: আহনাফ আবরার",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/abrar21-11-ct1.pdf",
+        "ct2": "pdfs/abrar21-11-ct2.pdf",
+        "hy": "pdfs/abrar21-11-hy.pdf",
+        "ct3": "pdfs/abrar21-11-ct3.pdf",
+        "yearly": "pdfs/abrar21-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "B",
+      "room_no": "320",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 21,
+      "group_en": "Science",
+      "father_phone": "01723510651",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/abrar21-12-ct1.pdf",
+        "ct2": "pdfs/abrar21-12-ct2.pdf",
+        "hy": "pdfs/abrar21-12-hy.pdf",
+        "ct3": "pdfs/abrar21-12-ct3.pdf",
+        "yearly": "pdfs/abrar21-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010200",
+      "phone": "01515288692",
+      "photo": "assets/uploads/abrar2.jpg",
+      "address_en": "429/B Malibag Chowdhury para, Near by Matir Mosjid, Rampura, Dhaka",
+      "practical_group": "B1",
+      "address_bn": "৪২৯/বি মালিবাগ চৌধুরী পাড়া, মাটির মসজিদের কাছে, রামপুরা, ঢাকা",
+      "roommate_ids": [
+        "mosih20"
+      ],
+      "blood_group": "B+",
+      "email": "abrarislam0723@gmail.com",
+      "name_en": "Md. Ahanaf Abrar",
+      "student_id": "abrar21",
+      "group": "science"
+    },
+    {
+      "short_roll": "100",
+      "name_bn": "এম এম তানভীর (রুদ্র)",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/rudro22-11-ct1.pdf",
+        "ct2": "pdfs/rudro22-11-ct2.pdf",
+        "hy": "pdfs/rudro22-11-hy.pdf",
+        "ct3": "pdfs/rudro22-11-ct3.pdf",
+        "yearly": "pdfs/rudro22-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "-",
+      "room_no": "324",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 22,
+      "group_en": "Commerce ",
+      "father_phone": "01751723978",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/rudro22-12-ct1.pdf",
+        "ct2": "pdfs/rudro22-12-ct2.pdf",
+        "hy": "pdfs/rudro22-12-hy.pdf",
+        "ct3": "pdfs/rudro22-12-ct3.pdf",
+        "yearly": "pdfs/rudro22-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526020100",
+      "phone": "01516547125",
+      "photo": "assets/uploads/100-rudro.jpg",
+      "address_en": "Boalia, Sujanagar, Pabna",
+      "practical_group": "-",
+      "address_bn": "বোয়ালিয়া, সুজানগর, পাবনা",
+      "roommate_ids": [
+        "ariful25"
+      ],
+      "blood_group": "B+",
+      "email": "-",
+      "name_en": "M M Tanvir (Rudro)",
+      "student_id": "rudro22",
+      "group": "commerce"
+    },
+    {
+      "short_roll": "337",
+      "name_bn": "সোবহান মাহমুদ খাঁন (রিয়াসাদ)",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/riasad23-11-ct1.pdf",
+        "ct2": "pdfs/riasad23-11-ct2.pdf",
+        "hy": "pdfs/riasad23-11-hy.pdf",
+        "ct3": "pdfs/riasad23-11-ct3.pdf",
+        "yearly": "pdfs/riasad23-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "C",
+      "room_no": "327 ",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 23,
+      "group_en": "Science",
+      "father_phone": "01739269792",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/riasad23-12-ct1.pdf",
+        "ct2": "pdfs/riasad23-12-ct2.pdf",
+        "hy": "pdfs/riasad23-12-hy.pdf",
+        "ct3": "pdfs/riasad23-12-ct3.pdf",
+        "yearly": "pdfs/riasad23-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010337",
+      "phone": "01922407329",
+      "photo": "assets/uploads/riasad1.jpg",
+      "address_en": "Notun Amdoho Allardarga, Daulatpur, Kushtia",
+      "practical_group": "C1",
+      "address_bn": "নতুন আমদহ আল্লারদর্গা, দৌলতপুর, কুষ্টিয়া ",
+      "roommate_ids": [
+        "sabit27"
+      ],
+      "blood_group": "O+",
+      "email": "-",
+      "name_en": "Sobhan Mahmud Khan (Riasad)",
+      "student_id": "riasad23",
+      "group": "science"
+    },
+    {
+      "short_roll": "213",
+      "name_bn": "মাহবুবুর রহমান মুছা ",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/musa24-11-ct1.pdf",
+        "ct2": "pdfs/musa24-11-ct2.pdf",
+        "hy": "pdfs/musa24-11-hy.pdf",
+        "ct3": "pdfs/musa24-11-ct3.pdf",
+        "yearly": "pdfs/musa24-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "B",
+      "room_no": "328",
+      "facebook": "https://www.facebook.com/mahbubur.rahman.musa.2024",
+      "class_no": "12",
+      "position": 23,
+      "group_en": "Science",
+      "father_phone": "01718450916",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/musa24-12-ct1.pdf",
+        "ct2": "pdfs/musa24-12-ct2.pdf",
+        "hy": "pdfs/musa24-12-hy.pdf",
+        "ct3": "pdfs/musa24-12-ct3.pdf",
+        "yearly": "pdfs/musa24-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010213",
+      "phone": "01737844314",
+      "photo": "assets/uploads/musa.png",
+      "messenger": "mahbubur.rahman.musa.2024",
+      "address_en": "Jhalakati\n",
+      "practical_group": "B1",
+      "address_bn": "ঝালকাঠি \n",
+      "roommate_ids": [
+        "jahid11"
+      ],
+      "blood_group": "A+",
+      "email": "mahbuburrahmanmusa99@gmail.com",
+      "name_en": "Mahbubur Rahman Musa",
+      "student_id": "musa24",
+      "group": "science"
+    },
+    {
+      "short_roll": "050",
+      "name_bn": "আরিফুল ইসলাম",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/ariful25-11-ct1.pdf",
+        "ct2": "pdfs/ariful25-11-ct2.pdf",
+        "hy": "pdfs/ariful25-11-hy.pdf",
+        "ct3": "pdfs/ariful25-11-ct3.pdf",
+        "yearly": "pdfs/ariful25-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
       "section": "A",
-      "short_roll": "001",
-      "student_id": "bayezid30"
+      "room_no": "324",
+      "facebook": "https://www.facebook.com/profile.php?id=100093029856067",
+      "class_no": "12",
+      "position": 25,
+      "group_en": "Science",
+      "father_phone": "-",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/ariful25-12-ct1.pdf",
+        "ct2": "pdfs/ariful25-12-ct2.pdf",
+        "hy": "pdfs/ariful25-12-hy.pdf",
+        "ct3": "pdfs/ariful25-12-ct3.pdf",
+        "yearly": "pdfs/ariful25-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010050",
+      "phone": "01848631025",
+      "photo": "assets/uploads/img_20260503_130625_624-ariful-islam-1-.jpg",
+      "messenger": "100093029856067",
+      "address_en": "Rohanpur, Gomastapur, Chapainawabganj",
+      "practical_group": "A1",
+      "address_bn": "রোহনপুর, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ",
+      "roommate_ids": [
+        "rudro22"
+      ],
+      "blood_group": "O+",
+      "email": "arifulislam20238086@gmail.com",
+      "name_en": "Ariful Islam",
+      "student_id": "ariful25",
+      "group": "science"
+    },
+    {
+      "short_roll": "098",
+      "name_bn": "মোঃ রেজাউল করিম",
+      "bio_en": "Sports lover",
+      "pdfs": {
+        "ct1": "pdfs/rejawl26-11-ct1.pdf",
+        "ct2": "pdfs/rejawl26-11-ct2.pdf",
+        "hy": "pdfs/rejawl26-11-hy.pdf",
+        "ct3": "pdfs/rejawl26-11-ct3.pdf",
+        "yearly": "pdfs/rejawl26-11-y.pdf"
+      },
+      "bio_bn": "Sports lover",
+      "section": "",
+      "room_no": "315",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 26,
+      "group_en": "Humanities",
+      "father_phone": "-",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/rejawl26-12-ct1.pdf",
+        "ct2": "pdfs/rejawl26-12-ct2.pdf",
+        "hy": "pdfs/rejawl26-12-hy.pdf",
+        "ct3": "pdfs/rejawl26-12-ct3.pdf",
+        "yearly": "pdfs/rejawl26-12-y.pdf"
+      },
+      "group_bn": "মানবিক",
+      "full_roll": "1202526030098",
+      "phone": "01641659606",
+      "photo": "assets/uploads/img-20260328-wa0060-rezaul-karim-1-.jpg",
+      "address_en": "Titas, Cumilla",
+      "practical_group": "",
+      "address_bn": "তিতাস, কুমিল্লা",
+      "roommate_ids": [
+        "munsi6"
+      ],
+      "blood_group": "A+",
+      "email": "rkdc8989@gmail.com",
+      "name_en": "Md Rezaul Karim",
+      "student_id": "rejawl26",
+      "group": "arts"
+    },
+    {
+      "short_roll": "171",
+      "name_bn": "মুহাম্মদ রায়হানুর সাবিত ",
+      "bio_en": "Demo student profile for International Hall. Detailed information can be updated later from the student sheet.",
+      "pdfs": {
+        "ct1": "pdfs/sabit27-11-ct1.pdf",
+        "ct2": "pdfs/sabit27-11-ct2.pdf",
+        "hy": "pdfs/sabit27-11-hy.pdf",
+        "ct3": "pdfs/sabit27-11-ct3.pdf",
+        "yearly": "pdfs/sabit27-11-y.pdf"
+      },
+      "bio_bn": "আন্তর্জাতিক ছাত্রাবাসের ডেমো শিক্ষার্থী প্রোফাইল। পরে sheet থেকে বিস্তারিত তথ্য আপডেট করা যাবে।",
+      "section": "B",
+      "room_no": "327",
+      "facebook": "https://facebook.com/",
+      "class_no": "12",
+      "position": 27,
+      "group_en": "Science",
+      "father_phone": "01971444941",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/sabit27-12-ct1.pdf",
+        "ct2": "pdfs/sabit27-12-ct2.pdf",
+        "hy": "pdfs/sabit27-12-hy.pdf",
+        "ct3": "pdfs/sabit27-12-ct3.pdf",
+        "yearly": "pdfs/sabit27-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010171",
+      "phone": "01852223068",
+      "photo": "assets/uploads/sabit.jpg",
+      "address_en": "Marich Pasha, Lohagara, Narail\n",
+      "practical_group": "B1",
+      "address_bn": "মরিচ পাশা, লোহাগড়া, নড়াইল",
+      "roommate_ids": [
+        "riasad23"
+      ],
+      "blood_group": "AB+",
+      "email": "-",
+      "name_en": "Muhammad Rayhanoor Sabit",
+      "student_id": "sabit27",
+      "group": "science"
+    },
+    {
+      "short_roll": "153",
+      "name_bn": "আলিমুজ্জামান আলিফ",
+      "bio_en": "What an amazing website it is for our international hall which created by meritorious adib. Keep going higher. Truly appreciating for such kind of initiatives. With all are staying with it . Hoping main target Will fulfill with it's modern development.",
+      "pdfs": {
+        "ct1": "pdfs/alif28-11-ct1.pdf",
+        "ct2": "pdfs/alif28-11-ct2.pdf",
+        "hy": "pdfs/alif28-11-hy.pdf",
+        "ct3": "pdfs/alif28-11-ct3.pdf",
+        "yearly": "pdfs/alif28-11-y.pdf"
+      },
+      "bio_bn": "What an amazing website it is for our international hall which created by meritorious adib. Keep going higher. Truly appreciating for such kind of initiatives. With all are staying with it . Hoping main target Will fulfill with it's modern development.",
+      "section": "B",
+      "room_no": "326",
+      "facebook": "https://www.facebook.com/share/18MFvaQuS2/",
+      "class_no": "12",
+      "position": 28,
+      "group_en": "Science",
+      "father_phone": "01540759625",
+      "custom_links": [],
+      "generated_pdf_names": {
+        "ct1": "pdfs/alif28-12-ct1.pdf",
+        "ct2": "pdfs/alif28-12-ct2.pdf",
+        "hy": "pdfs/alif28-12-hy.pdf",
+        "ct3": "pdfs/alif28-12-ct3.pdf",
+        "yearly": "pdfs/alif28-12-y.pdf"
+      },
+      "group_bn": "বিজ্ঞান",
+      "full_roll": "1202526010153",
+      "phone": "01758173284",
+      "photo": "images/alif28.jpg",
+      "messenger": "18MFvaQuS2",
+      "address_en": "Sundarganj, Gaibandha",
+      "practical_group": "B1",
+      "address_bn": "সুন্দরগঞ্জ, গাইবান্ধা",
+      "roommate_ids": [
+        "saimun14"
+      ],
+      "blood_group": "AB+",
+      "email": "mdalimuzzamanalif890@gmail.com",
+      "name_en": "Alimuzzamann Alif",
+      "student_id": "alif28",
+      "group": "science"
     }
   ]
 }

@@ -15,6 +15,7 @@ import {
   DashboardIcon,
   EyeOpenIcon,
   BellIcon,
+  DocumentIcon,
 } from '@sanity/icons'
 
 // Hardcoded Super Admin emails (always have full access)
@@ -80,6 +81,17 @@ function createBatchContentItems(S, batchName) {
           .filter('_type == "galleryEvent" && ($batch in batches || "all" in batches || (!defined(batches) && $batch == "HSC-27"))')
           .params({ batch: batchName })
           .defaultOrdering([{ field: 'date', direction: 'desc' }])
+      ),
+
+    S.listItem()
+      .title(`📝 ${batchName} Google Forms (ফর্ম ও জরিপ)`)
+      .icon(DocumentIcon)
+      .child(
+        S.documentTypeList('hallForm')
+          .title(`${batchName} Google Forms & Surveys`)
+          .filter('_type == "hallForm" && (batch == $batch || batch == "all")')
+          .params({ batch: batchName })
+          .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
       ),
   ]
 }
@@ -150,7 +162,8 @@ export const structure = async (S, context) => {
           '*[_type == "batchConfig"]{ batch, batch_admin_emails, moderator_emails }'
         )
 
-        for (const cfg of configs) {
+        if (Array.isArray(configs)) {
+          for (const cfg of configs) {
           const adminEmails = (cfg?.batch_admin_emails || []).map((e) => (e || '').trim().toLowerCase())
           const modEmails = (cfg?.moderator_emails || []).map((e) => (e || '').trim().toLowerCase())
 
@@ -164,6 +177,7 @@ export const structure = async (S, context) => {
             userBatch = cfg.batch
             break
           }
+        }
         }
       }
 
@@ -421,6 +435,14 @@ export const structure = async (S, context) => {
           S.documentTypeList('galleryEvent')
             .title('All Events')
             .defaultOrdering([{ field: 'date', direction: 'desc' }])
+        ),
+      S.listItem()
+        .title('All Custom Forms (সকল গুগল ফর্ম - অটোমেটেড)')
+        .icon(DocumentIcon)
+        .child(
+          S.documentTypeList('hallForm')
+            .title('All Custom Forms & Surveys')
+            .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
         ),
     ])
 }

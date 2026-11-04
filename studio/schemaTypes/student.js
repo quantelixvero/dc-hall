@@ -175,7 +175,7 @@ export default defineType({
             filter: ({ document }) => {
               const batch = document?.batch || 'HSC-27'
               return {
-                filter: '_type == "room" && batch == $batch',
+                filter: '_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27")) && (year_type == "1st Year" || room_no in ["102", "103", "104"])',
                 params: { batch },
               }
             },
@@ -199,7 +199,7 @@ export default defineType({
               const rawId = document?._id || ''
               const cleanId = rawId.replace(/^drafts\./, '')
               return {
-                filter: '_type == "student" && batch == $batch && !(_id in [$id1, $id2])',
+                filter: '_type == "student" && (batch == $batch || (!defined(batch) && $batch == "HSC-27")) && !(_id in [$id1, $id2])',
                 params: {
                   batch,
                   id1: cleanId,
@@ -228,7 +228,7 @@ export default defineType({
             filter: ({ document }) => {
               const batch = document?.batch || 'HSC-27'
               return {
-                filter: '_type == "room" && batch == $batch',
+                filter: '_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27")) && (year_type == "1st Year" || room_no in ["102", "103", "104"])',
                 params: { batch },
               }
             },
@@ -252,7 +252,7 @@ export default defineType({
               const rawId = document?._id || ''
               const cleanId = rawId.replace(/^drafts\./, '')
               return {
-                filter: '_type == "student" && batch == $batch && !(_id in [$id1, $id2])',
+                filter: '_type == "student" && (batch == $batch || (!defined(batch) && $batch == "HSC-27")) && !(_id in [$id1, $id2])',
                 params: {
                   batch,
                   id1: cleanId,

@@ -208,6 +208,22 @@ export default defineType({
 
 
     defineField({
+      name: 'global_visibility_mode',
+      title: 'Global Seniority & Protection Mode (গ্লোবাল ভিজিবিলিটি মোড)',
+      type: 'string',
+      group: 'profile_controls',
+      options: {
+        list: [
+          { title: 'Junior Protection Mode (জুনিয়রদের জন্য নির্ধারিত ফিল্ডগুলো সিনিয়রদের প্রোফাইলে লক থাকবে)', value: 'junior_safe' },
+          { title: 'Full Unlock Mode (লগইন করা সকল ব্যাচের জন্য সম্পূর্ণ সাইট ও প্রোফাইল আনলক)', value: 'full_unlock' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'junior_safe',
+      description: 'জুনিয়র প্রোটেকশন মোডে জুনিয়ররা সিনিয়রদের সংরক্ষিত ডাটা দেখতে পারবে না। ফুল আনলক মোডে যেকোনো রেজিস্টার্ড ব্যাচ লগইন করলে সব ব্যাচের ডাটা সরাসরি দেখতে পাবে।',
+    }),
+
+    defineField({
       name: 'global_visibility',
       title: 'Global Public Visibility (সবার জন্য আনলক)',
       type: 'boolean',
@@ -254,6 +270,23 @@ export default defineType({
               title: 'Page Name (পেজের নাম)',
               type: 'string',
             }),
+            defineField({
+              name: 'access_level',
+              title: 'Page Access Level (পেজ অ্যাক্সেস স্তর)',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Unlocked / Public (উন্মুক্ত — সবাই দেখতে পারবে)', value: 'unlocked' },
+                  { title: 'Lock for Normal Users (লক — লগইন করা শিক্ষার্থী দেখতে পারবে)', value: 'lock_normal' },
+                  { title: 'Lock for All (শুধুমাত্র মাস্টার অ্যাডমিন দেখতে পারবে)', value: 'lock_all' },
+                  { title: 'Hidden (সম্পূর্ণ লুকানো — মেনু ও সাইটে দেখাবে না)', value: 'hidden' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'unlocked',
+              description: 'পেজটি কীভাবে প্রদর্শিত হবে নির্বাচন করুন।',
+            }),
+
             defineField({
               name: 'is_visible',
               title: 'Visible on Website (ওয়েবসাইটে দৃশ্যমান)',
@@ -329,6 +362,24 @@ export default defineType({
               type: 'string',
               description: 'খালি রাখলে স্বয়ংক্রিয়ভাবে ড্রপডাউনের ডিফল্ট নামটি ব্যবহার হবে।',
             }),
+            defineField({
+              name: 'visibility_tier',
+              title: 'Field Visibility Tier (ফিল্ড ভিজিবিলিটি স্তর — ৫টি পরিষ্কার বিকল্প)',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Public (উন্মুক্ত — লগইন ছাড়াও সবাই দেখতে পারবে)', value: 'public' },
+                  { title: 'Lock for Normal Users (সাধারণ ব্যবহারকারীর জন্য লক — দেখতে হলে লগইন লাগবে)', value: 'lock_normal' },
+                  { title: 'Lock for Juniors (জুনিয়রদের জন্য লক — সমবয়সী ও সিনিয়ররা দেখতে পারবে)', value: 'lock_junior' },
+                  { title: 'Lock for All (সবার জন্য লক — শুধুমাত্র মাস্টার কি দেখতে পারবে)', value: 'lock_all' },
+                  { title: 'Hide Completely (পুরোপুরি লুকানো — ওয়েবসাইট থেকে অদৃশ্য থাকবে)', value: 'hide' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'public',
+              description: 'এই ফিল্ডটির জন্য নির্দিষ্ট ভিজিবিলিটি স্তর নির্বাচন করুন।',
+            }),
+
             defineField({
               name: 'invisible',
               title: 'Hide on Website (লুকিয়ে রাখুন — Invisible)',
@@ -409,6 +460,24 @@ export default defineType({
               description: 'খালি রাখলে স্বয়ংক্রিয়ভাবে ডিফল্ট নামটি প্রদর্শিত হবে।',
             }),
             defineField({
+              name: 'visibility_tier',
+              title: 'Field Visibility Tier (ফিল্ড ভিজিবিলিটি স্তর — ৫টি পরিষ্কার বিকল্প)',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Public (উন্মুক্ত — লগইন ছাড়াও সবাই দেখতে পারবে)', value: 'public' },
+                  { title: 'Lock for Normal Users (সাধারণ ব্যবহারকারীর জন্য লক — দেখতে হলে লগইন লাগবে)', value: 'lock_normal' },
+                  { title: 'Lock for Juniors (জুনিয়রদের জন্য লক — সমবয়সী ও সিনিয়ররা দেখতে পারবে)', value: 'lock_junior' },
+                  { title: 'Lock for All (সবার জন্য লক — শুধুমাত্র মাস্টার কি দেখতে পারবে)', value: 'lock_all' },
+                  { title: 'Hide Completely (পুরোপুরি লুকানো — ওয়েবসাইট থেকে অদৃশ্য থাকবে)', value: 'hide' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'public',
+              description: 'এই ফিল্ডটির জন্য নির্দিষ্ট ভিজিবিলিটি স্তর নির্বাচন করুন।',
+            }),
+
+            defineField({
               name: 'invisible',
               title: 'Hide on Home Page (হোম পেজ থেকে লুকান — Invisible)',
               type: 'boolean',
@@ -467,6 +536,24 @@ export default defineType({
               type: 'string',
             }),
             defineField({
+              name: 'visibility_tier',
+              title: 'Field Visibility Tier (ফিল্ড ভিজিবিলিটি স্তর — ৫টি পরিষ্কার বিকল্প)',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Public (উন্মুক্ত — লগইন ছাড়াও সবাই দেখতে পারবে)', value: 'public' },
+                  { title: 'Lock for Normal Users (সাধারণ ব্যবহারকারীর জন্য লক — দেখতে হলে লগইন লাগবে)', value: 'lock_normal' },
+                  { title: 'Lock for Juniors (জুনিয়রদের জন্য লক — সমবয়সী ও সিনিয়ররা দেখতে পারবে)', value: 'lock_junior' },
+                  { title: 'Lock for All (সবার জন্য লক — শুধুমাত্র মাস্টার কি দেখতে পারবে)', value: 'lock_all' },
+                  { title: 'Hide Completely (পুরোপুরি লুকানো — ওয়েবসাইট থেকে অদৃশ্য থাকবে)', value: 'hide' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'public',
+              description: 'এই ফিল্ডটির জন্য নির্দিষ্ট ভিজিবিলিটি স্তর নির্বাচন করুন।',
+            }),
+
+            defineField({
               name: 'invisible',
               title: 'Hide on Developer Page (লুকিয়ে রাখুন — Invisible)',
               type: 'boolean',
@@ -524,6 +611,24 @@ export default defineType({
               title: 'Custom Title (ঐচ্ছিক কাস্টম শিরোনাম)',
               type: 'string',
             }),
+            defineField({
+              name: 'visibility_tier',
+              title: 'Field Visibility Tier (ফিল্ড ভিজিবিলিটি স্তর — ৫টি পরিষ্কার বিকল্প)',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Public (উন্মুক্ত — লগইন ছাড়াও সবাই দেখতে পারবে)', value: 'public' },
+                  { title: 'Lock for Normal Users (সাধারণ ব্যবহারকারীর জন্য লক — দেখতে হলে লগইন লাগবে)', value: 'lock_normal' },
+                  { title: 'Lock for Juniors (জুনিয়রদের জন্য লক — সমবয়সী ও সিনিয়ররা দেখতে পারবে)', value: 'lock_junior' },
+                  { title: 'Lock for All (সবার জন্য লক — শুধুমাত্র মাস্টার কি দেখতে পারবে)', value: 'lock_all' },
+                  { title: 'Hide Completely (পুরোপুরি লুকানো — ওয়েবসাইট থেকে অদৃশ্য থাকবে)', value: 'hide' },
+                ],
+                layout: 'radio',
+              },
+              initialValue: 'public',
+              description: 'এই ফিল্ডটির জন্য নির্দিষ্ট ভিজিবিলিটি স্তর নির্বাচন করুন।',
+            }),
+
             defineField({
               name: 'invisible',
               title: 'Hide on Hall Info Page (লুকিয়ে রাখুন — Invisible)',

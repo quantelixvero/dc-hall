@@ -10,6 +10,7 @@ import editRequest from './editRequest'
 import batchConfig from './batchConfig'
 import adminSettings from './adminSettings'
 import notice from './notice'
+import hallForm from './hallForm'
 
 export const schemaTypes = [
   student,
@@ -24,4 +25,5 @@ export const schemaTypes = [
   batchConfig,
   adminSettings,
   notice,
+  hallForm,
 ]
