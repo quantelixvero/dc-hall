@@ -196,7 +196,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=6.6">
+  <link rel="stylesheet" href="css/style.css?v=6.7">
 </head>
 <body data-page="home">
   <header class="navbar" id="navbar">
@@ -252,7 +252,11 @@
           </div>
           <a class="btn secondary" href="students.html" data-i18n="common.viewAll">View All</a>
         </div>
-        <div class="search-wrap" data-aos="fade-up">
+        <div class="search-wrap has-search-icon" data-aos="fade-up">
+          <svg class="search-icon-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
           <label for="studentSearch" class="sr-only" data-i18n="common.searchStudents">Search students</label>
           <input id="studentSearch" class="search-input" type="search" placeholder="Search by name, room, blood group or address" data-i18n-placeholder="common.searchPlaceholderShort">
         </div>
@@ -585,7 +589,7 @@
   </div>
 
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="js/sanity-client.js?v=6.6"></script>
-  <script src="js/app.js?v=6.6"></script>
+  <script src="js/sanity-client.js?v=6.7"></script>
+  <script src="js/app.js?v=6.7"></script>
 </body>
 </html>
