@@ -5799,19 +5799,22 @@ img.bday-avatar {
   overflow-y: auto;
 }
 
-.filter-field {
+.filter-field,
+.fd-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.filter-field label {
+.filter-field label,
+.fd-group label {
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--text);
 }
 
-.filter-select {
+.filter-select,
+.fd-select {
   width: 100%;
   padding: 10px 14px;
   border-radius: 8px;
@@ -5820,6 +5823,13 @@ img.bday-avatar {
   color: var(--text);
   font-size: 0.92rem;
   font-weight: 600;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.filter-select:focus,
+.fd-select:focus {
+  border-color: var(--accent);
 }
 
 .filter-drawer-footer {
@@ -5832,7 +5842,8 @@ img.bday-avatar {
   gap: 12px;
 }
 
-.btn-filter-reset {
+.btn-filter-reset,
+.fd-btn-reset {
   padding: 10px 18px;
   border-radius: 8px;
   border: 1px solid var(--border);
@@ -5841,14 +5852,17 @@ img.bday-avatar {
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
-.btn-filter-reset:hover {
+.btn-filter-reset:hover,
+.fd-btn-reset:hover {
   color: var(--text);
   background: var(--border);
 }
 
-.btn-filter-apply {
+.btn-filter-apply,
+.fd-btn-apply {
   flex: 1;
   padding: 10px 20px;
   border-radius: 8px;
@@ -5858,6 +5872,13 @@ img.bday-avatar {
   font-weight: 800;
   font-size: 0.92rem;
   cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-filter-apply:hover,
+.fd-btn-apply:hover {
+  opacity: 0.9;
+}
 }
 
 .btn-filter-apply:hover {
@@ -6107,7 +6128,12 @@ body[data-lang="bn"] textarea {
   text-decoration: underline;
 }
 
-/* Mobile font adjustments for descriptions */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Mobile font adjustments for descriptions & subtitles */
 @media (max-width: 768px) {
   .hero-subtitle,
   .hero-desc,
@@ -6115,9 +6141,13 @@ body[data-lang="bn"] textarea {
   .section-header p,
   .lead,
   .event-detail-desc,
+  .dcsc-event-desc,
+  .gallery-desc,
   .notice-card-desc,
   .hall-description,
-  .developer-bio {
+  .developer-bio,
+  #heroSubtitleText,
+  .club-card-desc {
     font-size: 0.88rem !important;
     line-height: 1.52 !important;
     max-width: 100% !important;

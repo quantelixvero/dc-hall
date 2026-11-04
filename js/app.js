@@ -388,11 +388,16 @@ window.openNoticeModal = function(noticeId) {
   const fullText = (currentLang === 'bn' ? (notice.notice_text_bn || notice.notice_text_en) : (notice.notice_text_en || notice.notice_text_bn) || '').replace(/\n/g, '<br>');
   const photo = normalizeCmsPath(notice.photo);
 
+  const bellIconSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>`;
+  const calendarIconSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>`;
+  const dlIconSvg = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+  const linkIconSvg = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
+
   content.innerHTML = `
     <div class="notice-modal-inner" style="padding: 10px 0;">
       <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-        <span class="notice-cat-badge notice-cat-urgent" style="font-size: 0.8rem;">📢 Notice</span>
-        <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">📅 ${notice.date || ''}</span>
+        <span class="notice-cat-badge notice-cat-urgent" style="font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;">${bellIconSvg} <span>Notice</span></span>
+        <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">${calendarIconSvg} <span>${notice.date || ''}</span></span>
       </div>
       <h2 style="font-size: 1.45rem; line-height: 1.35; margin-bottom: 18px; color: var(--text);">${title}</h2>
       
@@ -401,8 +406,8 @@ window.openNoticeModal = function(noticeId) {
       <div style="font-size: 0.98rem; line-height: 1.75; color: var(--text); margin-bottom: 24px; white-space: pre-line;">${fullText}</div>
 
       <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        ${notice.file_url ? `<a href="${notice.file_url}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; background: #ef4444; color: #fff; font-weight: 700; text-decoration: none;">📥 ডাউনলোড নোটিশ (PDF)</a>` : ''}
-        ${notice.link_url ? `<a href="${notice.link_url}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; background: var(--accent); color: #0a1f38; font-weight: 700; text-decoration: none;">🔗 ${notice.link_text || 'বিস্তারিত দেখুন'}</a>` : ''}
+        ${notice.file_url ? `<a href="${notice.file_url}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; background: #ef4444; color: #fff; font-weight: 700; text-decoration: none;">${dlIconSvg} <span>${currentLang === 'bn' ? 'ডাউনলোড নোটিশ (PDF)' : 'Download Notice (PDF)'}</span></a>` : ''}
+        ${notice.link_url ? `<a href="${notice.link_url}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 10px; background: var(--accent); color: #0a1f38; font-weight: 700; text-decoration: none;">${linkIconSvg} <span>${notice.link_text || (currentLang === 'bn' ? 'বিস্তারিত দেখুন' : 'View Details')}</span></a>` : ''}
       </div>
     </div>
   `;
@@ -717,17 +722,26 @@ const i18n = {
       "11": "Class XI",
       "12": "Class XII"
     },
+    birthday: {
+      filterMonth: "Month",
+      allMonths: "All Months",
+      bornToday: "Born Today"
+    },
     filters: {
+      batch: "Batch",
       class: "Class",
       group: "Group",
       section: "Section",
       blood: "Blood Group",
+      allBatches: "All Batches",
       allClasses: "All Classes",
       firstYear: "1st Year",
       secondYear: "2nd Year",
       allGroups: "All Groups",
       allSections: "All Sections",
-      allBlood: "All Blood Groups"
+      allBlood: "All Blood Groups",
+      reset: "Reset All",
+      apply: "Apply Filters"
     },
     home: {
       heroEyebrow: "Dhaka College",
@@ -988,17 +1002,26 @@ const i18n = {
       "11": "একাদশ শ্রেণী",
       "12": "দ্বাদশ শ্রেণী"
     },
+    birthday: {
+      filterMonth: "মাস",
+      allMonths: "সকল মাস",
+      bornToday: "আজ যাদের জন্মদিন"
+    },
     filters: {
+      batch: "ব্যাচ",
       class: "শ্রেণী",
       group: "গ্রুপ",
       section: "সেকশন",
       blood: "রক্তের গ্রুপ",
+      allBatches: "সকল ব্যাচ",
       allClasses: "সব শ্রেণী",
       firstYear: "১ম বর্ষ",
       secondYear: "২য় বর্ষ",
       allGroups: "সব গ্রুপ",
       allSections: "সব সেকশন",
-      allBlood: "সব রক্তের গ্রুপ"
+      allBlood: "সব রক্তের গ্রুপ",
+      reset: "রিসেট করুন",
+      apply: "ফিল্টার প্রয়োগ করুন"
     },
     home: {
       heroEyebrow: "ঢাকা কলেজ",
@@ -4274,7 +4297,6 @@ function renderSingleStudentCard(student, index) {
         </span>
         <span class="student-badge-col">
           ${badgeHtml}
-          <span class="compact-view-arrow">→</span>
         </span>
       </span>
     </button>
@@ -4956,12 +4978,15 @@ async function renderDcSocialPage() {
           <div class="dc-card social-link-card page-embed-card" data-aos="fade-up" style="padding: 16px; min-height: 620px; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
-                <div class="card-badge page-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.25); font-weight: 700; margin-bottom: 0;">🔵 ${typeLabel}</div>
+                <div class="card-badge page-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.25); font-weight: 700; margin-bottom: 0; display: inline-flex; align-items: center; gap: 6px;">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+                  <span>${typeLabel}</span>
+                </div>
                 <span style="font-size: 0.78rem; color: var(--text-muted);">Official Facebook Page</span>
               </div>
               <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 12px; min-height: 28px;">${title}</h3>
               <div class="fb-embed-container" style="height: 500px; border-radius: 12px; overflow: hidden; background: var(--surface-strong); border: 1px solid var(--border); margin-bottom: 12px;">
-                <iframe src="https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(link.url)}&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true" width="340" height="500" style="border:none;overflow:hidden;width:100%;height:100%;border-radius:12px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                <iframe src="https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(link.url)}&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true" width="340" height="500" style="border:none;overflow:hidden;width:100%;height:100%;border-radius:12px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
               </div>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 6px;">
@@ -4975,7 +5000,7 @@ async function renderDcSocialPage() {
       }
     }).join("");
   } else {
-    grid.innerHTML = `<p>${currentLang === 'bn' ? 'কোনো সোশ্যাল লিংক পাওয়া হয়নি।' : 'No social links found.'}</p>`;
+    grid.innerHTML = `<p>${currentLang === 'bn' ? 'কোনো সোশ্যাল লিংক পাওয়া যায়নি।' : 'No social links found.'}</p>`;
   }
 }
 
@@ -4992,21 +5017,31 @@ async function renderDcClubsPage() {
       } else if (name.includes("Mathematics Club")) {
         name = currentLang === "bn" ? "ঢাকা কলেজ ম্যাথ ক্লাব" : "Dhaka College Math Club";
       }
+
+      let fbUrl = club.facebook_url || "";
+      if (fbUrl.includes("DCBC.Official")) {
+        fbUrl = "https://www.facebook.com/dhakacollegebusinessclub";
+      }
+
+      const desc = currentLang === "bn" ? (club.desc_bn || club.desc_en) : (club.desc_en || club.desc_bn);
+
       return `
-        <div class="dc-card club-card" data-aos="fade-up" style="padding: 16px; min-height: 590px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div class="dc-card club-card" data-aos="fade-up" style="padding: 18px 16px; min-height: 590px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
-            <div class="club-card-header" style="margin-bottom: 14px; text-align: center; padding: 4px 6px 6px;">
+            <div class="club-card-header" style="margin-bottom: 12px; text-align: center; padding: 4px 6px 6px;">
               <h3 class="club-card-title" style="font-size: 1.12rem; font-weight: 700; color: var(--text); margin: 0; line-height: 1.35; min-height: 44px; display: flex; align-items: center; justify-content: center; letter-spacing: -0.01em;">
                 ${name}
               </h3>
-              <div class="club-title-line" style="width: 44px; height: 3px; background: linear-gradient(90deg, #10c9a8, #3b82f6); border-radius: 999px; margin: 8px auto 0 auto;"></div>
+              <div class="club-title-line" style="width: 44px; height: 3px; background: linear-gradient(90deg, #10c9a8, #3b82f6); border-radius: 999px; margin: 8px auto 8px auto;"></div>
+              ${desc ? `<p class="club-card-desc" style="font-size: 0.84rem; color: var(--text-muted); line-height: 1.45; margin: 0 auto; max-width: 320px;">${desc}</p>` : ''}
             </div>
-            <div class="fb-embed-container" style="height: 500px; border-radius: 12px; overflow: hidden; background: var(--surface-strong); border: 1px solid var(--border); margin-bottom: 12px;">
-              <iframe src="https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(club.facebook_url)}&width=340&height=400&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true" width="340" height="500" style="border:none;overflow:hidden;width:100%;height:100%;border-radius:12px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+            <div class="fb-embed-container" style="height: 480px; border-radius: 12px; overflow: hidden; background: var(--surface-strong); border: 1px solid var(--border); margin-bottom: 12px;">
+              <iframe src="https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(fbUrl)}&width=340&height=480&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true" width="340" height="480" style="border:none;overflow:hidden;width:100%;height:100%;border-radius:12px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
             </div>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 6px;">
-            <a class="visit-btn" href="${club.facebook_url}" target="_blank" rel="noopener" style="font-size: 0.85rem; font-weight: 600;">
+            <span style="font-size: 0.8rem; color: var(--text-muted);">${currentLang === 'bn' ? 'অফিশিয়াল ক্লাব' : 'Official DC Club'}</span>
+            <a class="visit-btn" href="${fbUrl}" target="_blank" rel="noopener" style="font-size: 0.85rem; font-weight: 600;">
               ${currentLang === "bn" ? "ফেসবুকে খুলুন ↗" : "Open in Facebook ↗"}
             </a>
           </div>

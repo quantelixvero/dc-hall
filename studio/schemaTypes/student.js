@@ -291,7 +291,7 @@ export default defineType({
     }),
     defineField({
       name: 'section',
-      title: 'Section (সেকশন)',
+      title: 'Section',
       type: 'string',
       group: 'academic',
       options: {
@@ -311,11 +311,11 @@ export default defineType({
         layout: 'radio',
         direction: 'horizontal',
       },
-      description: 'A–J সেকশন নির্বাচন করুন। Business Studies বা Humanities-এ কোনো সেকশন না থাকলে None সিলেক্ট করুন।',
+      description: 'Select section A-J. Choose None for Business Studies or Humanities if not applicable.',
     }),
     defineField({
       name: 'practical_group',
-      title: 'Practical Group (ব্যবহারিক গ্রুপ)',
+      title: 'Practical Group',
       type: 'string',
       group: 'academic',
       options: {
@@ -335,7 +335,7 @@ export default defineType({
         layout: 'radio',
         direction: 'horizontal',
       },
-      description: 'ব্যবহারিক ক্লাসের গ্রুপ নির্বাচন করুন। নন-সায়েন্স বা গ্রুপ না থাকলে None সিলেক্ট করুন।',
+      description: 'Select practical group. Choose None for non-science students or if not applicable.',
     }),
 
     // ═══════════════════════════════════════════
