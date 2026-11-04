@@ -324,7 +324,7 @@ function renderNoticesPage() {
   if (!filtered.length) {
     container.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1; padding: 48px 24px; text-align: center; background: var(--surface-strong); border-radius: 16px; border: 1px dashed var(--border);">
-        <span style="font-size: 2.5rem; display: block; margin-bottom: 12px;">📢</span>
+        <div style="width: 56px; height: 56px; margin: 0 auto 12px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; color: var(--text-muted);"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
         <h3>${currentLang === 'bn' ? 'কোনো নোটিশ পাওয়া যায়নি' : 'No notices found'}</h3>
         <p style="color: var(--text-muted);">${currentLang === 'bn' ? 'অন্য কোনো বিষয় বা ক্যাটাগরি দিয়ে পুনরায় খুঁজুন।' : 'Try searching with a different keyword or category.'}</p>
       </div>
@@ -337,19 +337,19 @@ function renderNoticesPage() {
     const desc = currentLang === 'bn' ? (n.notice_text_bn || n.notice_text_en || '') : (n.notice_text_en || n.notice_text_bn || '');
     const excerpt = desc.length > 140 ? desc.substring(0, 140) + '...' : desc;
     const catClass = n.category === 'urgent' ? 'notice-cat-urgent' : n.category === 'hostel' ? 'notice-cat-hostel' : n.category === 'event' ? 'notice-cat-event' : 'notice-cat-general';
-    const catLabel = n.category === 'urgent' ? '🚨 জরুরি' : n.category === 'hostel' ? '🏛️ ছাত্রাবাস' : n.category === 'event' ? '🎪 ইভেন্ট' : '📢 সাধারণ';
+    const catLabel = n.category === 'urgent' ? (currentLang === 'bn' ? 'জরুরি নোটিশ' : 'Urgent') : n.category === 'hostel' ? (currentLang === 'bn' ? 'ছাত্রাবাস' : 'Hostel & Seats') : n.category === 'event' ? (currentLang === 'bn' ? 'ইভেন্ট' : 'Events') : (currentLang === 'bn' ? 'সাধারণ' : 'General');
 
     return `
       <article class="notice-card" onclick="openNoticeModal('${n._id}')" tabindex="0" role="button">
         <div class="notice-badge-row">
           <span class="notice-cat-badge ${catClass}">${catLabel}</span>
-          <span class="notice-date-text">📅 ${n.date || ''}</span>
+          <span class="notice-date-text"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px; opacity:0.8;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>${n.date || ''}</span>
         </div>
         <h3>${title}</h3>
         <p class="notice-card-desc">${excerpt}</p>
         <div class="notice-card-footer">
           <span>${currentLang === 'bn' ? 'বিস্তারিত দেখুন &rarr;' : 'Read Notice &rarr;'}</span>
-          ${n.file_url ? `<span style="font-size: 0.8rem; color: #ef4444;">📥 PDF</span>` : ''}
+          ${n.file_url ? `<span style="font-size: 0.8rem; color: #ef4444; display: inline-flex; align-items: center; gap: 4px;"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>PDF</span>` : ''}
         </div>
       </article>
     `;
@@ -523,16 +523,25 @@ function checkPageAccess() {
   // Master admin bypasses all page restrictions
   if (isMaster) return false;
 
+  const isHidden = ctrl.access_level === 'hidden' || ctrl.is_visible === false;
+  const isLockedNormal = ctrl.access_level === 'lock_normal' || ctrl.is_locked === true;
+  const isLockedAll = ctrl.access_level === 'lock_all';
+
   // 1. If page is disabled (hidden)
-  if (ctrl.is_visible === false) {
+  if (isHidden) {
     const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
     if (mainEl) {
       mainEl.innerHTML = `
-        <div class="page-access-banner" style="max-width: 640px; margin: 90px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);">
-          <div style="font-size: 3rem; margin-bottom: 16px;">🚫</div>
-          <h2 style="font-size: 1.4rem; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'পেজটি সাময়িকভাবে বন্ধ রাখা হয়েছে' : 'Page Temporarily Disabled'}</h2>
-          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">${ctrl.lock_message || (currentLang === 'bn' ? 'অ্যাডমিন কর্তৃক এই পেজের তথ্য সাময়িকভাবে বন্ধ রাখা হয়েছে।' : 'This page has been temporarily disabled by the administrator.')}</p>
-          <a href="index.html" class="cta-button" style="display: inline-block; padding: 10px 24px; border-radius: 8px; background: var(--accent); color: #0a1f38; font-weight: 700; text-decoration: none;">← ${currentLang === 'bn' ? 'হোমপেজে ফিরে যান' : 'Back to Home'}</a>
+        <div class="page-access-banner" style="max-width: 620px; margin: 80px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);">
+          <div class="lock-icon-wrap" style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 50%; background: rgba(239, 68, 68, 0.12); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(239, 68, 68, 0.25);">
+            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+          </div>
+          <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'পেজটি সাময়িকভাবে বন্ধ রাখা হয়েছে' : 'Page Temporarily Disabled'}</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">${ctrl.lock_message || (currentLang === 'bn' ? 'অ্যাডমিন কর্তৃক এই পেজের তথ্য সাময়িকভাবে বন্ধ রাখা হয়েছে।' : 'This page has been temporarily disabled by the administrator.')}</p>
+          <a href="index.html" class="btn primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: 700;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <span>${currentLang === 'bn' ? 'হোমপেজে ফিরে যান' : 'Back to Home'}</span>
+          </a>
         </div>
       `;
     }
@@ -540,22 +549,45 @@ function checkPageAccess() {
   }
 
   // 2. If page is locked (requires login)
-  if (ctrl.is_locked === true) {
+  if (isLockedAll || isLockedNormal) {
     const isAuthed = Boolean(role && role !== "guest");
-    if (!isAuthed) {
+    if (isLockedAll || !isAuthed) {
       const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
       if (mainEl) {
         mainEl.innerHTML = `
-          <div class="page-access-banner" style="max-width: 580px; margin: 90px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);">
-            <div style="font-size: 3rem; margin-bottom: 16px;">🔐</div>
-            <h2 style="font-size: 1.4rem; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'এই পেজটি সংরক্ষিত' : 'Protected Page'}</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">${ctrl.lock_message || (currentLang === 'bn' ? 'এই পেজের তথ্য দেখতে অনুগ্রহ করে আপনার ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' : 'Please enter your batch password or master key to unlock this page.')}</p>
-            <form onsubmit="handleDirectPageLogin(event)" style="max-width: 320px; margin: 0 auto 16px; display: flex; gap: 8px;">
-              <input type="password" id="directPagePassword" placeholder="${currentLang === 'bn' ? 'পাসওয়ার্ড লিখুন...' : 'Enter password...'}" class="search-input" style="flex: 1;" required>
-              <button type="submit" class="cta-button" style="padding: 10px 18px; border-radius: 8px; background: var(--accent); color: #0a1f38; font-weight: 700; border: none; cursor: pointer;">${currentLang === 'bn' ? 'আনলক' : 'Unlock'}</button>
-            </form>
-            <div id="directPageLoginErr" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 12px; display: none;"></div>
-            <p style="font-size: 0.85rem; color: var(--text-muted);"><a href="profile.html" style="color: var(--accent); text-decoration: underline;">${currentLang === 'bn' ? 'প্রোফাইল পেজ থেকে লগইন করুন' : 'Go to Profile Login Page'}</a></p>
+          <div class="page-access-banner" style="max-width: 600px; margin: 80px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);">
+            <div class="lock-icon-wrap" style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 50%; background: rgba(16, 185, 129, 0.12); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(16, 185, 129, 0.25);">
+              <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'এই পেজটি সংরক্ষিত' : 'Protected Residential Page'}</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">${ctrl.lock_message || (currentLang === 'bn' ? 'এই পেজের তথ্য দেখার জন্য ইন্টারন্যাশনাল হলের আবাসিক শিক্ষার্থীদের লগইন করতে হবে।' : 'This page is protected. Residential students must sign in to view this directory.')}</p>
+            
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 24px;">
+              <a href="profile.html" class="btn primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; font-weight: 700; text-decoration: none;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <span>${currentLang === 'bn' ? 'স্টুডেন্ট পোর্টালে লগইন করুন' : 'Student Portal Login'}</span>
+              </a>
+              <a href="index.html" class="btn secondary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-weight: 600; text-decoration: none;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                <span>${currentLang === 'bn' ? 'হোমপেজে ফিরে যান' : 'Back to Home'}</span>
+              </a>
+            </div>
+
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+              <details style="text-align: left; max-width: 380px; margin: 0 auto; cursor: pointer;">
+                <summary style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-align: center;">${currentLang === 'bn' ? 'পাসওয়ার্ড দিয়ে দ্রুত আনলক করুন' : 'Quick Unlock with Password'}</summary>
+                <form onsubmit="handleDirectPageLogin(event)" style="margin-top: 14px; display: flex; gap: 8px;">
+                  <input type="password" id="directPagePassword" placeholder="${currentLang === 'bn' ? 'পাসওয়ার্ড লিখুন...' : 'Enter batch password...'}" class="search-input" style="flex: 1;" required>
+                  <button type="submit" class="btn primary" style="padding: 10px 18px; border-radius: 8px; font-weight: 700;">${currentLang === 'bn' ? 'আনলক' : 'Unlock'}</button>
+                </form>
+                <div id="directPageLoginErr" style="color: #ef4444; font-size: 0.85rem; margin-top: 8px; display: none; text-align: center;"></div>
+              </details>
+            </div>
           </div>
         `;
       }
@@ -3824,15 +3856,19 @@ function ensureNavigation() {
     const pageControls = cmsAdminSettings?.page_access_controls || [];
   const isPageVisible = (pid) => {
     const c = pageControls.find(x => x.page_id === pid);
-    return !c || c.is_visible !== false;
+    if (!c) return true;
+    if (c.access_level === 'hidden') return false;
+    return c.is_visible !== false;
   };
   const isPageLocked = (pid) => {
     const c = pageControls.find(x => x.page_id === pid);
-    return c && c.is_locked === true;
+    if (!c) return false;
+    return c.access_level === 'lock_normal' || c.access_level === 'lock_all' || c.is_locked === true;
   };
   const role = getAuthRole();
   const isGuest = !role || role === "guest";
-  const lockBadge = (pid) => (isPageLocked(pid) && isGuest ? " 🔒" : "");
+  const LOCK_NAV_SVG = `<svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-left:4px; opacity:0.8;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`;
+  const lockBadge = (pid) => (isPageLocked(pid) && isGuest ? LOCK_NAV_SVG : "");
 
   nav.innerHTML = `
     <a href="index.html" class="${isHomeActive ? "active" : ""}" data-i18n="nav.home">${t("nav.home")}</a>
@@ -4115,13 +4151,56 @@ function studentMatches(student, query) {
 }
 
 function getActiveFilters() {
+  const isRoomPage = document.body.dataset.page === "roommates";
+  const isStudentPage = document.body.dataset.page === "students";
+
+  const batchEl = (isStudentPage ? byId("studentBatchFilter") : null) || (isRoomPage ? byId("roomBatchFilter") : null) || byId("filterBatch");
+  const groupEl = (isStudentPage ? byId("studentGroupFilter") : null) || (isRoomPage ? byId("roomGroupFilter") : null) || byId("filterGroup");
+  const sectionEl = (isStudentPage ? byId("studentSectionFilter") : null) || (isRoomPage ? byId("roomSectionFilter") : null) || byId("filterSection");
+  const bloodEl = (isStudentPage ? byId("studentBloodFilter") : null) || (isRoomPage ? byId("roomBloodFilter") : null) || byId("filterBlood");
+
+  const bVal = (batchEl?.value || "").trim();
+  const gVal = (groupEl?.value || "").trim();
+  const sVal = (sectionEl?.value || "").trim();
+  const blVal = (bloodEl?.value || "").trim();
+
   return {
-    batch: byId("filterBatch")?.value || "",
+    batch: (bVal === "all" || bVal === "") ? "" : bVal,
     classNo: byId("filterClass")?.value || "",
-    group: byId("filterGroup")?.value || "",
-    section: byId("filterSection")?.value || "",
-    blood: byId("filterBlood")?.value || ""
+    group: (gVal === "all" || gVal === "") ? "" : gVal,
+    section: (sVal === "all" || sVal === "") ? "" : sVal,
+    blood: (blVal === "all" || blVal === "") ? "" : blVal
   };
+}
+
+function updateStudentFilterCount() {
+  const filters = getActiveFilters();
+  let count = 0;
+  if (filters.batch) count++;
+  if (filters.group) count++;
+  if (filters.section) count++;
+  if (filters.blood) count++;
+
+  const badge = byId("studentFilterCount");
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? "inline-flex" : "none";
+  }
+}
+
+function updateRoomFilterCount() {
+  const filters = getActiveFilters();
+  let count = 0;
+  if (filters.batch) count++;
+  if (filters.group) count++;
+  if (filters.section) count++;
+  if (filters.blood) count++;
+
+  const badge = byId("roomFilterCount");
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? "inline-flex" : "none";
+  }
 }
 
 function studentPassesFilters(student, filters = getActiveFilters()) {
@@ -4441,7 +4520,7 @@ function renderRoommates() {
   const grid = byId("roommateGrid");
   if (!grid) return;
 
-  const source = document.querySelector(".filter-panel") ? filteredRoommateStudents() : students;
+  const source = filteredRoommateStudents();
   const isHomePage = !!grid.dataset.limit;
 
   // === HOMEPAGE: show latest batch rooms ===
@@ -4915,7 +4994,7 @@ async function renderDcClubsPage() {
               <div class="club-title-line" style="width: 44px; height: 3px; background: linear-gradient(90deg, #10c9a8, #3b82f6); border-radius: 999px; margin: 8px auto 0 auto;"></div>
             </div>
             <div class="fb-embed-container" style="height: 500px; border-radius: 12px; overflow: hidden; background: var(--surface-strong); border: 1px solid var(--border); margin-bottom: 12px;">
-              <iframe src="https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(club.facebook_url)}&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true" width="340" height="500" style="border:none;overflow:hidden;width:100%;height:100%;border-radius:12px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+              <iframe src="https://www.facebook.com/plugins/page.php?href=${encodeURIComponent(club.facebook_url)}&width=340&height=400&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true" width="340" height="500" style="border:none;overflow:hidden;width:100%;height:100%;border-radius:12px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
             </div>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 6px;">
@@ -5727,7 +5806,7 @@ function findStudentByNameOrSlug(nameOrSlug) {
 function buildProfileRoomBox(yearLabel, roomNo, mateName, mateStudent, isUnlocked, isVisible) {
   if (!isVisible || !roomNo) return '';
 
-  const smallLockIconSvg = `<svg viewBox="0 0 24 24" width="14" height="14" fill="#10b981" style="display:inline-block; vertical-align:middle; margin-left:6px;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`;
+  const smallLockIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="#10b981" style="display:inline-block; vertical-align:middle; margin-left:4px;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`;
   
   const roomDisplay = isUnlocked 
     ? (currentLang === "bn" ? `ROOM ${toBengaliDigits(roomNo)}` : `ROOM ${roomNo}`)
@@ -5736,46 +5815,24 @@ function buildProfileRoomBox(yearLabel, roomNo, mateName, mateStudent, isUnlocke
   let mateHtml = '';
   if (isUnlocked && (mateName || mateStudent)) {
     if (mateStudent) {
-      const matePhoto = mateStudent.img || 'images/student-avatar.png';
       const mateDisplayName = studentValue(mateStudent, 'name');
-      mateHtml = `
-        <button type="button" class="profile-roommate-pill-link" data-open-mate-id="${mateStudent.id}" title="${currentLang === 'bn' ? 'প্রোফাইল দেখতে ক্লিক করুন' : 'Click to view profile'}">
-          <img src="${matePhoto}" alt="${mateDisplayName}" style="width:22px; height:22px; border-radius:50%; object-fit:cover;">
-          <span>${mateDisplayName}</span>
-          <span style="font-size:0.75rem; color:var(--muted);">&rarr;</span>
-        </button>
-      `;
+      mateHtml = ` · ${currentLang === 'bn' ? 'রুমমেট:' : 'Roommate:'} <span class="profile-mate-link" data-open-mate-id="${mateStudent.id}" title="${currentLang === 'bn' ? 'প্রোফাইল দেখতে ক্লিক করুন' : 'Click to view profile'}">${mateDisplayName}</span>`;
     } else {
-      mateHtml = `
-        <span class="profile-roommate-pill-link" style="cursor:default;">
-          <span style="color:var(--muted); font-size:0.8rem;">${currentLang === 'bn' ? 'রুমমেট:' : 'Mate:'}</span>
-          <span>${mateName}</span>
-        </span>
-      `;
+      mateHtml = ` · ${currentLang === 'bn' ? 'রুমমেট:' : 'Roommate:'} <span>${mateName}</span>`;
     }
   } else if (!isUnlocked && mateName) {
-    mateHtml = `<span style="color:var(--muted); font-size:0.85rem;">•••••••• ${smallLockIconSvg}</span>`;
+    mateHtml = ` · <span>•••••••• ${smallLockIconSvg}</span>`;
   }
 
   return `
-    <div class="profile-room-box" style="grid-column: 1 / -1; margin-top: 6px;">
-      <div class="profile-room-box-header">
-        <span>${yearLabel}</span>
-        ${isUnlocked ? `<span style="font-size:0.75rem; color:var(--accent); font-weight:600;">${currentLang === 'bn' ? 'ক্লিক করে রুম দেখুন' : 'Click to inspect room'}</span>` : ''}
-      </div>
-      <div class="profile-room-box-content">
-        ${isUnlocked ? `
-          <button type="button" class="profile-room-badge-link" data-room-id="${roomNo}">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>${roomDisplay}</span>
-          </button>
-        ` : `
-          <a href="profile.html" class="profile-room-badge-link" style="background:var(--surface); color:var(--muted); border-color:var(--border);">
-            <span>${roomDisplay}</span>
-          </a>
-        `}
-        ${mateHtml}
-      </div>
+    <div class="profile-item">
+      <span>${yearLabel}</span>
+      <strong>
+        ${isUnlocked 
+          ? `<span class="profile-room-link" onclick="openRoomModal('${roomNo}')" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to inspect room'}">${roomDisplay}</span>`
+          : `<span style="color:var(--text-muted);">${roomDisplay}</span>`
+        }${mateHtml}
+      </strong>
     </div>
   `;
 }
@@ -6121,7 +6178,7 @@ function openStudentModal(student) {
   });
 
   // Attach roommate button clicks to open that student's profile directly
-  content.querySelectorAll('.profile-roommate-pill-link[data-open-mate-id]').forEach(btn => {
+  content.querySelectorAll('[data-open-mate-id]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -7656,7 +7713,8 @@ async function downloadGalleryImage(url, title) {
   const origHtml = btn ? btn.innerHTML : "";
   if (btn) {
     btn.disabled = true;
-    btn.innerHTML = `<span style="display:inline-block; animation: spin 1s linear infinite; margin-right:6px;">⏳</span> <span>Downloading...</span>`;
+    const SPINNER_SVG = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle; animation: spin 0.8s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>`;
+    btn.innerHTML = `${SPINNER_SVG}<span>Downloading...</span>`;
   }
 
   const cleanName = ((title || "dc-hall-photo").trim().toLowerCase().replace(/[^a-z0-9_-]/gi, "-").replace(/-+/g, "-") || "photo") + ".jpg";
@@ -7792,28 +7850,30 @@ function initCompactFilterDrawers() {
     if (applyStudentBtn) {
       applyStudentBtn.addEventListener("click", () => {
         studentOverlay.classList.remove("active");
-        renderStudents();
+        updateStudentFilterCount();
+        renderStudentCards();
       });
     }
     if (resetStudentBtn) {
       resetStudentBtn.addEventListener("click", () => {
-        const batchSel = byId("studentBatchFilter");
-        const groupSel = byId("studentGroupFilter");
-        const secSel = byId("studentSectionFilter");
-        const bloodSel = byId("studentBloodFilter");
-        if (batchSel) batchSel.value = "all";
-        if (groupSel) groupSel.value = "all";
-        if (secSel) secSel.value = "all";
-        if (bloodSel) bloodSel.value = "all";
+        ["studentBatchFilter", "studentGroupFilter", "studentSectionFilter", "studentBloodFilter", "filterBatch", "filterGroup", "filterSection", "filterBlood"].forEach(id => {
+          const el = byId(id);
+          if (el) el.value = el.options[0]?.value || "";
+        });
+        updateStudentFilterCount();
         studentOverlay.classList.remove("active");
-        renderStudents();
+        renderStudentCards();
       });
     }
 
-    // Live update when selecting in student drawer
-    ["studentBatchFilter", "studentGroupFilter", "studentSectionFilter", "studentBloodFilter"].forEach(id => {
+    ["studentBatchFilter", "studentGroupFilter", "studentSectionFilter", "studentBloodFilter", "filterBatch", "filterGroup", "filterSection", "filterBlood"].forEach(id => {
       const el = byId(id);
-      if (el) el.addEventListener("change", () => renderStudents());
+      if (el) {
+        el.addEventListener("change", () => {
+          updateStudentFilterCount();
+          renderStudentCards();
+        });
+      }
     });
   }
 
@@ -7838,27 +7898,30 @@ function initCompactFilterDrawers() {
     if (applyRoomBtn) {
       applyRoomBtn.addEventListener("click", () => {
         roomOverlay.classList.remove("active");
+        updateRoomFilterCount();
         renderRoommates();
       });
     }
     if (resetRoomBtn) {
       resetRoomBtn.addEventListener("click", () => {
-        const bSel = byId("roomBatchFilter");
-        const ySel = byId("roomYearFilter");
-        const fSel = byId("roomFloorFilter");
-        const cSel = byId("roomCapacityFilter");
-        if (bSel) bSel.value = "all";
-        if (ySel) ySel.value = "all";
-        if (fSel) fSel.value = "all";
-        if (cSel) cSel.value = "all";
+        ["roomBatchFilter", "roomGroupFilter", "roomSectionFilter", "roomBloodFilter", "filterBatch", "filterGroup", "filterSection", "filterBlood"].forEach(id => {
+          const el = byId(id);
+          if (el) el.value = el.options[0]?.value || "";
+        });
+        updateRoomFilterCount();
         roomOverlay.classList.remove("active");
         renderRoommates();
       });
     }
 
-    ["roomBatchFilter", "roomYearFilter", "roomFloorFilter", "roomCapacityFilter"].forEach(id => {
+    ["roomBatchFilter", "roomGroupFilter", "roomSectionFilter", "roomBloodFilter", "filterBatch", "filterGroup", "filterSection", "filterBlood"].forEach(id => {
       const el = byId(id);
-      if (el) el.addEventListener("change", () => renderRoommates());
+      if (el) {
+        el.addEventListener("change", () => {
+          updateRoomFilterCount();
+          renderRoommates();
+        });
+      }
     });
   }
 
@@ -7868,6 +7931,27 @@ function initCompactFilterDrawers() {
   const bdayOverlay = byId("bdayFilterOverlay");
   const applyBdayBtn = byId("applyBdayFilterBtn");
   const resetBdayBtn = byId("resetBdayFilterBtn");
+
+  const updateBirthdayFilterCount = () => {
+    const m = byId("bdayMonthFilter")?.value || "all";
+    const b = byId("bdayBatchFilter")?.value || "all";
+    const g = byId("bdayGroupFilter")?.value || "all";
+    const bl = byId("bdayBloodFilter")?.value || "all";
+    const today = byId("bdayTodayToggle")?.checked;
+
+    let count = 0;
+    if (m !== "all") count++;
+    if (b !== "all") count++;
+    if (g !== "all") count++;
+    if (bl !== "all") count++;
+    if (today) count++;
+
+    const badge = byId("bdayFilterBadge");
+    if (badge) {
+      badge.textContent = count;
+      badge.style.display = count > 0 ? "inline-flex" : "none";
+    }
+  };
 
   if (openBdayBtn && bdayOverlay) {
     openBdayBtn.addEventListener("click", (e) => {
@@ -7883,6 +7967,7 @@ function initCompactFilterDrawers() {
     if (applyBdayBtn) {
       applyBdayBtn.addEventListener("click", () => {
         bdayOverlay.classList.remove("active");
+        updateBirthdayFilterCount();
         renderBirthdays();
       });
     }
@@ -7898,6 +7983,7 @@ function initCompactFilterDrawers() {
         if (gSel) gSel.value = "all";
         if (blSel) blSel.value = "all";
         if (tTog) tTog.checked = false;
+        updateBirthdayFilterCount();
         bdayOverlay.classList.remove("active");
         renderBirthdays();
       });
@@ -7905,7 +7991,12 @@ function initCompactFilterDrawers() {
 
     ["bdayMonthFilter", "bdayBatchFilter", "bdayGroupFilter", "bdayBloodFilter", "bdayTodayToggle"].forEach(id => {
       const el = byId(id);
-      if (el) el.addEventListener("change", () => renderBirthdays());
+      if (el) {
+        el.addEventListener("change", () => {
+          updateBirthdayFilterCount();
+          renderBirthdays();
+        });
+      }
     });
   }
 }

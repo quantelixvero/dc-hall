@@ -5831,6 +5831,10 @@ body.dark .active-batch-header .batch-count-pill {
   padding: 2px 8px;
 }
 
+.compact-view-arrow {
+  display: none !important;
+}
+
 .student-grid.view-compact .compact-view-arrow {
   color: var(--accent);
   font-size: 1.1rem;
@@ -5939,5 +5943,88 @@ body.dark .active-batch-header .batch-count-pill {
   .compact-filter-btn {
     flex: 1;
     justify-content: center;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   TYPOGRAPHY ENHANCEMENTS: PLUS JAKARTA SANS & MOBILE DESCRIPTIONS
+   ═════════════════════════════════════════════════════════════════ */
+body, button, input, select, textarea {
+  font-family: "Plus Jakarta Sans", "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body[data-lang="bn"],
+body[data-lang="bn"] button,
+body[data-lang="bn"] input,
+body[data-lang="bn"] select,
+body[data-lang="bn"] textarea {
+  font-family: "Hind Siliguri", "Plus Jakarta Sans", sans-serif;
+}
+
+.hero p,
+.page-hero p,
+.hero-subtitle,
+.hero-desc,
+.section-header p,
+.lead,
+.notice-card-desc,
+.event-detail-desc,
+.hall-description,
+.developer-bio {
+  font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
+  letter-spacing: -0.005em;
+}
+
+body[data-lang="bn"] .hero p,
+body[data-lang="bn"] .page-hero p,
+body[data-lang="bn"] .hero-subtitle,
+body[data-lang="bn"] .hero-desc,
+body[data-lang="bn"] .section-header p,
+body[data-lang="bn"] .lead,
+body[data-lang="bn"] .notice-card-desc,
+body[data-lang="bn"] .event-detail-desc,
+body[data-lang="bn"] .hall-description,
+body[data-lang="bn"] .developer-bio {
+  font-family: "Hind Siliguri", sans-serif;
+}
+
+/* Profile Modal Room & Mate Link Styling */
+.profile-room-link {
+  color: var(--accent);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+.profile-room-link:hover {
+  color: var(--accent-strong);
+}
+.profile-mate-link {
+  color: var(--text);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.profile-mate-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+/* Mobile font adjustments for descriptions */
+@media (max-width: 768px) {
+  .hero-subtitle,
+  .hero-desc,
+  .page-hero p,
+  .section-header p,
+  .lead,
+  .event-detail-desc,
+  .notice-card-desc,
+  .hall-description,
+  .developer-bio {
+    font-size: 0.88rem !important;
+    line-height: 1.52 !important;
+    max-width: 100% !important;
   }
 }

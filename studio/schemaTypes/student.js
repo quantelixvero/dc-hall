@@ -228,7 +228,7 @@ export default defineType({
             filter: ({ document }) => {
               const batch = document?.batch || 'HSC-27'
               return {
-                filter: '_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27")) && (year_type == "1st Year" || room_no in ["102", "103", "104"])',
+                filter: '_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27")) && (year_type == "2nd Year" || !(room_no in ["102", "103", "104"]))',
                 params: { batch },
               }
             },
@@ -296,7 +296,7 @@ export default defineType({
       group: 'academic',
       options: {
         list: [
-          { title: 'None / কোনো সেকশন নেই', value: 'none' },
+          { title: 'None', value: 'none' },
           { title: 'A', value: 'A' },
           { title: 'B', value: 'B' },
           { title: 'C', value: 'C' },
@@ -320,7 +320,7 @@ export default defineType({
       group: 'academic',
       options: {
         list: [
-          { title: 'None / কোনো প্র্যাকটিক্যাল গ্রুপ নেই', value: 'none' },
+          { title: 'None', value: 'none' },
           { title: 'A1', value: 'A1' }, { title: 'A2', value: 'A2' },
           { title: 'B1', value: 'B1' }, { title: 'B2', value: 'B2' },
           { title: 'C1', value: 'C1' }, { title: 'C2', value: 'C2' },
