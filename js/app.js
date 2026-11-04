@@ -651,6 +651,18 @@ const i18n = {
       back: "Back",
       openTab: "Open in New Tab"
     },
+    notices: {
+      eyebrow: "Official Announcements & Circulars",
+      heroTitle: "Notices & Circulars",
+      heroDesc: "Official announcements, urgent circulars, seat allocation schedules, and administrative guidelines for Dhaka College International Hall.",
+      searchPlaceholder: "Search notices by title, keyword, or date...",
+      all: "All Notices",
+      urgent: "Urgent",
+      academic: "Academic",
+      hostel: "Hostel & Dining",
+      administrative: "Administration",
+      noNotices: "No notices found matching your criteria."
+    },
     common: {
       about: "About",
       academicResult: "Academic Results",
@@ -909,6 +921,18 @@ const i18n = {
     embed: {
       back: "ফিরে যান",
       openTab: "নতুন ট্যাবে খুলুন"
+    },
+    notices: {
+      eyebrow: "অফিশিয়াল নোটিশ ও সার্কুলার",
+      heroTitle: "নোটিশ ও সার্কুলার",
+      heroDesc: "ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাসের অফিশিয়াল বিজ্ঞপ্তি, জরুরি সার্কুলার, সিট বরাদ্দ এবং প্রশাসনিক নির্দেশনাসমূহ।",
+      searchPlaceholder: "শিরোনাম, বিষয় বা তারিখ দিয়ে নোটিশ খুঁজুন...",
+      all: "সকল নোটিশ",
+      urgent: "জরুরি",
+      academic: "অ্যাকাডেমিক",
+      hostel: "ছাত্রাবাস ও ডাইনিং",
+      administrative: "প্রশাসনিক",
+      noNotices: "কোনো নোটিশ পাওয়া যায়নি।"
     },
     common: {
       about: "পরিচিতি",

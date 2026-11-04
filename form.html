@@ -37,7 +37,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=6.7">
+  <link rel="stylesheet" href="css/style.css?v=6.8">
 
   <style>
     .form-page-container {
@@ -204,8 +204,8 @@
   </footer>
 
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="js/sanity-client.js?v=6.7"></script>
-  <script src="js/app.js?v=6.7"></script>
+  <script src="js/sanity-client.js?v=6.8"></script>
+  <script src="js/app.js?v=6.8"></script>
 
   <script>
     (async function initFormEmbed() {
@@ -276,17 +276,43 @@
           }
         }
 
+        function convertToEmbedUrl(rawInput) {
+          if (!rawInput) return "";
+          let str = String(rawInput).trim();
+          const iframeMatch = str.match(/src=["']([^"']+)["']/i);
+          if (iframeMatch) str = iframeMatch[1].trim();
+          str = str.replace(/&amp;/g, "&").replace(/^["'<]+|["'>]+$/g, "");
+          if (str.includes("docs.google.com/forms")) {
+            str = str.replace(/\/edit(\?.*)?$/i, "/viewform");
+            str = str.replace(/\/formResponse(\?.*)?$/i, "/viewform");
+            try {
+              const u = new URL(str);
+              u.searchParams.delete("usp");
+              u.searchParams.set("embedded", "true");
+              return u.toString();
+            } catch {
+              if (str.includes("?")) return str.includes("embedded=true") ? str : `${str}&embedded=true`;
+              return `${str}?embedded=true`;
+            }
+          }
+          if (str.includes("?")) return str.includes("embedded=true") ? str : `${str}&embedded=true`;
+          return `${str}?embedded=true`;
+        }
+
+        const rawSource = formDoc.google_form_embed_code || formDoc.google_form_url || "";
+        const formUrl = convertToEmbedUrl(rawSource);
+        const directUrl = formDoc.google_form_url || formUrl;
         const title = (window.currentLang === 'bn' && formDoc.title_bn) ? formDoc.title_bn : formDoc.title_en;
         const desc = (window.currentLang === 'bn' && formDoc.description_bn) ? formDoc.description_bn : (formDoc.description_en || '');
-        const formUrl = formDoc.google_form_url.includes('?') ? `${formDoc.google_form_url}&embedded=true` : `${formDoc.google_form_url}?embedded=true`;
+        const isGle = formUrl.includes("forms.gle/");
 
         container.innerHTML = `
           <div class="form-header-card" data-aos="fade-up">
             <span class="form-batch-badge">${formDoc.batch || 'DC Hall'}</span>
             <h1 class="form-main-title">${title}</h1>
             ${desc ? `<p class="form-description-text">${desc}</p>` : ''}
-            <a href="${formDoc.google_form_url}" target="_blank" rel="noopener noreferrer" class="form-direct-btn">
-              <span>Open in new tab if form does not display properly</span>
+            <a href="${directUrl}" target="_blank" rel="noopener noreferrer" class="form-direct-btn">
+              <span>Open in new tab / সরাসরি নতুন ট্যাবে খুলুন ↗</span>
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                 <polyline points="15 3 21 3 21 9"></polyline>
@@ -295,9 +321,19 @@
             </a>
           </div>
 
-          <div class="form-iframe-wrapper" data-aos="fade-up">
-            <iframe class="form-iframe-element" src="${formUrl}" frameborder="0" marginheight="0" marginwidth="0">Loading form…</iframe>
-          </div>
+          ${isGle ? `
+            <div class="form-state-card" data-aos="fade-up" style="margin-top: 0;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text); margin-bottom: 8px;">Google Form Shortlink</h2>
+              <p style="color: var(--muted); margin-bottom: 20px;">গুগলের নিজস্ব সুরক্ষার কারণে forms.gle শর্টলিংক সরাসরি পেজের ভেতর ফ্রেম করা যায় না। ফর্মটি সহজে পূরণ করতে নিচের বাটনে ক্লিক করুন:</p>
+              <a href="${directUrl}" target="_blank" rel="noopener noreferrer" class="form-btn-primary" style="font-size: 1rem; padding: 14px 28px;">
+                Open Google Form / গুগল ফর্ম খুলুন ↗
+              </a>
+            </div>
+          ` : `
+            <div class="form-iframe-wrapper" data-aos="fade-up">
+              <iframe class="form-iframe-element" src="${formUrl}" frameborder="0" marginheight="0" marginwidth="0">Loading form…</iframe>
+            </div>
+          `}
         `;
       } catch (err) {
         console.error('Error loading form:', err);

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Page Routing... | Dhaka College International Hall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="favicon-512x512.png">
+  <script>
+    (function() {
+      var path = window.location.pathname;
+      var search = window.location.search;
+
+      // 1. Dynamic /form/:slug routing for GitHub Pages
+      var formMatch = path.match(/^\/form\/([a-zA-Z0-9_-]+)/i);
+      if (formMatch && formMatch[1]) {
+        var slug = formMatch[1].replace('.html', '');
+        window.location.replace('/form.html?f=' + encodeURIComponent(slug) + (search ? '&' + search.substring(1) : ''));
+        return;
+      }
+
+      // 2. Dynamic /event/:slug routing
+      var eventMatch = path.match(/^\/event\/([a-zA-Z0-9_-]+)/i);
+      if (eventMatch && eventMatch[1]) {
+        var evSlug = eventMatch[1].replace('.html', '');
+        window.location.replace('/gallery.html#event=' + encodeURIComponent(evSlug));
+        return;
+      }
+
+      // 3. /admin routing
+      if (path.indexOf('/admin') === 0) {
+        window.location.replace('https://dchall.sanity.studio/');
+        return;
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css?v=6.8">
+  <style>
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+      margin: 0;
+      font-family: "Outfit", sans-serif;
+    }
+    .card-404 {
+      background: var(--surface-strong);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 32px;
+      max-width: 520px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.06);
+    }
+  </style>
+</head>
+<body>
+  <div class="card-404">
+    <div style="font-size: 3.5rem; font-weight: 800; color: var(--accent); margin-bottom: 8px;">404</div>
+    <h1 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 12px;">Page Not Found / পৃষ্ঠাটি পাওয়া যায়নি</h1>
+    <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
+      The requested link does not exist or has been relocated.
+    </p>
+    <a href="index.html" class="btn primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+      &larr; Return to Home
+    </a>
+  </div>
+</body>
+</html>

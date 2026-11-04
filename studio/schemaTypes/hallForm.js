@@ -20,14 +20,14 @@ export default defineType({
     }),
     defineField({
       name: 'slug',
-      title: 'URL Slug / ফর্ম লিংক নাম',
+      title: 'URL Slug / ফর্ম লিংক নাম (ছোট হাতের অক্ষর)',
       type: 'slug',
       options: {
         source: 'title_en',
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
-      description: 'লিংক কেমন হবে: dchall.pro.bd/form/hsc27 হলে এখানে slug হবে "hsc27"',
+      description: 'লিংক কেমন হবে: dchall.pro.bd/form/hsc27 হলে এখানে slug হবে "hsc27" (শুধু ইংরেজি অক্ষর ও সংখ্যা)',
     }),
     defineField({
       name: 'batch',
@@ -52,10 +52,23 @@ export default defineType({
     }),
     defineField({
       name: 'google_form_url',
-      title: 'Google Form Link / Embed URL (গুগল ফর্ম লিংক)',
-      type: 'url',
-      validation: (Rule) => Rule.required(),
-      description: 'গুগল ফর্মের ভিউ বা এম্বেড লিংক পেস্ট করুন (যেমন: https://docs.google.com/forms/d/e/.../viewform?embedded=true)',
+      title: '1. Google Form Direct Link (সরাসরি ফর্ম বা ভিউ লিংক)',
+      type: 'string',
+      description: 'গুগল ফর্মের ভিউ বা শেয়ার লিংক পেস্ট করুন (যেমন: https://docs.google.com/forms/d/e/.../viewform)। এটি স্বয়ংক্রিয়ভাবে এমবেড লিংকে রূপান্তর করা হবে।',
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          if (!value && !context.document?.google_form_embed_code) {
+            return 'অনুগ্রহ করে ফর্ম লিংক অথবা নিচের এম্বেড কোড প্রদান করুন।'
+          }
+          return true
+        }),
+    }),
+    defineField({
+      name: 'google_form_embed_code',
+      title: '2. Google Form Embed Code / Iframe (বিকল্প: এম্বেড কোড বা এম্বেড লিংক)',
+      type: 'text',
+      rows: 3,
+      description: 'গুগল ফর্মের Send -> < > (HTML embed) থেকে পাওয়া সম্পূর্ণ <iframe>...</iframe> কোড বা লিংক থাকলে সরাসরি এখানে পেস্ট করতে পারেন।',
     }),
     defineField({
       name: 'description_en',
