@@ -3,6 +3,7 @@ import path from "node:path";
 
 const PROJECT_ID = "w16kaeyg";
 const DATASET = "production";
+const ASSET_VERSION = "7.0";
 const root = process.cwd();
 const formDir = path.join(root, "form");
 
@@ -143,7 +144,7 @@ try {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link rel="stylesheet" href="../../css/style.css?v=6.7">
+  <link rel="stylesheet" href="../../css/style.css?v=${ASSET_VERSION}">
 
   <style>
     .form-page-container {
@@ -312,8 +313,8 @@ try {
   </footer>
 
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="../../js/sanity-client.js?v=6.7"></script>
-  <script src="../../js/app.js?v=6.7"></script>
+  <script src="../../js/sanity-client.js?v=${ASSET_VERSION}"></script>
+  <script src="../../js/app.js?v=${ASSET_VERSION}"></script>
   <script>
     (function () {
       ${requiresLogin ? `
@@ -365,7 +366,7 @@ try {
   <title>Forms & Applications Directory | Dhaka College International Hall</title>
   <link rel="canonical" href="https://dchall.pro.bd/form/">
   <link rel="icon" type="image/png" href="../favicon-512x512.png">
-  <link rel="stylesheet" href="../css/style.css?v=6.7">
+  <link rel="stylesheet" href="../css/style.css?v=${ASSET_VERSION}">
 </head>
 <body data-page="form">
   <main class="page-main" style="padding: 60px 16px;">

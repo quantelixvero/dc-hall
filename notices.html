@@ -30,7 +30,26 @@
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
-  <link rel="stylesheet" href="css/style.css?v=6.9">
+  <link rel="stylesheet" href="css/style.css?v=7.0">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8XPR9LTKTM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8XPR9LTKTM');
+  </script>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("dc-hostel-theme") === "dark") {
+          document.documentElement.classList.add("dark");
+          document.documentElement.dataset.theme = "dark";
+        }
+      } catch (error) {}
+    })();
+  </script>
 
   <!-- Schema.org BreadcrumbList -->
   <script type="application/ld+json">
@@ -61,7 +80,15 @@
         <img class="logo-img" src="images/logo.png" alt="International Hall logo" loading="lazy">
         <span data-i18n="nav.logo">International Hall</span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation"></nav>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="students.html" data-i18n="nav.students">Students</a>
+        <a href="roommates.html" data-i18n="nav.roommates">Roommates</a>
+        <a href="notices.html" class="active" data-i18n="nav.notices">Notices</a>
+        <a href="birthday.html">Birthdays</a>
+        <a href="results.html" data-i18n="nav.results">Results</a>
+        <a href="hostel.html" data-i18n="nav.hostel">Hostel Info</a>
+      </nav>
       <div class="nav-actions">
         <div class="language-switch" aria-label="Language selector">
           <button type="button" data-lang-option="en" title="English">EN</button>
@@ -126,7 +153,7 @@
 
         <!-- Notices Container -->
         <div id="noticesContainer" class="notices-grid" data-aos="fade-up">
-          <!-- Populated dynamically by app.js?v=6.9 -->
+          <!-- Populated dynamically by app.js?v=7.0 -->
         </div>
       </div>
     </section>
@@ -146,7 +173,7 @@
   </div>
 
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script src="js/sanity-client.js?v=6.9"></script>
-  <script src="js/app.js?v=6.9"></script>
+  <script src="js/sanity-client.js?v=7.0"></script>
+  <script src="js/app.js?v=7.0"></script>
 </body>
 </html>

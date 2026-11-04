@@ -5878,11 +5878,13 @@ img.bday-avatar {
 .btn-filter-apply:hover,
 .fd-btn-apply:hover {
   opacity: 0.9;
-}
+  background: var(--accent-strong);
 }
 
-.btn-filter-apply:hover {
-  background: var(--accent-strong);
+.fd-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 /* ═════════════════════════════════════════════════════════════════
