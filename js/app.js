@@ -117,15 +117,15 @@ function showStudentBirthdayModal(bdayStudents, sessionKey) {
 
     overlay.innerHTML = `
       <div class="bday-popup-card" role="dialog" aria-modal="true">
-        <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody">🔔</button>
+        <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody"></button>
         <button type="button" class="bday-popup-close" id="bdayCloseBtn" aria-label="Close">&times;</button>
         
         <div class="bday-avatar-large-wrap">
           <img class="bday-avatar-large" src="${photo}" alt="" loading="lazy">
-          <span class="bday-crown-icon">👑</span>
+          <span class="bday-crown-icon"></span>
         </div>
 
-        <p class="eyebrow" style="color: var(--accent); margin-bottom: 4px;">🎂 Happy Birthday Today!</p>
+        <p class="eyebrow" style="color: var(--accent); margin-bottom: 4px;">Happy Birthday Today!</p>
         <h2 class="bday-popup-title">${nameDisplay}</h2>
         <div class="bday-popup-meta">
           <span>${student.batch || 'HSC-27'}</span>
@@ -147,7 +147,7 @@ function showStudentBirthdayModal(bdayStudents, sessionKey) {
         ${multiNav}
 
         <button type="button" class="bday-popup-cta" id="bdayDoneBtn">
-          🎉 ধন্যবাদ ও শুভকামনা
+          ধন্যবাদ ও শুভকামনা
         </button>
       </div>
     `;
@@ -201,22 +201,22 @@ function showDeveloperBirthdayModal(isEve) {
     document.body.appendChild(overlay);
   }
 
-  const devTitle = isEve ? "🌟 আগামীকাল (৪ অক্টোবর) ডেভেলপার আদিব-এর জন্মদিন!" : "🎉 আজ আমাদের ওয়েবসাইট ডেভেলপার আদিব-এর শুভ জন্মদিন! 🎂";
+  const devTitle = isEve ? "আগামীকাল (৪ অক্টোবর) ডেভেলপার আদিব-এর জন্মদিন!" : "আজ আমাদের ওয়েবসাইট ডেভেলপার আদিব-এর শুভ জন্মদিন!";
   const devDesc = isEve
     ? "আগামীকাল ৪ঠা অক্টোবর ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস পোর্টালের নির্মাতা ও শিক্ষার্থী <strong>আব্দুল্লাহ আল আদিব</strong>-এর শুভ জন্মদিন। অগ্রিম শুভেচ্ছা জানাতে প্রস্তুত থাকুন!"
     : "আজ ৪ঠা অক্টোবর আন্তর্জাতিক ছাত্রাবাস ওয়েবসাইটের প্রতিষ্ঠাতা ডেভেলপার ও শিক্ষার্থী <strong>আব্দুল্লাহ আল আদিব</strong>-এর শুভ জন্মদিন। হলের সার্বিক ডিজিটালাইজেশন ও ছাত্রাবাস পরিবারের সেবায় তাঁর অবদানের জন্য জানাই উষ্ণ অভিনন্দন!";
 
-  const whatsappMsg = encodeURIComponent("শুভ জন্মদিন আদিব ভাই! ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস ওয়েবসাইটের পক্ষ থেকে আপনাকে জানাই প্রাণঢালা শুভেচ্ছা ও উষ্ণ অভিনন্দন। আপনার সুস্থতা, দীর্ঘায়ু ও সার্বিক সাফল্য কামনা করি! 🎉🎂");
+  const whatsappMsg = encodeURIComponent("শুভ জন্মদিন আদিব ভাই! ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস ওয়েবসাইটের পক্ষ থেকে আপনাকে জানাই প্রাণঢালা শুভেচ্ছা ও উষ্ণ অভিনন্দন। আপনার সুস্থতা, দীর্ঘায়ু ও সার্বিক সাফল্য কামনা করি! ");
   const whatsappUrl = `https://wa.me/8801700000000?text=${whatsappMsg}`;
 
   overlay.innerHTML = `
     <div class="bday-popup-card" role="dialog" aria-modal="true" style="border-color: #f59e0b; box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 45px rgba(245,158,11,0.3);">
-      <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody">🔔</button>
+      <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody"></button>
       <button type="button" class="bday-popup-close" id="bdayCloseBtn" aria-label="Close">&times;</button>
 
       <div class="bday-avatar-large-wrap" style="background: linear-gradient(135deg, #f59e0b, #ef4444, #10c9a8);">
         <img class="bday-avatar-large" src="images/logo.png" alt="Abdullah Al Adib" loading="lazy">
-        <span class="bday-crown-icon">👑</span>
+        <span class="bday-crown-icon"></span>
       </div>
 
       <p class="eyebrow" style="color: #f59e0b; margin-bottom: 4px;">${isEve ? 'Birthday Countdown' : 'Founder & Developer Birthday'}</p>
@@ -228,10 +228,10 @@ function showDeveloperBirthdayModal(isEve) {
 
       <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px;">
         <a href="${whatsappUrl}" target="_blank" rel="noopener" class="cta-button" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px 20px; border-radius: 12px; background: #25D366; color: #fff; font-weight: 700; text-decoration: none;">
-          💬 হোয়াটসঅ্যাপে উইশ করুন (Instant Wish)
+          হোয়াটসঅ্যাপে উইশ করুন (Instant Wish)
         </a>
         <a href="developer.html" class="cta-button" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 10px 20px; border-radius: 12px; background: var(--surface-strong); border: 1.5px solid var(--border); color: var(--text); font-weight: 600; text-decoration: none;">
-          🧑‍💻 ডেভেলপার প্রোফাইল দেখুন
+          ডেভেলপার প্রোফাইল দেখুন
         </a>
       </div>
 
@@ -531,16 +531,22 @@ function checkPageAccess() {
   if (isHidden) {
     const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
     if (mainEl) {
+      const bannerTitle = currentLang === 'bn' ? 'পেজটি সাময়িকভাবে বন্ধ রাখা হয়েছে' : 'Page Temporarily Disabled';
+      const bannerDesc = currentLang === 'bn' 
+        ? (ctrl.lock_message || 'অ্যাডমিন কর্তৃক এই পেজের তথ্য সাময়িকভাবে বন্ধ রাখা হয়েছে।')
+        : (ctrl.lock_message_en || 'This page has been temporarily disabled by the administrator.');
+      const homeText = currentLang === 'bn' ? 'হোমপেজে ফিরে যান' : 'Back to Home';
+
       mainEl.innerHTML = `
         <div class="page-access-banner" style="max-width: 620px; margin: 80px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);">
           <div class="lock-icon-wrap" style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 50%; background: rgba(239, 68, 68, 0.12); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(239, 68, 68, 0.25);">
             <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
           </div>
-          <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'পেজটি সাময়িকভাবে বন্ধ রাখা হয়েছে' : 'Page Temporarily Disabled'}</h2>
-          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">${ctrl.lock_message || (currentLang === 'bn' ? 'অ্যাডমিন কর্তৃক এই পেজের তথ্য সাময়িকভাবে বন্ধ রাখা হয়েছে।' : 'This page has been temporarily disabled by the administrator.')}</p>
+          <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">${bannerTitle}</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">${bannerDesc}</p>
           <a href="index.html" class="btn primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: 700;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            <span>${currentLang === 'bn' ? 'হোমপেজে ফিরে যান' : 'Back to Home'}</span>
+            <span>${homeText}</span>
           </a>
         </div>
       `;
@@ -548,12 +554,19 @@ function checkPageAccess() {
     return true; // Access blocked!
   }
 
-  // 2. If page is locked (requires login)
+  // 2. If page is locked (requires login) - STRICTLY NO UNLOCK OPTION ON PROTECTED PAGE
   if (isLockedAll || isLockedNormal) {
     const isAuthed = Boolean(role && role !== "guest");
     if (isLockedAll || !isAuthed) {
       const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
       if (mainEl) {
+        const bannerTitle = currentLang === 'bn' ? 'এই পেজটি সংরক্ষিত' : 'Protected Residential Page';
+        const bannerDesc = currentLang === 'bn'
+          ? (ctrl.lock_message || 'এই পেজের তথ্য দেখার জন্য ইন্টারন্যাশনাল হলের আবাসিক শিক্ষার্থীদের লগইন করতে হবে।')
+          : (ctrl.lock_message_en || 'This page is protected for residential students of International Hall. Please sign in to your student account to view this directory.');
+        const portalText = currentLang === 'bn' ? 'স্টুডেন্ট পোর্টালে লগইন করুন' : 'Student Portal Login';
+        const homeText = currentLang === 'bn' ? 'হোমপেজে ফিরে যান' : 'Back to Home';
+
         mainEl.innerHTML = `
           <div class="page-access-banner" style="max-width: 600px; margin: 80px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);">
             <div class="lock-icon-wrap" style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 50%; background: rgba(16, 185, 129, 0.12); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(16, 185, 129, 0.25);">
@@ -562,31 +575,20 @@ function checkPageAccess() {
                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
               </svg>
             </div>
-            <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">${currentLang === 'bn' ? 'এই পেজটি সংরক্ষিত' : 'Protected Residential Page'}</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">${ctrl.lock_message || (currentLang === 'bn' ? 'এই পেজের তথ্য দেখার জন্য ইন্টারন্যাশনাল হলের আবাসিক শিক্ষার্থীদের লগইন করতে হবে।' : 'This page is protected. Residential students must sign in to view this directory.')}</p>
+            <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">${bannerTitle}</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">${bannerDesc}</p>
             
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-bottom: 24px;">
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
               <a href="profile.html" class="btn primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; font-weight: 700; text-decoration: none;">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                   <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                 </svg>
-                <span>${currentLang === 'bn' ? 'স্টুডেন্ট পোর্টালে লগইন করুন' : 'Student Portal Login'}</span>
+                <span>${portalText}</span>
               </a>
               <a href="index.html" class="btn secondary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 10px; font-weight: 600; text-decoration: none;">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                <span>${currentLang === 'bn' ? 'হোমপেজে ফিরে যান' : 'Back to Home'}</span>
+                <span>${homeText}</span>
               </a>
-            </div>
-
-            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
-              <details style="text-align: left; max-width: 380px; margin: 0 auto; cursor: pointer;">
-                <summary style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-align: center;">${currentLang === 'bn' ? 'পাসওয়ার্ড দিয়ে দ্রুত আনলক করুন' : 'Quick Unlock with Password'}</summary>
-                <form onsubmit="handleDirectPageLogin(event)" style="margin-top: 14px; display: flex; gap: 8px;">
-                  <input type="password" id="directPagePassword" placeholder="${currentLang === 'bn' ? 'পাসওয়ার্ড লিখুন...' : 'Enter batch password...'}" class="search-input" style="flex: 1;" required>
-                  <button type="submit" class="btn primary" style="padding: 10px 18px; border-radius: 8px; font-weight: 700;">${currentLang === 'bn' ? 'আনলক' : 'Unlock'}</button>
-                </form>
-                <div id="directPageLoginErr" style="color: #ef4444; font-size: 0.85rem; margin-top: 8px; display: none; text-align: center;"></div>
-              </details>
             </div>
           </div>
         `;
@@ -597,24 +599,6 @@ function checkPageAccess() {
 
   return false; // Access permitted
 }
-
-window.handleDirectPageLogin = function(e) {
-  e.preventDefault();
-  const pwd = document.getElementById("directPagePassword")?.value || "";
-  const errEl = document.getElementById("directPageLoginErr");
-  if (!pwd) return;
-  const result = verifyPassword(pwd);
-  if (result.success) {
-    localStorage.setItem("dc-student-password", pwd);
-    localStorage.setItem("dc-auth-role", result.role);
-    window.location.reload();
-  } else {
-    if (errEl) {
-      errEl.textContent = currentLang === 'bn' ? 'ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।' : 'Incorrect password! Please try again.';
-      errEl.style.display = 'block';
-    }
-  }
-};
 
 const i18n = {
   en: {
@@ -7531,7 +7515,7 @@ async function renderDeveloperPage(devData) {
             <span style="font-size: 0.85rem; color: var(--accent); font-weight: 700;">↗</span>
           </div>
           <h3>${cleanTitle}</h3>
-          <span class="project-domain-link">🌐 ${cleanDomain}</span>
+          <span class="project-domain-link">${cleanDomain}</span>
           <p>${pDesc}</p>
         </a>
       `;
@@ -7829,6 +7813,21 @@ function initStudentViewToggle() {
 }
 
 function initCompactFilterDrawers() {
+  // Helper to open/close drawer
+  const openDrawer = (overlay) => {
+    if (!overlay) return;
+    overlay.style.display = "flex";
+    overlay.classList.add("active");
+    overlay.setAttribute("aria-hidden", "false");
+  };
+
+  const closeDrawer = (overlay) => {
+    if (!overlay) return;
+    overlay.classList.remove("active");
+    overlay.style.display = "none";
+    overlay.setAttribute("aria-hidden", "true");
+  };
+
   // 1. Student Filter Drawer
   const openStudentBtn = byId("openStudentFilterBtn");
   const closeStudentBtn = byId("closeStudentFilterBtn");
@@ -7836,20 +7835,28 @@ function initCompactFilterDrawers() {
   const applyStudentBtn = byId("applyStudentFilterBtn");
   const resetStudentBtn = byId("resetStudentFilterBtn");
 
-  if (openStudentBtn && studentOverlay) {
-    openStudentBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      studentOverlay.classList.add("active");
-    });
+  if (studentOverlay) {
+    // Ensure hidden on load
+    closeDrawer(studentOverlay);
+
+    if (openStudentBtn) {
+      openStudentBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openDrawer(studentOverlay);
+      });
+    }
     if (closeStudentBtn) {
-      closeStudentBtn.addEventListener("click", () => studentOverlay.classList.remove("active"));
+      closeStudentBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeDrawer(studentOverlay);
+      });
     }
     studentOverlay.addEventListener("click", (e) => {
-      if (e.target === studentOverlay) studentOverlay.classList.remove("active");
+      if (e.target === studentOverlay) closeDrawer(studentOverlay);
     });
     if (applyStudentBtn) {
       applyStudentBtn.addEventListener("click", () => {
-        studentOverlay.classList.remove("active");
+        closeDrawer(studentOverlay);
         updateStudentFilterCount();
         renderStudentCards();
       });
@@ -7861,7 +7868,7 @@ function initCompactFilterDrawers() {
           if (el) el.value = el.options[0]?.value || "";
         });
         updateStudentFilterCount();
-        studentOverlay.classList.remove("active");
+        closeDrawer(studentOverlay);
         renderStudentCards();
       });
     }
@@ -7884,20 +7891,28 @@ function initCompactFilterDrawers() {
   const applyRoomBtn = byId("applyRoomFilterBtn");
   const resetRoomBtn = byId("resetRoomFilterBtn");
 
-  if (openRoomBtn && roomOverlay) {
-    openRoomBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      roomOverlay.classList.add("active");
-    });
+  if (roomOverlay) {
+    // Ensure hidden on load
+    closeDrawer(roomOverlay);
+
+    if (openRoomBtn) {
+      openRoomBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openDrawer(roomOverlay);
+      });
+    }
     if (closeRoomBtn) {
-      closeRoomBtn.addEventListener("click", () => roomOverlay.classList.remove("active"));
+      closeRoomBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeDrawer(roomOverlay);
+      });
     }
     roomOverlay.addEventListener("click", (e) => {
-      if (e.target === roomOverlay) roomOverlay.classList.remove("active");
+      if (e.target === roomOverlay) closeDrawer(roomOverlay);
     });
     if (applyRoomBtn) {
       applyRoomBtn.addEventListener("click", () => {
-        roomOverlay.classList.remove("active");
+        closeDrawer(roomOverlay);
         updateRoomFilterCount();
         renderRoommates();
       });
@@ -7909,7 +7924,7 @@ function initCompactFilterDrawers() {
           if (el) el.value = el.options[0]?.value || "";
         });
         updateRoomFilterCount();
-        roomOverlay.classList.remove("active");
+        closeDrawer(roomOverlay);
         renderRoommates();
       });
     }
@@ -7953,20 +7968,28 @@ function initCompactFilterDrawers() {
     }
   };
 
-  if (openBdayBtn && bdayOverlay) {
-    openBdayBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      bdayOverlay.classList.add("active");
-    });
+  if (bdayOverlay) {
+    // Ensure hidden on load
+    closeDrawer(bdayOverlay);
+
+    if (openBdayBtn) {
+      openBdayBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openDrawer(bdayOverlay);
+      });
+    }
     if (closeBdayBtn) {
-      closeBdayBtn.addEventListener("click", () => bdayOverlay.classList.remove("active"));
+      closeBdayBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeDrawer(bdayOverlay);
+      });
     }
     bdayOverlay.addEventListener("click", (e) => {
-      if (e.target === bdayOverlay) bdayOverlay.classList.remove("active");
+      if (e.target === bdayOverlay) closeDrawer(bdayOverlay);
     });
     if (applyBdayBtn) {
       applyBdayBtn.addEventListener("click", () => {
-        bdayOverlay.classList.remove("active");
+        closeDrawer(bdayOverlay);
         updateBirthdayFilterCount();
         renderBirthdays();
       });
@@ -7984,7 +8007,7 @@ function initCompactFilterDrawers() {
         if (blSel) blSel.value = "all";
         if (tTog) tTog.checked = false;
         updateBirthdayFilterCount();
-        bdayOverlay.classList.remove("active");
+        closeDrawer(bdayOverlay);
         renderBirthdays();
       });
     }

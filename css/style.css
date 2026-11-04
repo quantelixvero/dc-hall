@@ -5633,10 +5633,14 @@ body.dark .active-batch-header .batch-count-pill {
   background: rgba(10, 31, 56, 0.65);
   backdrop-filter: blur(6px);
   z-index: 1000;
-  display: flex;
+  display: none !important;
   align-items: center;
   justify-content: center;
   padding: 20px;
+}
+
+.filter-drawer-overlay.active {
+  display: flex !important;
   animation: fadeIn 0.2s ease-out;
 }
 
@@ -5947,10 +5951,10 @@ body.dark .active-batch-header .batch-count-pill {
 }
 
 /* ═════════════════════════════════════════════════════════════════
-   TYPOGRAPHY ENHANCEMENTS: PLUS JAKARTA SANS & MOBILE DESCRIPTIONS
+   ORIGINAL TYPOGRAPHY & PROFILE ROOM LINK STYLING
    ═════════════════════════════════════════════════════════════════ */
 body, button, input, select, textarea {
-  font-family: "Plus Jakarta Sans", "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Outfit", "Inter", Arial, sans-serif;
 }
 
 body[data-lang="bn"],
@@ -5958,33 +5962,6 @@ body[data-lang="bn"] button,
 body[data-lang="bn"] input,
 body[data-lang="bn"] select,
 body[data-lang="bn"] textarea {
-  font-family: "Hind Siliguri", "Plus Jakarta Sans", sans-serif;
-}
-
-.hero p,
-.page-hero p,
-.hero-subtitle,
-.hero-desc,
-.section-header p,
-.lead,
-.notice-card-desc,
-.event-detail-desc,
-.hall-description,
-.developer-bio {
-  font-family: "Plus Jakarta Sans", -apple-system, sans-serif;
-  letter-spacing: -0.005em;
-}
-
-body[data-lang="bn"] .hero p,
-body[data-lang="bn"] .page-hero p,
-body[data-lang="bn"] .hero-subtitle,
-body[data-lang="bn"] .hero-desc,
-body[data-lang="bn"] .section-header p,
-body[data-lang="bn"] .lead,
-body[data-lang="bn"] .notice-card-desc,
-body[data-lang="bn"] .event-detail-desc,
-body[data-lang="bn"] .hall-description,
-body[data-lang="bn"] .developer-bio {
   font-family: "Hind Siliguri", sans-serif;
 }
 
