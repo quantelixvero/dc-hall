@@ -3,7 +3,7 @@ import path from "node:path";
 
 const PROJECT_ID = "w16kaeyg";
 const DATASET = "production";
-const ASSET_VERSION = "7.2";
+const ASSET_VERSION = "7.3";
 const root = process.cwd();
 const formDir = path.join(root, "form");
 
