@@ -3181,7 +3181,7 @@ function mapCmsStudent(item, index) {
       fbUrl = `https://www.facebook.com/${fbUsername}`;
     }
   }
-  const messengerUrl = fbUsername ? `https://m.me/${fbUsername}` : (item.messenger ? (item.messenger.startsWith('http') ? item.messenger : `https://m.me/${item.messenger}`) : '');
+  const messengerUrl = getCleanMessengerUrl({ messenger: item.messenger, fb: fbUrl, facebook: fbRaw });
 
   // WhatsApp / Telegram logic
   const mainPhone = item.phone || '';
@@ -5712,6 +5712,67 @@ function initDropdowns() {
   });
 }
 
+function getCleanMessengerUrl(student) {
+  if (!student) return "";
+
+  let m = String(student.messenger || "").trim();
+  let fb = String(student.fb || student.facebook || "").trim();
+
+  // If already a full URL
+  if (m.startsWith("http://") || m.startsWith("https://")) {
+    if (m.includes("m.me/") || m.includes("messenger.com/")) {
+      return m;
+    }
+  }
+
+  // If starts with m.me/
+  if (m.startsWith("m.me/")) {
+    const clean = m.replace(/^m\.me\/?/, "").replace(/^\/+|\/+$/g, "");
+    if (clean && clean !== "share") return `https://m.me/${clean}`;
+  }
+
+  // Clean raw messenger username/slug
+  let slug = m.replace(/^\/+|\/+$/g, "");
+
+  // If slug is a valid username and NOT "share" or share hash
+  if (slug && slug !== "share" && !/^1[a-zA-Z0-9]{8,11}$/.test(slug)) {
+    return `https://m.me/${slug}`;
+  }
+
+  // Try extracting username or ID from Facebook URL
+  if (fb) {
+    if (!fb.startsWith("http")) fb = `https://${fb}`;
+
+    // Check for profile id: profile.php?id=100093029856067
+    const idMatch = fb.match(/[?&]id=(\d+)/);
+    if (idMatch) {
+      return `https://m.me/${idMatch[1]}`;
+    }
+
+    // Check for standard username: facebook.com/username
+    const userMatch = fb.match(/facebook\.com\/([a-zA-Z0-9._-]+)(?:\/|\?|$)/i);
+    if (userMatch) {
+      const u = userMatch[1].trim();
+      if (u && !["share", "profile.php", "home", "groups", "pages", "events"].includes(u.toLowerCase())) {
+        return `https://m.me/${u}`;
+      }
+    }
+
+    // If fb is a share link (e.g. https://www.facebook.com/share/1BABcH2cjn/)
+    return fb;
+  }
+
+  // Fallback
+  if (slug) {
+    if (/^1[a-zA-Z0-9]{8,11}$/.test(slug)) {
+      return `https://www.facebook.com/share/${slug}/`;
+    }
+    return `https://m.me/${slug}`;
+  }
+
+  return "";
+}
+
 function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHref, fbHref, messengerHref) {
   const savedLogos = cmsSettings?.contact_logos || {};
   
@@ -5810,12 +5871,13 @@ function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHre
   }
 
   // 6. Messenger
-  if (isProfileFieldVisible("messenger") && (student.messenger || student.fbUsername)) {
+  const cleanMessengerUrl = getCleanMessengerUrl(student);
+  if (isProfileFieldVisible("messenger") && cleanMessengerUrl) {
     const isUnlocked = isProfileFieldUnlocked("messenger", student);
     const messengerClass = isUnlocked ? "contact-btn messenger" : "contact-btn messenger locked";
-    const href = isUnlocked ? (student.messenger || "") : "profile.html";
+    const href = isUnlocked ? cleanMessengerUrl : "profile.html";
     const target = isUnlocked ? 'target="_blank" rel="noopener"' : '';
-    const title = isUnlocked ? "Messenger" : (currentLang === "bn" ? "লগইন করে মেসেঞ্জার দেখুন" : "Click to log in and chat");
+    const title = isUnlocked ? "Messenger" : (currentLang === "bn" ? "লগইন করে মেসেঞ্জারে যান" : "Click to log in and chat");
     buttons.push(`
       <a class="${messengerClass}" href="${href}" ${target} aria-label="Messenger" title="${title}">
         ${renderIcon("messenger", savedLogos.messenger)}
@@ -5951,7 +6013,7 @@ function openStudentModal(student) {
 
   const fbUrl = student.fb || "";
   const fbHref = showFacebook && fbUrl ? fbUrl : "profile.html";
-  const messengerUrl = student.messenger || "";
+  const messengerUrl = getCleanMessengerUrl(student);
   const messengerHref = showMessenger && messengerUrl ? messengerUrl : "profile.html";
 
   const whatsappNum = student.whatsapp || student.phone || "";

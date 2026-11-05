@@ -58,7 +58,8 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
     templates: (prev) => [
-      ...prev,
+      // Remove the default 'student' and 'room' templates so only batch-specific ones remain
+      ...prev.filter((t) => t.schemaType !== 'student' && t.schemaType !== 'room'),
       ...batchStudentTemplates,
       ...batchRoomTemplates,
       ...batchGalleryTemplates,
