@@ -27,6 +27,9 @@ const PROFILE_FIELD_OPTIONS = [
   { title: '📄 About / Bio (পরিচিতি / বায়ো)', value: 'bio' },
   { title: '📊 1st Year Academic Results (১ম বর্ষের ফলাফল)', value: 'results_1st' },
   { title: '📊 2nd Year Academic Results (২য় বর্ষের ফলাফল)', value: 'results_2nd' },
+  { title: '🏛️ College / Institution (ঢাকা কলেজ / প্রতিষ্ঠান)', value: 'college' },
+  { title: '🚨 Emergency Contact (জরুরি যোগাযোগ নম্বর)', value: 'emergency_contact' },
+  { title: '🔢 Full Roll Number (পূর্ণাঙ্গ রোল নম্বর)', value: 'full_roll' },
   { title: '🔢 Serial Position (সিরিয়াল পজিশন)', value: 'position' },
 ]
 

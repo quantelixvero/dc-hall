@@ -18,16 +18,15 @@ function escapeHtml(str) {
 
 function sanityRefToUrl(ref) {
   if (!ref || !ref.startsWith("image-")) {
-    return "https://dchall.pro.bd/images/hall/hostel-building.jpg";
+    return "https://dchall.pro.bd/images/hostel-hero.jpg";
   }
   const parts = ref.split("-");
   if (parts.length >= 4) {
     const imgId = parts[1];
     const dims = parts[2];
-    const ext = parts[3];
-    return `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${imgId}-${dims}.${ext}?w=1200&h=630&fit=crop&auto=format&q=85`;
+    return `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${imgId}-${dims}.jpg?w=1200&h=630&fit=crop&q=85&fm=jpg`;
   }
-  return "https://dchall.pro.bd/images/hall/hostel-building.jpg";
+  return "https://dchall.pro.bd/images/hostel-hero.jpg";
 }
 
 try {
@@ -53,7 +52,7 @@ try {
       const titleEn = ev.title_en || "Gallery Event";
       const descEn = ev.description_en || ev.description_bn || `Event photos from International Hall, Dhaka College (${ev.date || ""})`;
       const imgUrl = sanityRefToUrl(ev.first_asset);
-      const targetUrl = `https://dchall.pro.bd/gallery.html#event=${slug}`;
+      const pageUrl = `https://dchall.pro.bd/event/${safeSlug}.html`;
 
       const html = `<!DOCTYPE html>
 <html lang="en">
@@ -62,27 +61,32 @@ try {
   <title>${escapeHtml(titleEn)} | International Hall Gallery</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escapeHtml(descEn)}">
+  <link rel="canonical" href="${pageUrl}">
 
   <!-- Open Graph / Facebook / WhatsApp / Telegram -->
   <meta property="og:type" content="article">
-  <meta property="og:site_name" content="International Hall, Dhaka College">
+  <meta property="og:site_name" content="Dhaka College International Hall">
   <meta property="og:title" content="${escapeHtml(titleEn)}">
   <meta property="og:description" content="${escapeHtml(descEn)}">
-  <meta property="og:image" content="${escapeHtml(imgUrl)}">
+  <meta property="og:image" content="${imgUrl}">
+  <meta property="og:image:secure_url" content="${imgUrl}">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="${escapeHtml(titleEn)}">
-  <meta property="og:url" content="${targetUrl}">
+  <meta property="og:url" content="${pageUrl}">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@dchall">
   <meta name="twitter:title" content="${escapeHtml(titleEn)}">
   <meta name="twitter:description" content="${escapeHtml(descEn)}">
-  <meta name="twitter:image" content="${escapeHtml(imgUrl)}">
+  <meta name="twitter:image" content="${imgUrl}">
 
-  <!-- Instant Browser Redirect -->
-  <meta http-equiv="refresh" content="0;url=/gallery.html#event=${escapeHtml(slug)}">
-  <link rel="canonical" href="${targetUrl}">
+  <!-- WhatsApp & legacy scrapers -->
+  <link rel="image_src" href="${imgUrl}">
+
+  <!-- Instant Browser Redirect for Real Visitors -->
   <script>
     window.location.replace('/gallery.html#event=' + encodeURIComponent('${slug}'));
   </script>
@@ -116,14 +120,18 @@ try {
 <body>
   <div class="box">
     <h2>${escapeHtml(titleEn)}</h2>
-    <p>Redirecting to gallery...</p>
+    <p>Opening gallery event...</p>
     <p><a href="/gallery.html#event=${escapeHtml(slug)}">Click here if not redirected</a></p>
   </div>
 </body>
 </html>
 `;
       await writeFile(path.join(eventDir, `${safeSlug}.html`), html, "utf8");
-      console.log(`Generated event preview: event/${safeSlug}.html`);
+      // Also write slug/index.html so /event/slug and /event/slug.html both work 100%
+      const slugSubdir = path.join(eventDir, safeSlug);
+      await mkdir(slugSubdir, { recursive: true });
+      await writeFile(path.join(slugSubdir, "index.html"), html, "utf8");
+      console.log(`Generated event preview: event/${safeSlug}.html & event/${safeSlug}/index.html`);
     }
 
     await writeFile(

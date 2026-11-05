@@ -5891,35 +5891,52 @@ img.bday-avatar {
    COMPACT LIST VIEW FOR STUDENTS (Short View)
    ═════════════════════════════════════════════════════════════════ */
 .student-grid.view-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: 100% !important;
 }
 
-.student-grid.view-compact .student-card {
-  display: flex;
-  align-items: center;
-  padding: 12px 18px;
-  border-radius: 12px;
-  gap: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-  text-align: left;
+.student-grid.view-compact .prev-batch-preview-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  width: 100% !important;
+}
+
+.student-grid.view-compact .student-card,
+.student-grid.view-compact .student-card[data-aos],
+.student-grid.view-compact .prev-batch-preview-grid .student-card,
+.student-grid.view-compact .prev-batch-preview-grid .student-card[data-aos] {
+  display: flex !important;
+  align-items: center !important;
+  padding: 12px 18px !important;
+  border-radius: 12px !important;
+  gap: 16px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+  text-align: left !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 .student-grid.view-compact .student-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
-  border-color: var(--accent);
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow) !important;
+  border-color: var(--accent) !important;
 }
 
 .student-grid.view-compact .student-card img {
-  width: 46px;
-  height: 46px;
-  min-width: 46px;
-  border-radius: 50%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border: 2px solid var(--border);
+  width: 46px !important;
+  height: 46px !important;
+  min-width: 46px !important;
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1 !important;
+  object-fit: cover !important;
+  border: 2px solid var(--border) !important;
 }
 
 .student-grid.view-compact .student-body {
