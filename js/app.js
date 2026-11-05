@@ -5846,38 +5846,103 @@ function findStudentByNameOrSlug(nameOrSlug) {
   );
 }
 
-function buildProfileRoomBox(yearLabel, roomNo, mateName, mateStudent, isUnlocked, isVisible) {
+function buildProfileRoomPair(year, roomNo, mateName, mateStudent, isUnlocked, isVisible) {
   if (!isVisible || !roomNo) return '';
 
+  const isFirstYear = year === 1;
   const smallLockIconSvg = `<svg viewBox="0 0 24 24" width="13" height="13" fill="#10b981" style="display:inline-block; vertical-align:middle; margin-left:4px;"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>`;
-  
+
+  // 1. Labels: 1st Year is Bedmate, 2nd Year is Roommate
+  const roomLabel = isFirstYear 
+    ? (currentLang === 'bn' ? '১ম বর্ষ রুম' : '1st Year Room')
+    : (currentLang === 'bn' ? '২য় বর্ষ রুম' : '2nd Year Room');
+
+  const mateLabel = isFirstYear
+    ? (currentLang === 'bn' ? '১ম বর্ষ বেডমেট' : '1st Year Bedmate')
+    : (currentLang === 'bn' ? '২য় বর্ষ রুমমেট' : '2nd Year Roommate');
+
+  // 2. Room Box
   const roomDisplay = isUnlocked 
     ? (currentLang === "bn" ? `ROOM ${toBengaliDigits(roomNo)}` : `ROOM ${roomNo}`)
     : maskData(`ROOM ${roomNo}`) + smallLockIconSvg;
 
-  let mateHtml = '';
-  if (isUnlocked && (mateName || mateStudent)) {
-    if (mateStudent) {
-      const mateDisplayName = studentValue(mateStudent, 'name');
-      mateHtml = ` · ${currentLang === 'bn' ? 'রুমমেট:' : 'Roommate:'} <span class="profile-mate-link" data-open-mate-id="${mateStudent.id}" title="${currentLang === 'bn' ? 'প্রোফাইল দেখতে ক্লিক করুন' : 'Click to view profile'}">${mateDisplayName}</span>`;
-    } else {
-      mateHtml = ` · ${currentLang === 'bn' ? 'রুমমেট:' : 'Roommate:'} <span>${mateName}</span>`;
-    }
-  } else if (!isUnlocked && mateName) {
-    mateHtml = ` · <span>•••••••• ${smallLockIconSvg}</span>`;
-  }
-
-  return `
-    <div class="profile-item">
-      <span>${yearLabel}</span>
-      <strong>
-        ${isUnlocked 
-          ? `<span class="profile-room-link" onclick="openRoomModal('${roomNo}')" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to inspect room'}">${roomDisplay}</span>`
-          : `<span style="color:var(--text-muted);">${roomDisplay}</span>`
-        }${mateHtml}
+  const roomBox = `
+    <div class="profile-item profile-room-item ${isUnlocked ? 'profile-room-clickable' : ''}" ${isUnlocked ? `onclick="openRoomModal('${roomNo}')" role="button" tabindex="0" title="${currentLang === 'bn' ? 'রুমের বিস্তারিত দেখতে ক্লিক করুন' : 'Click to inspect room'}"` : ''}>
+      <span>${roomLabel}</span>
+      <strong class="profile-room-val">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="color:var(--accent); flex-shrink:0;">
+          <path d="M19 2H5c-1.1 0-2 .9-2 2v17h2v-2h14v2h2V4c0-1.1-.9-2-2-2zm-8 10c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+        </svg>
+        <span class="${isUnlocked ? 'profile-room-link' : ''}">${roomDisplay}</span>
       </strong>
     </div>
   `;
+
+  // 3. Mate Box (Bedmate for 1st Year, Roommate for 2nd Year)
+  let mateContent = '';
+  let mateClickAttr = '';
+  let mateClickableClass = '';
+
+  if (isUnlocked) {
+    if (mateStudent) {
+      const mateDisplayName = studentValue(mateStudent, 'name');
+      const avatarSrc = normalizeCmsPath(mateStudent.img || mateStudent.photo) || 'images/student-avatar.png';
+      mateClickAttr = `data-open-mate-id="${mateStudent.id || mateStudent.slug}" role="button" tabindex="0" title="${currentLang === 'bn' ? 'প্রোফাইল দেখতে ক্লিক করুন' : 'Click to view profile'}"`;
+      mateClickableClass = 'profile-mate-clickable';
+      mateContent = `
+        <span class="profile-mate-avatar-wrap">
+          <img src="${avatarSrc}" class="profile-mate-avatar" alt="${mateDisplayName}" loading="lazy" onerror="this.src='images/student-avatar.png'">
+        </span>
+        <span class="profile-mate-name">${mateDisplayName}</span>
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--accent); opacity:0.75; flex-shrink:0; margin-left:auto;">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      `;
+    } else if (mateName) {
+      mateContent = `
+        <span class="profile-mate-icon-placeholder">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+        </span>
+        <span class="profile-mate-name">${mateName}</span>
+      `;
+    } else {
+      mateContent = `<span style="color:var(--text-muted); font-size:0.85rem;">${currentLang === 'bn' ? 'বরাদ্দ নেই' : 'Not Assigned'}</span>`;
+    }
+  } else {
+    // Locked
+    mateContent = `
+      <span class="profile-mate-icon-placeholder">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+      </span>
+      <span>•••••••• ${smallLockIconSvg}</span>
+    `;
+  }
+
+  const mateBox = `
+    <div class="profile-item profile-mate-item ${mateClickableClass}" ${mateClickAttr}>
+      <span>${mateLabel}</span>
+      <strong class="profile-mate-val">
+        ${mateContent}
+      </strong>
+    </div>
+  `;
+
+  return `
+    <div class="profile-room-pair">
+      ${roomBox}
+      ${mateBox}
+    </div>
+  `;
+}
+
+// Backward-compatibility alias
+function buildProfileRoomBox(yearLabel, roomNo, mateName, mateStudent, isUnlocked, isVisible) {
+  const yr = String(yearLabel).includes('1') ? 1 : 2;
+  return buildProfileRoomPair(yr, roomNo, mateName, mateStudent, isUnlocked, isVisible);
 }
 
 function openStudentModal(student) {
@@ -6017,14 +6082,7 @@ function openStudentModal(student) {
             const r1MateName = student.room_1st_year?.bedmate_name;
             const r1Mate = findStudentByNameOrSlug(student.room_1st_year?.bedmate_slug || r1MateName);
             const isR1Vis = isProfileFieldVisible("room_1st_year");
-            return buildProfileRoomBox(
-              currentLang === 'bn' ? 'রুম ও বেডমেট (১ম বর্ষ)' : 'Room & Bedmate (1st Year)',
-              r1No,
-              r1MateName,
-              r1Mate,
-              showRoom1,
-              isR1Vis
-            );
+            return buildProfileRoomPair(1, r1No, r1MateName, r1Mate, showRoom1, isR1Vis);
           })()}
 
           ${(() => {
@@ -6032,14 +6090,7 @@ function openStudentModal(student) {
             const r2MateName = student.room_2nd_year?.bedmate_name;
             const r2Mate = findStudentByNameOrSlug(student.room_2nd_year?.bedmate_slug || r2MateName);
             const isR2Vis = isProfileFieldVisible("room_2nd_year");
-            return buildProfileRoomBox(
-              currentLang === 'bn' ? 'রুম ও রুমমেট (২য় বর্ষ)' : 'Room & Roommate (2nd Year)',
-              r2No,
-              r2MateName,
-              r2Mate,
-              showRoom2,
-              isR2Vis
-            );
+            return buildProfileRoomPair(2, r2No, r2MateName, r2Mate, showRoom2, isR2Vis);
           })()}
 
           ${(isProfileFieldVisible("whatsapp") && hasVal(whatsappNum)) ? (!showWhatsApp ? `
@@ -6220,13 +6271,13 @@ function openStudentModal(student) {
     });
   });
 
-  // Attach roommate button clicks to open that student's profile directly
+  // Attach roommate/bedmate button clicks to open that student's profile directly
   content.querySelectorAll('[data-open-mate-id]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
       e.stopPropagation();
       const mId = btn.getAttribute('data-open-mate-id');
-      const targetStudent = students.find(s => String(s.id) === String(mId));
+      const targetStudent = students.find(s => String(s.id) === String(mId) || (s.slug && String(s.slug) === String(mId)));
       if (targetStudent) openStudentModal(targetStudent);
     });
   });

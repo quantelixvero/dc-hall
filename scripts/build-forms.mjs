@@ -3,7 +3,7 @@ import path from "node:path";
 
 const PROJECT_ID = "w16kaeyg";
 const DATASET = "production";
-const ASSET_VERSION = "7.0";
+const ASSET_VERSION = "7.1";
 const root = process.cwd();
 const formDir = path.join(root, "form");
 
@@ -128,7 +128,7 @@ try {
   <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="../../favicon.ico">
   <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
   <link rel="manifest" href="../../site.webmanifest">
-  <meta name="theme-color" content="#0a1f38">
+  <meta name="theme-color" content="#121214">
 
   <script>
     (function () {

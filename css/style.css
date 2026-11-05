@@ -20,24 +20,24 @@
 }
 
 .dark {
-  --bg: #080c14;
-  --bg-alt: #0b111c;
-  --text: #f1f5f9;
+  --bg: #121214;
+  --bg-alt: #161618;
+  --text: #f3f4f6;
   --text-strong: #ffffff;
-  --text-muted: #94a3b8;
-  --muted: #94a3b8;
-  --surface: #0f172a;
-  --surface-strong: #141e34;
-  --surface-light: #1e293b;
-  --border: rgba(255, 255, 255, 0.08);
+  --text-muted: #9ca3af;
+  --muted: #9ca3af;
+  --surface: #222226;
+  --surface-strong: #1a1a1d;
+  --surface-light: #2a2a2f;
+  --border: rgba(255, 255, 255, 0.09);
   --border-soft: rgba(255, 255, 255, 0.05);
   --accent: #10c9a8;
   --accent-strong: #3de8cc;
   --accent-soft: rgba(16, 201, 168, 0.15);
   --warm: #f59e0b;
-  --shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
-  --nav-bg: rgba(8, 12, 20, 0.92);
-  --overlay: rgba(4, 7, 14, 0.85);
+  --shadow: 0 20px 48px rgba(0, 0, 0, 0.65);
+  --nav-bg: rgba(18, 18, 20, 0.92);
+  --overlay: rgba(0, 0, 0, 0.78);
   color-scheme: dark;
 }
 
@@ -1288,7 +1288,7 @@ h3 {
 .modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(6, 10, 18, 0.72);
+  background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(8px);
 }
 
@@ -1905,7 +1905,7 @@ body:not(.dark) .gallery-ambient-bg {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: rgba(15, 23, 42, 0.65);
+  background: rgba(26, 26, 29, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -5731,7 +5731,7 @@ img.bday-avatar {
 .filter-drawer-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(10, 31, 56, 0.65);
+  background: rgba(0, 0, 0, 0.72);
   backdrop-filter: blur(6px);
   z-index: 1000;
   display: none !important;
@@ -6106,18 +6106,109 @@ body[data-lang="bn"] textarea {
   font-family: "Hind Siliguri", sans-serif;
 }
 
-/* Profile Modal Room & Mate Link Styling */
+/* ═════════════════════════════════════════════════════════════════
+   PROFILE MODAL ROOM & BEDMATE / ROOMMATE REDESIGN
+   ═════════════════════════════════════════════════════════════════ */
+.profile-room-pair {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 580px) {
+  .profile-room-pair {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.profile-room-val,
+.profile-mate-val {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 0;
+  margin-top: 3px;
+}
+
 .profile-room-link {
   color: var(--accent);
-  font-weight: 700;
-  cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 3px;
+  font-weight: 700;
   transition: color 0.15s ease;
 }
+
 .profile-room-link:hover {
   color: var(--accent-strong);
 }
+
+.profile-room-clickable {
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.profile-room-clickable:hover {
+  background: var(--surface-light);
+  border-color: var(--accent);
+}
+
+.profile-mate-clickable {
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.profile-mate-clickable:hover {
+  background: var(--surface-light);
+  border-color: var(--accent);
+}
+
+.profile-mate-avatar-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-mate-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--accent);
+  background: var(--surface-light);
+  display: block;
+}
+
+.profile-mate-icon-placeholder {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--accent);
+}
+
+.profile-mate-name {
+  color: var(--text);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.profile-mate-clickable:hover .profile-mate-name {
+  color: var(--accent);
+}
+
 .profile-mate-link {
   color: var(--text);
   font-weight: 600;
@@ -6125,6 +6216,7 @@ body[data-lang="bn"] textarea {
   text-decoration: none;
   transition: color 0.15s ease;
 }
+
 .profile-mate-link:hover {
   color: var(--accent);
   text-decoration: underline;
