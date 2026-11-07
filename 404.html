@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Page Routing... | Dhaka College International Hall</title>
+  <title>Page Not Found | Dhaka College International Hall</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/png" href="favicon-512x512.png">
   <script>
     (function() {
       var path = window.location.pathname;
@@ -33,40 +32,117 @@
       }
     })();
   </script>
-  <link rel="stylesheet" href="css/style.css?v=7.7">
-  <style>
-    body {
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 24px;
-      margin: 0;
-      font-family: "Outfit", sans-serif;
-    }
-    .card-404 {
-      background: var(--surface-strong);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 48px 32px;
-      max-width: 520px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.06);
-    }
-  </style>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem("dc-hostel-theme") === "dark") {
+          document.documentElement.classList.add("dark");
+          document.documentElement.dataset.theme = "dark";
+        }
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="icon" type="image/png" sizes="512x512" href="./favicon-512x512.png">
+  <link rel="icon" type="image/x-icon" sizes="16x16 32x32 48x48" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700;800&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=7.8">
 </head>
-<body>
-  <div class="card-404">
-    <div style="font-size: 3.5rem; font-weight: 800; color: var(--accent); margin-bottom: 8px;">404</div>
-    <h1 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 12px;">Page Not Found / পৃষ্ঠাটি পাওয়া যায়নি</h1>
-    <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px;">
-      The requested link does not exist or has been relocated.
-    </p>
-    <a href="index.html" class="btn primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
-      &larr; Return to Home
-    </a>
-  </div>
+<body data-page="404">
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a class="logo" href="index.html" aria-label="DC Hostel home">
+        <img class="logo-img" src="images/logo.png" alt="International Hall logo" loading="lazy">
+        <span data-i18n="nav.logo">International Hall</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html" data-i18n="nav.home">Home</a>
+        <a href="students.html" data-i18n="nav.students">Students</a>
+        <a href="roommates.html" data-i18n="nav.roommates">Roommates</a>
+        <a href="notices.html" data-i18n="nav.notices">Notices</a>
+        <a href="results.html" data-i18n="nav.results">Results</a>
+        <a href="hostel.html" data-i18n="nav.hostel">Hostel Info</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="language-switch" aria-label="Language selector">
+          <button type="button" data-lang-option="en" title="English">EN</button>
+          <button type="button" data-lang-option="bn" title="বাংলা">BN</button>
+        </div>
+        <a href="profile.html" class="profile-toggle" id="profileBtn" aria-label="Profile Status / Login">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+        </a>
+        <button class="theme-toggle" id="toggle" type="button" aria-label="Toggle dark mode">
+          <span aria-hidden="true">&#9789;</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page-main" style="min-height: 65vh; display: flex; align-items: center; justify-content: center; padding: 60px 16px;">
+    <div class="container" style="display: flex; justify-content: center;">
+      <div class="page-access-banner" data-aos="fade-up" style="max-width: 600px; width: 100%; margin: 40px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);">
+        <div class="lock-icon-wrap" style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 18px; background: rgba(16, 201, 168, 0.08); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(16, 201, 168, 0.25); box-shadow: 0 8px 24px rgba(16, 201, 168, 0.12);">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 8v4m0 4h.01"></path>
+          </svg>
+        </div>
+        <div style="font-size: 3.2rem; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 8px; letter-spacing: -0.03em;">404</div>
+        <h1 style="font-size: 1.55rem; font-weight: 800; margin-bottom: 12px; color: var(--text); letter-spacing: -0.02em;">Page Not Found</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.65; margin-bottom: 28px; max-width: 460px; margin-left: auto; margin-right: auto;">The page you are looking for does not exist or has been relocated to another address.</p>
+        <a href="index.html" class="btn primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: 700;">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          <span>Back to Home</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="images/logo.png" alt="International Hall logo" loading="lazy"><strong>International Hall</strong></div>
+        <p class="footer-about">Official student portal of Dhaka College International Hall. Built with dedication by Abdullah Al Adib.</p>
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <a href="index.html#students-preview">Students Preview</a>
+        <a href="index.html#roommates-preview">Roommate Preview</a>
+        <a href="index.html#hallsuper-preview">Hall Super</a>
+        <a href="index.html#gallery-preview">Gallery</a>
+        <a href="index.html#dc-resources">College Resources</a>
+        <a href="index.html#location">Location</a>
+      </div>
+      <div class="footer-links">
+        <h3>Student</h3>
+        <a href="students.html">Students</a>
+        <a href="roommates.html">Roommates</a>
+        <a href="birthday.html">Birthdays</a>
+        <a href="results.html">Results</a>
+        <a href="profile.html">Profile / Login</a>
+      </div>
+      <div class="footer-links">
+        <h3>Hall</h3>
+        <a href="hostel.html">Hall Info</a>
+        <a href="hostel.html#hallsuper">Hall Super</a>
+        <a href="hostel.html#famous">Notable Alumni</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="dc-clubs.html">College Clubs</a>
+        <a href="dc-social.html">Social Links</a>
+        <a href="developer.html">Developer</a>
+        <a href="https://admindchall.vercel.app" target="_blank" rel="noopener">Admin Panel</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="js/sanity-client.js?v=7.8"></script>
+  <script src="js/app.js?v=7.8"></script>
 </body>
 </html>

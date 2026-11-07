@@ -6378,3 +6378,369 @@ body[data-lang="bn"] textarea {
   border-color: var(--accent) !important;
   box-shadow: 0 0 20px rgba(16, 201, 168, 0.25) !important;
 }
+
+
+/* ==========================================================================
+   ROOMMATE COMPACT VIEW & RESPONSIVE GRID POLISH (v7.8)
+   ========================================================================== */
+
+.roommate-grid.view-compact {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  width: 100% !important;
+}
+
+@media (max-width: 1199px) {
+  .roommate-grid.view-compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .roommate-grid.view-compact {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+.roommate-compact-card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.roommate-compact-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.rm-compact-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.rm-compact-person.left {
+  justify-content: flex-start;
+}
+
+.rm-compact-person.right {
+  justify-content: flex-end;
+}
+
+.rm-compact-person img {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.rm-compact-person .empty-avatar-circle {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.rm-compact-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.rm-compact-meta.right {
+  text-align: right;
+}
+
+.rm-compact-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.rm-compact-name.empty {
+  color: var(--muted);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.rm-compact-roll {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.room-number.compact-badge {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  min-width: 58px;
+}
+
+.room-number.compact-badge:hover {
+  transform: scale(1.05);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.room-number.compact-badge .rn-label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.room-number.compact-badge .rn-no {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+/* Roommate Card Mobile Overflow & Layout Fix (Item 7) */
+@media (max-width: 640px) {
+  .roommate-grid {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    gap: 14px !important;
+  }
+  .room-pair {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 14px 10px !important;
+    gap: 8px !important;
+  }
+  .room-person {
+    padding: 10px 4px !important;
+  }
+  .room-person img {
+    width: 68px !important;
+    height: 68px !important;
+  }
+}
+
+/* Student compact view and previous batch grid responsive polish (Item 6) */
+@media (max-width: 640px) {
+  .student-grid.view-compact,
+  .prev-batch-preview-grid {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+  }
+  .student-grid.view-compact .prev-batch-preview-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .prev-batch-preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Event Detail Top Bar & Clean Share Button (Item 11) */
+.event-detail-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.event-action-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.event-action-share-btn:hover {
+  background: var(--accent);
+  color: #0d1117;
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(16, 201, 168, 0.25);
+}
+
+/* Event Share Modal */
+.share-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.share-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+}
+
+.share-modal-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 440px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.share-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.share-modal-head h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0;
+  color: var(--text);
+}
+
+.share-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: var(--muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 8px;
+  transition: color 0.15s ease;
+}
+
+.share-modal-close:hover {
+  color: var(--accent);
+}
+
+.share-modal-title {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 20px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.share-options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.share-option-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: transform 0.15s ease, filter 0.15s ease;
+  color: #fff !important;
+}
+
+.share-option-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.share-option-btn.fb { background: #1877F2; }
+.share-option-btn.wa { background: #25D366; }
+.share-option-btn.tg { background: #229ED9; }
+.share-option-btn.x  { background: #000000; border: 1px solid rgba(255,255,255,0.25); }
+
+.share-copy-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px 6px 6px 14px;
+}
+
+.share-copy-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 0.85rem;
+  outline: none;
+  min-width: 0;
+}
+
+.share-copy-box .btn {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  border-radius: 8px;
+}

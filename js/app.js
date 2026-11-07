@@ -1,4 +1,161 @@
 
+function renderSingleRoomCompactCard(room, pair, index) {
+  const p1 = pair[0];
+  const p2 = pair[1];
+
+  const p1Photo = isProfileFieldUnlocked("photo", p1) ? (p1.img || "images/student-avatar.png") : "images/student-avatar.png";
+  const p1Name = isProfileFieldUnlocked("name", p1) ? (studentValue(p1, "name") || "Student") : "••••••••";
+  const p1Short = p1Name.split(" ")[0] || p1Name;
+
+  let p2Html = "";
+  if (p2) {
+    const p2Photo = isProfileFieldUnlocked("photo", p2) ? (p2.img || "images/student-avatar.png") : "images/student-avatar.png";
+    const p2Name = isProfileFieldUnlocked("name", p2) ? (studentValue(p2, "name") || "Student") : "••••••••";
+    const p2Short = p2Name.split(" ")[0] || p2Name;
+    p2Html = `
+      <div class="rm-compact-person right" onclick="openStudentModalById('${p2.id}')" title="${p2Name}">
+        <div class="rm-compact-meta right">
+          <span class="rm-compact-name">${p2Short}</span>
+          <span class="rm-compact-roll">${p2.roll ? (currentLang === 'bn' ? toBengaliDigits(p2.roll) : p2.roll) : ''}</span>
+        </div>
+        <img src="${p2Photo}" alt="${p2Name}" loading="lazy">
+      </div>`;
+  } else {
+    p2Html = `
+      <div class="rm-compact-person right empty">
+        <div class="rm-compact-meta right">
+          <span class="rm-compact-name empty">${currentLang === 'bn' ? 'ফাঁকা' : 'Empty'}</span>
+        </div>
+        <div class="empty-avatar-circle">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
+      </div>`;
+  }
+
+  return `
+    <article class="roommate-compact-card" data-aos="fade-up" data-aos-delay="${Math.min(index * 40, 240)}">
+      <div class="rm-compact-person left" onclick="openStudentModalById('${p1?.id}')" title="${p1Name}">
+        <img src="${p1Photo}" alt="${p1Name}" loading="lazy">
+        <div class="rm-compact-meta left">
+          <span class="rm-compact-name">${p1Short}</span>
+          <span class="rm-compact-roll">${p1?.roll ? (currentLang === 'bn' ? toBengaliDigits(p1.roll) : p1.roll) : ''}</span>
+        </div>
+      </div>
+      <button class="room-number compact-badge" type="button" onclick="openRoomModal('${room}')" title="${currentLang === 'bn' ? 'রুমের বিবরণ' : 'Room details'}">
+        <span class="rn-label">ROOM</span>
+        <strong class="rn-no">${currentLang === 'bn' ? toBengaliDigits(room) : room}</strong>
+      </button>
+      ${p2Html}
+    </article>
+  `;
+}
+
+function initRoommateViewToggle() {
+  const grid = byId("roommateGrid");
+  if (!grid) return;
+
+  const saved = localStorage.getItem("dc-roommate-view") || "grid";
+  if (saved === "compact") {
+    grid.classList.add("view-compact");
+  } else {
+    grid.classList.remove("view-compact");
+  }
+
+  document.querySelectorAll("[data-roommate-view]").forEach(btn => {
+    btn.classList.toggle("is-active", btn.dataset.roommateView === saved);
+    btn.addEventListener("click", () => {
+      const mode = btn.dataset.roommateView;
+      localStorage.setItem("dc-roommate-view", mode);
+      document.querySelectorAll("[data-roommate-view]").forEach(b => {
+        b.classList.toggle("is-active", b.dataset.roommateView === mode);
+      });
+      grid.classList.toggle("view-compact", mode === "compact");
+      renderRoommates();
+      refreshAos();
+    });
+  });
+}
+
+
+function openEventShareModal(title, shareUrl) {
+  let modal = document.getElementById("eventShareModal");
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.id = "eventShareModal";
+    modal.className = "share-modal-overlay";
+    document.body.appendChild(modal);
+  }
+  const fbUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl);
+  const waUrl = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(title + ' ' + shareUrl);
+  const tgUrl = 'https://t.me/share/url?url=' + encodeURIComponent(shareUrl) + '&text=' + encodeURIComponent(title);
+  const xUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title) + '&url=' + encodeURIComponent(shareUrl);
+
+  const headingText = currentLang === 'bn' ? 'ইভেন্ট শেয়ার করুন' : 'Share Event';
+  const copyText = currentLang === 'bn' ? 'কপি' : 'Copy';
+  const copiedText = currentLang === 'bn' ? 'কপি হয়েছে!' : 'Copied!';
+
+  modal.innerHTML = `
+    <div class="share-modal-backdrop" onclick="closeEventShareModal()"></div>
+    <div class="share-modal-card" data-aos="zoom-in">
+      <div class="share-modal-head">
+        <h3>${headingText}</h3>
+        <button type="button" class="share-modal-close" onclick="closeEventShareModal()">&times;</button>
+      </div>
+      <p class="share-modal-title">${title}</p>
+      <div class="share-options-grid">
+        <a href="${fbUrl}" target="_blank" rel="noopener noreferrer" class="share-option-btn fb">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span>Facebook</span>
+        </a>
+        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="share-option-btn wa">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.584 1.769.88 2.79.88 3.182 0 5.768-2.587 5.768-5.766.001-3.187-2.575-5.77-5.767-5.771zm0-3.172c4.938 0 8.944 4.008 8.944 8.944 0 4.939-4.008 8.944-8.944 8.944-1.579 0-3.064-.413-4.356-1.134l-5.675 1.487 1.517-5.545c-.8-1.341-1.266-2.91-1.266-4.752 0-4.936 4.006-8.944 8.944-8.944z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a href="${tgUrl}" target="_blank" rel="noopener noreferrer" class="share-option-btn tg">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.295-.6.295-.002 0-.003 0-.005 0l.213-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.458c.538-.196 1.006.128.832.943z"/></svg>
+          <span>Telegram</span>
+        </a>
+        <a href="${xUrl}" target="_blank" rel="noopener noreferrer" class="share-option-btn x">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          <span>Twitter (X)</span>
+        </a>
+      </div>
+      <div class="share-copy-box">
+        <input type="text" readonly value="${shareUrl}" id="shareUrlInput">
+        <button type="button" class="btn primary" id="copyShareUrlBtn">
+          ${copyText}
+        </button>
+      </div>
+    </div>
+  `;
+  modal.style.display = 'flex';
+
+  const copyBtn = document.getElementById('copyShareUrlBtn');
+  if (copyBtn) {
+    copyBtn.onclick = () => {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        copyBtn.textContent = copiedText;
+        setTimeout(() => {
+          copyBtn.textContent = copyText;
+        }, 2000);
+      });
+    };
+  }
+}
+window.closeEventShareModal = function() {
+  const modal = document.getElementById('eventShareModal');
+  if (modal) modal.style.display = 'none';
+};
+
+
+window.openStudentModalById = function(id) {
+  if (!id) return;
+  const numId = parseInt(id, 10);
+  const s = students.find(item => item.id === numId || String(item.slug) === String(id) || String(item.roll) === String(id) || String(item.id) === String(id));
+  if (s) openStudentModal(s);
+};
+
+
 // ═══════════════════════════════════════════════════════════════
 // SVG BADGES & ICONS (Batches & Birthdays)
 // ═══════════════════════════════════════════════════════════════
@@ -544,11 +701,11 @@ function checkPageAccess() {
 
       mainEl.innerHTML = `
         <div class="page-access-banner" style="max-width: 620px; margin: 80px auto; padding: 48px 32px; text-align: center; background: var(--surface-strong); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);">
-          <div class="lock-icon-wrap" style="width: 72px; height: 72px; margin: 0 auto 20px; border-radius: 50%; background: rgba(239, 68, 68, 0.12); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(239, 68, 68, 0.25);">
-            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+          <div class="lock-icon-wrap" style="width: 68px; height: 68px; margin: 0 auto 20px; border-radius: 16px; background: rgba(16, 201, 168, 0.08); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(16, 201, 168, 0.25); box-shadow: 0 8px 24px rgba(16, 201, 168, 0.12);">
+            <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           </div>
-          <h2 style="font-size: 1.45rem; font-weight: 800; margin-bottom: 12px; color: var(--text);">${bannerTitle}</h2>
-          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 28px;">${bannerDesc}</p>
+          <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; color: var(--text); letter-spacing: -0.02em;">${bannerTitle}</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.65; margin-bottom: 28px; max-width: 480px; margin-left: auto; margin-right: auto;">${bannerDesc}</p>
           <a href="index.html" class="btn primary" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: 700;">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             <span>${homeText}</span>
@@ -3569,7 +3726,7 @@ function applySanityPayload(sanityData) {
 async function loadCmsContent() {
   // ⚡ 1. FAST CACHE-FIRST HYDRATION (Instant 0ms render without waiting for network!)
   try {
-    const cachedRaw = localStorage.getItem("dc_sanity_cache_v77");
+    const cachedRaw = localStorage.getItem("dc_sanity_cache_v78");
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw);
       if (cached && cached.students && cached.students.length) {
@@ -3593,7 +3750,7 @@ async function loadCmsContent() {
 
   if (sanityData && sanityData.students && sanityData.students.length) {
     try {
-      localStorage.setItem("dc_sanity_cache_v77", JSON.stringify(sanityData));
+      localStorage.setItem("dc_sanity_cache_v78", JSON.stringify(sanityData));
     } catch (e) {}
     applySanityPayload(sanityData);
   } else if (!students || !students.length) {
@@ -3707,6 +3864,16 @@ function t(key) {
 
 function studentValue(student, field) {
   return currentLang === "bn" && student.bn && student.bn[field] ? student.bn[field] : student[field];
+}
+
+
+function formatGroupShort(group) {
+  if (!group) return "";
+  const g = String(group).toLowerCase().trim();
+  if (g.includes("sci")) return "SCI";
+  if (g.includes("com") || g.includes("bus") || g.includes("b.st")) return "B.STU";
+  if (g.includes("art") || g.includes("hum")) return "HUM";
+  return group.toUpperCase();
 }
 
 function groupLabel(group) {
@@ -4311,13 +4478,23 @@ function getHomepage6Students(allStudents) {
     batchMap[b].push(s);
   });
   const batchKeys = Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
-  // Show 6 students from previous/established batch (HSC-27) for full balanced grid on homepage
-  const prevBatchKey = batchKeys[1] || "HSC-27";
-  const prevList = batchMap[prevBatchKey] || batchMap["HSC-27"] || [];
-  if (prevList.length >= 6) {
-    return prevList.slice(0, 6);
+  const latestBatchKey = batchKeys[0] || "HSC-28";
+  const prevBatchKey = batchKeys.find(k => k !== latestBatchKey) || "HSC-27";
+
+  const latestList = batchMap[latestBatchKey] || [];
+  const prevList = batchMap[prevBatchKey] || [];
+
+  // Fixed rule: Exactly 1st 3 from latest batch (HSC-28) + 3 from established batch (HSC-27)
+  const top3Latest = latestList.slice(0, 3);
+  const top3Prev = prevList.slice(0, 3);
+
+  let combined = [...top3Latest, ...top3Prev];
+  if (combined.length < 6) {
+    const remainingNeeded = 6 - combined.length;
+    const extra = allStudents.filter(s => !combined.includes(s)).slice(0, remainingNeeded);
+    combined.push(...extra);
   }
-  return allStudents.slice(0, 6);
+  return combined.slice(0, 6);
 }
 
 function getAllBatchesSorted() {
@@ -4360,14 +4537,25 @@ function renderStudentCards(list = getFilteredStudents()) {
       const sb = (s.batch || "HSC-27").toLowerCase().replace(/[^a-z0-9]/g, "");
       return sb === normalizedParam;
     });
-    const batchLabel = singleBatchParam.toUpperCase().replace("HSC", "HSC-");
+    const cleanB = singleBatchParam.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const batchLabel = cleanB.startsWith("HSC") ? "HSC-" + cleanB.replace(/^HSC/, "") : cleanB;
 
     let html = `
-      <div class="batch-archive-banner" data-aos="fade-up">
-        <a href="students.html" class="back-to-all-btn">← ${currentLang === 'bn' ? 'সকল ব্যাচ' : 'All Batches'}</a>
-        <div class="batch-archive-title-wrap">
-          <h2 class="batch-archive-title">${BATCH_LOGO_SVG} ${batchLabel}</h2>
-          <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+      <div class="batch-archive-nav-wrap" style="grid-column: 1 / -1; margin-bottom: 12px;" data-aos="fade-up">
+        <a href="students.html" class="btn secondary back-to-all-btn" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; padding: 8px 18px; border-radius: 8px; text-decoration: none;">
+          ← ${currentLang === 'bn' ? 'সকল ব্যাচ' : 'All Batches'}
+        </a>
+      </div>
+      <div class="batch-section-header active-batch-header" data-aos="fade-up" style="grid-column: 1 / -1; margin-bottom: 20px;">
+        <div class="batch-header-inner">
+          <h2 class="batch-heading">
+            <span class="batch-icon">${BATCH_LOGO_SVG}</span>
+            <span class="batch-label">${currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:'}</span>
+            <span class="batch-badge">${batchLabel}</span>
+          </h2>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+          </div>
         </div>
       </div>`;
 
@@ -4407,7 +4595,7 @@ function renderStudentCards(list = getFilteredStudents()) {
           <div class="batch-header-inner">
             <h2 class="batch-heading">
               <span class="batch-icon">${BATCH_LOGO_SVG}</span>
-              <span class="batch-label">${currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:'}</span>
+              <span class="batch-label">${currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:'}</span>
               <span class="batch-badge">${batch}</span>
             </h2>
             <div style="display:flex; align-items:center; gap:12px;">
@@ -4456,7 +4644,6 @@ function renderStudentCards(list = getFilteredStudents()) {
       }
       html += `</div>`;
     }
-    html += `</div>`;
   });
 
   grid.innerHTML = html;
@@ -4601,28 +4788,44 @@ function renderRoommates() {
       const sb = (s.batch || "HSC-27").toLowerCase().replace(/[^a-z0-9]/g, "");
       return sb === normalizedParam;
     });
-    const batchLabel = singleBatchParam.toUpperCase().replace("HSC", "HSC-");
+    const cleanB = singleBatchParam.toUpperCase().replace(/[^A-Z0-9]/g, "");
+    const batchLabel = cleanB.startsWith("HSC") ? "HSC-" + cleanB.replace(/^HSC/, "") : cleanB;
     const rooms = groupByRoom(batchSource);
 
     let html = `
-      <div class="batch-archive-banner" data-aos="fade-up" style="grid-column: 1 / -1;">
-        <a href="roommates.html" class="back-to-all-btn">← ${currentLang === 'bn' ? 'সকল ব্যাচ' : 'All Batches'}</a>
-        <div class="batch-archive-title-wrap">
-          <h2 class="batch-archive-title">${BATCH_LOGO_SVG} ${batchLabel} — ${currentLang === 'bn' ? 'রুমমেট' : 'Roommates'}</h2>
-          <span class="batch-count-pill">${rooms.length} ${currentLang === 'bn' ? 'টি রুম' : 'Rooms'}</span>
+      <div class="batch-archive-nav-wrap" style="grid-column: 1 / -1; margin-bottom: 12px;" data-aos="fade-up">
+        <a href="roommates.html" class="btn secondary back-to-all-btn" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; padding: 8px 18px; border-radius: 8px; text-decoration: none;">
+          ← ${currentLang === 'bn' ? 'সকল ব্যাচ' : 'All Batches'}
+        </a>
+      </div>
+      <div class="batch-section-header active-batch-header" data-aos="fade-up" style="grid-column: 1 / -1; margin-bottom: 20px;">
+        <div class="batch-header-inner">
+          <h2 class="batch-heading">
+            <span class="batch-icon">${BATCH_LOGO_SVG}</span>
+            <span class="batch-label">${currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:'}</span>
+            <span class="batch-badge">${batchLabel}</span>
+          </h2>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="batch-count-pill">${rooms.length} ${currentLang === 'bn' ? 'টি রুম' : 'Rooms'}</span>
+          </div>
         </div>
       </div>`;
 
+    const isCompactView = grid.classList.contains("view-compact");
     if (!rooms.length) {
       html += `<div class="empty-state" style="grid-column: 1 / -1;">${t("common.noStudent")}</div>`;
     } else {
       rooms.forEach(([room, pair], index) => {
-        html += `
-          <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
-            ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-            ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
-          </article>`;
+        if (isCompactView) {
+          html += renderSingleRoomCompactCard(room, pair, index);
+        } else {
+          html += `
+            <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
+              ${renderRoomPerson(pair[0], "fade-right")}
+              <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
+              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+            </article>`;
+        }
       });
     }
     grid.innerHTML = html;
@@ -4659,7 +4862,7 @@ function renderRoommates() {
         <div class="batch-header-inner">
           <h2 class="batch-heading">
             <span class="batch-icon">${BATCH_LOGO_SVG}</span>
-            <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : (currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:')}</span>
+            <span class="batch-label">${currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:'}</span>
             <span class="batch-badge">${batch}</span>
           </h2>
           <div style="display:flex; align-items:center; gap:12px;">
@@ -4670,27 +4873,37 @@ function renderRoommates() {
       </div>
       <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
 
+    const isCompactView = grid.classList.contains("view-compact");
     if (isLatest) {
       rooms.forEach(([room, pair], index) => {
-        html += `
-          <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
-            ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-            ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
-          </article>`;
+        if (isCompactView) {
+          html += renderSingleRoomCompactCard(room, pair, index);
+        } else {
+          html += `
+            <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
+              ${renderRoomPerson(pair[0], "fade-right")}
+              <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
+              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+            </article>`;
+        }
       });
     } else {
-      const previewRooms = rooms.slice(0, 2);
+      const previewLimit = isCompactView ? 3 : 2;
+      const previewRooms = rooms.slice(0, previewLimit);
       previewRooms.forEach(([room, pair], index) => {
-        html += `
-          <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
-            ${renderRoomPerson(pair[0], "fade-right")}
-            <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-            ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
-          </article>`;
+        if (isCompactView) {
+          html += renderSingleRoomCompactCard(room, pair, index);
+        } else {
+          html += `
+            <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
+              ${renderRoomPerson(pair[0], "fade-right")}
+              <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
+              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+            </article>`;
+        }
       });
 
-      if (rooms.length > 2) {
+      if (rooms.length > previewLimit) {
         html += `
           <div class="prev-batch-action" data-aos="fade-up" style="grid-column: 1 / -1;">
             <a href="roommates.html?batch=${batchSlug}" class="prev-batch-view-all-btn">
@@ -6095,7 +6308,7 @@ function openStudentModal(student) {
     group: () => ((isProfileFieldVisible("group") && hasVal(student.group)) ? `
       <div class="profile-item">
         <span>${t("common.group")}</span>
-        <strong>${showGroup ? groupLabel(student.group) : maskData(student.group) + smallLockIconSvg}</strong>
+        <strong>${showGroup ? formatGroupShort(student.group) : maskData(student.group) + smallLockIconSvg}</strong>
       </div>` : ''),
 
     section: () => ((isProfileFieldVisible("section") && hasVal(student.section)) ? `
@@ -6421,10 +6634,19 @@ function openRoomModal(room) {
     ? (currentLang === "bn" ? (cmsRoom.description_bn || cmsRoom.description_en || "শান্ত ও মনোরম পরিবেশের আদর্শ ছাত্রাবাস কক্ষ।") : (cmsRoom.description_en || cmsRoom.description_bn || "Comfortable living space with quiet academic atmosphere."))
     : (currentLang === "bn" ? "শান্ত ও মনোরম পরিবেশের আদর্শ ছাত্রাবাস কক্ষ।" : "Comfortable living space with quiet academic atmosphere.");
   
+  // Aggregate photos across ALL batch room records matching this room number
+  const matchingRoomDocs = (roomsData || []).filter(r => normalizeRoomNumber(r.room_no) === normTarget);
   let roomPhotos = [];
-  if (cmsRoom && cmsRoom.photos && cmsRoom.photos.length) {
-    roomPhotos = cmsRoom.photos.map(normalizeCmsPath).filter(Boolean);
-  }
+  matchingRoomDocs.forEach(r => {
+    if (r.photos && Array.isArray(r.photos)) {
+      r.photos.forEach(p => {
+        const url = normalizeCmsPath(p?.asset?.url || p?.url || p);
+        if (url && typeof url === 'string' && !roomPhotos.includes(url)) {
+          roomPhotos.push(url);
+        }
+      });
+    }
+  });
 
   const photoGridHtml = roomPhotos.length 
     ? `<div class="room-photo-grid">${roomPhotos.map((photo, index) => `<img src="${photo}" alt="Room photo ${index + 1}" loading="lazy" style="cursor: pointer;" onclick="openGalleryModal('${photo}', '${title}', '')">`).join("")}</div>`
@@ -6735,11 +6957,19 @@ function renderBirthdays() {
       return false;
     }
     if (batchFilter !== "all") {
-      const sBatch = s.batch || "HSC-27";
-      if (sBatch !== batchFilter) return false;
+      const normB = batchFilter.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const sBatch = (s.batch || "HSC-27").toLowerCase().replace(/[^a-z0-9]/g, "");
+      if (sBatch !== normB) return false;
     }
     if (groupFilter !== "all") {
-      if (s.group !== groupFilter) return false;
+      const g = String(s.group || "").toLowerCase().trim();
+      const f = String(groupFilter).toLowerCase().trim();
+      let match = false;
+      if (f === "science" && g.includes("sci")) match = true;
+      else if ((f === "commerce" || f === "business") && (g.includes("com") || g.includes("bus") || g.includes("b.st"))) match = true;
+      else if ((f === "arts" || f === "humanities") && (g.includes("art") || g.includes("hum"))) match = true;
+      else if (g === f) match = true;
+      if (!match) return false;
     }
     if (bloodFilter !== "all") {
       if ((s.blood || s.blood_group) !== bloodFilter) return false;
@@ -6792,7 +7022,7 @@ function renderBirthdays() {
           <div class="batch-header-inner">
             <h2 class="batch-heading">
               <span class="batch-icon">${BATCH_LOGO_SVG}</span>
-              <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : (currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:')}</span>
+              <span class="batch-label">${currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:'}</span>
               <span class="batch-badge">${batchKey}</span>
             </h2>
             <div style="display:flex; align-items:center; gap:12px;">
@@ -6849,18 +7079,11 @@ function renderBirthdays() {
               <h3 class="bday-name">${name}</h3>
               ${isToday ? `<span class="bday-pill today-pill">${currentLang === 'bn' ? 'শুভ জন্মদিন!' : 'Today!'}</span>` : ''}
             </div>
-            <div class="bday-meta-pills">
-              ${roomVal !== '-' ? `<span class="bday-meta-pill">${roomDisplay}</span>` : ''}
-              <span class="bday-meta-pill">${groupLabel(student.group)}</span>
-            </div>
-            <div class="bday-date-label">
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-              <span>${fullDateStr}</span>
+            <div class="bday-meta-pills" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+              <span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>
+              ${roomVal !== '-' ? `<span class="pill">${roomDisplay}</span>` : ''}
+              <span class="pill">${formatGroupShort(student.group)}</span>
+              ${student.section && String(student.section).toLowerCase() !== 'none' ? `<span class="pill">${student.section}</span>` : ''}
             </div>
           </div>
           <div class="bday-card-action">
@@ -6927,6 +7150,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initBirthdaySearch();
   initRoommateFilters();
   initStudentViewToggle();
+  initRoommateViewToggle();
   initCompactFilterDrawers();
   initStudentClicks();
   initResultClassFilter();
@@ -7435,9 +7659,15 @@ function showEventDetailView(eventId) {
 
   detailView.innerHTML = `
     <div class="event-detail-header">
-      <button type="button" class="event-back-btn" id="eventBackBtn">
-        &larr; ${currentLang === "bn" ? "সকল ইভেন্টে ফিরে যান" : "Back to All Events"}
-      </button>
+      <div class="event-detail-top-bar">
+        <button type="button" class="event-back-btn" id="eventBackBtn">
+          &larr; ${currentLang === "bn" ? "সকল ইভেন্টে ফিরে যান" : "Back to All Events"}
+        </button>
+        <button type="button" class="event-action-share-btn" id="eventShareBtn">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+          <span>${currentLang === "bn" ? "ইভেন্ট শেয়ার করুন" : "Share Event"}</span>
+        </button>
+      </div>
       <span class="dcsc-eyebrow">${currentLang === "bn" ? "ইভেন্ট শোকেস" : "EVENT SHOWCASE"}</span>
       <h1 class="event-detail-title">${title}</h1>
       <div class="event-detail-meta">
@@ -7445,10 +7675,6 @@ function showEventDetailView(eventId) {
         ${batchLabel ? `<span class="event-meta-pill event-meta-batch">${GALLERY_ICONS.batch}<span>${batchLabel}</span></span>` : ""}
         ${photos.length ? `<span class="event-meta-pill event-meta-count">${GALLERY_ICONS.photos}<span>${photos.length} ${currentLang === "bn" ? "টি ফটো" : "Photos"}</span></span>` : ""}
         ${videos.length ? `<span class="event-meta-pill event-meta-count">${GALLERY_ICONS.videos}<span>${videos.length} ${currentLang === "bn" ? "টি ভিডিও" : "Videos"}</span></span>` : ""}
-        <button type="button" class="event-meta-pill event-meta-share" id="eventShareBtn" style="cursor:pointer; background:var(--surface-strong); border:1px solid var(--border); color:var(--text); padding:3px 12px; font-size:0.78rem; display:inline-flex; align-items:center; gap:6px;">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-          <span>${currentLang === "bn" ? "শেয়ার করুন" : "Share Event"}</span>
-        </button>
         ${allLocations.map(loc => `
           <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(loc)}" target="_blank" rel="noopener noreferrer" class="event-meta-pill event-meta-location" title="${currentLang === "bn" ? "গুগল ম্যাপে অনুসন্ধান করুন" : "Search on Google Maps"}">
             ${GALLERY_ICONS.location}<span>${loc}</span>${GALLERY_ICONS.external}
@@ -7471,17 +7697,7 @@ function showEventDetailView(eventId) {
   if (shareBtn) {
     shareBtn.addEventListener("click", () => {
       const shareUrl = `${window.location.origin}/event/${eventId}.html`;
-      if (navigator.share) {
-        navigator.share({
-          title: title,
-          text: `${title} — International Hall Gallery`,
-          url: shareUrl
-        }).catch(() => {});
-      } else {
-        navigator.clipboard.writeText(shareUrl).then(() => {
-          showToast(currentLang === "bn" ? "ইভেন্টের লিংক কপি করা হয়েছে!" : "Event link copied to clipboard!");
-        });
-      }
+      openEventShareModal(title, shareUrl);
     });
   }
 
@@ -8280,12 +8496,21 @@ function initBatchCollapseListeners() {
     const batchKey = header.dataset.batchToggle;
     if (!batchKey) return;
     header.classList.toggle("is-collapsed");
-    // Find wrapper in next sibling or by batch attribute
     const wrapper = header.nextElementSibling?.classList.contains("batch-collapsible-wrapper")
       ? header.nextElementSibling
       : document.querySelector(`[data-batch-wrapper="${batchKey}"]`);
     if (wrapper) {
       wrapper.classList.toggle("is-collapsed");
+      // Force all visible cards in non-collapsed batches to stay animated and fully visible
+      setTimeout(() => {
+        document.querySelectorAll(".batch-section-header:not(.is-collapsed) + .batch-collapsible-wrapper:not(.is-collapsed) [data-aos], .student-grid [data-aos], .roommate-grid [data-aos], .birthday-grid [data-aos]").forEach(el => {
+          if (!el.closest(".is-collapsed")) {
+            el.classList.add("aos-animate");
+          }
+        });
+        if (window.AOS) window.AOS.refresh();
+      }, 50);
+      setTimeout(() => { if (window.AOS) window.AOS.refresh(); }, 150);
     }
   });
 }

@@ -111,6 +111,11 @@ export default defineType({
       title: 'Batch (ব্যাচ)',
       type: 'string',
       group: 'basic',
+      readOnly: ({ currentUser }) => {
+        const superAdmins = ['drseadib@gmail.com', 'seadibpc@outlook.com'];
+        const email = (currentUser?.email || '').toLowerCase();
+        return !email || !superAdmins.includes(email);
+      },
       options: {
         list: [
           { title: 'HSC-27 (Founder Batch)', value: 'HSC-27' },
@@ -128,8 +133,8 @@ export default defineType({
         ],
         layout: 'dropdown',
       },
-      initialValue: 'HSC-27',
-      description: 'Class XII → HSC-27 etc. Replaces old "Class 11/12" field.',
+      initialValue: 'HSC-28',
+      description: 'স্বয়ংক্রিয় নির্ধারিত ব্যাচ। ব্যাচ পরিবর্তন করার সুযোগ শুধুমাত্র সুপার অ্যাডমিনের রয়েছে।',
     }),
 
     // ═══════════════════════════════════════════

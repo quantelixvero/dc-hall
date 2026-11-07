@@ -1,4 +1,5 @@
 import {
+  AddIcon,
   CogIcon,
   HomeIcon,
   CaseIcon,
@@ -43,8 +44,21 @@ function createBatchContentItems(S, batchName) {
           .initialValueTemplates([
             S.initialValueTemplateItem(`student-${cleanBatchKey}`),
           ])
+          .menuItems([
+            S.menuItem()
+              .title(`Add ${batchName} Student`)
+              .icon(AddIcon)
+              .intent({
+                type: 'create',
+                params: {
+                  type: 'student',
+                  template: `student-${cleanBatchKey}`,
+                },
+              })
+              .showAsAction(true),
+          ])
           .canHandleIntent((intentName, params) => {
-            return intentName === 'create' && params.template === `student-${cleanBatchKey}`;
+            return intentName === 'create';
           })
           .defaultOrdering([
             { field: 'position', direction: 'asc' },
@@ -64,8 +78,21 @@ function createBatchContentItems(S, batchName) {
           .initialValueTemplates([
             S.initialValueTemplateItem(`room-${cleanBatchKey}`),
           ])
+          .menuItems([
+            S.menuItem()
+              .title(`Add ${batchName} Room`)
+              .icon(AddIcon)
+              .intent({
+                type: 'create',
+                params: {
+                  type: 'room',
+                  template: `room-${cleanBatchKey}`,
+                },
+              })
+              .showAsAction(true),
+          ])
           .canHandleIntent((intentName, params) => {
-            return intentName === 'create' && params.template === `room-${cleanBatchKey}`;
+            return intentName === 'create';
           })
           .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
       ),
