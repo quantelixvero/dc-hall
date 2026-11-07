@@ -42,9 +42,37 @@ function renderSingleRoomCompactCard(room, pair, index) {
   `;
 }
 
+function applySavedViewModes() {
+  const isRoomPage = document.body.dataset.page === "roommates";
+  const rGrid = byId("roommateGrid");
+  if (rGrid) {
+    if (isRoomPage && localStorage.getItem("dc-roommate-view") === "compact") {
+      rGrid.classList.add("view-compact");
+    } else {
+      rGrid.classList.remove("view-compact");
+    }
+  }
+
+  const isStudentPage = document.body.dataset.page === "students";
+  const sGrid = byId("studentGrid");
+  if (sGrid) {
+    if (isStudentPage && localStorage.getItem("student_view_mode") === "list") {
+      sGrid.classList.add("view-compact");
+    } else {
+      sGrid.classList.remove("view-compact");
+    }
+  }
+}
+
 function initRoommateViewToggle() {
   const grid = byId("roommateGrid");
   if (!grid) return;
+
+  const isRoomPage = document.body.dataset.page === "roommates";
+  if (!isRoomPage) {
+    grid.classList.remove("view-compact");
+    return;
+  }
 
   const saved = localStorage.getItem("dc-roommate-view") || "grid";
   if (saved === "compact") {
@@ -3721,9 +3749,10 @@ function applySanityPayload(sanityData) {
 }
 
 async function loadCmsContent() {
+  applySavedViewModes();
   // ⚡ 1. FAST CACHE-FIRST HYDRATION (Instant 0ms render without waiting for network!)
   try {
-    const cachedRaw = localStorage.getItem("dc_sanity_cache_v80");
+    const cachedRaw = localStorage.getItem("dc_sanity_cache_v81");
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw);
       if (cached && cached.students && cached.students.length) {
@@ -3747,7 +3776,7 @@ async function loadCmsContent() {
 
   if (sanityData && sanityData.students && sanityData.students.length) {
     try {
-      localStorage.setItem("dc_sanity_cache_v80", JSON.stringify(sanityData));
+      localStorage.setItem("dc_sanity_cache_v81", JSON.stringify(sanityData));
     } catch (e) {}
     applySanityPayload(sanityData);
   } else if (!students || !students.length) {
@@ -4765,10 +4794,11 @@ function renderRoommates() {
   if (!grid) return;
 
   const source = filteredRoommateStudents();
-  const isHomePage = !!grid.dataset.limit;
+  const isHomePage = !!grid.dataset.limit || document.body.dataset.page === "home";
 
   // === HOMEPAGE: show latest batch rooms ===
   if (isHomePage) {
+    grid.classList.remove("view-compact");
     const limit = Number(grid.dataset.limit || 2);
     const rooms = groupByRoom(source);
     const visibleRooms = rooms.slice(0, limit);
@@ -7143,6 +7173,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initNavbar();
   initMoreMenu();
   initHeroRotator();
+  applySavedViewModes();
 
   await loadCmsContent();
   checkSessionValidity();
@@ -7150,13 +7181,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateProfileNavButton();
   ensureNavigation();
   if (checkPageAccess()) return;
+  initStudentViewToggle();
+  initRoommateViewToggle();
   renderDynamicContent();
   applyLanguage(); // Re-apply for any CMS-provided titles or labels
   initStudentSearch();
   initBirthdaySearch();
   initRoommateFilters();
-  initStudentViewToggle();
-  initRoommateViewToggle();
   initCompactFilterDrawers();
   initStudentClicks();
   initResultClassFilter();

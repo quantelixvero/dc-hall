@@ -2,7 +2,7 @@
 
 [![Live Website](https://img.shields.io/badge/Live-dchall.pro.bd-00d084?style=for-the-badge&logo=googlechrome&logoColor=white)](https://dchall.pro.bd/)
 [![Sanity Studio](https://img.shields.io/badge/Sanity_Studio-dchall.sanity.studio-f03e2f?style=for-the-badge&logo=sanity&logoColor=white)](https://dchall.sanity.studio/)
-[![Version](https://img.shields.io/badge/Version-v8.0-emerald?style=for-the-badge)](https://github.com/seadib/dc-hall)
+[![Version](https://img.shields.io/badge/Version-v8.1-emerald?style=for-the-badge)](https://github.com/seadib/dc-hall)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)](https://github.com/seadib/dc-hall)
 
 > **Official Centralized Project Master Documentation**  
@@ -442,6 +442,20 @@ v8.0 - Master Release: 2-Column Detailed Roommate Grid, Sequential 2-by-2 Pairin
 #### 8. Roommate View Switcher Button Styling Discrepancy
 * **Symptom:** The view switcher buttons on `roommates.html` appeared as boxy browser buttons rather than the custom pill container used on `students.html`.
 * **Permanent Fix:** Refactored markup and CSS to use `.view-toggle-group` and `.view-toggle-btn` with active emerald glow and smooth transition.
+
+#### 9. Homepage Roommate Preview 3-Column Contamination & Single-Character Name Wrapping (v8.1)
+* **Symptom:** On initial load, the Roommate Preview on `index.html` showed 2 cards placed into a 3-column layout with an awkward empty gap on the right and names breaking mid-word (e.g. "MD SHARFU\nL"), fixing itself only on a subsequent refresh.
+* **Root Cause:** 
+  1. `initRoommateViewToggle()` checked `localStorage` and inadvertently added `.view-compact` to the homepage `#roommateGrid`, turning the 2-room showcase into a 3-column container.
+  2. Legacy `@media (min-width: 1536px)` rules remained in CSS forcing 3 columns on high-resolution screens.
+  3. `.room-person strong` used `overflow-wrap: anywhere;` which permitted breaking words between arbitrary characters.
+  4. View toggle initialization ran after initial dynamic rendering.
+* **Permanent Fix:**
+  1. Guarded `initRoommateViewToggle()` so homepage preview grids never receive `.view-compact`.
+  2. Scoped `.roommate-grid.view-compact` strictly under `body[data-page="roommates"]`.
+  3. Enforced `#roommates-preview .roommate-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }` across all desktop/laptop resolutions.
+  4. Changed `.room-person strong` to `word-break: normal !important; overflow-wrap: break-word !important;`.
+  5. Added `applySavedViewModes()` called before initial hydration and bumped cache to `dc_sanity_cache_v81` / `?v=8.1`.
 
 ---
 

@@ -916,7 +916,8 @@ h3 {
 
 .room-person strong {
   display: block;
-  overflow-wrap: anywhere;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
   line-height: 1.25;
 }
 
@@ -925,6 +926,7 @@ h3 {
   color: var(--muted);
   font-size: 0.88rem;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .room-number {
@@ -6303,22 +6305,7 @@ body[data-lang="bn"] textarea {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
 }
 
-/* Fix for Item 7 & Laptop Views */
-.roommate-grid {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)) !important;
-  gap: 20px !important;
-}
-@media (min-width: 1200px) {
-  .roommate-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-}
-@media (min-width: 1536px) {
-  .roommate-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  }
-}
+
 
 .room-person img {
   width: 72px !important;
@@ -6966,10 +6953,18 @@ body[data-lang="bn"] textarea {
 
 
 /* ==========================================================================
-   ROOMMATE GRID: STANDARD (2 COLS) VS COMPACT (3 COLS) FIX (v7.9.1)
+   ROOMMATE GRID: STANDARD (2 COLS) VS COMPACT (3 COLS) FIX (v8.1)
    ========================================================================== */
 
-/* Standard Detailed View: Strictly 2 columns on Desktop & Laptop, NEVER 3 columns */
+/* 1. Homepage Preview: Strictly 2 columns on Desktop/Laptop, 1 column on Mobile */
+#roommates-preview .roommate-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+  width: 100% !important;
+}
+
+/* 2. Standard Detailed Roommate View: Strictly 2 columns on Desktop & Laptop, NEVER 3 columns */
 .roommate-grid {
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -6977,8 +6972,8 @@ body[data-lang="bn"] textarea {
   width: 100% !important;
 }
 
-/* Compact Parallel View: 3 columns on Desktop & Laptop */
-.roommate-grid.view-compact {
+/* 3. Compact Parallel View: Strictly 3 columns on Desktop & Laptop (Only on roommates.html) */
+body[data-page="roommates"] .roommate-grid.view-compact {
   display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 16px !important;
@@ -6987,11 +6982,12 @@ body[data-lang="bn"] textarea {
 
 /* Tablet (641px - 899px) */
 @media (max-width: 899px) {
+  #roommates-preview .roommate-grid,
   .roommate-grid {
     grid-template-columns: 1fr !important;
     gap: 16px !important;
   }
-  .roommate-grid.view-compact {
+  body[data-page="roommates"] .roommate-grid.view-compact {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 14px !important;
   }
@@ -6999,8 +6995,9 @@ body[data-lang="bn"] textarea {
 
 /* Mobile (<= 640px) */
 @media (max-width: 640px) {
+  #roommates-preview .roommate-grid,
   .roommate-grid,
-  .roommate-grid.view-compact {
+  body[data-page="roommates"] .roommate-grid.view-compact {
     grid-template-columns: 1fr !important;
     gap: 12px !important;
     width: 100% !important;
