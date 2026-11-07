@@ -3569,7 +3569,7 @@ function applySanityPayload(sanityData) {
 async function loadCmsContent() {
   // ⚡ 1. FAST CACHE-FIRST HYDRATION (Instant 0ms render without waiting for network!)
   try {
-    const cachedRaw = localStorage.getItem("dc_sanity_cache_v58");
+    const cachedRaw = localStorage.getItem("dc_sanity_cache_v77");
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw);
       if (cached && cached.students && cached.students.length) {
@@ -3593,7 +3593,7 @@ async function loadCmsContent() {
 
   if (sanityData && sanityData.students && sanityData.students.length) {
     try {
-      localStorage.setItem("dc_sanity_cache_v58", JSON.stringify(sanityData));
+      localStorage.setItem("dc_sanity_cache_v77", JSON.stringify(sanityData));
     } catch (e) {}
     applySanityPayload(sanityData);
   } else if (!students || !students.length) {
@@ -4520,8 +4520,8 @@ function groupByRoom(list) {
         ? s1.room_1st_year?.bedmate_slug
         : (s1.room_2nd_year?.bedmate_slug || (s1.roommateIds && s1.roommateIds[0]));
       const mateName = (isShared1stYear
-        ? s1.room_1st_year?.bedmate_name
-        : (s1.room_2nd_year?.bedmate_name || '')).trim().toLowerCase();
+        ? (s1.room_1st_year?.bedmate_name || "")
+        : (s1.room_2nd_year?.bedmate_name || "")).trim().toLowerCase();
 
       let match = null;
       if (mateSlug) {
@@ -4539,8 +4539,8 @@ function groupByRoom(list) {
             ? s2.room_1st_year?.bedmate_slug
             : (s2.room_2nd_year?.bedmate_slug || (s2.roommateIds && s2.roommateIds[0]));
           const s2MateName = (isShared1stYear
-            ? s2.room_1st_year?.bedmate_name
-            : (s2.room_2nd_year?.bedmate_name || '')).trim().toLowerCase();
+            ? (s2.room_1st_year?.bedmate_name || "")
+            : (s2.room_2nd_year?.bedmate_name || "")).trim().toLowerCase();
           return s2MateSlug === id1 || (s1.name && s2MateName === s1.name.trim().toLowerCase());
         });
       }
@@ -6942,6 +6942,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       checkSessionValidity();
       initAuth();
       updateProfileNavButton();
+      renderDynamicContent();
+      applyLanguage();
+      refreshAos();
     });
   }
 });
