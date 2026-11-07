@@ -1,0 +1,355 @@
+/**
+ * Dhaka College International Hall - Design System
+ * Module: css/layout.css
+ * Description: Global container, fixed navbar, navigation links, language switcher, and footer.
+ * Part of 4-Pillars Modular CSS Standard (v8.4)
+ */
+
+.navbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  padding: 18px 0;
+  transition: background 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease;
+}
+
+.navbar.scrolled {
+  background: var(--nav-bg);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(14px);
+  padding: 10px 0;
+}
+
+body:not([data-page="home"]) .navbar {
+  background: var(--nav-bg);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+  backdrop-filter: blur(14px);
+  padding: 10px 0;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.navbar.scrolled .logo,
+.page-main + .footer ~ .logo {
+  color: var(--text);
+}
+
+body:not([data-page="home"]) .logo,
+body:not([data-page="home"]) .nav-links a {
+  color: var(--text);
+}
+
+.logo-img {
+  display: block;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.4vw, 18px);
+}
+
+.nav-links a {
+  position: relative;
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  opacity: 0.88;
+  transition: color 0.2s ease, opacity 0.2s ease, background 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
+}
+
+.nav-links > a::after {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.35);
+  transform-origin: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.navbar.scrolled .nav-links a {
+  color: var(--text);
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.nav-links a.active {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.nav-links > a:hover,
+.nav-links > a:focus-visible,
+.nav-links > a.active {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+body:not([data-page="home"]) .nav-links > a:hover,
+body:not([data-page="home"]) .nav-links > a:focus-visible,
+body:not([data-page="home"]) .nav-links > a.active,
+.navbar.scrolled .nav-links > a:hover,
+.navbar.scrolled .nav-links > a:focus-visible,
+.navbar.scrolled .nav-links > a.active {
+  background: var(--accent-soft);
+}
+
+.nav-links > a:hover::after,
+.nav-links > a:focus-visible::after,
+.nav-links > a.active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.nav-links > a:active,
+.more-menu-toggle:active,
+.more-menu-panel a:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.more-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.more-menu[hidden] {
+  display: none !important;
+}
+
+.nav-links a.is-overflow {
+  display: none !important;
+}
+
+.more-menu-toggle {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 800;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
+}
+
+.more-menu-toggle:hover,
+.more-menu-toggle:focus-visible,
+.more-menu.open .more-menu-toggle {
+  background: var(--accent);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px var(--accent-soft);
+}
+
+body:not([data-page="home"]) .more-menu-toggle,
+.navbar.scrolled .more-menu-toggle {
+  border-color: var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+.more-menu-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 60;
+  display: none;
+  min-width: 190px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow);
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top right;
+  opacity: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.more-menu.open .more-menu-panel {
+  display: grid;
+  gap: 4px;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.more-menu-panel a {
+  display: block;
+  padding: 9px 10px;
+  border-radius: 6px;
+  color: var(--text);
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.more-menu-panel a[hidden] {
+  display: none;
+}
+
+.more-menu-panel a:hover,
+.more-menu-panel a:focus-visible,
+.more-menu-panel a.active {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  transform: translateX(3px);
+}
+
+.nav-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  vertical-align: middle;
+}
+
+.nav-actions > * {
+  height: 40px;
+  box-sizing: border-box;
+  margin: 0;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.14);
+  box-sizing: border-box;
+}
+
+.language-switch button {
+  height: 34px;
+  min-width: 34px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.language-switch button.active {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+body:not([data-page="home"]) .language-switch,
+.navbar.scrolled .language-switch {
+  background: var(--surface-strong);
+  border-color: var(--border);
+}
+
+body:not([data-page="home"]) .language-switch button,
+.navbar.scrolled .language-switch button {
+  color: var(--text);
+}
+
+body:not([data-page="home"]) .language-switch button.active,
+.navbar.scrolled .language-switch button.active {
+  color: #ffffff;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border 0.2s ease;
+}
+
+body:not([data-page="home"]) .theme-toggle,
+.navbar.scrolled .theme-toggle {
+  background: var(--surface-strong);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.theme-toggle:hover {
+  transform: translateY(-2px);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+
+.footer {
+  position: relative;
+  padding: 44px 0 34px;
+  background: #f1f5f9;
+  border-top: 1px solid var(--border);
+  color: #475569;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Premium Top Separator Line (Gradient Beam) */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(15, 118, 110, 0.2) 15%,
+    rgba(15, 118, 110, 0.75) 50%,
+    rgba(15, 118, 110, 0.2) 85%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+

@@ -1,5 +1,6 @@
 {
   "scripts": {
-    "build": "node scripts/build-data.mjs && node scripts/build-event-previews.mjs && node scripts/build-forms.mjs"
+    "build:css": "node scripts/build-css.mjs",
+    "build": "node scripts/build-css.mjs && node scripts/build-data.mjs && node scripts/build-event-previews.mjs && node scripts/build-forms.mjs"
   }
 }

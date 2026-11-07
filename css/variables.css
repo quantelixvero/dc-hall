@@ -1,0 +1,50 @@
+/**
+ * Dhaka College International Hall - Design System
+ * Module: css/variables.css
+ * Description: Theme tokens, color palette, dark mode variables, and CSS custom properties.
+ * Part of 4-Pillars Modular CSS Standard (v8.4)
+ */
+
+:root {
+  --bg: #ffffff;
+  --text: #111827;
+  --text-strong: #0f172a;
+  --text-muted: #5b6472;
+  --muted: #5b6472;
+  --surface: #f6f7f9;
+  --surface-strong: #ffffff;
+  --surface-light: #f1f5f9;
+  --border: #e4e7ec;
+  --border-soft: #edf2f7;
+  --accent: #0f766e;
+  --accent-strong: #115e59;
+  --accent-soft: #d9f3ee;
+  --warm: #b45309;
+  --shadow: 0 16px 38px rgba(17, 24, 39, 0.12);
+  --nav-bg: rgba(255, 255, 255, 0.9);
+  --overlay: rgba(8, 13, 24, 0.6);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #07080b;
+  --bg-alt: #0c0e14;
+  --text: #E0E1F2;
+  --text-strong: #ffffff;
+  --text-muted: #8E9BAE;
+  --muted: #8E9BAE;
+  --surface: #12141c;
+  --surface-strong: #0f1118;
+  --surface-light: #191c26;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-soft: rgba(255, 255, 255, 0.05);
+  --accent: #10c9a8;
+  --accent-strong: #3de8cc;
+  --accent-soft: rgba(16, 201, 168, 0.15);
+  --warm: #f59e0b;
+  --shadow: 0 20px 48px rgba(0, 0, 0, 0.75);
+  --nav-bg: rgba(7, 8, 11, 0.94);
+  --overlay: rgba(4, 5, 8, 0.85);
+  color-scheme: dark;
+}
+

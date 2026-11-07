@@ -1,0 +1,480 @@
+/**
+ * Dhaka College International Hall - Design System
+ * Module: css/pages/home.css
+ * Description: Homepage hero section, banner overlays, featured hall photo, and statistics counter.
+ * Part of 4-Pillars Modular CSS Standard (v8.4)
+ */
+
+.hero {
+  position: relative;
+  min-height: 78vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: url("../images/hall/hostel-hero.jpg") center / cover no-repeat;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--overlay), rgba(8, 13, 24, 0.25));
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  padding-top: 78px;
+  color: #ffffff;
+}
+
+.hero h1,
+.page-hero h1 {
+  margin: 0;
+  font-family: "Soin Sans Pro", "Outfit", Arial, sans-serif;
+  font-size: clamp(2.5rem, 7vw, 5.6rem);
+  line-height: 0.98;
+  font-weight: 800;
+}
+
+body[data-lang="bn"] .hero h1,
+body[data-lang="bn"] .page-hero h1,
+body[data-lang="bn"] h2,
+body[data-lang="bn"] h3 {
+  font-family: "Hind Siliguri", sans-serif;
+}
+
+.hero-subtitle {
+  max-width: 560px;
+  margin: 22px 0 32px;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(1.02rem, 2vw, 1.25rem);
+}
+
+.rotating-line {
+  min-height: 2.8em;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.rotating-line.phrase-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase !important;
+}
+
+.hero .eyebrow,
+.page-hero .eyebrow {
+  color: #7dd3c7;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 20px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.04);
+  box-shadow: var(--shadow);
+}
+
+.btn.primary {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.hero .btn.primary {
+  margin-top: -8px;
+}
+
+.btn.secondary {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-color: var(--accent-soft);
+}
+
+.section {
+  padding: clamp(70px, 9vw, 112px) 0;
+}
+
+.section.tinted {
+  background: var(--surface);
+}
+
+.section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+h2 {
+  margin: 0;
+  font-family: "Soin Sans Pro", "Outfit", Arial, sans-serif;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.06;
+  font-weight: 800;
+}
+
+h3 {
+  margin: 0 0 8px;
+  font-family: "Soin Sans Pro", "Outfit", Arial, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
+.lead,
+.location-copy,
+.page-hero p {
+  margin: 18px 0 28px;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+/* Featured Hall Preview Photo on Home Page */
+.hostel-preview-photo {
+  position: relative;
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px -10px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--border);
+  background: var(--surface-strong);
+  aspect-ratio: 16 / 10;
+  max-height: 320px;
+  width: 100%;
+}
+
+.hostel-preview-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.hostel-preview-photo:hover img {
+  transform: scale(1.03);
+}
+
+#hostel-info-preview .info-grid.three {
+  margin-top: clamp(24px, 4vw, 36px);
+}
+
+#hallsuper .hostel-photo,
+#hallsuper-preview .hostel-photo {
+  max-width: 360px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+#hallsuper .hostel-photo img,
+#hallsuper-preview .hostel-photo img,
+#superPhotoImg {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  max-height: 440px;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 20px;
+  display: block;
+}
+
+.nearby-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0;
+  margin: 24px 0 0;
+  list-style: none;
+}
+
+.nearby-list li {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 800;
+}
+/* --- Home Page Enhanced Sections --- */
+/* --- Home Page Enhanced Results Preview --- */
+.results-preview-wrap {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.result-academic-track {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.track-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: all 0.25s ease;
+}
+
+.track-row:hover {
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.dark .track-row {
+  background: rgba(255, 255, 255, 0.025);
+  border-color: var(--border);
+}
+
+.dark .track-row:hover {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(16, 201, 168, 0.4);
+}
+
+.track-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid rgba(16, 201, 168, 0.2);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.track-badge.secondary {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.track-exam-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.exam-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.dark .exam-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+}
+
+.exam-pill:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.track-exams {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.results-preview-card {
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+}
+
+.results-card-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.results-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.results-card-header h3 {
+  margin: 0 0 2px 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.results-card-header p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.results-card-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat-box {
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.stat-box .stat-num {
+  display: block;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.stat-box .stat-lbl {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.results-card-note {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.dc-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.dc-resource-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.dc-resource-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.dc-resource-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dc-resource-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dc-resource-arrow {
+  color: var(--muted);
+  font-size: 1.25rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.dc-resource-card:hover .dc-resource-arrow {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+.dc-resource-body h3 {
+  font-size: 1.15rem;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+}
+
+.dc-resource-body p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .results-preview-wrap {
+    grid-template-columns: 1fr;
+  }
+  .dc-resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .dc-resource-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

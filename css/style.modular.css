@@ -1,0 +1,15 @@
+/**
+ * Dhaka College International Hall - Master Design System Manifest
+ * Modular @import Entry Point (v8.4)
+ */
+
+@import url("./variables.css");
+@import url("./base.css");
+@import url("./layout.css");
+@import url("./components/buttons.css");
+@import url("./components/cards.css");
+@import url("./components/modals.css");
+@import url("./pages/home.css");
+@import url("./pages/results.css");
+@import url("./pages/pages.css");
+@import url("./pages/roommates.css");
