@@ -89,8 +89,7 @@ export default defineType({
       title: 'Master Admin Password',
       type: 'string',
       hidden: true,
-      description: 'এই পাসওয়ার্ড দিয়ে লগইন করলে সমস্ত ব্যাচের সব লক করা তথ্য আনলক হবে। ডিফল্ট: 102103104',
-      placeholder: '102103104',
+      description: 'এই পাসওয়ার্ড দিয়ে লগইন করলে সমস্ত ব্যাচের সব লক করা তথ্য আনলক হবে।',
     }),
     defineField({
       name: 'batch_passwords',

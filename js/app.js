@@ -3875,7 +3875,7 @@ function computeSha256(ascii) {
 
 // Precomputed one-way SHA-256 hashes (never exposes plaintext credentials)
 const AUTH_MASTER_HASHES = [
-  "a2e4dcfa08c2cd2389ef53ea7315f467e143df6f17254b984e61dfaaac33c4e3" // Master Access Hash: adib@boss
+  "a2e4dcfa08c2cd2389ef53ea7315f467e143df6f17254b984e61dfaaac33c4e3"
 ];
 
 const AUTH_BATCH_HASHES = {
@@ -3883,13 +3883,13 @@ const AUTH_BATCH_HASHES = {
   "hsc25": ["ec6740cda1b453b2c952acf97838c765376d940812a36c560c9a808ac30ac43b"],
   "hsc26": ["d134b0d9cb95ef83720ef627560b12f96421858c088c742cd0e8bfef7a4892df"],
   "hsc27": [
-    "5779e6be0589d1950478d0d819ff52d15240c45aef90c8e935fb778219798e38", // 314@328 (Founder Batch Key)
-    "9dfbae98257df8db309d3313566195a2cc240e8a1c364762dbdfd6ab9f3cac3a", // 2627
+    "5779e6be0589d1950478d0d819ff52d15240c45aef90c8e935fb778219798e38",
+    "9dfbae98257df8db309d3313566195a2cc240e8a1c364762dbdfd6ab9f3cac3a",
     "f741d0d217ebae0bd49b0fb8bfe3ba31076e27675da9b4de46f96195843dd482"
   ],
   "hsc28": [
-    "0ebd02954b7d4ad2aeadcd54c036f39f3e1d1e7eb4f758f40ffa5b31c1b0560b", // 102103104 (HSC-28 Key)
-    "b3edc7f3a7d6cb3432685305c8a05bf186651702e12facf678781155a05fcf45"  // dc28hall
+    "0ebd02954b7d4ad2aeadcd54c036f39f3e1d1e7eb4f758f40ffa5b31c1b0560b",
+    "b3edc7f3a7d6cb3432685305c8a05bf186651702e12facf678781155a05fcf45"
   ],
   "hsc29": ["e69a6af334e6c1597a806c2c9a89d83da787d930b78bd131fe3d072a7c7e3000"],
   "hsc30": ["35f875a4cc31e3d08a175d8e71edc8f4837084a1188b41af35df3bd6fe072c6b"],
