@@ -4,42 +4,34 @@ function renderSingleRoomCompactCard(room, pair, index) {
   const p2 = pair[1];
 
   const p1Photo = isProfileFieldUnlocked("photo", p1) ? (p1.img || "images/student-avatar.png") : "images/student-avatar.png";
-  const p1Name = isProfileFieldUnlocked("name", p1) ? (studentValue(p1, "name") || "Student") : "••••••••";
-  const p1Short = p1Name.split(" ")[0] || p1Name;
+  const p1FullName = isProfileFieldUnlocked("name", p1) ? (studentValue(p1, "name") || "Student") : "••••••••";
+  const p1Short = p1FullName.split(" ")[0] || p1FullName;
 
   let p2Html = "";
   if (p2) {
     const p2Photo = isProfileFieldUnlocked("photo", p2) ? (p2.img || "images/student-avatar.png") : "images/student-avatar.png";
-    const p2Name = isProfileFieldUnlocked("name", p2) ? (studentValue(p2, "name") || "Student") : "••••••••";
-    const p2Short = p2Name.split(" ")[0] || p2Name;
+    const p2FullName = isProfileFieldUnlocked("name", p2) ? (studentValue(p2, "name") || "Student") : "••••••••";
+    const p2Short = p2FullName.split(" ")[0] || p2FullName;
     p2Html = `
-      <div class="rm-compact-person right" onclick="openStudentModalById('${p2.id}')" title="${p2Name}">
-        <div class="rm-compact-meta right">
-          <span class="rm-compact-name">${p2Short}</span>
-          <span class="rm-compact-roll">${p2.roll ? (currentLang === 'bn' ? toBengaliDigits(p2.roll) : p2.roll) : ''}</span>
-        </div>
-        <img src="${p2Photo}" alt="${p2Name}" loading="lazy">
+      <div class="rm-compact-person right" onclick="openStudentModalById('${p2.id}')" title="${p2FullName}">
+        <span class="rm-compact-name">${p2Short}</span>
+        <img src="${p2Photo}" alt="${p2FullName}" loading="lazy">
       </div>`;
   } else {
     p2Html = `
       <div class="rm-compact-person right empty">
-        <div class="rm-compact-meta right">
-          <span class="rm-compact-name empty">${currentLang === 'bn' ? 'ফাঁকা' : 'Empty'}</span>
-        </div>
+        <span class="rm-compact-name empty">${currentLang === 'bn' ? 'ফাঁকা' : 'Empty'}</span>
         <div class="empty-avatar-circle">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
         </div>
       </div>`;
   }
 
   return `
     <article class="roommate-compact-card" data-aos="fade-up" data-aos-delay="${Math.min(index * 40, 240)}">
-      <div class="rm-compact-person left" onclick="openStudentModalById('${p1?.id}')" title="${p1Name}">
-        <img src="${p1Photo}" alt="${p1Name}" loading="lazy">
-        <div class="rm-compact-meta left">
-          <span class="rm-compact-name">${p1Short}</span>
-          <span class="rm-compact-roll">${p1?.roll ? (currentLang === 'bn' ? toBengaliDigits(p1.roll) : p1.roll) : ''}</span>
-        </div>
+      <div class="rm-compact-person left" onclick="openStudentModalById('${p1?.id}')" title="${p1FullName}">
+        <img src="${p1Photo}" alt="${p1FullName}" loading="lazy">
+        <span class="rm-compact-name">${p1Short}</span>
       </div>
       <button class="room-number compact-badge" type="button" onclick="openRoomModal('${room}')" title="${currentLang === 'bn' ? 'রুমের বিবরণ' : 'Room details'}">
         <span class="rn-label">ROOM</span>
@@ -3726,7 +3718,7 @@ function applySanityPayload(sanityData) {
 async function loadCmsContent() {
   // ⚡ 1. FAST CACHE-FIRST HYDRATION (Instant 0ms render without waiting for network!)
   try {
-    const cachedRaw = localStorage.getItem("dc_sanity_cache_v78");
+    const cachedRaw = localStorage.getItem("dc_sanity_cache_v79");
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw);
       if (cached && cached.students && cached.students.length) {
@@ -3750,7 +3742,7 @@ async function loadCmsContent() {
 
   if (sanityData && sanityData.students && sanityData.students.length) {
     try {
-      localStorage.setItem("dc_sanity_cache_v78", JSON.stringify(sanityData));
+      localStorage.setItem("dc_sanity_cache_v79", JSON.stringify(sanityData));
     } catch (e) {}
     applySanityPayload(sanityData);
   } else if (!students || !students.length) {
@@ -3870,6 +3862,12 @@ function studentValue(student, field) {
 function formatGroupShort(group) {
   if (!group) return "";
   const g = String(group).toLowerCase().trim();
+  if (currentLang === "bn") {
+    if (g.includes("sci") || g.includes("বিজ্ঞা")) return "বিজ্ঞান";
+    if (g.includes("com") || g.includes("bus") || g.includes("b.st") || g.includes("ব্যবসা")) return "ব্যবসায়";
+    if (g.includes("art") || g.includes("hum") || g.includes("মানবি")) return "মানবিক";
+    return group;
+  }
   if (g.includes("sci")) return "SCI";
   if (g.includes("com") || g.includes("bus") || g.includes("b.st")) return "B.STU";
   if (g.includes("art") || g.includes("hum")) return "HUM";
@@ -4456,10 +4454,9 @@ function renderSingleStudentCard(student, index) {
       <span class="student-body">
         <span class="student-info-col">
           ${nameDisplay ? `<h3>${nameDisplay}</h3>` : ''}
-          <span class="student-meta">
-            ${showBatch ? `<span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>` : ''}
-            ${showGroup ? `<span class="pill">${groupLabel(student.group)}</span>` : ''}
-            ${(showSection && student.section && String(student.section).toLowerCase() !== "none") ? `<span class="pill">${student.section}</span>` : ""}
+          <span class="student-meta" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+            ${showRoom && roomVal !== '-' ? `<span class="bday-meta-pill">${t("common.room")} ${roomDisplay}</span>` : ''}
+            ${showGroup ? `<span class="bday-meta-pill">${formatGroupShort(student.group)}</span>` : ''}
           </span>
         </span>
         <span class="student-badge-col">
@@ -4927,7 +4924,7 @@ function renderRoomPerson(student, animation) {
     <button class="room-person" type="button" data-student-id="${student.id}" data-aos="${animation}">
       <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
       <strong>${nameDisplay}</strong>
-      <span>${classLabel(student.classNo, student)} · ${groupLabel(student.group)}</span>
+      <span>${classLabel(student.classNo, student)} · ${formatGroupShort(student.group)}</span>
     </button>
   `;
 }
@@ -6308,7 +6305,7 @@ function openStudentModal(student) {
     group: () => ((isProfileFieldVisible("group") && hasVal(student.group)) ? `
       <div class="profile-item">
         <span>${t("common.group")}</span>
-        <strong>${showGroup ? formatGroupShort(student.group) : maskData(student.group) + smallLockIconSvg}</strong>
+        <strong>${showGroup ? groupLabel(student.group) : maskData(student.group) + smallLockIconSvg}</strong>
       </div>` : ''),
 
     section: () => ((isProfileFieldVisible("section") && hasVal(student.section)) ? `
@@ -7079,11 +7076,9 @@ function renderBirthdays() {
               <h3 class="bday-name">${name}</h3>
               ${isToday ? `<span class="bday-pill today-pill">${currentLang === 'bn' ? 'শুভ জন্মদিন!' : 'Today!'}</span>` : ''}
             </div>
-            <div class="bday-meta-pills" style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
-              <span class="pill" style="font-weight: 700;">${student.batch || 'HSC-27'}</span>
-              ${roomVal !== '-' ? `<span class="pill">${roomDisplay}</span>` : ''}
-              <span class="pill">${formatGroupShort(student.group)}</span>
-              ${student.section && String(student.section).toLowerCase() !== 'none' ? `<span class="pill">${student.section}</span>` : ''}
+            <div class="bday-meta-pills">
+              ${roomVal !== '-' ? `<span class="bday-meta-pill">${roomDisplay}</span>` : ''}
+              <span class="bday-meta-pill">${formatGroupShort(student.group)}</span>
             </div>
           </div>
           <div class="bday-card-action">

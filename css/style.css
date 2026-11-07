@@ -6744,3 +6744,222 @@ body[data-lang="bn"] textarea {
   white-space: nowrap;
   border-radius: 8px;
 }
+
+
+/* ==========================================================================
+   USER REFINEMENT (v7.8.1): 3-COLUMN LAPTOP, CLEAN BDAY PILLS, TIGHT BATCH COLLAPSE
+   ========================================================================== */
+
+/* 1. Universal 3-Column on Laptops & Desktops (>= 860px) */
+@media (min-width: 860px) {
+  .student-grid,
+  .student-grid.view-compact,
+  .prev-batch-preview-grid,
+  .roommate-grid.view-compact {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    width: 100% !important;
+  }
+}
+
+/* Tablets (581px - 859px): 2 columns */
+@media (min-width: 581px) and (max-width: 859px) {
+  .student-grid,
+  .student-grid.view-compact,
+  .prev-batch-preview-grid,
+  .roommate-grid.view-compact {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+    width: 100% !important;
+  }
+}
+
+/* Mobile (<= 580px): 1 column */
+@media (max-width: 580px) {
+  .student-grid,
+  .student-grid.view-compact,
+  .prev-batch-preview-grid,
+  .roommate-grid,
+  .roommate-grid.view-compact {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  .room-pair {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px 8px !important;
+  }
+}
+
+/* 2. Roommate Compact Card - Larger 56px Photo, Clean Short Name, No Roll, Small Room Badge */
+.roommate-compact-card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 14px !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.roommate-compact-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+
+.rm-compact-person {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.rm-compact-person.left {
+  justify-content: flex-start;
+}
+
+.rm-compact-person.right {
+  justify-content: flex-end;
+}
+
+.rm-compact-person img {
+  width: 56px !important;
+  height: 56px !important;
+  min-width: 56px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.rm-compact-person:hover img {
+  transform: scale(1.05);
+  border-color: var(--accent);
+}
+
+.rm-compact-person .empty-avatar-circle {
+  width: 56px !important;
+  height: 56px !important;
+  min-width: 56px !important;
+  border-radius: 50% !important;
+  background: var(--surface);
+  border: 1.5px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.rm-compact-name {
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  max-width: 85px;
+}
+
+.rm-compact-name.empty {
+  color: var(--muted);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.room-number.compact-badge {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px 8px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  min-width: 52px;
+}
+
+.room-number.compact-badge:hover {
+  transform: scale(1.05);
+  border-color: var(--accent);
+}
+
+.room-number.compact-badge .rn-label {
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.room-number.compact-badge .rn-no {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+/* 3. Batch Header Tight Gap when Collapsed - Exactly Matches Picture 2 */
+.batch-section-header {
+  margin: 18px 0 12px !important;
+}
+
+.batch-section-header.is-collapsed {
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+.batch-collapsible-wrapper.is-collapsed + .batch-section-header {
+  margin-top: 6px !important;
+}
+
+#studentGrid .batch-section-header.is-collapsed,
+#roommateGrid .batch-section-header.is-collapsed {
+  margin: 6px 0 !important;
+}
+
+/* 4. Clean .bday-meta-pill Style Across Student and Birthday Cards */
+.bday-meta-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.bday-meta-pill {
+  font-size: 0.76rem !important;
+  padding: 3px 10px !important;
+  border-radius: 6px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text-muted) !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.3 !important;
+}
