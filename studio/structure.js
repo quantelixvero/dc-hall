@@ -35,13 +35,17 @@ function createBatchContentItems(S, batchName) {
       .title(`📚 ${batchName} Students (শিক্ষার্থী তালিকা)`)
       .icon(UsersIcon)
       .child(
-        S.documentTypeList('student')
+        S.documentList()
           .title(`${batchName} Students`)
+          .schemaType('student')
           .filter('_type == "student" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
           .params({ batch: batchName })
           .initialValueTemplates([
             S.initialValueTemplateItem(`student-${cleanBatchKey}`),
           ])
+          .canHandleIntent((intentName, params) => {
+            return intentName === 'create' && params.template === `student-${cleanBatchKey}`;
+          })
           .defaultOrdering([
             { field: 'position', direction: 'asc' },
             { field: 'short_roll', direction: 'asc' },
@@ -52,13 +56,17 @@ function createBatchContentItems(S, batchName) {
       .title(`🏠 ${batchName} Rooms & Roommates (রুম ও সিট বণ্টন)`)
       .icon(PackageIcon)
       .child(
-        S.documentTypeList('room')
+        S.documentList()
           .title(`${batchName} Rooms & Roommates`)
+          .schemaType('room')
           .filter('_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
           .params({ batch: batchName })
           .initialValueTemplates([
             S.initialValueTemplateItem(`room-${cleanBatchKey}`),
           ])
+          .canHandleIntent((intentName, params) => {
+            return intentName === 'create' && params.template === `room-${cleanBatchKey}`;
+          })
           .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
       ),
 

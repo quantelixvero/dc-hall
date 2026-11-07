@@ -878,7 +878,7 @@ const i18n = {
     },
     footer: {
       aboutPrefix: "This website is developed by",
-      aboutSuffix: "Currently under development, this platform aims to provide easy access to all essential information for the 11th-grade students of International Hall.",
+      aboutSuffix: "Currently under development, this platform aims to provide easy access to all essential information for the intermediate students of International Hall.",
       quickLinks: "Quick Links",
       studentLinks: "Student",
       hallLinks: "Hall",
@@ -3231,7 +3231,7 @@ function mapCmsStudent(item, index) {
 
   const room2nd = item.room_2nd_year?.room_no
     ? item.room_2nd_year
-    : (item.room_no ? { room_no: item.room_no } : null);
+    : null;
 
   const mainRoomNo = (room2nd?.room_no || room1st?.room_no || item.room_no || "").trim();
 
@@ -3797,7 +3797,7 @@ function footerAboutParts() {
 
   return {
     prefix: "This website is developed by",
-    suffix: "Currently under development, this platform aims to provide easy access to all essential information for the 11th-grade students of International Hall."
+    suffix: "Currently under development, this platform aims to provide easy access to all essential information for the intermediate students of International Hall."
   };
 }
 
@@ -4311,14 +4311,13 @@ function getHomepage6Students(allStudents) {
     batchMap[b].push(s);
   });
   const batchKeys = Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
-  const latestBatch = batchKeys[0] || "HSC-27";
-  const founderBatch = "HSC-27";
-  if (latestBatch === founderBatch) {
-    return (batchMap[founderBatch] || []).slice(0, 6);
+  // Show 6 students from previous/established batch (HSC-27) for full balanced grid on homepage
+  const prevBatchKey = batchKeys[1] || "HSC-27";
+  const prevList = batchMap[prevBatchKey] || batchMap["HSC-27"] || [];
+  if (prevList.length >= 6) {
+    return prevList.slice(0, 6);
   }
-  const top3 = (batchMap[latestBatch] || []).slice(0, 3);
-  const bottom3 = (batchMap[founderBatch] || []).slice(0, 3);
-  return [...top3, ...bottom3];
+  return allStudents.slice(0, 6);
 }
 
 function getAllBatchesSorted() {
@@ -4400,37 +4399,48 @@ function renderStudentCards(list = getFilteredStudents()) {
     const filteredBatchStudents = batchStudents.filter(s => list.includes(s));
     if (!filteredBatchStudents.length) return;
 
+    const chevronSvg = `<span class="batch-collapse-chevron"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>`;
+
     if (isLatest) {
       html += `
-        <div class="batch-section-header active-batch-header" data-aos="fade-up">
+        <div class="batch-section-header active-batch-header" data-aos="fade-up" data-batch-toggle="${batch}">
           <div class="batch-header-inner">
             <h2 class="batch-heading">
               <span class="batch-icon">${BATCH_LOGO_SVG}</span>
               <span class="batch-label">${currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:'}</span>
               <span class="batch-badge">${batch}</span>
             </h2>
-            <span class="batch-count-pill">${filteredBatchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="batch-count-pill">${filteredBatchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+              ${chevronSvg}
+            </div>
           </div>
-        </div>`;
+        </div>
+        <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
       filteredBatchStudents.forEach(student => {
         html += renderSingleStudentCard(student, globalIdx++);
       });
+      html += `</div>`;
     } else {
       const previewStudents = filteredBatchStudents.slice(0, 3);
       const batchSlug = batch.toLowerCase().replace(/[^a-z0-9-]/g, "");
 
       html += `
-        <div class="batch-section-header" data-aos="fade-up">
+        <div class="batch-section-header" data-aos="fade-up" data-batch-toggle="${batch}">
           <div class="batch-header-inner">
             <h2 class="batch-heading">
               <span class="batch-icon">${BATCH_LOGO_SVG}</span>
-              <span class="batch-label">Batch:</span>
+              <span class="batch-label">${currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:'}</span>
               <span class="batch-badge">${batch}</span>
             </h2>
-            <span class="batch-count-pill">${filteredBatchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="batch-count-pill">${filteredBatchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+              ${chevronSvg}
+            </div>
           </div>
         </div>
-        <div class="prev-batch-preview-grid">`;
+        <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">
+          <div class="prev-batch-preview-grid">`;
       previewStudents.forEach(student => {
         html += renderSingleStudentCard(student, globalIdx++);
       });
@@ -4444,7 +4454,9 @@ function renderStudentCards(list = getFilteredStudents()) {
             </a>
           </div>`;
       }
+      html += `</div>`;
     }
+    html += `</div>`;
   });
 
   grid.innerHTML = html;
@@ -4496,51 +4508,58 @@ function groupByRoom(list) {
   sortedRoomKeys.forEach(roomNum => {
     const roomStudents = byRoom[roomNum];
     const isShared1stYear = ['102', '103', '104'].includes(String(roomNum));
+    const pairedIds = new Set();
+    const roomPairs = [];
 
-    if (!isShared1stYear) {
-      // 2nd Year standard 2-person room (314-329)
-      for (let i = 0; i < roomStudents.length; i += 2) {
-        const pair = [roomStudents[i]];
-        if (roomStudents[i + 1]) pair.push(roomStudents[i + 1]);
-        pairs.push([roomNum, pair]);
+    // Pass 1: Explicit bedmate / roommate links
+    roomStudents.forEach(s1 => {
+      const id1 = s1.slug || s1.id;
+      if (pairedIds.has(id1)) return;
+
+      const mateSlug = isShared1stYear
+        ? s1.room_1st_year?.bedmate_slug
+        : (s1.room_2nd_year?.bedmate_slug || (s1.roommateIds && s1.roommateIds[0]));
+      const mateName = (isShared1stYear
+        ? s1.room_1st_year?.bedmate_name
+        : (s1.room_2nd_year?.bedmate_name || '')).trim().toLowerCase();
+
+      let match = null;
+      if (mateSlug) {
+        match = roomStudents.find(s2 => (s2.slug || s2.id) === mateSlug && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
       }
-    } else {
-      // 1st Year shared room (102, 103, 104) with explicit Bedmate pairing
-      const pairedIds = new Set();
-      const roomPairs = [];
-
-      // Pass 1: Explicit bedmate links
-      roomStudents.forEach(s1 => {
-        const id1 = s1.slug || s1.id;
-        if (pairedIds.has(id1)) return;
-        const bedSlug = s1.room_1st_year?.bedmate_slug;
-        const bedName = (s1.room_1st_year?.bedmate_name || '').trim().toLowerCase();
-
-        let match = null;
-        if (bedSlug) {
-          match = roomStudents.find(s2 => (s2.slug || s2.id) === bedSlug && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
-        }
-        if (!match && bedName) {
-          match = roomStudents.find(s2 => (s2.name || '').trim().toLowerCase() === bedName && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
-        }
-
-        if (match) {
-          pairedIds.add(id1);
-          pairedIds.add(match.slug || match.id);
-          roomPairs.push([roomNum, [s1, match]]);
-        }
-      });
-
-      // Pass 2: Remaining students in shared room
-      const remaining = roomStudents.filter(s => !pairedIds.has(s.slug || s.id));
-      for (let i = 0; i < remaining.length; i += 2) {
-        const pair = [remaining[i]];
-        if (remaining[i + 1]) pair.push(remaining[i + 1]);
-        roomPairs.push([roomNum, pair]);
+      if (!match && mateName) {
+        match = roomStudents.find(s2 => (s2.name || '').trim().toLowerCase() === mateName && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
       }
 
-      pairs.push(...roomPairs);
-    }
+      // Mutual back-check: if s2 selected s1
+      if (!match) {
+        match = roomStudents.find(s2 => {
+          if (s2 === s1 || pairedIds.has(s2.slug || s2.id)) return false;
+          const s2MateSlug = isShared1stYear
+            ? s2.room_1st_year?.bedmate_slug
+            : (s2.room_2nd_year?.bedmate_slug || (s2.roommateIds && s2.roommateIds[0]));
+          const s2MateName = (isShared1stYear
+            ? s2.room_1st_year?.bedmate_name
+            : (s2.room_2nd_year?.bedmate_name || '')).trim().toLowerCase();
+          return s2MateSlug === id1 || (s1.name && s2MateName === s1.name.trim().toLowerCase());
+        });
+      }
+
+      if (match) {
+        pairedIds.add(id1);
+        pairedIds.add(match.slug || match.id);
+        roomPairs.push([roomNum, [s1, match]]);
+      }
+    });
+
+    // Pass 2: Remaining unlinked students are NEVER arbitrarily paired together!
+    // Each unlinked student gets their own slot with Empty Seat on the other side.
+    const remaining = roomStudents.filter(s => !pairedIds.has(s.slug || s.id));
+    remaining.forEach(s => {
+      roomPairs.push([roomNum, [s]]);
+    });
+
+    pairs.push(...roomPairs);
   });
 
   return pairs;
@@ -4633,17 +4652,23 @@ function renderRoommates() {
     const isLatest = batchIndex === 0;
     const batchSlug = batch.toLowerCase().replace(/[^a-z0-9-]/g, "");
 
+    const chevronSvg = `<span class="batch-collapse-chevron"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>`;
+
     html += `
-      <div class="batch-section-header${isLatest ? ' active-batch-header' : ''}" data-aos="fade-up" style="grid-column: 1 / -1;">
+      <div class="batch-section-header${isLatest ? ' active-batch-header' : ''}" data-aos="fade-up" style="grid-column: 1 / -1; cursor: pointer;" data-batch-toggle="${batch}">
         <div class="batch-header-inner">
           <h2 class="batch-heading">
             <span class="batch-icon">${BATCH_LOGO_SVG}</span>
-            <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : 'Batch:'}</span>
+            <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : (currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:')}</span>
             <span class="batch-badge">${batch}</span>
           </h2>
-          <span class="batch-count-pill">${rooms.length} ${currentLang === 'bn' ? 'টি রুম' : 'Rooms'}</span>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="batch-count-pill">${rooms.length} ${currentLang === 'bn' ? 'টি রুম' : 'Rooms'}</span>
+            ${chevronSvg}
+          </div>
         </div>
-      </div>`;
+      </div>
+      <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
 
     if (isLatest) {
       rooms.forEach(([room, pair], index) => {
@@ -6094,7 +6119,7 @@ function openStudentModal(student) {
     },
 
     room_2nd_year: () => {
-      const r2No = student.room_2nd_year?.room_no || student.room;
+      const r2No = student.room_2nd_year?.room_no;
       const r2MateName = student.room_2nd_year?.bedmate_name;
       const r2Mate = findStudentByNameOrSlug(student.room_2nd_year?.bedmate_slug || r2MateName);
       const isR2Vis = isProfileFieldVisible("room_2nd_year");
@@ -6379,24 +6404,16 @@ function openRoomModal(room) {
   const roomStr = String(room).trim();
   const normTarget = normalizeRoomNumber(room);
 
-  // Find all occupants past and present across 1st year, 2nd year or current assignments
+  // Find all occupants past and present strictly by their profile room assignments
   const occupants = students.filter((student) => {
     const r1 = normalizeRoomNumber(student.room_1st_year?.room_no);
     const r2 = normalizeRoomNumber(student.room_2nd_year?.room_no);
     const rMain = normalizeRoomNumber(student.room);
-    const rRef = normalizeRoomNumber(student.room_no);
-    return Boolean(normTarget && (rMain === normTarget || r1 === normTarget || r2 === normTarget || rRef === normTarget));
+    // Student belongs to this room if assigned in 1st year, 2nd year, or main room
+    return Boolean(normTarget && (r1 === normTarget || r2 === normTarget || (!r1 && !r2 && rMain === normTarget)));
   });
   
   const cmsRoom = roomsData && roomsData.find((r) => normalizeRoomNumber(r.room_no) === normTarget);
-  if (cmsRoom && Array.isArray(cmsRoom.assigned_students)) {
-    cmsRoom.assigned_students.forEach(as => {
-      const match = students.find(s => (as.student_id && s.slug === as.student_id) || (as.short_roll && String(s.roll) === String(as.short_roll)) || (as._id && s._id === as._id));
-      if (match && !occupants.some(o => o.id === match.id)) {
-        occupants.push(match);
-      }
-    });
-  }
   const title = cmsRoom
     ? (currentLang === "bn" ? (cmsRoom.title_bn || cmsRoom.title_en || `রুম ${toBengaliDigits(roomStr)}`) : (cmsRoom.title_en || cmsRoom.title_bn || `ROOM ${roomStr}`))
     : (currentLang === "bn" ? `রুম ${toBengaliDigits(roomStr)}` : `ROOM ${roomStr}`);
@@ -6411,12 +6428,7 @@ function openRoomModal(room) {
 
   const photoGridHtml = roomPhotos.length 
     ? `<div class="room-photo-grid">${roomPhotos.map((photo, index) => `<img src="${photo}" alt="Room photo ${index + 1}" loading="lazy" style="cursor: pointer;" onclick="openGalleryModal('${photo}', '${title}', '')">`).join("")}</div>`
-    : `<div class="no-photos-placeholder">
-         <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
-           <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 5H5l3.5-4.5z"/>
-         </svg>
-         <p>${currentLang === 'bn' ? 'কোনো রুমের ছবি আপলোড করা হয়নি' : 'No photos uploaded for this room yet'}</p>
-       </div>`;
+    : "";
 
   // Group occupants by batch and sort descending (latest batch on top)
   const batchMap = {};
@@ -6457,11 +6469,11 @@ function openRoomModal(room) {
               const r1 = String(student.room_1st_year?.room_no || "").trim();
               const r2 = String(student.room_2nd_year?.room_no || "").trim();
               let roomStayLabel = "";
-              if (r1 === roomStr && r2 === roomStr) {
+              if (r1 && r2 && r1 === roomStr && r2 === roomStr) {
                 roomStayLabel = currentLang === 'bn' ? '১ম ও ২য় বর্ষ' : '1st & 2nd Year';
-              } else if (r1 === roomStr) {
+              } else if (r1 && r1 === roomStr) {
                 roomStayLabel = currentLang === 'bn' ? '১ম বর্ষ' : '1st Year Room';
-              } else if (r2 === roomStr) {
+              } else if (r2 && r2 === roomStr) {
                 roomStayLabel = currentLang === 'bn' ? '২য় বর্ষ' : '2nd Year Room';
               }
               return `
@@ -6771,15 +6783,26 @@ function renderBirthdays() {
       return aInfo.sortVal - bInfo.sortVal;
     });
 
+    const isLatest = sortedBatches.indexOf(batchKey) === 0;
+    const chevronSvg = `<span class="batch-collapse-chevron"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>`;
+
     html += `
-      <div class="birthday-batch-block" data-aos="fade-up" style="margin-bottom: 36px;">
-        <div class="batch-section-header" style="margin: 28px 0 16px; display: flex; align-items: center; justify-content: space-between;">
-          <h2 class="batch-title" style="display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1.35rem; font-weight: 800;">
-            ${BATCH_LOGO_SVG} ${batchKey}
-          </h2>
-          <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+      <div class="birthday-batch-block" data-aos="fade-up" style="margin-bottom: 24px;">
+        <div class="batch-section-header${isLatest ? ' active-batch-header' : ''}" style="margin: 24px 0 14px;" data-batch-toggle="${batchKey}">
+          <div class="batch-header-inner">
+            <h2 class="batch-heading">
+              <span class="batch-icon">${BATCH_LOGO_SVG}</span>
+              <span class="batch-label">${isLatest ? (currentLang === 'bn' ? 'সর্বশেষ ব্যাচ:' : 'Latest Batch:') : (currentLang === 'bn' ? 'ব্যাচ:' : 'Batch:')}</span>
+              <span class="batch-badge">${batchKey}</span>
+            </h2>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="batch-count-pill">${batchStudents.length} ${currentLang === 'bn' ? 'জন শিক্ষার্থী' : 'Students'}</span>
+              ${chevronSvg}
+            </div>
+          </div>
         </div>
-        <div class="birthday-grid">
+        <div class="batch-collapsible-wrapper" data-batch-wrapper="${batchKey}">
+          <div class="birthday-grid">
     `;
 
     batchStudents.forEach((student, index) => {
@@ -6848,6 +6871,7 @@ function renderBirthdays() {
     });
 
     html += `
+        </div>
         </div>
       </div>
     `;
@@ -8244,3 +8268,22 @@ function initCompactFilterDrawers() {
     });
   }
 }
+
+// Universal Batch Collapse / Minimize Toggle for Students, Roommates, and Birthday pages
+function initBatchCollapseListeners() {
+  document.addEventListener("click", (e) => {
+    const header = e.target.closest("[data-batch-toggle]");
+    if (!header) return;
+    const batchKey = header.dataset.batchToggle;
+    if (!batchKey) return;
+    header.classList.toggle("is-collapsed");
+    // Find wrapper in next sibling or by batch attribute
+    const wrapper = header.nextElementSibling?.classList.contains("batch-collapsible-wrapper")
+      ? header.nextElementSibling
+      : document.querySelector(`[data-batch-wrapper="${batchKey}"]`);
+    if (wrapper) {
+      wrapper.classList.toggle("is-collapsed");
+    }
+  });
+}
+initBatchCollapseListeners();

@@ -20,24 +20,24 @@
 }
 
 .dark {
-  --bg: #10131E;
-  --bg-alt: #141724;
+  --bg: #07080b;
+  --bg-alt: #0c0e14;
   --text: #E0E1F2;
   --text-strong: #ffffff;
-  --text-muted: #94A3B8;
-  --muted: #94A3B8;
-  --surface: #1C1F2B;
-  --surface-strong: #181B27;
-  --surface-light: #272935;
+  --text-muted: #8E9BAE;
+  --muted: #8E9BAE;
+  --surface: #12141c;
+  --surface-strong: #0f1118;
+  --surface-light: #191c26;
   --border: rgba(255, 255, 255, 0.08);
   --border-soft: rgba(255, 255, 255, 0.05);
   --accent: #10c9a8;
   --accent-strong: #3de8cc;
   --accent-soft: rgba(16, 201, 168, 0.15);
   --warm: #f59e0b;
-  --shadow: 0 20px 48px rgba(0, 0, 0, 0.65);
-  --nav-bg: rgba(16, 19, 30, 0.92);
-  --overlay: rgba(8, 10, 18, 0.82);
+  --shadow: 0 20px 48px rgba(0, 0, 0, 0.75);
+  --nav-bg: rgba(7, 8, 11, 0.94);
+  --overlay: rgba(4, 5, 8, 0.85);
   color-scheme: dark;
 }
 
@@ -6231,4 +6231,150 @@ body[data-lang="bn"] textarea {
     line-height: 1.52 !important;
     max-width: 100% !important;
   }
+}
+
+/* ═════════════════════════════════════════════════════════════════
+   BATCH COLLAPSE, LAPTOP RESPONSIVENESS & POLISH (v7.6)
+   ═════════════════════════════════════════════════════════════════ */
+.batch-section-header {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  cursor: pointer;
+  user-select: none;
+}
+.batch-header-inner {
+  transition: all 0.2s ease;
+}
+.batch-header-inner:hover {
+  filter: brightness(1.08);
+}
+.batch-collapse-chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--accent);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+.batch-section-header.is-collapsed .batch-collapse-chevron svg {
+  transform: rotate(-90deg);
+}
+.batch-collapsible-wrapper {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  display: contents;
+}
+.batch-collapsible-wrapper.is-collapsed {
+  display: none !important;
+}
+
+/* Fix for Item 9: Previous batch preview grid & View All action full width */
+.prev-batch-preview-grid {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+  margin-bottom: 8px !important;
+}
+.prev-batch-action {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin: 16px 0 36px 0 !important;
+}
+.prev-batch-view-all-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 28px !important;
+  border-radius: 999px !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: var(--accent) !important;
+  background: var(--surface) !important;
+  border: 1.5px solid var(--accent) !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Fix for Item 7 & Laptop Views */
+.roommate-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)) !important;
+  gap: 20px !important;
+}
+@media (min-width: 1200px) {
+  .roommate-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@media (min-width: 1536px) {
+  .roommate-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+.room-person img {
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+}
+
+/* Student compact view on laptops: 2 to 3 cards per row */
+@media (min-width: 768px) {
+  .student-grid.view-compact {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+}
+@media (min-width: 1280px) {
+  .student-grid.view-compact {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+}
+
+/* Fix for Item 11: Batch archive banner laptop perfection */
+.batch-archive-banner {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  margin-bottom: 24px !important;
+  padding: 18px 24px !important;
+  background: var(--surface-strong) !important;
+  border: 1px solid var(--border) !important;
+  border-left: 4px solid var(--accent) !important;
+  border-radius: 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15) !important;
+}
+.back-to-all-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  color: var(--accent) !important;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  text-decoration: none !important;
+  width: fit-content !important;
+  transition: transform 0.2s ease !important;
+}
+.back-to-all-btn:hover {
+  transform: translateX(-3px) !important;
+}
+
+/* Birthday today celebration styling */
+.is-today-birthday {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 20px rgba(16, 201, 168, 0.25) !important;
 }
