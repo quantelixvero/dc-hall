@@ -156,9 +156,16 @@ export const structure = async (S, context) => {
   const client = getClient({ apiVersion: '2024-01-01' })
 
   const userEmail = (currentUser?.email || '').toLowerCase().trim()
+  const userName = (currentUser?.name || '').toLowerCase().trim()
+  const userId = (currentUser?.id || '').toLowerCase().trim()
 
-  // 1. Check permanent super admins
-  let isSuperAdmin = PERMANENT_SUPER_ADMINS.includes(userEmail)
+  // 1. Check permanent super admins (matching email, name, or id)
+  let isSuperAdmin =
+    PERMANENT_SUPER_ADMINS.includes(userEmail) ||
+    PERMANENT_SUPER_ADMINS.includes(userName) ||
+    userEmail.includes('quantelixvero') ||
+    userName.includes('quantelixvero') ||
+    userId.includes('quantelixvero')
 
   // 2. Dynamic Super Admins from adminSettings
   if (!isSuperAdmin && userEmail) {

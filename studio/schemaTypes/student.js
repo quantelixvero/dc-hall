@@ -115,8 +115,16 @@ export default defineType({
       group: 'basic',
       readOnly: ({ currentUser }) => {
         const superAdmins = ['quantelixvero@gmail.com', 'drseadib@gmail.com', 'seadibpc@outlook.com'];
-        const email = (currentUser?.email || '').toLowerCase();
-        return !email || !superAdmins.includes(email);
+        const email = (currentUser?.email || '').toLowerCase().trim();
+        const name = (currentUser?.name || '').toLowerCase().trim();
+        const id = (currentUser?.id || '').toLowerCase().trim();
+        return !(
+          superAdmins.includes(email) ||
+          superAdmins.includes(name) ||
+          email.includes('quantelixvero') ||
+          name.includes('quantelixvero') ||
+          id.includes('quantelixvero')
+        );
       },
       options: {
         list: [
