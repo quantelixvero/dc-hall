@@ -19,14 +19,16 @@ import {
   DocumentIcon,
 } from '@sanity/icons'
 
-// Hardcoded Super Admin emails (always have full access)
-const SUPER_ADMIN_EMAILS = [
+// Hardcoded core super admins that ALWAYS have full access (main accounts)
+const PERMANENT_SUPER_ADMINS = [
+  'quantelixvero@gmail.com',
   'drseadib@gmail.com',
   'seadibpc@outlook.com',
 ]
 
 /**
- * Build 4 core content folders for a batch.
+ * Build batch content folders.
+ * Direct '+' create button without multi-batch dropdown!
  */
 function createBatchContentItems(S, batchName) {
   const cleanBatchKey = batchName.toLowerCase().replace(/[^a-z0-9]/g, '')
@@ -37,6 +39,7 @@ function createBatchContentItems(S, batchName) {
       .icon(UsersIcon)
       .child(
         S.documentList()
+          .id(`students-${cleanBatchKey}`)
           .title(`${batchName} Students`)
           .schemaType('student')
           .filter('_type == "student" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
@@ -44,21 +47,8 @@ function createBatchContentItems(S, batchName) {
           .initialValueTemplates([
             S.initialValueTemplateItem(`student-${cleanBatchKey}`),
           ])
-          .menuItems([
-            S.menuItem()
-              .title(`Add ${batchName} Student`)
-              .icon(AddIcon)
-              .intent({
-                type: 'create',
-                params: {
-                  type: 'student',
-                  template: `student-${cleanBatchKey}`,
-                },
-              })
-              .showAsAction(true),
-          ])
           .canHandleIntent((intentName, params) => {
-            return intentName === 'create';
+            return intentName === 'create' && params.template === `student-${cleanBatchKey}`;
           })
           .defaultOrdering([
             { field: 'position', direction: 'asc' },
@@ -71,6 +61,7 @@ function createBatchContentItems(S, batchName) {
       .icon(PackageIcon)
       .child(
         S.documentList()
+          .id(`rooms-${cleanBatchKey}`)
           .title(`${batchName} Rooms & Roommates`)
           .schemaType('room')
           .filter('_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
@@ -78,21 +69,8 @@ function createBatchContentItems(S, batchName) {
           .initialValueTemplates([
             S.initialValueTemplateItem(`room-${cleanBatchKey}`),
           ])
-          .menuItems([
-            S.menuItem()
-              .title(`Add ${batchName} Room`)
-              .icon(AddIcon)
-              .intent({
-                type: 'create',
-                params: {
-                  type: 'room',
-                  template: `room-${cleanBatchKey}`,
-                },
-              })
-              .showAsAction(true),
-          ])
           .canHandleIntent((intentName, params) => {
-            return intentName === 'create';
+            return intentName === 'create' && params.template === `room-${cleanBatchKey}`;
           })
           .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
       ),
@@ -111,10 +89,18 @@ function createBatchContentItems(S, batchName) {
       .title(`${batchName} Events & Programs`)
       .icon(CalendarIcon)
       .child(
-        S.documentTypeList('galleryEvent')
-          .title(`${batchName} Events`)
+        S.documentList()
+          .id(`events-${cleanBatchKey}`)
+          .title(`${batchName} Events & Programs`)
+          .schemaType('galleryEvent')
           .filter('_type == "galleryEvent" && ($batch in batches || "all" in batches || (!defined(batches) && $batch == "HSC-27"))')
           .params({ batch: batchName })
+          .initialValueTemplates([
+            S.initialValueTemplateItem(`galleryEvent-${cleanBatchKey}`),
+          ])
+          .canHandleIntent((intentName, params) => {
+            return intentName === 'create' && params.template === `galleryEvent-${cleanBatchKey}`;
+          })
           .defaultOrdering([{ field: 'date', direction: 'desc' }])
       ),
 
@@ -122,10 +108,18 @@ function createBatchContentItems(S, batchName) {
       .title(`${batchName} Google Forms`)
       .icon(DocumentIcon)
       .child(
-        S.documentTypeList('hallForm')
-          .title(`${batchName} Google Forms & Surveys`)
+        S.documentList()
+          .id(`forms-${cleanBatchKey}`)
+          .title(`${batchName} Google Forms`)
+          .schemaType('hallForm')
           .filter('_type == "hallForm" && (batch == $batch || batch == "all")')
           .params({ batch: batchName })
+          .initialValueTemplates([
+            S.initialValueTemplateItem(`hallForm-${cleanBatchKey}`),
+          ])
+          .canHandleIntent((intentName, params) => {
+            return intentName === 'create' && params.template === `hallForm-${cleanBatchKey}`;
+          })
           .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
       ),
   ]
@@ -162,7 +156,24 @@ export const structure = async (S, context) => {
   const client = getClient({ apiVersion: '2024-01-01' })
 
   const userEmail = (currentUser?.email || '').toLowerCase().trim()
-  const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(userEmail)
+
+  // 1. Check permanent super admins
+  let isSuperAdmin = PERMANENT_SUPER_ADMINS.includes(userEmail)
+
+  // 2. Dynamic Super Admins from adminSettings
+  if (!isSuperAdmin && userEmail) {
+    try {
+      const superDoc = await client.fetch(
+        '*[_type == "adminSettings"][0]{ super_admin_emails }'
+      )
+      const dynamicAdmins = (superDoc?.super_admin_emails || []).map((e) => (e || '').toLowerCase().trim())
+      if (dynamicAdmins.includes(userEmail)) {
+        isSuperAdmin = true
+      }
+    } catch (err) {
+      console.warn('Could not fetch dynamic super admin list:', err)
+    }
+  }
 
   let userRole = isSuperAdmin ? 'super_admin' : 'viewer'
   let userBatch = null
@@ -288,9 +299,9 @@ export const structure = async (S, context) => {
       .items([
         ...createBatchContentItems(S, userBatch),
 
-        // 5th folder: ONLY this batch's password & moderator config
+        // 5th folder: ONLY this batch's password & moderator config (no extra emoji)
         S.listItem()
-          .title(`🔒 ${userBatch} Password & Moderator`)
+          .title(`${userBatch} Password & Moderator`)
           .icon(LockIcon)
           .child(
             S.document()
@@ -339,14 +350,14 @@ export const structure = async (S, context) => {
   // ═════════════════════════════════════════════════════════════════════
   if (!isSuperAdmin) {
     return S.list()
-      .title('Access Restricted / অনুমতি সীমিত')
+      .title('Access Restricted / প্রবেশাধিকার সীমাবদ্ধ')
       .items([
         S.listItem()
-          .title('🔒 Public Notices & Circulars')
-          .icon(BellIcon)
+          .title('🔒 Restricted Access / প্রবেশাধিকার সীমিত')
+          .icon(LockIcon)
           .child(
             S.documentTypeList('notice')
-              .title('Official Notices')
+              .title('Official Notices (Read Only)')
               .defaultOrdering([{ field: 'date', direction: 'desc' }])
           ),
       ])

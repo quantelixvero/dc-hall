@@ -3888,6 +3888,7 @@ const AUTH_BATCH_HASHES = {
     "f741d0d217ebae0bd49b0fb8bfe3ba31076e27675da9b4de46f96195843dd482"
   ],
   "hsc28": [
+    "189d3cedc3f17c39bf1255a232e575af62b21ad0268f1a9e1789ba5ff8e57289",
     "0ebd02954b7d4ad2aeadcd54c036f39f3e1d1e7eb4f758f40ffa5b31c1b0560b",
     "b3edc7f3a7d6cb3432685305c8a05bf186651702e12facf678781155a05fcf45"
   ],
@@ -3905,7 +3906,7 @@ function verifyAuthSecret(secret) {
   const clean = String(secret).trim();
   const hash = computeSha256(clean);
 
-  // 1. Dynamic Master Password from Sanity CMS
+  // 1. Dynamic Master Password from Sanity CMS adminSettings
   const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
   if (cmsMaster && clean === String(cmsMaster).trim()) return "master";
   if (AUTH_MASTER_HASHES.includes(hash)) return "master";
@@ -3922,17 +3923,7 @@ function verifyAuthSecret(secret) {
     }
   }
 
-  // 3. Dynamic Batch Passwords from legacy cmsSettings.batch_passwords
-  if (cmsSettings?.batch_passwords && typeof cmsSettings.batch_passwords === "object") {
-    for (const [k, val] of Object.entries(cmsSettings.batch_passwords)) {
-      if (val && clean === String(val).trim()) {
-        const num = parseBatchNum(k);
-        return `hsc${num}`;
-      }
-    }
-  }
-
-  // 4. Fallback verification against static hashes
+  // 3. Fallback verification against offline static hashes
   for (const [bKey, hashes] of Object.entries(AUTH_BATCH_HASHES)) {
     if (hashes.includes(hash)) return bKey;
   }

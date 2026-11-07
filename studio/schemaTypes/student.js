@@ -114,7 +114,7 @@ export default defineType({
       type: 'string',
       group: 'basic',
       readOnly: ({ currentUser }) => {
-        const superAdmins = ['drseadib@gmail.com', 'seadibpc@outlook.com'];
+        const superAdmins = ['quantelixvero@gmail.com', 'drseadib@gmail.com', 'seadibpc@outlook.com'];
         const email = (currentUser?.email || '').toLowerCase();
         return !email || !superAdmins.includes(email);
       },

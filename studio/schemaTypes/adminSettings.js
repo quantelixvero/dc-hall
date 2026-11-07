@@ -84,6 +84,23 @@ export default defineType({
 
   fields: [
     // ═══════════════════════════════════════════
+    // SUPER ADMIN ACCOUNTS (FULL ACCESS)
+    // ═══════════════════════════════════════════
+    defineField({
+      name: 'super_admin_emails',
+      title: 'Super Admin Emails',
+      type: 'array',
+      group: 'batch_rotation',
+      description: 'স্টুডিওতে পূর্ণ নিয়ন্ত্রণাধিকারী (Super Admin) ইমেইল তালিকা। quantelixvero@gmail.com সর্বদা প্রধান অ্যাডমিন। এখানে কোনো ইমেইল যোগ করলে সে পুরো স্টুডিওর সমস্ত সেটিংস ও সব ব্যাচের তথ্য ম্যানেজ করার ফুল অ্যাক্সেস পাবে।',
+      of: [{ type: 'string' }],
+      initialValue: [
+        'quantelixvero@gmail.com',
+        'drseadib@gmail.com',
+        'seadibpc@outlook.com',
+      ],
+    }),
+
+    // ═══════════════════════════════════════════
     // BATCH EMAIL SLOTS & ANNUAL ROTATION SYSTEM
     // ═══════════════════════════════════════════
     defineField({

@@ -16,6 +16,7 @@ const SANITY_GROQ_QUERY = `{
     global_visibility,
     global_public_visibility,
     master_password,
+    super_admin_emails,
     page_access_controls,
     profile_field_controls,
     homepage_sections,
@@ -39,7 +40,8 @@ const SANITY_GROQ_QUERY = `{
     ...,
     "logo": coalesce(logo.asset->url, logo),
     "hero_image": coalesce(hero_image.asset->url, hero_image),
-    "notice_pdf": coalesce(notice_pdf.asset->url, notice_pdf)
+    "notice_pdf": coalesce(notice_pdf.asset->url, notice_pdf),
+    "batch_passwords": null
   },
   "students": *[_type == "student" && !(_id in path("drafts.**"))] | order(position asc){
     ...,

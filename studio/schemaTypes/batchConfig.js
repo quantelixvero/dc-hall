@@ -64,7 +64,7 @@ export default defineType({
       of: [{ type: 'string' }],
       hidden: ({ currentUser }) => {
         const email = (currentUser?.email || '').toLowerCase().trim()
-        const superAdmins = ['drseadib@gmail.com', 'seadibpc@outlook.com']
+        const superAdmins = ['quantelixvero@gmail.com', 'drseadib@gmail.com', 'seadibpc@outlook.com']
         return !superAdmins.includes(email)
       },
       description: 'যে ইমেইলগুলো দিয়ে Sanity Studio-তে লগইন করলে এই ব্যাচের সব ফোল্ডার ও তথ্য এডিট করার পূর্ণ অধিকার পাওয়া যাবে। (শুধুমাত্র সুপার অ্যাডমিন পরিবর্তন করতে পারবেন)',
@@ -78,7 +78,7 @@ export default defineType({
       of: [{ type: 'string' }],
       hidden: ({ currentUser }) => {
         const email = (currentUser?.email || '').toLowerCase().trim()
-        const superAdmins = ['drseadib@gmail.com', 'seadibpc@outlook.com']
+        const superAdmins = ['quantelixvero@gmail.com', 'drseadib@gmail.com', 'seadibpc@outlook.com']
         return !superAdmins.includes(email)
       },
       description: 'এই ইমেইলধারীরা সরাসরি ডাটা পরিবর্তন করতে পারবেন না, তারা শুধু স্টুডিও থেকে এডিট রিকোয়েস্ট পাঠাতে পারবেন। (শুধুমাত্র সুপার অ্যাডমিন পরিবর্তন করতে পারবেন)',

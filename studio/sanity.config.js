@@ -14,7 +14,7 @@ const batchStudentTemplates = ALL_BATCHES.map((batch) => {
   const cleanKey = batch.toLowerCase().replace(/[^a-z0-9]/g, '')
   return {
     id: `student-${cleanKey}`,
-    title: `${batch} Student (স্বয়ংক্রিয় ${batch})`,
+    title: `${batch} Student`,
     schemaType: 'student',
     value: { batch },
   }
@@ -24,7 +24,7 @@ const batchRoomTemplates = ALL_BATCHES.map((batch) => {
   const cleanKey = batch.toLowerCase().replace(/[^a-z0-9]/g, '')
   return {
     id: `room-${cleanKey}`,
-    title: `${batch} Room (স্বয়ংক্রিয় ${batch})`,
+    title: `${batch} Room`,
     schemaType: 'room',
     value: { batch },
   }
@@ -43,6 +43,26 @@ const batchGalleryTemplates = ALL_BATCHES.map((batch) => {
   }
 })
 
+const batchGalleryEventTemplates = ALL_BATCHES.map((batch) => {
+  const cleanKey = batch.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return {
+    id: `galleryEvent-${cleanKey}`,
+    title: `${batch} Event`,
+    schemaType: 'galleryEvent',
+    value: { batch },
+  }
+})
+
+const batchFormTemplates = ALL_BATCHES.map((batch) => {
+  const cleanKey = batch.toLowerCase().replace(/[^a-z0-9]/g, '')
+  return {
+    id: `hallForm-${cleanKey}`,
+    title: `${batch} Form`,
+    schemaType: 'hallForm',
+    value: { batch },
+  }
+})
+
 export default defineConfig({
   name: 'default',
   title: 'Dhaka College International Hall',
@@ -58,14 +78,16 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
     templates: (prev) => [
-      // Remove the default 'student' and 'room' templates so only batch-specific ones remain
-      ...prev.filter((t) => t.schemaType !== 'student' && t.schemaType !== 'room'),
+      // Remove generic un-scoped templates
+      ...prev.filter((t) => !['student', 'room', 'galleryEvent', 'hallForm'].includes(t.schemaType)),
       ...batchStudentTemplates,
       ...batchRoomTemplates,
       ...batchGalleryTemplates,
+      ...batchGalleryEventTemplates,
+      ...batchFormTemplates,
       {
         id: 'editRequest-pending',
-        title: 'New Edit Request (নতুন সম্পাদনা অনুরোধ)',
+        title: 'New Edit Request',
         schemaType: 'editRequest',
         value: {
           status: 'pending',
