@@ -3,6 +3,11 @@
   publish = "."
 
 [[redirects]]
+  from = "/api/auth"
+  to = "/.netlify/functions/auth"
+  status = 200
+
+[[redirects]]
   from = "/form/:slug"
   to = "/form.html?f=:slug"
   status = 200
@@ -38,3 +43,49 @@
   to = "https://dchall.sanity.studio/"
   status = 301
   force = true
+
+# ==============================================================================
+# FAVICON & MANIFEST REWRITES: Seamless bot & legacy browser compatibility
+# ==============================================================================
+[[redirects]]
+  from = "/site.webmanifest"
+  to = "/assets/favicons/site.webmanifest"
+  status = 200
+
+[[redirects]]
+  from = "/browserconfig.xml"
+  to = "/assets/favicons/browserconfig.xml"
+  status = 200
+
+[[redirects]]
+  from = "/favicon-*.png"
+  to = "/assets/favicons/favicon-:splat.png"
+  status = 200
+
+[[redirects]]
+  from = "/apple-touch-icon.png"
+  to = "/assets/favicons/apple-touch-icon.png"
+  status = 200
+
+# ==============================================================================
+# SECURITY PROTECTION: Block direct web access to internal scripts and secrets
+# ==============================================================================
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/studio/*"
+  to = "https://dchall.sanity.studio/"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"

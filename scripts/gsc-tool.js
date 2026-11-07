@@ -15,12 +15,15 @@ const https = require("https");
 const fs = require("fs");
 const path = require("path");
 
-const KEY_FILE = path.resolve(__dirname, "../service_account.json");
+// Look for service_account.json in secure private credentials folder first, then fallback to root
+const KEY_FILE = fs.existsSync(path.resolve(__dirname, "./credentials/service_account.json"))
+  ? path.resolve(__dirname, "./credentials/service_account.json")
+  : path.resolve(__dirname, "../service_account.json");
 const SITE_DOMAIN = "sc-domain:dchall.pro.bd";
 const SITEMAP_URL = "https://dchall.pro.bd/sitemap.xml";
 
 if (!fs.existsSync(KEY_FILE)) {
-  console.error("Error: service_account.json not found in root directory.");
+  console.error("Error: service_account.json not found in scripts/credentials/ or root directory.");
   process.exit(1);
 }
 

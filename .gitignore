@@ -9,3 +9,6 @@ service_account.json
 *credentials*.json
 typing-*.json
 *.key.json
+scripts/credentials/
+*.env
+.env*
