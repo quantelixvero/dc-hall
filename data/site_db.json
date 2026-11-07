@@ -118,8 +118,7 @@
     },
     "hero_title_en": "International Hall",
     "hero_image": "images/hostel-hero.jpg",
-    "hero_title_bn": "আন্তর্জাতিক ছাত্রাবাস",
-    "password": "102103104"
+    "hero_title_bn": "আন্তর্জাতিক ছাত্রাবাস"
   },
   "rooms_mgmt": {
     "rooms": [
@@ -263,7 +262,7 @@
         "class_no": "12",
         "position": 1,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/adib1-12-ct1.pdf",
@@ -274,7 +273,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010139",
-        "phone": "01625329874",
+        "phone": "01625******",
         "photo": "images/adib1.jpg",
         "messenger": "seadix/",
         "address_en": "Hatia, Noakhali",
@@ -284,7 +283,7 @@
           "sakil4"
         ],
         "blood_group": "A+",
-        "email": "quantelixvero@gmail.com",
+        "email": "qua***@gmail.com",
         "name_en": "Abdullah Al Adib",
         "student_id": "adib1",
         "group": "science"
@@ -307,7 +306,7 @@
         "class_no": "12",
         "position": 2,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/santo2-12-ct1.pdf",
@@ -318,7 +317,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010161",
-        "phone": "01613601161",
+        "phone": "01613******",
         "photo": "assets/uploads/shanto.png",
         "messenger": "naimul.islam55/",
         "address_en": "Hatia, Noakhali",
@@ -328,7 +327,7 @@
           "jahid3"
         ],
         "blood_group": "O+",
-        "email": "mistersanto1000@gmail.com",
+        "email": "mis***@gmail.com",
         "name_en": "Naimul Islam (Shanto)",
         "student_id": "santo2",
         "group": "science"
@@ -351,7 +350,7 @@
         "class_no": "12",
         "position": 3,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/jahid3-12-ct1.pdf",
@@ -362,7 +361,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010164",
-        "phone": "01844474892",
+        "phone": "01844******",
         "photo": "assets/uploads/jahid.jpg",
         "messenger": "1BABcH2cjn",
         "address_en": "Hatia, Noakhali",
@@ -372,7 +371,7 @@
           "santo2"
         ],
         "blood_group": "A+",
-        "email": "zahidsigma164@gmail.com",
+        "email": "zah***@gmail.com",
         "name_en": "Md Zahidul Islam",
         "student_id": "jahid3",
         "group": "science"
@@ -395,7 +394,7 @@
         "class_no": "12",
         "position": 4,
         "group_en": "Science",
-        "father_phone": "01758684640",
+        "father_phone": "01758******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/sakil4-12-ct1.pdf",
@@ -406,7 +405,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010326",
-        "phone": "01739554600",
+        "phone": "01739******",
         "photo": "images/sakil4.jpg",
         "address_en": "Kanchan, Rupganj, Narayanganj",
         "practical_group": "C1",
@@ -415,7 +414,7 @@
           "adib1"
         ],
         "blood_group": "O+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "Md. Shakil Sheikh",
         "student_id": "sakil4",
         "group": "science"
@@ -438,7 +437,7 @@
         "class_no": "12",
         "position": 5,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/sasfkat5-12-ct1.pdf",
@@ -449,7 +448,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010008",
-        "phone": "01996569688",
+        "phone": "01996******",
         "photo": "images/sasfkat5.jpg",
         "messenger": "18oRrju5zF",
         "address_en": "Deboi, Rupganj, Narayanganj",
@@ -459,7 +458,7 @@
           "riyad19"
         ],
         "blood_group": "O+",
-        "email": "shafkatrahmandkam@gmail.com",
+        "email": "sha***@gmail.com",
         "name_en": "Shafkat Rahman",
         "student_id": "sasfkat5",
         "group": "science"
@@ -482,7 +481,7 @@
         "class_no": "12",
         "position": 6,
         "group_en": "Science",
-        "father_phone": "01319061472",
+        "father_phone": "01319******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/munsi6-12-ct1.pdf",
@@ -493,7 +492,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010022",
-        "phone": "01577203120",
+        "phone": "01577******",
         "photo": "assets/uploads/munsi.png",
         "address_en": "Choto Alampur, Debidwar, Cumilla",
         "practical_group": "A1",
@@ -502,7 +501,7 @@
           "rejawl26"
         ],
         "blood_group": "B+",
-        "email": "usage3913@gmail.com",
+        "email": "usa***@gmail.com",
         "name_en": "Shahriar Al Sakib Munshi",
         "student_id": "munsi6",
         "group": "science"
@@ -525,7 +524,7 @@
         "class_no": "12",
         "position": 7,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/musfik7-12-ct1.pdf",
@@ -536,7 +535,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010122",
-        "phone": "01577390514",
+        "phone": "01577******",
         "photo": "images/musfik7.jpg",
         "messenger": "18osDPmvYU",
         "address_en": "South Sakuchia, Monpura, Bhola",
@@ -546,7 +545,7 @@
           "nafis9"
         ],
         "blood_group": "A+",
-        "email": "mushfiq88bd@gmail.com",
+        "email": "mus***@gmail.com",
         "name_en": "Md. Mushfiqur Rahman",
         "student_id": "musfik7",
         "group": "science"
@@ -569,7 +568,7 @@
         "class_no": "12",
         "position": 8,
         "group_en": "Science",
-        "father_phone": "01714097613",
+        "father_phone": "01714******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/esty8-12-ct1.pdf",
@@ -580,7 +579,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010870",
-        "phone": "01974097612",
+        "phone": "01974******",
         "photo": "assets/uploads/taskin.jpg",
         "address_en": "Chattogram",
         "practical_group": "F2",
@@ -589,7 +588,7 @@
           "alauddin17"
         ],
         "blood_group": "O+",
-        "email": "dhakaiyyaesty@gmail.com",
+        "email": "dha***@gmail.com",
         "name_en": "Taskin Rahman Esty",
         "student_id": "esty8",
         "group": "science"
@@ -612,7 +611,7 @@
         "class_no": "12",
         "position": 9,
         "group_en": "Science",
-        "father_phone": "01738770330",
+        "father_phone": "01738******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/nafis9-12-ct1.pdf",
@@ -623,7 +622,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010141",
-        "phone": "01346588124",
+        "phone": "01346******",
         "photo": "assets/uploads/img_20260509_184212-tarif-alam-1-.jpg",
         "messenger": "1EDVSWD95F",
         "address_en": "Ranisonkail, Thakurgaon",
@@ -633,7 +632,7 @@
           "musfiq7"
         ],
         "blood_group": "O+",
-        "email": "tarifalam265@gmail.com",
+        "email": "tar***@gmail.com",
         "name_en": "Nafis Alam Tarif",
         "student_id": "nafis9",
         "group": "science"
@@ -656,7 +655,7 @@
         "class_no": "12",
         "position": 10,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/kayes10-12-ct1.pdf",
@@ -667,7 +666,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010882",
-        "phone": "01629171207",
+        "phone": "01629******",
         "photo": "assets/uploads/whatsapp-image-2026-05-09-at-7.20.39-pm-naimul-islam-1-.jpeg",
         "address_en": "Chakaria, Cox's bazar.",
         "practical_group": "F2",
@@ -676,7 +675,7 @@
           "siam12"
         ],
         "blood_group": "A+",
-        "email": "riasadulislamkayes@gmail.com",
+        "email": "ria***@gmail.com",
         "name_en": "Riasadul Islam Kayes",
         "student_id": "kayes10",
         "group": "science"
@@ -699,7 +698,7 @@
         "class_no": "12",
         "position": 11,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/jahid11-12-ct1.pdf",
@@ -710,7 +709,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010223",
-        "phone": "01828246239",
+        "phone": "01828******",
         "photo": "assets/uploads/jahidvay.jpg",
         "address_en": "Narsingdi",
         "practical_group": "B1",
@@ -719,7 +718,7 @@
           "musa24"
         ],
         "blood_group": "O+",
-        "email": " jkjahidultaskin10@gmail.com",
+        "email": " jk***@gmail.com",
         "name_en": "Md. Jahidul Islam",
         "student_id": "jahid11",
         "group": "science"
@@ -742,7 +741,7 @@
         "class_no": "12",
         "position": 12,
         "group_en": "Science",
-        "father_phone": "01761866285",
+        "father_phone": "01761******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/siam12-12-ct1.pdf",
@@ -753,7 +752,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010195",
-        "phone": "01804692801",
+        "phone": "01804******",
         "photo": "images/siam12.jpg",
         "messenger": "siam.hasan.anik.402132",
         "address_en": "Moshinda Majpara, Gurudaspur, Natore",
@@ -761,7 +760,7 @@
         "address_bn": "মশিন্দা মাঝপাড়া, গুরুদাসপুর, নাটোর",
         "roommate_ids": [],
         "blood_group": "B+",
-        "email": "siamhasananik01@gmail.com",
+        "email": "sia***@gmail.com",
         "name_en": "Siam Hasan (Nator)",
         "student_id": "siam12",
         "group": "science"
@@ -784,7 +783,7 @@
         "class_no": "12",
         "position": 13,
         "group_en": "Science",
-        "father_phone": "01705633292",
+        "father_phone": "01705******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/siam13-12-ct1.pdf",
@@ -795,7 +794,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010881",
-        "phone": "01705310841",
+        "phone": "01705******",
         "photo": "assets/uploads/siamkustia.jpg",
         "address_en": "Khorda Ailchara, Kushtia Sadar, Kushtia",
         "practical_group": "F2",
@@ -804,7 +803,7 @@
           "kayes10"
         ],
         "blood_group": "O+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "Md. Siam Ali (Kustia)",
         "student_id": "siam13",
         "group": "science"
@@ -827,7 +826,7 @@
         "class_no": "12",
         "position": 14,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/saimun14-12-ct1.pdf",
@@ -838,7 +837,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010322",
-        "phone": "01772589255",
+        "phone": "01772******",
         "photo": "assets/uploads/saimun3.jpg",
         "address_en": "Baipail, Savar, Dhaka",
         "practical_group": "C1",
@@ -847,7 +846,7 @@
           "alif28"
         ],
         "blood_group": "AB+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "Saimun Islam",
         "student_id": "saimun14",
         "group": "science"
@@ -870,7 +869,7 @@
         "class_no": "12",
         "position": 15,
         "group_en": "Science",
-        "father_phone": "01755729078",
+        "father_phone": "01755******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/pranto15-12-ct1.pdf",
@@ -881,7 +880,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010863",
-        "phone": "01995393323",
+        "phone": "01995******",
         "photo": "images/pranto15.jpg",
         "messenger": "1T3gCxVk6J",
         "address_en": "Kushtia Sadar, Kushtia",
@@ -891,7 +890,7 @@
           "nayem18"
         ],
         "blood_group": "O+",
-        "email": "rh597040@gmail.com",
+        "email": "rh5***@gmail.com",
         "name_en": "Ratul Hassan Pranto",
         "student_id": "pranto15",
         "group": "science"
@@ -914,7 +913,7 @@
         "class_no": "12",
         "position": 16,
         "group_en": "Science",
-        "father_phone": "01711985399",
+        "father_phone": "01711******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/nayem18-12-ct1.pdf",
@@ -925,7 +924,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010639",
-        "phone": "01331198715",
+        "phone": "01331******",
         "photo": "assets/uploads/nayeem.jpg",
         "address_en": "Alamdanga, Chuadanga",
         "practical_group": "E1",
@@ -934,7 +933,7 @@
           "pranto15"
         ],
         "blood_group": "O+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "Nayeem Sarwar",
         "student_id": "nayem18",
         "group": "science"
@@ -957,7 +956,7 @@
         "class_no": "13",
         "position": 17,
         "group_en": "Humanities",
-        "father_phone": "01956324329",
+        "father_phone": "01956******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/alauddin17-13-ct1.pdf",
@@ -968,7 +967,7 @@
         },
         "group_bn": "মানবিক",
         "full_roll": "1202526030140",
-        "phone": "01914476860",
+        "phone": "01914******",
         "photo": "assets/uploads/alauddin-hosain.jpg",
         "messenger": "1EPCEFWqMG/",
         "address_en": "Kalisongkorpur, Joshobontopur, Mohammadpur, Magura",
@@ -978,7 +977,7 @@
           "esty8"
         ],
         "blood_group": "O+",
-        "email": "ah247556@gmail.com",
+        "email": "ah2***@gmail.com",
         "name_en": "Md. Alauddin Mollah",
         "student_id": "alauddin17",
         "group": "arts"
@@ -1001,7 +1000,7 @@
         "class_no": "12",
         "position": 18,
         "group_en": "Science",
-        "father_phone": "01775208547",
+        "father_phone": "01775******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/rafiq18-12-ct1.pdf",
@@ -1012,14 +1011,14 @@
         },
         "group_bn": "মানবিক",
         "full_roll": "1202526010872",
-        "phone": "01342909383",
+        "phone": "01342******",
         "photo": "assets/uploads/rafi.jpg",
         "address_en": "Rifaitpur, Daulatpur, Kushtia",
         "practical_group": "F2",
         "address_bn": "রিফায়েতপুর, দৌলতপুর, কুষ্টিয়া",
         "roommate_ids": [],
         "blood_group": "O+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "Md. Rafiq Bin Nizam",
         "student_id": "rafiq18",
         "group": "science"
@@ -1042,7 +1041,7 @@
         "class_no": "12",
         "position": 19,
         "group_en": "Science",
-        "father_phone": "01732168077",
+        "father_phone": "01732******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/riyad19-12-ct1.pdf",
@@ -1053,7 +1052,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010596",
-        "phone": "01871571833",
+        "phone": "01871******",
         "photo": "assets/uploads/img-20260625-wa0006-tashfiqur-rahman-riyad-1-.jpg",
         "messenger": "m.me/1C6xNqU8bA/",
         "address_en": "Purbachal, Rupganj , Narayanganj ",
@@ -1063,7 +1062,7 @@
           "sasfkat5"
         ],
         "blood_group": "B+",
-        "email": "tashfiqurrahmanriyad2009@gmail.com",
+        "email": "tas***@gmail.com",
         "name_en": "Tashfiqur Rahman Riyad",
         "student_id": "riyad19",
         "group": "science"
@@ -1086,7 +1085,7 @@
         "class_no": "12",
         "position": 20,
         "group_en": "Science",
-        "father_phone": "01763073516",
+        "father_phone": "01763******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/mosih20-12-ct1.pdf",
@@ -1097,7 +1096,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010332",
-        "phone": "01320823354",
+        "phone": "01320******",
         "photo": "assets/uploads/mosih.jpg",
         "address_en": "Dokkin Lalpur, Lalpur, Natore",
         "practical_group": "C1",
@@ -1106,7 +1105,7 @@
           "abrar21"
         ],
         "blood_group": "A+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "Md. Chisty Islam Mosih",
         "student_id": "mosih20",
         "group": "science"
@@ -1129,7 +1128,7 @@
         "class_no": "12",
         "position": 21,
         "group_en": "Science",
-        "father_phone": "01723510651",
+        "father_phone": "01723******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/abrar21-12-ct1.pdf",
@@ -1140,7 +1139,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010200",
-        "phone": "01515288692",
+        "phone": "01515******",
         "photo": "assets/uploads/abrar2.jpg",
         "address_en": "429/B Malibag Chowdhury para, Near by Matir Mosjid, Rampura, Dhaka",
         "practical_group": "B1",
@@ -1149,7 +1148,7 @@
           "mosih20"
         ],
         "blood_group": "B+",
-        "email": "abrarislam0723@gmail.com",
+        "email": "abr***@gmail.com",
         "name_en": "Md. Ahanaf Abrar",
         "student_id": "abrar21",
         "group": "science"
@@ -1172,7 +1171,7 @@
         "class_no": "12",
         "position": 22,
         "group_en": "Commerce ",
-        "father_phone": "01751723978",
+        "father_phone": "01751******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/rudro22-12-ct1.pdf",
@@ -1183,7 +1182,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526020100",
-        "phone": "01516547125",
+        "phone": "01516******",
         "photo": "assets/uploads/100-rudro.jpg",
         "address_en": "Boalia, Sujanagar, Pabna",
         "practical_group": "-",
@@ -1192,7 +1191,7 @@
           "ariful25"
         ],
         "blood_group": "B+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "M M Tanvir (Rudro)",
         "student_id": "rudro22",
         "group": "commerce"
@@ -1215,7 +1214,7 @@
         "class_no": "12",
         "position": 23,
         "group_en": "Science",
-        "father_phone": "01739269792",
+        "father_phone": "01739******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/riasad23-12-ct1.pdf",
@@ -1226,7 +1225,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010337",
-        "phone": "01922407329",
+        "phone": "01922******",
         "photo": "assets/uploads/riasad1.jpg",
         "address_en": "Notun Amdoho Allardarga, Daulatpur, Kushtia",
         "practical_group": "C1",
@@ -1235,7 +1234,7 @@
           "sabit27"
         ],
         "blood_group": "O+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "Sobhan Mahmud Khan (Riasad)",
         "student_id": "riasad23",
         "group": "science"
@@ -1258,7 +1257,7 @@
         "class_no": "12",
         "position": 23,
         "group_en": "Science",
-        "father_phone": "01718450916",
+        "father_phone": "01718******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/musa24-12-ct1.pdf",
@@ -1269,7 +1268,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010213",
-        "phone": "01737844314",
+        "phone": "01737******",
         "photo": "assets/uploads/musa.png",
         "messenger": "mahbubur.rahman.musa.2024",
         "address_en": "Jhalakati\n",
@@ -1279,7 +1278,7 @@
           "jahid11"
         ],
         "blood_group": "A+",
-        "email": "mahbuburrahmanmusa99@gmail.com",
+        "email": "mah***@gmail.com",
         "name_en": "Mahbubur Rahman Musa",
         "student_id": "musa24",
         "group": "science"
@@ -1302,7 +1301,7 @@
         "class_no": "12",
         "position": 25,
         "group_en": "Science",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/ariful25-12-ct1.pdf",
@@ -1313,7 +1312,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010050",
-        "phone": "01848631025",
+        "phone": "01848******",
         "photo": "assets/uploads/img_20260503_130625_624-ariful-islam-1-.jpg",
         "messenger": "100093029856067",
         "address_en": "Rohanpur, Gomastapur, Chapainawabganj",
@@ -1323,7 +1322,7 @@
           "rudro22"
         ],
         "blood_group": "O+",
-        "email": "arifulislam20238086@gmail.com",
+        "email": "ari***@gmail.com",
         "name_en": "Ariful Islam",
         "student_id": "ariful25",
         "group": "science"
@@ -1346,7 +1345,7 @@
         "class_no": "12",
         "position": 26,
         "group_en": "Humanities",
-        "father_phone": "-",
+        "father_phone": "-**********",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/rejawl26-12-ct1.pdf",
@@ -1357,7 +1356,7 @@
         },
         "group_bn": "মানবিক",
         "full_roll": "1202526030098",
-        "phone": "01641659606",
+        "phone": "01641******",
         "photo": "assets/uploads/img-20260328-wa0060-rezaul-karim-1-.jpg",
         "address_en": "Titas, Cumilla",
         "practical_group": "",
@@ -1366,7 +1365,7 @@
           "munsi6"
         ],
         "blood_group": "A+",
-        "email": "rkdc8989@gmail.com",
+        "email": "rkd***@gmail.com",
         "name_en": "Md Rezaul Karim",
         "student_id": "rejawl26",
         "group": "arts"
@@ -1389,7 +1388,7 @@
         "class_no": "12",
         "position": 27,
         "group_en": "Science",
-        "father_phone": "01971444941",
+        "father_phone": "01971******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/sabit27-12-ct1.pdf",
@@ -1400,7 +1399,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010171",
-        "phone": "01852223068",
+        "phone": "01852******",
         "photo": "assets/uploads/sabit.jpg",
         "address_en": "Marich Pasha, Lohagara, Narail\n",
         "practical_group": "B1",
@@ -1409,7 +1408,7 @@
           "riasad23"
         ],
         "blood_group": "AB+",
-        "email": "-",
+        "email": "-*****@gmail.com",
         "name_en": "Muhammad Rayhanoor Sabit",
         "student_id": "sabit27",
         "group": "science"
@@ -1432,7 +1431,7 @@
         "class_no": "12",
         "position": 28,
         "group_en": "Science",
-        "father_phone": "01540759625",
+        "father_phone": "01540******",
         "custom_links": [],
         "generated_pdf_names": {
           "ct1": "pdfs/alif28-12-ct1.pdf",
@@ -1443,7 +1442,7 @@
         },
         "group_bn": "বিজ্ঞান",
         "full_roll": "1202526010153",
-        "phone": "01758173284",
+        "phone": "01758******",
         "photo": "images/alif28.jpg",
         "messenger": "18MFvaQuS2",
         "address_en": "Sundarganj, Gaibandha",
@@ -1453,7 +1452,7 @@
           "saimun14"
         ],
         "blood_group": "AB+",
-        "email": "mdalimuzzamanalif890@gmail.com",
+        "email": "mda***@gmail.com",
         "name_en": "Alimuzzamann Alif",
         "student_id": "alif28",
         "group": "science"

@@ -16,8 +16,11 @@ try {
   if (existsSync(dbPath)) {
     const db = JSON.parse(await readFile(dbPath, "utf8"));
 
-    // 1. Normalize Settings
+    // 1. Normalize Settings & Scrub Passwords
     if (db.settings) {
+      delete db.settings.password;
+      delete db.settings.master_password;
+      delete db.settings.batch_passwords;
       db.settings.logo = normalizedUploadPath(db.settings.logo);
       db.settings.hero_image = normalizedUploadPath(db.settings.hero_image);
       db.settings.notice_pdf = normalizedUploadPath(db.settings.notice_pdf);
@@ -50,6 +53,9 @@ try {
         }
         return {
           ...student,
+          phone: student.phone ? (student.phone.slice(0, 5) + "******") : "",
+          father_phone: student.father_phone ? (student.father_phone.slice(0, 5) + "******") : "",
+          email: student.email ? (student.email.split("@")[0].slice(0, 3) + "***@" + (student.email.split("@")[1] || "gmail.com")) : "",
           photo: normalizedUploadPath(student.photo),
           pdfs,
           generated_pdf_names: {

@@ -2546,22 +2546,32 @@ function studentMatches(student, query) {
   const normalizedQuery = query.toLowerCase().trim();
   if (!normalizedQuery) return true;
 
+  // Security & Privacy: Only allow searching fields that are unlocked for the current user
+  const isNameUnlocked = typeof isProfileFieldUnlocked === "function" ? isProfileFieldUnlocked("name", student) : true;
+  const isRollUnlocked = typeof isProfileFieldUnlocked === "function" ? isProfileFieldUnlocked("roll", student) : true;
+  const isRoomUnlocked = typeof isProfileFieldUnlocked === "function" ? (isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student)) : true;
+  const isPhoneUnlocked = typeof isProfileFieldUnlocked === "function" ? isProfileFieldUnlocked("phone", student) : false;
+  const isFatherPhoneUnlocked = typeof isProfileFieldUnlocked === "function" ? isProfileFieldUnlocked("father_phone", student) : false;
+  const isEmailUnlocked = typeof isProfileFieldUnlocked === "function" ? isProfileFieldUnlocked("email", student) : false;
+  const isAddressUnlocked = typeof isProfileFieldUnlocked === "function" ? isProfileFieldUnlocked("address", student) : false;
+  const isBloodUnlocked = typeof isProfileFieldUnlocked === "function" ? isProfileFieldUnlocked("blood_group", student) : true;
+
   const values = [
-    student.name,
-    student.roll,
-    student.fullRoll,
-    student.room,
-    student.phone,
-    student.fatherPhone,
-    student.email,
-    student.address,
-    student.blood,
+    isNameUnlocked ? student.name : "",
+    isRollUnlocked ? student.roll : "",
+    isRollUnlocked ? student.fullRoll : "",
+    isRoomUnlocked ? student.room : "",
+    isPhoneUnlocked ? student.phone : "",
+    isFatherPhoneUnlocked ? student.fatherPhone : "",
+    isEmailUnlocked ? student.email : "",
+    isAddressUnlocked ? student.address : "",
+    isBloodUnlocked ? student.blood : "",
     student.group,
     student.section,
     student.practicalGroup,
     student.college,
-    student.bn?.name,
-    student.bn?.address,
+    isNameUnlocked ? student.bn?.name : "",
+    isAddressUnlocked ? student.bn?.address : "",
     student.bn?.college
   ].filter(Boolean).join(" ").toLowerCase();
 
