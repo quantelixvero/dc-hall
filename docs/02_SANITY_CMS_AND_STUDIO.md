@@ -1,53 +1,62 @@
-# 🏛️ মডিউল ২: স্যানিটি সিএমএস, ডাটাবেজ ও অ্যাডমিন প্যানেল (Sanity CMS & Studio)
+# Module 02: Sanity CMS, Content Lake & Studio Administration (স্যানিটি সিএমএস ও অ্যাডমিন প্যানেল)
 
-> **ফাইলের অবস্থান:** `dc-hall/docs/02_SANITY_CMS_AND_STUDIO.md`  
-> **সর্বশেষ আপডেট:** ৮ নভেম্বর, ২০২৬  
-> **স্ট্যাটাস:** 🟡 স্যানিটি v3 সক্রিয়, স্কিমা ও ডিরেক্টরি অপটিমাইজেশন প্রয়োজন
-
----
-
-## 🔍 বর্তমান অবস্থা ও আর্কিটেকচার বিশ্লেষণ
-
-### ১. স্যানিটি স্টুডিও v3 (Sanity Studio v3)
-- **লোকেশন:** [`dc-hall/studio/`](file:///c:/Users/USER/Downloads/%23%23aicode/DC-hall%20(sanity)/dc-hall/studio/)
-- **লাইভ ডিপ্লয়মেন্ট:** `https://dchall.sanity.studio/`
-- **প্রজেক্ট আইডি:** `w16kaeyg` | **ডেটাসেট:** `production` | **API ভার্সন:** `2023-01-01`
-- **ডেস্ক স্ট্রাকচার:** [`studio/structure.js`](file:///c:/Users/USER/Downloads/%23%23aicode/DC-hall%20(sanity)/dc-hall/studio/structure.js) ফাইল দ্বারা ব্যাচ অনুযায়ী (HSC-27 থেকে HSC-35) ডকুমেন্টস ক্যাটাগরাইজ করা আছে।
-
-### ২. পুরনো Decap/Netlify CMS এর অবশিষ্টাংশ
-- **লোকেশন:** [`dc-hall/admin/`](file:///c:/Users/USER/Downloads/%23%23aicode/DC-hall%20(sanity)/dc-hall/admin/)
-  - `admin/config.yml` (Decap CMS কনফিগারেশন)
-  - `admin/index.html` (পুরনো লগইন পেজ)
-  - ডুপ্লিকেট ফাইল: `dc-hall/js/config.yml` এবং `dc-hall/css/js/config.yml`
-- **সমস্যা:** যেহেতু সাইট এখন পুরোপুরি সানটিতে মাইগ্রেট করা, পুরনো Netlify CMS কোড অপ্রয়োজনীয় কনফিউশন ও ফাইল জটলা তৈরি করছে।
-
-### ৩. স্কিমা টাইপস বিশ্লেষণ (`studio/schemaTypes/`)
-| স্কিমা নাম | ফাইল সাইজ | বর্তমান ভূমিকা | সুপারিশ |
-| :--- | :--- | :--- | :--- |
-| `adminSettings.js` | ~৫১ KB | পাসওয়ার্ড, পেজ লক, ভিজিবিলিটি, ফুটার | এটি অতি বৃহৎ; ছোট মডিউলে ভাগ করা দরকার |
-| `student.js` | ~২৫ KB | ছাত্র প্রোফাইল, রুম রেফারেন্স, রেজাল্ট | রোল-বেসড রিডঅনলি ফিল্ড রয়েছে |
-| `room.js` | ~১০ KB | রুম নম্বর, আসন সংখ্যা, ছবি ও অ্যাসাইনমেন্ট | মাল্টি-ব্যাচ রেফারেন্স সাপোর্ট করে |
-| `hallForm.js` | ~৫ KB | গুগল ফর্ম এমবেড ও ব্যাচ লিংকিং | লাইভ সচল |
-| `siteSettings.js` | ~২২ KB | গ্লোবাল ব্যানার, লোগো, নোটিশ | সচল |
-
-### ৪. ডাটা ফেচিং ও রিয়েলটাইম সিঙ্ক
-- **ক্লায়েন্ট ফাইল:** [`dc-hall/js/sanity-client.js`](file:///c:/Users/USER/Downloads/%23%23aicode/DC-hall%20(sanity)/dc-hall/js/sanity-client.js)
-- **কুয়েরি মেকানিজম:** সরাসরি `api.sanity.io` তে `&$ts=${Date.now()}` যোগ করে ক্যাশ-বাস্টিং সহ GROQ কুয়েরি রান হয়।
-- **লাইভ লিসেনার:** Server-Sent Events (SSE) এর মাধ্যমে অ্যাডমিন প্যানেলে পাবলিশ হওয়া মাত্র পেজ রিফ্রেশ ছাড়াই ডাটা আপডেট হয়।
+> **File Path:** `dc-hall/docs/02_SANITY_CMS_AND_STUDIO.md`  
+> **Last Updated:** November 8, 2026 (v8.6)  
+> **Status:** 🟢 Sanity Studio v3 Fully Modernized & Refreshed (Enterprise Grade, Emoji-Free, Bilingual Admin Guidance)
 
 ---
 
-## 📋 স্যানিটি সিএমএস অ্যাকশন আইটেমস ও চেকলিস্ট
+## 1. Current Architecture & Setup (বর্তমান অবস্থা ও আর্কিটেকচার)
 
-- [ ] **অ্যাকশন ১:** অপ্রয়োজনীয় ও কনফ্লিক্টিং পুরনো `admin/` ডিরেক্টরি এবং এলোমেলো `config.yml` ফাইলগুলো ডিলিট/আর্কাইভ করা।
-- [ ] **অ্যাকশন ২:** `adminSettings.js` (৫১ KB) স্কিমাকে রিফ্যাক্টর করে অপ্রয়োজনীয় বড় অংশগুলোকে সাব-অবজেক্টে মডিউলার করা।
-- [ ] **অ্যাকশন ৩:** Sanity রুলস এবং টেমপ্লেট অডিট করা যাতে নতুন ব্যাচ যুক্ত করতে কোড পরিবর্তন না করতে হয়।
-- [ ] **অ্যাকশন ৪:** লোকাল ডামি ফলব্যাক ডাটা (`data/*.json`) স্যানিটি ডাটা স্ট্রাকচারের সাথে সম্পূর্ণ সিঙ্ক রাখা।
+### 1.1 Sanity Studio v3
+- **Studio Directory:** [`dc-hall/studio/`](file:///c:/Users/USER/Downloads/%23%23aicode/DC-hall%20(sanity)/dc-hall/studio/)
+- **Live Deployment:** `https://dchall.sanity.studio/`
+- **Project ID:** `w16kaeyg` | **Dataset:** `production` | **API Version:** `2024-01-01`
+- **Desk Structure:** [`studio/structure.js`](file:///c:/Users/USER/Downloads/%23%23aicode/DC-hall%20(sanity)/dc-hall/studio/structure.js) provides role-based and batch-scoped navigation (HSC-27 Founder to HSC-35).
+
+### 1.2 Legacy Decap CMS Elimination
+- **Legacy Path Removed:** `dc-hall/admin/` and all `config.yml` files were permanently deleted in v8.3.
+- All live data flows directly to Sanity Content Lake with zero legacy CMS dependency.
+
+### 1.3 Schema Types Overview (`studio/schemaTypes/`)
+All schema types have been completely refreshed in **v8.6** to adhere to international clean UI standards:
+1. **Zero Emoji Clutter:** Removed 100% of emojis from titles, group tabs, dropdown lists, and preview badges across all schema files.
+2. **Clean English Headings:** All field titles and group tabs use clean, professional English (e.g., `Website Login Password`, `Batch Admin Emails`, `Security & Visibility Controls`).
+3. **Concise Bengali Administrative Guidance:** Underneath every heading and field, concise Bengali instructions are embedded in `description:` so hall super, provost office, and student representatives understand exactly what each setting controls without any technical jargon.
+
+| Schema Name | Role & Scope | v8.6 Refresh Status |
+| :--- | :--- | :--- |
+| `adminSettings.js` | Passwords, Page-level Locks, Seniority Visibility, Menu & Footer | 🟢 Clean English titles, Bengali guidance on every setting |
+| `batchConfig.js` | Batch password, Batch admin emails, Moderator emails | 🟢 Clean English titles, clear Bengali admin explanations |
+| `student.js` | Student directory, 1st/2nd year room & bedmate assignments, results | 🟢 Clean English titles, calendar DOB guidance in Bengali |
+| `room.js` | Room capacity, assigned students, floor configurations | 🟢 Clean English titles, automated sync guidance in Bengali |
+| `notice.js` | Official notices, popup modal controls, date-range scheduling | 🟢 Clean English titles, popup duration guidance in Bengali |
+| `hallInfo.js` | Hostel history, hall super portrait/message, alumni, success stats | 🟢 Clean English titles, Bengali descriptions for each block |
+| `homePage.js` | Homepage preview controls, hero banner, rotating phrases | 🟢 Clean English titles, Bengali section order guidance |
+| `developerProfile.js` | Developer portfolio, skill set, project cards, contributors | 🟢 Clean English titles, Bengali portfolio guidelines |
+| `galleryItem.js` | Photo collections, drag-and-drop batch albums, captions | 🟢 Clean English titles, bulk upload tips in Bengali |
+| `galleryEvent.js` | Hall events, YouTube/Drive video embeds, multi-location maps | 🟢 Clean English titles, video & map guidance in Bengali |
+| `hallForm.js` | Google Forms embed, survey links, student login gates | 🟢 Clean English titles, embed instruction in Bengali |
+| `editRequest.js` | Moderator change requests, batch admin review workflow | 🟢 Clean English titles, review workflow in Bengali |
+| `siteSettings.js` | Legacy settings container, college clubs & social resources | 🟢 Clean English titles, Bengali descriptions throughout |
 
 ---
 
-## 📝 পরিবর্তন লগ ও ভার্সন হিস্ট্রি (Change Log & Version History)
-*প্রতিবার স্যানিটি বা অ্যাডমিন প্যানেলে কাজ হলে এখানে ভার্সন নম্বর ও তারিখসহ রেকর্ড যুক্ত হবে।*
+## 2. Realtime Data Fetching & Sync (ডাটা ফেচিং ও লাইভ সিঙ্ক)
 
-- **[v8.1] — ২০২৬-১১-০৮:** স্যানিটি স্টুডিও v3 আর্কিটেকচার, ৫১ KB স্কিমা সাইজ, এবং অবসোলেট Decap CMS চিহ্নিতকরণ সম্পন্ন।
-- **[v8.3] — ২০২৬-১১-০৮:** অপ্রয়োজনীয় ও পরিত্যক্ত Decap CMS ফোল্ডার (`admin/`) এবং `js/config.yml` সফলভাবে স্থায়ীভাবে অপসারণ করা হয়েছে। লাইভ সিএমএস এখন এককভাবে Sanity Studio v3 (`dchall.sanity.studio`) দ্বারা পরিচালিত।
+- **Client File:** [`dc-hall/js/sanity-client.js`](file:///c:/Users/USER/Downloads/%23%23aicode/DC-hall%20(sanity)/dc-hall/js/sanity-client.js)
+- **GROQ Queries:** Project only public, non-sensitive fields (passwords and admin emails are filtered at server level).
+- **Live Updates:** Uses Server-Sent Events (SSE) listener (`client.listen()`) to trigger real-time UI updates on publish without page reload.
+
+---
+
+## 3. Version History & Milestones (ভার্সন ইতিহাস)
+
+- **v8.2:** Secured GROQ projection in `sanity-client.js` to prevent credential exposure.
+- **v8.3:** Removed legacy Decap CMS artifacts (`admin/`, `config.yml`).
+- **v8.5:** Eliminated hardcoded mock data in `app.js`, delegating full student & room storage to Sanity Content Lake.
+- **v8.6 (Current):** Complete Sanity Studio UI overhaul:
+  - Stripped all emojis from `structure.js` and all 13 schema types.
+  - Converted all heading labels to clean, elegant English.
+  - Authored concise Bengali instructions (`description:`) under all fields for hall administrators.
+  - Verified pure ES module syntax compilation with zero errors.

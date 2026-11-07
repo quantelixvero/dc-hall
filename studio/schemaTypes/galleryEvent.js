@@ -2,11 +2,11 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'galleryEvent',
-  title: 'Gallery Events (ইভেন্ট গ্যালারি)',
+  title: 'Gallery Events',
   type: 'document',
   groups: [
-    { name: 'media', title: 'ফটো ও ভিডিও (Photos & Videos)', default: true },
-    { name: 'info', title: 'ইভেন্ট তথ্য (Event Info)' },
+    { name: 'media', title: 'Photos & Videos', default: true },
+    { name: 'info', title: 'Event Details' },
   ],
   fields: [
     // ═══════════════════════════════════════════
@@ -17,7 +17,7 @@ export default defineType({
       title: 'Event Slug / ID',
       type: 'slug',
       group: 'info',
-      description: 'Unique URL-friendly identifier (e.g. "iftar-reunion-2026"). Click Generate to auto-create from title.',
+      description: 'ইউনিক আইডি বা ইউআরএল শনাক্তকারী (যেমন: "iftar-reunion-2026")। Generate বাটনে ক্লিক করে স্বয়ংক্রিয়ভাবে তৈরি করুন।',
       options: {
         source: 'title_en',
         maxLength: 80,
@@ -26,30 +26,32 @@ export default defineType({
     }),
     defineField({
       name: 'position',
-      title: 'Display Order / Position (প্রদর্শন ক্রম)',
+      title: 'Display Order',
       type: 'number',
       group: 'info',
-      description: 'কম নম্বর আগে দেখাবে (যখন তারিখ একই থাকে)। তারিখ অনুযায়ী স্বয়ংক্রিয় ক্রমের জন্য খালি রাখুন।',
+      description: 'প্রদর্শন ক্রম (ছোট নম্বর আগে দেখাবে)। তারিখ অনুযায়ী স্বয়ংক্রিয় ক্রম রাখতে খালি রাখুন।',
     }),
     defineField({
       name: 'title_en',
       title: 'Event Title (English)',
       type: 'string',
       group: 'info',
+      description: 'ইভেন্টের শিরোনাম ইংরেজিতে লিখুন।',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'title_bn',
-      title: 'ইভেন্ট শিরোনাম (বাংলা)',
+      title: 'Event Title (Bangla)',
       type: 'string',
       group: 'info',
+      description: 'ইভেন্টের শিরোনাম বাংলায় লিখুন।',
     }),
     defineField({
       name: 'date',
-      title: 'Event Date / ইভেন্ট তারিখ',
+      title: 'Event Date',
       type: 'date',
       group: 'info',
-      description: 'ইভেন্টের তারিখ সিলেক্ট করুন — ওয়েবসাইটে এই তারিখ দেখাবে এবং সর্টিং এ ব্যবহৃত হবে।',
+      description: 'ইভেন্টটির অনুষ্ঠিত হওয়ার তারিখ নির্বাচন করুন।',
       options: {
         dateFormat: 'YYYY-MM-DD',
       },
@@ -57,10 +59,10 @@ export default defineType({
     }),
     defineField({
       name: 'batches',
-      title: 'Batch / ব্যাচ',
+      title: 'Associated Batches',
       type: 'array',
       group: 'info',
-      description: 'কোন ব্যাচের ইভেন্ট সেটি সিলেক্ট করুন। ২+ ব্যাচ একসাথে সিলেক্ট করা যায় (যেমন: ২ ব্যাচ মিলে ট্যুরে গেলে)।',
+      description: 'কোন ব্যাচের জন্য এই ইভেন্ট তা নির্বাচন করুন (একাধিক ব্যাচ নির্বাচন করা যায়)।',
       of: [{ type: 'string' }],
       options: {
         list: [
@@ -76,7 +78,7 @@ export default defineType({
           { title: 'HSC-26 (Alumni)', value: 'HSC-26' },
           { title: 'HSC-25 (Alumni)', value: 'HSC-25' },
           { title: 'HSC-24 (Alumni)', value: 'HSC-24' },
-          { title: 'All Batches (সকল ব্যাচ)', value: 'all' },
+          { title: 'All Batches', value: 'all' },
         ],
       },
     }),
@@ -86,37 +88,38 @@ export default defineType({
       type: 'text',
       rows: 3,
       group: 'info',
+      description: 'ইভেন্টের বিস্তারিত বর্ণনা ইংরেজিতে লিখুন।',
     }),
     defineField({
       name: 'description_bn',
-      title: 'ইভেন্ট বিবরণ (বাংলা)',
+      title: 'Event Description (Bangla)',
       type: 'text',
       rows: 3,
       group: 'info',
+      description: 'ইভেন্টের বিস্তারিত বর্ণনা বাংলায় লিখুন।',
     }),
     defineField({
       name: 'locations',
-      title: 'Event Locations / একাধিক স্থান যোগ করুন',
+      title: 'Event Locations List',
       type: 'array',
       group: 'info',
-      description: 'ইভেন্টে একাধিক স্থান/স্পট থাকলে এখানে এক এক করে যোগ করুন (যেমন: "Rajshahi College", "Padma Garden", "Ruet")। ওয়েবসাইটে প্রতিটিতে আলাদা লিংক থাকবে যা ক্লিক করলে গুগল ম্যাপে সেই স্থানটি সরাসরি সার্চ হবে।',
+      description: 'ইভেন্টের স্থানসমূহ এক এক করে যোগ করুন (যেমন: "Rajshahi College", "Padma Garden")। সাইটে প্রতিটি স্থানে ক্লিক করলে গুগল ম্যাপে সরাসরি দেখাবে।',
       of: [{ type: 'string' }],
     }),
     defineField({
       name: 'location_name',
-      title: 'Single Location Name (অথবা একটি স্থান লিখুন)',
+      title: 'Single Location Name',
       type: 'string',
       group: 'info',
-      description: 'যদি মাত্র একটি স্থান থাকে তবে এখানে লিখুন (উপরে একাধিক দিলে এটি খালি রাখতে পারেন)।',
-      placeholder: 'Rajshahi',
+      description: 'একটি মাত্র সাধারণ স্থান হলে এখানে লিখুন।',
+      placeholder: 'e.g. Rajshahi',
     }),
     defineField({
       name: 'location_map_url',
-      title: 'Google Maps URL (ঐচ্ছিক)',
+      title: 'Google Maps URL (hidden)',
       type: 'url',
       group: 'info',
       hidden: true,
-      description: 'Optional legacy map URL.',
     }),
 
     // ═══════════════════════════════════════════
@@ -124,14 +127,14 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'media_order',
-      title: 'Media Display Order (প্রদর্শন ক্রম)',
+      title: 'Media Display Order',
       type: 'string',
       group: 'media',
-      description: 'ইভেন্ট পেজে কোনটি আগে দেখাবে: ছবি নাকি ভিডিও?',
+      description: 'ওয়েবসাইটে ফটো নাকি ভিডিও আগে প্রদর্শিত হবে তা নির্বাচন করুন।',
       options: {
         list: [
-          { title: 'Photos First, then Videos (আগে ফটো, পরে ভিডিও)', value: 'photos_first' },
-          { title: 'Videos First, then Photos (আগে ভিডিও, পরে ফটো)', value: 'videos_first' },
+          { title: 'Photos First, then Videos', value: 'photos_first' },
+          { title: 'Videos First, then Photos', value: 'videos_first' },
         ],
         layout: 'radio',
       },
@@ -139,26 +142,26 @@ export default defineType({
     }),
     defineField({
       name: 'default_caption_en',
-      title: 'Default Photo Caption (English) — Optional',
+      title: 'Default Photo Caption (English)',
       type: 'string',
       group: 'media',
-      description: 'Default caption for all photos in this event if an individual photo caption is left empty.',
+      description: 'ইভেন্টের সকল ছবির সাধারণ ডিফল্ট ক্যাপশন (ইংরেজি)।',
       placeholder: 'e.g. Reunion Moments, Tour Highlights...',
     }),
     defineField({
       name: 'default_caption_bn',
-      title: 'ডিফল্ট ফটো ক্যাপশন (বাংলা) — ঐচ্ছিক',
+      title: 'Default Photo Caption (Bangla)',
       type: 'string',
       group: 'media',
-      description: 'ইভেন্টের সকল ছবির জন্য সাধারণ ক্যাপশন। কোনো ছবির নির্দিষ্ট ক্যাপশন না থাকলে এটি ওয়েবসাইটে ও মডালে দেখাবে। খালি রাখলে ইভেন্টের নাম দেখাবে।',
+      description: 'ইভেন্টের সকল ছবির সাধারণ ডিফল্ট ক্যাপশন (বাংলা)।',
       placeholder: 'যেমন: স্মৃতিময় মুহূর্ত, রিইউনিয়ন ফটো...',
     }),
     defineField({
       name: 'photos',
-      title: 'Event Photos (ইভেন্ট ফটোসমূহ — একসাথে ড্র্যাগ ও ড্রপ)',
+      title: 'Event Photos',
       type: 'array',
       group: 'media',
-      description: '📸 একসাথে যত ইচ্ছা ছবি ড্র্যাগ করে এখানে ছেড়ে দিন (Bulk Drag & Drop)। ড্র্যাগ করে ক্রম পরিবর্তন করুন। প্রথম ছবিটি কভার ফটো হিসেবে কাজ করবে। ছবিতে ক্লিক করে ক্যাপশন দিন।',
+      description: 'একসাথে যত ইচ্ছা ছবি এখানে ড্র্যাগ করে ছেড়ে দিন। প্রথম ছবিটি কভার ফটো হিসেবে কাজ করবে। ছবিতে ক্লিক করে ক্যাপশন দিন।',
       of: [
         {
           type: 'image',
@@ -166,13 +169,15 @@ export default defineType({
           fields: [
             {
               name: 'caption_en',
-              title: 'Caption (English) — Optional (falls back to default caption / title)',
+              title: 'Caption (English)',
               type: 'string',
+              description: 'ছবির নির্দিষ্ট ক্যাপশন (ইংরেজি)।',
             },
             {
               name: 'caption_bn',
-              title: 'ক্যাপশন (বাংলা) — ঐচ্ছিক (খালি রাখলে ডিফল্ট ক্যাপশন বা শিরোনাম দেখাবে)',
+              title: 'Caption (Bangla)',
               type: 'string',
+              description: 'ছবির নির্দিষ্ট ক্যাপশন (বাংলা)।',
             },
           ],
           preview: {
@@ -194,10 +199,10 @@ export default defineType({
     }),
     defineField({
       name: 'videos',
-      title: 'Event Videos (ইভেন্ট ভিডিও)',
+      title: 'Event Videos',
       type: 'array',
       group: 'media',
-      description: '🎬 YouTube, Google Drive, Mega.nz লিংক বা সরাসরি ভিডিও আপলোড করুন। সাধারণ লিংক দিলে স্বয়ংক্রিয়ভাবে embed হবে।',
+      description: 'YouTube, Google Drive, Mega.nz লিংক বা সরাসরি ভিডিও আপলোড করুন। লিংক দিলে স্বয়ংক্রিয়ভাবে এমবেড হবে।',
       of: [
         {
           type: 'object',
@@ -206,26 +211,28 @@ export default defineType({
           fields: [
             defineField({
               name: 'url',
-              title: 'Video URL (যেকোনো লিংক দিন)',
+              title: 'Video URL',
               type: 'url',
-              description: 'YouTube / Google Drive / Mega.nz — সাধারণ বা embed লিংক দিন।\n• YouTube: https://youtu.be/VIDEO_ID বা https://youtube.com/watch?v=VIDEO_ID\n• Drive: https://drive.google.com/file/d/FILE_ID/view\n• Mega: https://mega.nz/file/FILE_ID#KEY',
+              description: 'ভিডিও লিংক (YouTube, Google Drive, বা Mega.nz)।',
             }),
             defineField({
               name: 'video_file',
-              title: 'Or Upload Video / সরাসরি ভিডিও আপলোড',
+              title: 'Upload Video File',
               type: 'file',
-              description: 'সরাসরি ভিডিও ফাইল আপলোড করুন (MP4, WebM)। URL দিলে এটি খালি রাখুন।',
+              description: 'সরাসরি ভিডিও ফাইল আপলোড করুন (MP4 বা WebM)। URL লিংক দিলে এটি খালি রাখুন।',
               options: { accept: 'video/mp4,video/webm,video/ogg' },
             }),
             defineField({
               name: 'title_en',
               title: 'Video Title (English)',
               type: 'string',
+              description: 'ভিডিওর শিরোনাম (ইংরেজি)।',
             }),
             defineField({
               name: 'title_bn',
-              title: 'ভিডিও শিরোনাম (বাংলা)',
+              title: 'Video Title (Bangla)',
               type: 'string',
+              description: 'ভিডিওর শিরোনাম (বাংলা)।',
             }),
           ],
           preview: {
@@ -244,7 +251,6 @@ export default defineType({
       ],
     }),
 
-    // Keep category hidden for backward compatibility with existing data
     defineField({
       name: 'category',
       title: 'Legacy Category (hidden)',

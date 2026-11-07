@@ -2,7 +2,7 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'hallForm',
-  title: 'Custom Forms & Surveys (গুগল ফর্ম ও জরিপ)',
+  title: 'Custom Forms & Surveys',
   type: 'document',
   fields: [
     defineField({
@@ -10,32 +10,32 @@ export default defineType({
       title: 'Form Title (English)',
       type: 'string',
       validation: (Rule) => Rule.required(),
-      description: 'e.g., "HSC-27 Room Allocation & Feedback Form"',
+      description: 'ফর্মের ইংরেজি নাম (যেমন: "HSC-27 Room Allocation & Feedback Form")।',
     }),
     defineField({
       name: 'title_bn',
-      title: 'ফর্ম শিরোনাম (বাংলা)',
+      title: 'Form Title (Bangla)',
       type: 'string',
-      description: 'যেমন: "এইচএসসি-২৭ সিট বণ্টন ও মতামত ফর্ম"',
+      description: 'ফর্মের বাংলা নাম (যেমন: "এইচএসসি-২৭ সিট বণ্টন ও মতামত ফর্ম")।',
     }),
     defineField({
       name: 'slug',
-      title: 'URL Slug / ফর্ম লিংক নাম (ছোট হাতের অক্ষর)',
+      title: 'URL Slug',
       type: 'slug',
       options: {
         source: 'title_en',
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
-      description: 'লিংক কেমন হবে: dchall.pro.bd/form/hsc27 হলে এখানে slug হবে "hsc27" (শুধু ইংরেজি অক্ষর ও সংখ্যা)',
+      description: 'ওয়েব লিংক শনাক্তকারী (যেমন: dchall.pro.bd/form/hsc27 হলে slug হবে "hsc27")।',
     }),
     defineField({
       name: 'batch',
-      title: 'Batch (ব্যাচ)',
+      title: 'Target Batch',
       type: 'string',
       options: {
         list: [
-          { title: 'All Batches (সকল ব্যাচ)', value: 'all' },
+          { title: 'All Batches', value: 'all' },
           { title: 'HSC-27 (Founder Batch)', value: 'HSC-27' },
           { title: 'HSC-28', value: 'HSC-28' },
           { title: 'HSC-29', value: 'HSC-29' },
@@ -49,12 +49,13 @@ export default defineType({
       },
       initialValue: 'HSC-27',
       validation: (Rule) => Rule.required(),
+      description: 'কোন ব্যাচের শিক্ষার্থীরা এই ফর্মটি পূরণ করবে তা নির্বাচন করুন।',
     }),
     defineField({
       name: 'google_form_url',
-      title: '1. Google Form Direct Link (সরাসরি ফর্ম বা ভিউ লিংক)',
+      title: 'Google Form Direct URL',
       type: 'string',
-      description: 'গুগল ফর্মের ভিউ বা শেয়ার লিংক পেস্ট করুন (যেমন: https://docs.google.com/forms/d/e/.../viewform)। এটি স্বয়ংক্রিয়ভাবে এমবেড লিংকে রূপান্তর করা হবে।',
+      description: 'গুগল ফর্মের ভিউ বা শেয়ার লিংক এখানে পেস্ট করুন (যেমন: https://docs.google.com/forms/d/e/.../viewform)।',
       validation: (Rule) =>
         Rule.custom((value, context) => {
           if (!value && !context.document?.google_form_embed_code) {
@@ -65,49 +66,52 @@ export default defineType({
     }),
     defineField({
       name: 'google_form_embed_code',
-      title: '2. Google Form Embed Code / Iframe (বিকল্প: এম্বেড কোড বা এম্বেড লিংক)',
+      title: 'Google Form Embed Code / Iframe',
       type: 'text',
       rows: 3,
-      description: 'গুগল ফর্মের Send -> < > (HTML embed) থেকে পাওয়া সম্পূর্ণ <iframe>...</iframe> কোড বা লিংক থাকলে সরাসরি এখানে পেস্ট করতে পারেন।',
+      description: 'গুগল ফর্মের Send -> Embed HTML থেকে পাওয়া <iframe>...</iframe> কোড বা লিংক থাকলে সরাসরি এখানে পেস্ট করুন।',
     }),
     defineField({
       name: 'description_en',
       title: 'Instructions / Subtitle (English)',
       type: 'text',
       rows: 2,
+      description: 'ফর্ম পূরণ সংক্রান্ত প্রয়োজনীয় দিকনির্দেশনা (ইংরেজি)।',
     }),
     defineField({
       name: 'description_bn',
-      title: 'সংক্ষিপ্ত নির্দেশনা / সাবটাইটেল (বাংলা)',
+      title: 'Instructions / Subtitle (Bangla)',
       type: 'text',
       rows: 2,
+      description: 'ফর্ম পূরণ সংক্রান্ত প্রয়োজনীয় দিকনির্দেশনা (বাংলা)।',
     }),
     defineField({
       name: 'is_active',
-      title: 'Form Active / ফর্ম সচল আছে',
+      title: 'Active Form Status',
       type: 'boolean',
       initialValue: true,
-      description: 'বন্ধ করতে চাইলে এটি বন্ধ (Off) করে দিন। বন্ধ থাকলে ওয়েবসাইটে ফর্মটি দেখাবে না।',
+      description: 'চালু (ON) থাকলে শিক্ষার্থীরা ওয়েবসাইটে ফর্মটি দেখতে ও পূরণ করতে পারবে। মেয়াদ শেষ হলে এটি বন্ধ করে দিন।',
     }),
     defineField({
       name: 'requires_login',
-      title: 'Requires Student Login / শুধু লগইন করা শিক্ষার্থী পূরণ করতে পারবে',
+      title: 'Require Student Login',
       type: 'boolean',
       initialValue: false,
-      description: 'চালু থাকলে ওয়েবসাইটে প্রবেশের সময় স্টুডেন্ট পোর্টাল পাসওয়ার্ড চাইবে।',
+      description: 'চালু (ON) থাকলে শিক্ষার্থীরা কেবল ব্যাচ পাসওয়ার্ড দিয়ে লগইন করার পরেই এই ফর্মটি পূরণ করতে পারবে।',
     }),
   ],
   preview: {
     select: {
       title: 'title_en',
-      subtitle: 'slug.current',
+      titleBn: 'title_bn',
       batch: 'batch',
-      isActive: 'is_active',
+      active: 'is_active',
     },
-    prepare({ title, subtitle, batch, isActive }) {
+    prepare({ title, titleBn, batch, active }) {
+      const status = active !== false ? 'Active' : 'Closed'
       return {
-        title: title || 'Untitled Form',
-        subtitle: `${batch || 'All'} · /form/${subtitle || ''} [${isActive !== false ? 'Active' : 'Closed'}]`,
+        title: title || titleBn || 'Custom Form',
+        subtitle: `Batch: ${batch || 'All'} · Status: ${status}`,
       }
     },
   },

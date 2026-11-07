@@ -1,106 +1,105 @@
 import { defineField, defineType } from 'sanity'
 
-// Predefined Profile Fields for the Dropdown
+// Predefined Profile Fields for Dropdown (Clean English titles)
 const PROFILE_FIELD_OPTIONS = [
-  { title: '📷 Profile Photo (প্রোফাইল ছবি)', value: 'photo' },
-  { title: '📝 Full Name (পুরো নাম)', value: 'name' },
-  { title: '🏷️ Room · Roll Badge (কার্ড ও মোডালের রুম-রোল ব্যাজ)', value: 'room_badge' },
-  { title: '⚡ Quick Action Buttons (কল, হোয়াটসঅ্যাপ, ইমেইল, ফেসবুক, মেসেঞ্জার বাটন)', value: 'quick_actions' },
-  { title: '🎓 Batch / Class (ব্যাচ)', value: 'batch' },
-  { title: '🔢 Roll Number (রোল নম্বর)', value: 'roll' },
-  { title: '📚 Academic Group (গ্রুপ/বিভাগ: বিজ্ঞান, মানবিক, ব্যবসায় শিক্ষা)', value: 'group' },
-  { title: '🏷️ Section', value: 'section' },
-  { title: '🧪 Practical Group', value: 'practical_group' },
-  { title: '🩸 Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
-  { title: '📅 Date of Birth (জন্মতারিখ)', value: 'dob' },
-  { title: '🚪 Room (1st Year) — ১ম বর্ষের রুম (নিচ তলা: ১০২, ১০৩, ১০৪)', value: 'room_1st_year' },
-  { title: '🚪 Room (2nd Year) — ২য় বর্ষের রুম (৩য় তলা: ৩১৪ থেকে ৩২৯)', value: 'room_2nd_year' },
-  { title: '📞 Phone Number (শিক্ষার্থীর ফোন নম্বর)', value: 'phone' },
-  { title: '💬 WhatsApp (হোয়াটসঅ্যাপ নম্বর)', value: 'whatsapp' },
-  { title: '✈️ Telegram (টেলিগ্রাম ইউজারনেম/নম্বর)', value: 'telegram' },
-  { title: '👥 Facebook Profile (ফেসবুক লিংক)', value: 'facebook' },
-  { title: '💬 Messenger (মেসেঞ্জার লিংক)', value: 'messenger' },
-  { title: '📧 Email Address (ইমেইল ঠিকানা)', value: 'email' },
-  { title: '👨 Guardian / Father Phone (অভিভাবকের ফোন নম্বর)', value: 'father_phone' },
-  { title: '👪 Guardian Information (অভিভাবক তথ্য)', value: 'guardian' },
-  { title: '📍 Address / Location (ঠিকানা)', value: 'address' },
-  { title: '📄 About / Bio (পরিচিতি / বায়ো)', value: 'bio' },
-  { title: '📊 1st Year Academic Results (১ম বর্ষের ফলাফল)', value: 'results_1st' },
-  { title: '📊 2nd Year Academic Results (২য় বর্ষের ফলাফল)', value: 'results_2nd' },
-  { title: '🏛️ College / Institution (ঢাকা কলেজ / প্রতিষ্ঠান)', value: 'college' },
-  { title: '🚨 Emergency Contact (জরুরি যোগাযোগ নম্বর)', value: 'emergency_contact' },
-  { title: '🔢 Full Roll Number (পূর্ণাঙ্গ রোল নম্বর)', value: 'full_roll' },
-  { title: '🔢 Serial Position (সিরিয়াল পজিশন)', value: 'position' },
+  { title: 'Profile Photo', value: 'photo' },
+  { title: 'Full Name', value: 'name' },
+  { title: 'Room · Roll Badge', value: 'room_badge' },
+  { title: 'Quick Action Buttons (Call, WhatsApp, Email, FB)', value: 'quick_actions' },
+  { title: 'Batch / Class', value: 'batch' },
+  { title: 'Roll Number', value: 'roll' },
+  { title: 'Academic Group (Science, Humanities, Business)', value: 'group' },
+  { title: 'Section', value: 'section' },
+  { title: 'Practical Group', value: 'practical_group' },
+  { title: 'Blood Group', value: 'blood_group' },
+  { title: 'Date of Birth', value: 'dob' },
+  { title: 'Room (1st Year) — Ground Floor: 102, 103, 104', value: 'room_1st_year' },
+  { title: 'Room (2nd Year) — 3rd Floor: 314-329', value: 'room_2nd_year' },
+  { title: 'Phone Number', value: 'phone' },
+  { title: 'WhatsApp', value: 'whatsapp' },
+  { title: 'Telegram', value: 'telegram' },
+  { title: 'Facebook Profile', value: 'facebook' },
+  { title: 'Messenger', value: 'messenger' },
+  { title: 'Email Address', value: 'email' },
+  { title: 'Guardian / Father Phone', value: 'father_phone' },
+  { title: 'Guardian Information', value: 'guardian' },
+  { title: 'Address / Location', value: 'address' },
+  { title: 'About / Bio', value: 'bio' },
+  { title: '1st Year Academic Results', value: 'results_1st' },
+  { title: '2nd Year Academic Results', value: 'results_2nd' },
+  { title: 'College / Institution', value: 'college' },
+  { title: 'Emergency Contact', value: 'emergency_contact' },
+  { title: 'Full Roll Number', value: 'full_roll' },
+  { title: 'Serial Position', value: 'position' },
 ]
 
 // Predefined Home Page Section Options
 const HOMEPAGE_SECTION_OPTIONS = [
-  { title: '👥 Students Preview (শিক্ষার্থী প্রিভিউ)', value: 'students_preview' },
-  { title: '🏠 Roommates Preview (রুমমেট প্রিভিউ)', value: 'roommates_preview' },
-  { title: '📊 Results Preview (একাডেমিক রেজাল্ট প্রিভিউ)', value: 'results_preview' },
-  { title: '🏛️ Hall Super Preview (হল সুপার প্রিভিউ)', value: 'hall_super_preview' },
-  { title: '📜 Hall Info & History (হল পরিচিতি ও ইতিহাস)', value: 'hall_info_preview' },
-  { title: '🖼️ Moments & Memories / Campus Photos (ক্যাম্পাস ফটো)', value: 'moments_preview' },
-  { title: '🌐 Portals & Resources (কলেজ রিসোর্স ও ক্লাব)', value: 'resources_preview' },
-  { title: '📍 Location & Map (অবস্থান ও গুগল ম্যাপ)', value: 'location_preview' },
+  { title: 'Students Preview', value: 'students_preview' },
+  { title: 'Roommates Preview', value: 'roommates_preview' },
+  { title: 'Results Preview', value: 'results_preview' },
+  { title: 'Hall Super Preview', value: 'hall_super_preview' },
+  { title: 'Hall Info & History', value: 'hall_info_preview' },
+  { title: 'Moments & Memories / Campus Photos', value: 'moments_preview' },
+  { title: 'Portals & Resources', value: 'resources_preview' },
+  { title: 'Location & Map', value: 'location_preview' },
 ]
 
 // Predefined Developer Section Options
 const DEVELOPER_SECTION_OPTIONS = [
-  { title: '👤 Hero Bio & Portrait (হিরো বায়ো ও ছবি)', value: 'hero_bio' },
-  { title: '📋 Overview Panels (পরিচিতি, যোগাযোগ ও ফোকাস)', value: 'overview_panels' },
-  { title: '🚀 Featured Projects (ফিচার্ড প্রজেক্টসমূহ)', value: 'featured_projects' },
-  { title: '🛠️ Skills & Project Method (দক্ষতা ও কর্মপদ্ধতি)', value: 'skills_timeline' },
-  { title: '🤝 Contributors (কন্ট্রিবিউটর তালিকা)', value: 'contributors' },
+  { title: 'Hero Bio & Portrait', value: 'hero_bio' },
+  { title: 'Overview Panels', value: 'overview_panels' },
+  { title: 'Featured Projects', value: 'featured_projects' },
+  { title: 'Skills & Project Method', value: 'skills_timeline' },
+  { title: 'Contributors', value: 'contributors' },
 ]
 
 // Predefined Hall Info Section Options
 const HALLINFO_SECTION_OPTIONS = [
-  { title: '🏛️ History & Nearby Places (ইতিহাস ও আশেপাশের স্থান)', value: 'history_nearby' },
-  { title: '📸 Campus Photos (ক্যাম্পাস ছবিসমূহ)', value: 'campus_photos' },
-  { title: '👨‍🏫 Hall Super Profile & Message (হল সুপার বাণী ও তথ্য)', value: 'hall_super' },
-  { title: '🏢 Office & Helpdesk (হল অফিস ও হেল্পডেস্ক)', value: 'helpdesk' },
-  { title: '⭐ Notable Alumni Profiles (বিশিষ্ট প্রাক্তনীগণ)', value: 'alumni' },
-  { title: '📈 Admission Success Chart (ভর্তি সাফল্য চার্ট)', value: 'success_chart' },
-  { title: '🗺️ Location & Map (অবস্থান ও ম্যাপ)', value: 'location_map' },
+  { title: 'History & Nearby Places', value: 'history_nearby' },
+  { title: 'Campus Photos', value: 'campus_photos' },
+  { title: 'Hall Super Profile & Message', value: 'hall_super' },
+  { title: 'Office & Helpdesk', value: 'helpdesk' },
+  { title: 'Notable Alumni Profiles', value: 'alumni' },
+  { title: 'Admission Success Chart', value: 'success_chart' },
+  { title: 'Location & Map', value: 'location_map' },
 ]
 
 export default defineType({
   name: 'adminSettings',
-  title: 'Security & Visibility Controls (সিকিউরিটি ও ভিজিবিলিটি)',
+  title: 'Security & Visibility Controls',
   type: 'document',
 
   groups: [
-    { name: 'passwords', title: '🔑 Passwords & Master Key' , default: true },
-    { name: 'batch_rotation', title: '🔄 Batch Email Slots & Rotation (ব্যাচ অ্যাডমিন ইমেইল ও রোটেশন)' },
-    { name: 'profile_controls', title: '👤 Profile Fields & Locks' },
-    { name: 'page_access', title: '🔐 Page Access & Locks (পেজ লক ও ভিজিবিলিটি)' },
-    { name: 'homepage_vis', title: '🏠 Home Page Sections' },
-    { name: 'developer_vis', title: '🧑‍💻 Developer Sections' },
-    { name: 'hallinfo_vis', title: '🏛️ Hall Info Sections' },
-    { name: 'menu_vis', title: '📱 Menu Items' },
-    { name: 'footer_settings', title: '📎 Footer Columns & Links' },
+    { name: 'passwords', title: 'Passwords & Master Key', default: true },
+    { name: 'batch_rotation', title: 'Batch Email Slots & Rotation' },
+    { name: 'profile_controls', title: 'Profile Fields & Locks' },
+    { name: 'page_access', title: 'Page Access & Locks' },
+    { name: 'homepage_vis', title: 'Home Page Sections' },
+    { name: 'developer_vis', title: 'Developer Sections' },
+    { name: 'hallinfo_vis', title: 'Hall Info Sections' },
+    { name: 'menu_vis', title: 'Navigation Menu' },
+    { name: 'footer_settings', title: 'Footer Columns & Links' },
   ],
 
   fields: [
-
     // ═══════════════════════════════════════════
     // BATCH EMAIL SLOTS & ANNUAL ROTATION SYSTEM
     // ═══════════════════════════════════════════
     defineField({
       name: 'batch_rotation_enabled',
-      title: 'Annual Auto-Rotation on January 1st (১লা জানুয়ারি বার্ষিক স্বয়ংক্রিয় রোটেশন)',
+      title: 'Annual Auto-Rotation on January 1st',
       type: 'boolean',
       group: 'batch_rotation',
-      description: 'চালু থাকলে প্রতি বছর ১লা জানুয়ারি স্বয়ংক্রিয়ভাবে সবচেয়ে পুরোনো ব্যাচের অ্যাক্সেস শেষ হবে এবং তাদের ইমেইল স্লটটি নতুন আগত ব্যাচের জন্য অ্যাসাইন হয়ে যাবে।',
+      description: 'চালু থাকলে প্রতি বছর ১লা জানুয়ারি স্বয়ংক্রিয়ভাবে সবচেয়ে পুরোনো ব্যাচের স্টুডিও অ্যাক্সেস নিষ্ক্রিয় হবে এবং তাদের স্লটটি নতুন আগত ব্যাচের জন্য অ্যাসাইন হবে।',
       initialValue: true,
     }),
     defineField({
       name: 'batch_email_slots',
-      title: 'Batch Admin Email Slots (৩টি ব্যাচ অ্যাডমিন ইমেইল স্লট ও অ্যাসাইনমেন্ট)',
+      title: 'Batch Admin Email Slots',
       type: 'array',
       group: 'batch_rotation',
-      description: 'স্টুডিওতে ব্যাচভিত্তিক অ্যাক্সেস লিমিটেশনের জন্য নির্ধারিত ৩টি ইমেইল স্লট। যেকোনো সময় এখান থেকেই ইমেইল পরিবর্তন বা ব্যাচ অ্যাসাইনমেন্ট বদল করা যাবে।',
+      description: 'স্টুডিওতে ব্যাচভিত্তিক অ্যাক্সেস নিয়ন্ত্রণের জন্য নির্ধারিত ৩টি ইমেইল স্লট। এখান থেকে যেকোনো সময় ইমেইল পরিবর্তন বা ব্যাচ অ্যাসাইনমেন্ট বদল করা যাবে।',
       initialValue: [
         {
           _key: 'slot_1_sr',
@@ -135,22 +134,22 @@ export default defineType({
           fields: [
             defineField({
               name: 'slot_name',
-              title: 'Slot Label (স্লটের নাম / ভূমিকা)',
+              title: 'Slot Label',
               type: 'string',
-              description: 'যেমন: Slot 1 (Senior Batch), Slot 2 (Mid Batch), Slot 3 (Junior / Incoming Batch)',
+              description: 'স্লটের নাম বা ভূমিকা (যেমন: Slot 1, Senior Batch, Junior Batch)।',
             }),
             defineField({
               name: 'admin_email',
-              title: 'Admin Email (অ্যাডমিন ইমেইল এড্রেস)',
+              title: 'Admin Email',
               type: 'string',
-              description: 'যে ইমেইলটি Sanity Studio-তে লগইন করার জন্য দেওয়া হবে। কোনো ইমেইলে সমস্যা হলে এখান থেকে পরিবর্তন করুন।',
+              description: 'যে জিমেইলটি দিয়ে Sanity Studio-তে লগইন করার অনুমতি দেওয়া হবে। ইমেইল বদলালে এখানে আপডেট করুন।',
               validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: 'assigned_batch',
-              title: 'Assigned Batch (নির্ধারিত ব্যাচ)',
+              title: 'Assigned Batch',
               type: 'string',
-              description: 'এই ইমেইলটি দিয়ে লগইন করলে শুধুমাত্র এই ব্যাচের ডেটা এডিট করা যাবে।',
+              description: 'এই ইমেইলটি দিয়ে স্টুডিওতে লগইন করলে শুধুমাত্র এই নির্দিষ্ট ব্যাচের তথ্য সম্পাদনা করা যাবে।',
               options: {
                 list: [
                   { title: 'HSC-27 (Founder / 2025-26)', value: 'HSC-27' },
@@ -164,20 +163,22 @@ export default defineType({
             }),
             defineField({
               name: 'is_active',
-              title: 'Active Access (অ্যাক্সেস সক্রিয় আছে?)',
+              title: 'Active Access',
               type: 'boolean',
+              description: 'সক্রিয় (ON) থাকলে এই ইমেইল দিয়ে স্টুডিওতে প্রবেশ করা যাবে। সাময়িক বন্ধ রাখতে এটি অফ করুন।',
               initialValue: true,
             }),
             defineField({
               name: 'expiry_date',
-              title: 'Access Expiry Date (মেয়াদ শেষ হওয়ার তারিখ - ঐচ্ছিক)',
+              title: 'Access Expiry Date',
               type: 'date',
-              description: 'যদি কোনো নির্দিষ্ট তারিখে স্বয়ংক্রিয়ভাবে মেয়াদ শেষ করতে চান।',
+              description: 'কোনো নির্দিষ্ট তারিখে স্বয়ংক্রিয়ভাবে এই স্লটের মেয়াদ শেষ করতে চাইলে তারিখটি নির্বাচন করুন। (ঐচ্ছিক)',
             }),
             defineField({
               name: 'notes',
-              title: 'Notes / Handover Details (নোট / দায়িত্ব হস্তান্তর বিবরণ)',
+              title: 'Notes & Handover Details',
               type: 'string',
+              description: 'কার কাছে দায়িত্ব দেওয়া হয়েছে বা হ্যান্ডওভারের বিশেষ তথ্য এখানে লিখে রাখুন।',
             }),
           ],
           preview: {
@@ -188,8 +189,9 @@ export default defineType({
               active: 'is_active',
             },
             prepare({ title, subtitle, batch, active }) {
+              const statusTag = active ? '[Active]' : '[Inactive]'
               return {
-                title: `${active ? '🟢' : '🔴'} ${title || 'Slot'}: ${batch || 'Unassigned'}`,
+                title: `${statusTag} ${title || 'Slot'}: ${batch || 'Unassigned'}`,
                 subtitle: subtitle || 'No email assigned',
               }
             },
@@ -198,7 +200,7 @@ export default defineType({
       ],
     }),
 
-        // ═══════════════════════════════════════════
+    // ═══════════════════════════════════════════
     // 1. MASTER PASSWORD
     // ═══════════════════════════════════════════
     defineField({
@@ -206,47 +208,45 @@ export default defineType({
       title: 'Master Admin Password',
       type: 'string',
       group: 'passwords',
-      description: 'অ্যাডমিনের প্রধান মাস্টার পাসওয়ার্ড। এটি দিয়ে ওয়েবসাইটে লগইন করলে সব ব্যাচ এবং সব সংরক্ষিত ডাটা আনলক হয়ে যাবে।',
+      description: 'অ্যাডমিনের প্রধান সুপার মাস্টার পাসওয়ার্ড। এই পাসওয়ার্ড দিয়ে ওয়েবসাইটে লগইন করলে সকল ব্যাচ এবং সমস্ত সংরক্ষিত গোপন তথ্য অবিলম্বে আনলক হবে।',
     }),
-
 
     defineField({
       name: 'global_visibility_mode',
-      title: 'Global Seniority & Protection Mode (গ্লোবাল ভিজিবিলিটি মোড)',
+      title: 'Global Seniority & Protection Mode',
       type: 'string',
       group: 'profile_controls',
       options: {
         list: [
-          { title: 'Junior Protection Mode (জুনিয়রদের জন্য নির্ধারিত ফিল্ডগুলো সিনিয়রদের প্রোফাইলে লক থাকবে)', value: 'junior_safe' },
-          { title: 'Full Unlock Mode (লগইন করা সকল ব্যাচের জন্য সম্পূর্ণ সাইট ও প্রোফাইল আনলক)', value: 'full_unlock' },
+          { title: 'Junior Protection Mode (Junior safe mode — juniors cannot see senior private data)', value: 'junior_safe' },
+          { title: 'Full Unlock Mode (All authenticated batches can view complete site data)', value: 'full_unlock' },
         ],
         layout: 'radio',
       },
       initialValue: 'junior_safe',
-      description: 'জুনিয়র প্রোটেকশন মোডে জুনিয়ররা সিনিয়রদের সংরক্ষিত ডাটা দেখতে পারবে না। ফুল আনলক মোডে যেকোনো রেজিস্টার্ড ব্যাচ লগইন করলে সব ব্যাচের ডাটা সরাসরি দেখতে পাবে।',
+      description: 'জুনিয়র প্রটেকশন মোডে জুনিয়র শিক্ষার্থীরা সিনিয়রদের লক করা তথ্য দেখতে পারে না। ফুল আনলক মোডে রেজিস্টার্ড যেকোনো ব্যাচ লগইন করলেই সব ব্যাচের ডাটা সরাসরি দেখতে পাবে।',
     }),
 
     defineField({
-      name: 'global_visibility',
-      title: 'Global Public Visibility (সবার জন্য আনলক)',
+      name: 'global_public_visibility',
+      title: 'Global Public Visibility',
       type: 'boolean',
       group: 'profile_controls',
-      description: 'চালু (ON) থাকলে সাধারণ ভিজিটররা লগইন ছাড়াই মৌলিক প্রোফাইল তথ্য দেখতে পাবে। বন্ধ করলে সম্পূর্ণ সাইট ব্যক্তিগত হয়ে যাবে।',
+      description: 'চালু (ON) থাকলে সাধারণ ভিজিটররা কোনো লগইন ছাড়াই প্রাথমিক প্রোফাইল তথ্য দেখতে পাবেন। বন্ধ করলে পুরো সাইটের প্রোফাইল প্রাইভেট হয়ে যাবে।',
       initialValue: true,
     }),
-
 
     // ═══════════════════════════════════════════
     // PAGE-LEVEL ACCESS & LOCK CONTROLS
     // ═══════════════════════════════════════════
     defineField({
       name: 'page_access_controls',
-      title: 'Page Access & Visibility Controls (ওয়েবসাইটের সকল পেজ লক ও হাইড নিয়ন্ত্রণ)',
+      title: 'Page Access & Visibility Controls',
       type: 'array',
       group: 'page_access',
-      description: 'ওয়েবসাইটের প্রতিটি পেজ (যেমন Academic Results, Students, Roommates, Birthdays, Gallery ইত্যাদি) ভিজিটরের জন্য উন্মুক্ত থাকবে নাকি পাসওয়ার্ড দিয়ে লক থাকবে তা এখান থেকে নির্ধারণ করুন।',
+      description: 'ওয়েবসাইটের প্রতিটি পেজ (যেমন Academic Results, Students, Roommates, Gallery ইত্যাদি) সাধারণ ভিজিটরের জন্য উন্মুক্ত থাকবে নাকি পাসওয়ার্ড দিয়ে লক থাকবে তা এখান থেকে নির্ধারণ করুন।',
       initialValue: [
-        { page_id: 'results', title: 'Academic Results (results.html)', is_visible: true, is_locked: true, lock_message: 'এই পেজের ফলাফল দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' },
+        { page_id: 'results', title: 'Academic Results (results.html)', is_visible: true, is_locked: true, lock_message: 'এই পেজের ফলাফল দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।' },
         { page_id: 'students', title: 'Student Directory (students.html)', is_visible: true, is_locked: false, lock_message: 'শিক্ষার্থীদের সম্পূর্ণ তথ্য দেখতে লগইন করুন।' },
         { page_id: 'roommates', title: 'Roommates (roommates.html)', is_visible: true, is_locked: false, lock_message: 'রুম ও রুমমেটদের তালিকা দেখতে লগইন করুন।' },
         { page_id: 'birthday', title: 'Student Birthdays (birthday.html)', is_visible: true, is_locked: false, lock_message: 'জন্মদিন ক্যালেন্ডার দেখতে লগইন করুন।' },
@@ -264,51 +264,53 @@ export default defineType({
           fields: [
             defineField({
               name: 'page_id',
-              title: 'Page Identifier (পেজ শনাক্তকারী)',
+              title: 'Page Identifier',
               type: 'string',
               readOnly: true,
+              description: 'সিস্টেমে পেজটির অভ্যন্তরীণ আইডি (যেমন: results, students)। এটি অপরিবর্তনযোগ্য।',
             }),
             defineField({
               name: 'title',
-              title: 'Page Name (পেজের নাম)',
+              title: 'Page Name',
               type: 'string',
+              description: 'পেজের শিরোনাম।',
             }),
             defineField({
               name: 'access_level',
-              title: 'Page Access Level (পেজ অ্যাক্সেস স্তর)',
+              title: 'Page Access Level',
               type: 'string',
               options: {
                 list: [
-                  { title: 'Unlocked / Public (উন্মুক্ত — সবাই দেখতে পারবে)', value: 'unlocked' },
-                  { title: 'Lock for Normal Users (লক — লগইন করা শিক্ষার্থী দেখতে পারবে)', value: 'lock_normal' },
-                  { title: 'Lock for All (শুধুমাত্র মাস্টার অ্যাডমিন দেখতে পারবে)', value: 'lock_all' },
-                  { title: 'Hidden (সম্পূর্ণ লুকানো — মেনু ও সাইটে দেখাবে না)', value: 'hidden' },
+                  { title: 'Unlocked / Public (Open for everyone)', value: 'unlocked' },
+                  { title: 'Lock for Normal Users (Requires batch login)', value: 'lock_normal' },
+                  { title: 'Lock for All (Requires Master Admin Password)', value: 'lock_all' },
+                  { title: 'Hidden (Completely hidden from menu and site)', value: 'hidden' },
                 ],
                 layout: 'radio',
               },
               initialValue: 'unlocked',
-              description: 'পেজটি কীভাবে প্রদর্শিত হবে নির্বাচন করুন।',
+              description: 'সাধারণ ভিজিটরদের জন্য এই পেজটি কীভাবে প্রদর্শিত হবে তা নির্ধারণ করুন।',
             }),
-
             defineField({
               name: 'is_visible',
-              title: 'Visible on Website (ওয়েবসাইটে দৃশ্যমান)',
+              title: 'Visible on Website',
               type: 'boolean',
               initialValue: true,
-              description: 'বন্ধ (OFF) করলে এই পেজটি ওয়েবসাইট এবং মেনু থেকে সম্পূর্ণ লুকানো থাকবে।',
+              description: 'বন্ধ (OFF) করলে এই পেজটি ওয়েবসাইট এবং নেভিগেশন মেনু থেকে সম্পূর্ণরূপে লুকানো থাকবে।',
             }),
             defineField({
               name: 'is_locked',
-              title: 'Require Login / Locked (পাসওয়ার্ড দিয়ে লক রাখুন)',
+              title: 'Require Login / Locked',
               type: 'boolean',
               initialValue: false,
-              description: 'চালু (ON) থাকলে ভিজিটরকে অবশ্যই ব্যাচ পাসওয়ার্ড দিয়ে লগইন করতে হবে। লগইন না করলে পেজে লক স্ক্রিন দেখাবে।',
+              description: 'চালু (ON) থাকলে এই পেজে ঢুকলে পাসওয়ার্ড লক স্ক্রিন দেখাবে। শিক্ষার্থীরা সঠিক ব্যাচ পাসওয়ার্ড দিলে পেজ দেখতে পারবে।',
             }),
             defineField({
               name: 'lock_message',
-              title: 'Lock Message (লক স্ক্রিনে প্রদর্শিত বার্তা)',
+              title: 'Lock Screen Message',
               type: 'string',
               placeholder: 'এই পেজের সংরক্ষিত তথ্য দেখতে অনুগ্রহ করে লগইন করুন।',
+              description: 'লক স্ক্রিনে শিক্ষার্থীদের উদ্দেশে যে নির্দেশনা বার্তাটি দেখাবে তা এখানে লিখুন।',
             }),
           ],
           preview: {
@@ -320,10 +322,10 @@ export default defineType({
             },
             prepare({ title, page_id, is_visible, is_locked }) {
               const statusParts = [];
-              if (is_visible === false) statusParts.push('🚫 Hidden');
-              else statusParts.push('👁️ Visible');
-              if (is_locked) statusParts.push('🔒 Locked');
-              else statusParts.push('🔓 Public');
+              if (is_visible === false) statusParts.push('Hidden');
+              else statusParts.push('Visible');
+              if (is_locked) statusParts.push('Locked');
+              else statusParts.push('Public');
               return {
                 title: title || page_id,
                 subtitle: `${page_id}.html — ${statusParts.join(' · ')}`,
@@ -339,10 +341,10 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'profile_field_controls',
-      title: 'Profile Field Controls (Visibility, Order & Locks)',
+      title: 'Profile Field Controls',
       type: 'array',
       group: 'profile_controls',
-      description: 'ড্র্যাগ করে প্রোফাইলের ফিল্ডগুলোর ক্রম (Order) উপর-নিচ সাজান। Hide on Website চালু (ON) করলে ওই ফিল্ডটি ওয়েবসাইট থেকে পুরোপুরি অদৃশ্য হয়ে যাবে এবং নিচের অংশগুলো উপরে উঠে আসবে। Public Lock ও Batch Lock দিয়ে সংবেদনশীল তথ্য গোপন রাখুন।',
+      description: 'শিক্ষার্থী প্রোফাইলের ফিল্ডগুলোর ক্রম সাজান ও নিয়ন্ত্রণ করুন। কোনো ফিল্ড লুকানো বা পাসওয়ার্ড লক করতে এই সেটিং ব্যবহার করুন।',
       of: [
         {
           type: 'object',
@@ -351,57 +353,56 @@ export default defineType({
           fields: [
             defineField({
               name: 'field_id',
-              title: 'Select Profile Field (ড্রপডাউন থেকে ফিল্ড নির্বাচন করুন)',
+              title: 'Select Profile Field',
               type: 'string',
               options: {
                 list: PROFILE_FIELD_OPTIONS,
               },
               validation: (Rule) => Rule.required(),
-              description: 'কোন ফিল্ডটি নিয়ন্ত্রণ করতে চান তা ড্রপডাউন থেকে বেছে নিন।',
+              description: 'যে ফিল্ডটির প্রদর্শন বা নিরাপত্তা নিয়ন্ত্রণ করতে চান তা ড্রপডাউন থেকে বেছে নিন।',
             }),
             defineField({
               name: 'label',
-              title: 'Custom Display Name (ঐচ্ছিক নাম)',
+              title: 'Custom Display Name',
               type: 'string',
-              description: 'খালি রাখলে স্বয়ংক্রিয়ভাবে ড্রপডাউনের ডিফল্ট নামটি ব্যবহার হবে।',
+              description: 'খালি রাখলে সিস্টেমের ডিফল্ট নামটি ব্যবহার হবে। অন্য কোনো নাম দিতে চাইলে এখানে লিখুন।',
             }),
             defineField({
               name: 'visibility_tier',
-              title: 'Field Visibility Tier (ফিল্ড ভিজিবিলিটি স্তর — ৫টি পরিষ্কার বিকল্প)',
+              title: 'Field Visibility Tier',
               type: 'string',
               options: {
                 list: [
-                  { title: 'Public (উন্মুক্ত — লগইন ছাড়াও সবাই দেখতে পারবে)', value: 'public' },
-                  { title: 'Lock for Normal Users (সাধারণ ব্যবহারকারীর জন্য লক — দেখতে হলে লগইন লাগবে)', value: 'lock_normal' },
-                  { title: 'Lock for Juniors (জুনিয়রদের জন্য লক — সমবয়সী ও সিনিয়ররা দেখতে পারবে)', value: 'lock_junior' },
-                  { title: 'Lock for All (সবার জন্য লক — শুধুমাত্র মাস্টার কি দেখতে পারবে)', value: 'lock_all' },
-                  { title: 'Hide Completely (পুরোপুরি লুকানো — ওয়েবসাইট থেকে অদৃশ্য থাকবে)', value: 'hide' },
+                  { title: 'Public (Open for everyone without login)', value: 'public' },
+                  { title: 'Lock for Normal Users (Requires batch login)', value: 'lock_normal' },
+                  { title: 'Lock for Juniors (Visible to peers and seniors only)', value: 'lock_junior' },
+                  { title: 'Lock for All (Requires Master Key only)', value: 'lock_all' },
+                  { title: 'Hide Completely (Hidden from entire website)', value: 'hide' },
                 ],
                 layout: 'radio',
               },
               initialValue: 'public',
-              description: 'এই ফিল্ডটির জন্য নির্দিষ্ট ভিজিবিলিটি স্তর নির্বাচন করুন।',
+              description: 'ওয়েবসাইটে এই নির্দিষ্ট তথ্যের নিরাপত্তা স্তর বেছে নিন।',
             }),
-
             defineField({
               name: 'invisible',
-              title: 'Hide on Website (লুকিয়ে রাখুন — Invisible)',
+              title: 'Hide on Website',
               type: 'boolean',
-              description: 'অন (ON) করলে ওয়েবসাইট থেকে এই ফিল্ডটি পুরোপুরি অদৃশ্য হয়ে যাবে এবং নিচের অংশগুলো স্বয়ংক্রিয়ভাবে উপরে উঠে আসবে। দৃশ্যমান রাখতে এটি বন্ধ (OFF) রাখুন।',
+              description: 'চালু (ON) করলে ওয়েবসাইট ও মোডাল থেকে এই ফিল্ডটি সম্পূর্ণ অদৃশ্য হয়ে যাবে।',
               initialValue: false,
             }),
             defineField({
               name: 'public_lock',
-              title: 'Lock for Public Visitors (সাধারণ ভিজিটরের জন্য লক)',
+              title: 'Lock for Public Visitors',
               type: 'boolean',
-              description: 'অন (ON) থাকলে সাধারণ ভিজিটররা (যারা লগইন করেনি) এই তথ্যটি লক/মাস্ক অবস্থায় দেখতে পাবে।',
+              description: 'চালু (ON) থাকলে যারা লগইন করেনি তারা এই তথ্যটি দেখতে পারবে না, লক আইকন দেখতে পাবে।',
               initialValue: false,
             }),
             defineField({
               name: 'batch_lock',
-              title: 'Lock for Junior Batches (জুনিয়র ব্যাচের জন্য লক)',
+              title: 'Lock for Junior Batches',
               type: 'boolean',
-              description: 'অন (ON) থাকলে জুনিয়র ব্যাচের শিক্ষার্থী সিনিয়র ব্যাচের প্রোফাইল দেখার সময় এই তথ্যটি লক দেখতে পাবে (সিনিয়ররা জুনিয়রদের সবসময় দেখতে পাবে)।',
+              description: 'চালু (ON) থাকলে জুনিয়র ব্যাচের শিক্ষার্থী সিনিয়রদের প্রোফাইলে এই তথ্যটি লক দেখতে পাবে।',
               initialValue: false,
             }),
           ],
@@ -417,14 +418,14 @@ export default defineType({
               const matched = PROFILE_FIELD_OPTIONS.find((o) => o.value === field_id)
               const name = label || (matched ? matched.title : field_id) || 'Profile Field'
               const isHidden = invisible === true
-              const icon = isHidden ? '⚪' : '🟢'
-              const pubStr = public_lock ? '🔒 Locked' : '🔓 Open'
-              const batchStr = batch_lock ? '🔒 Locked' : '🔓 Open'
+              const statusTag = isHidden ? '[Hidden]' : '[Visible]'
+              const pubStr = public_lock ? 'Locked' : 'Open'
+              const batchStr = batch_lock ? 'Locked' : 'Open'
               return {
-                title: `${icon} ${name}`,
+                title: `${statusTag} ${name}`,
                 subtitle: isHidden
-                  ? `Hidden from website (লুকানো / অদৃশ্য)`
-                  : `Visible  |  Public: ${pubStr}  |  Batch: ${batchStr}`,
+                  ? 'Hidden from website'
+                  : `Public: ${pubStr} | Juniors: ${batchStr}`,
               }
             },
           },
@@ -437,10 +438,10 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'homepage_sections',
-      title: 'Home Page Sections (Order & Visibility)',
+      title: 'Home Page Sections',
       type: 'array',
       group: 'homepage_vis',
-      description: 'হোম পেজের সেকশনগুলোর ক্রম ড্র্যাগ করে সাজান। Hide on Home Page চালু করলে হোম পেজ থেকে সেটি পুরোপুরি অদৃশ্য হয়ে যাবে এবং নিচের সেকশনগুলো উপরে উঠে আসবে।',
+      description: 'হোম পেজের সেকশনগুলোর ক্রম সাজান এবং দৃশ্যমানতা নিয়ন্ত্রণ করুন।',
       of: [
         {
           type: 'object',
@@ -449,42 +450,42 @@ export default defineType({
           fields: [
             defineField({
               name: 'section_id',
-              title: 'Select Home Section (ড্রপডাউন থেকে সেকশন নির্বাচন করুন)',
+              title: 'Select Home Section',
               type: 'string',
               options: {
                 list: HOMEPAGE_SECTION_OPTIONS,
               },
               validation: (Rule) => Rule.required(),
+              description: 'কোন সেকশনটি নিয়ন্ত্রণ করতে চান তা ড্রপডাউন থেকে নির্বাচন করুন।',
             }),
             defineField({
               name: 'label',
-              title: 'Custom Title (ঐচ্ছিক কাস্টম শিরোনাম)',
+              title: 'Custom Title',
               type: 'string',
-              description: 'খালি রাখলে স্বয়ংক্রিয়ভাবে ডিফল্ট নামটি প্রদর্শিত হবে।',
+              description: 'হোম পেজে সেকশনটির কোনো ভিন্ন নাম দিতে চাইলে এখানে লিখুন।',
             }),
             defineField({
               name: 'visibility_tier',
-              title: 'Field Visibility Tier (ফিল্ড ভিজিবিলিটি স্তর — ৫টি পরিষ্কার বিকল্প)',
+              title: 'Section Visibility Tier',
               type: 'string',
               options: {
                 list: [
-                  { title: 'Public (উন্মুক্ত — লগইন ছাড়াও সবাই দেখতে পারবে)', value: 'public' },
-                  { title: 'Lock for Normal Users (সাধারণ ব্যবহারকারীর জন্য লক — দেখতে হলে লগইন লাগবে)', value: 'lock_normal' },
-                  { title: 'Lock for Juniors (জুনিয়রদের জন্য লক — সমবয়সী ও সিনিয়ররা দেখতে পারবে)', value: 'lock_junior' },
-                  { title: 'Lock for All (সবার জন্য লক — শুধুমাত্র মাস্টার কি দেখতে পারবে)', value: 'lock_all' },
-                  { title: 'Hide Completely (পুরোপুরি লুকানো — ওয়েবসাইট থেকে অদৃশ্য থাকবে)', value: 'hide' },
+                  { title: 'Public (Open for everyone)', value: 'public' },
+                  { title: 'Lock for Normal Users (Requires batch login)', value: 'lock_normal' },
+                  { title: 'Lock for Juniors (Visible to seniors and peers)', value: 'lock_junior' },
+                  { title: 'Lock for All (Requires Master Key)', value: 'lock_all' },
+                  { title: 'Hide Completely (Omitted from home page)', value: 'hide' },
                 ],
                 layout: 'radio',
               },
               initialValue: 'public',
-              description: 'এই ফিল্ডটির জন্য নির্দিষ্ট ভিজিবিলিটি স্তর নির্বাচন করুন।',
+              description: 'এই সেকশনটি প্রদর্শনের নিয়ম নির্বাচন করুন।',
             }),
-
             defineField({
               name: 'invisible',
-              title: 'Hide on Home Page (হোম পেজ থেকে লুকান — Invisible)',
+              title: 'Hide on Home Page',
               type: 'boolean',
-              description: 'অন (ON) করলে হোম পেজ থেকে এই সেকশনটি পুরোপুরি বাদ যাবে এবং নিচের সেকশন উপরে চলে আসবে।',
+              description: 'চালু (ON) করলে হোম পেজ থেকে এই সেকশনটি পুরোপুরি বাদ যাবে এবং নিচের সেকশনগুলো উপরে উঠে আসবে।',
               initialValue: false,
             }),
           ],
@@ -498,10 +499,10 @@ export default defineType({
               const matched = HOMEPAGE_SECTION_OPTIONS.find((o) => o.value === section_id)
               const name = label || (matched ? matched.title : section_id) || 'Home Section'
               const isHidden = invisible === true
-              const icon = isHidden ? '⚪' : '🟢'
+              const statusTag = isHidden ? '[Hidden]' : '[Visible]'
               return {
-                title: `${icon} ${name}`,
-                subtitle: isHidden ? 'Hidden from Home Page (লুকানো)' : 'Visible on Home Page (দৃশ্যমান)',
+                title: `${statusTag} ${name}`,
+                subtitle: isHidden ? 'Omitted from home page' : 'Displayed on home page',
               }
             },
           },
@@ -514,10 +515,10 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'developer_sections',
-      title: 'Developer Page Sections (Order & Visibility)',
+      title: 'Developer Page Sections',
       type: 'array',
       group: 'developer_vis',
-      description: 'ডেভেলপার পেজের সেকশনগুলোর ক্রম ড্র্যাগ করে সাজান।',
+      description: 'ডেভেলপার পেজের বিভিন্ন সেকশনের দৃশ্যমানতা ও ক্রম নিয়ন্ত্রণ করুন।',
       of: [
         {
           type: 'object',
@@ -526,41 +527,42 @@ export default defineType({
           fields: [
             defineField({
               name: 'section_id',
-              title: 'Select Developer Section (ড্রপডাউন থেকে নির্বাচন করুন)',
+              title: 'Select Developer Section',
               type: 'string',
               options: {
                 list: DEVELOPER_SECTION_OPTIONS,
               },
               validation: (Rule) => Rule.required(),
+              description: 'যে সেকশনটি নিয়ন্ত্রণ করতে চান তা ড্রপডাউন থেকে বাছুন।',
             }),
             defineField({
               name: 'label',
-              title: 'Custom Title (ঐচ্ছিক কাস্টম শিরোনাম)',
+              title: 'Custom Title',
               type: 'string',
+              description: 'সেকশনের কোনো বিকল্প শিরোনাম দিতে চাইলে এখানে লিখুন।',
             }),
             defineField({
               name: 'visibility_tier',
-              title: 'Field Visibility Tier (ফিল্ড ভিজিবিলিটি স্তর — ৫টি পরিষ্কার বিকল্প)',
+              title: 'Field Visibility Tier',
               type: 'string',
               options: {
                 list: [
-                  { title: 'Public (উন্মুক্ত — লগইন ছাড়াও সবাই দেখতে পারবে)', value: 'public' },
-                  { title: 'Lock for Normal Users (সাধারণ ব্যবহারকারীর জন্য লক — দেখতে হলে লগইন লাগবে)', value: 'lock_normal' },
-                  { title: 'Lock for Juniors (জুনিয়রদের জন্য লক — সমবয়সী ও সিনিয়ররা দেখতে পারবে)', value: 'lock_junior' },
-                  { title: 'Lock for All (সবার জন্য লক — শুধুমাত্র মাস্টার কি দেখতে পারবে)', value: 'lock_all' },
-                  { title: 'Hide Completely (পুরোপুরি লুকানো — ওয়েবসাইট থেকে অদৃশ্য থাকবে)', value: 'hide' },
+                  { title: 'Public (Open for everyone)', value: 'public' },
+                  { title: 'Lock for Normal Users (Requires login)', value: 'lock_normal' },
+                  { title: 'Lock for Juniors (Locked for juniors)', value: 'lock_junior' },
+                  { title: 'Lock for All (Requires Master Key)', value: 'lock_all' },
+                  { title: 'Hide Completely (Completely hidden)', value: 'hide' },
                 ],
                 layout: 'radio',
               },
               initialValue: 'public',
-              description: 'এই ফিল্ডটির জন্য নির্দিষ্ট ভিজিবিলিটি স্তর নির্বাচন করুন।',
+              description: 'এই সেকশনটির প্রদর্শনের নিয়ম নির্ধারণ করুন।',
             }),
-
             defineField({
               name: 'invisible',
-              title: 'Hide on Developer Page (লুকিয়ে রাখুন — Invisible)',
+              title: 'Hide on Developer Page',
               type: 'boolean',
-              description: 'অন (ON) করলে ডেভেলপার পেজ থেকে এই সেকশনটি পুরোপুরি লুকানো থাকবে।',
+              description: 'চালু (ON) করলে ডেভেলপার পেজ থেকে এই সেকশনটি সম্পূর্ণ বাদ থাকবে।',
               initialValue: false,
             }),
           ],
@@ -574,10 +576,10 @@ export default defineType({
               const matched = DEVELOPER_SECTION_OPTIONS.find((o) => o.value === section_id)
               const name = label || (matched ? matched.title : section_id) || 'Developer Section'
               const isHidden = invisible === true
-              const icon = isHidden ? '⚪' : '🟢'
+              const statusTag = isHidden ? '[Hidden]' : '[Visible]'
               return {
-                title: `${icon} ${name}`,
-                subtitle: isHidden ? 'Hidden (লুকানো)' : 'Visible (দৃশ্যমান)',
+                title: `${statusTag} ${name}`,
+                subtitle: isHidden ? 'Hidden from page' : 'Visible on page',
               }
             },
           },
@@ -590,10 +592,10 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'hallinfo_sections',
-      title: 'Hall Info Page Sections (Order & Visibility)',
+      title: 'Hall Info Page Sections',
       type: 'array',
       group: 'hallinfo_vis',
-      description: 'হল ইনফো পেজের সেকশনগুলোর ক্রম ড্র্যাগ করে সাজান।',
+      description: 'হল পরিচিতি পেজের সেকশনগুলোর ক্রম ও প্রদর্শন নিয়ন্ত্রণ করুন।',
       of: [
         {
           type: 'object',
@@ -602,41 +604,42 @@ export default defineType({
           fields: [
             defineField({
               name: 'section_id',
-              title: 'Select Hall Info Section (ড্রপডাউন থেকে নির্বাচন করুন)',
+              title: 'Select Hall Info Section',
               type: 'string',
               options: {
                 list: HALLINFO_SECTION_OPTIONS,
               },
               validation: (Rule) => Rule.required(),
+              description: 'যে সেকশনটি নিয়ন্ত্রণ করতে চান তা ড্রপডাউন থেকে নির্বাচন করুন।',
             }),
             defineField({
               name: 'label',
-              title: 'Custom Title (ঐচ্ছিক কাস্টম শিরোনাম)',
+              title: 'Custom Title',
               type: 'string',
+              description: 'সেকশনের কোনো বিশেষ নাম দিতে চাইলে এখানে লিখুন।',
             }),
             defineField({
               name: 'visibility_tier',
-              title: 'Field Visibility Tier (ফিল্ড ভিজিবিলিটি স্তর — ৫টি পরিষ্কার বিকল্প)',
+              title: 'Field Visibility Tier',
               type: 'string',
               options: {
                 list: [
-                  { title: 'Public (উন্মুক্ত — লগইন ছাড়াও সবাই দেখতে পারবে)', value: 'public' },
-                  { title: 'Lock for Normal Users (সাধারণ ব্যবহারকারীর জন্য লক — দেখতে হলে লগইন লাগবে)', value: 'lock_normal' },
-                  { title: 'Lock for Juniors (জুনিয়রদের জন্য লক — সমবয়সী ও সিনিয়ররা দেখতে পারবে)', value: 'lock_junior' },
-                  { title: 'Lock for All (সবার জন্য লক — শুধুমাত্র মাস্টার কি দেখতে পারবে)', value: 'lock_all' },
-                  { title: 'Hide Completely (পুরোপুরি লুকানো — ওয়েবসাইট থেকে অদৃশ্য থাকবে)', value: 'hide' },
+                  { title: 'Public (Open for everyone)', value: 'public' },
+                  { title: 'Lock for Normal Users (Requires login)', value: 'lock_normal' },
+                  { title: 'Lock for Juniors (Locked for juniors)', value: 'lock_junior' },
+                  { title: 'Lock for All (Requires Master Key)', value: 'lock_all' },
+                  { title: 'Hide Completely (Completely hidden)', value: 'hide' },
                 ],
                 layout: 'radio',
               },
               initialValue: 'public',
-              description: 'এই ফিল্ডটির জন্য নির্দিষ্ট ভিজিবিলিটি স্তর নির্বাচন করুন।',
+              description: 'এই সেকশনের প্রদর্শনের শর্ত নির্বাচন করুন।',
             }),
-
             defineField({
               name: 'invisible',
-              title: 'Hide on Hall Info Page (লুকিয়ে রাখুন — Invisible)',
+              title: 'Hide on Hall Info Page',
               type: 'boolean',
-              description: 'অন (ON) করলে হল পরিচিতি পেজ থেকে এই সেকশনটি লুকানো থাকবে।',
+              description: 'চালু (ON) করলে হল পরিচিতি পেজ থেকে এই অংশটি সম্পূর্ণ বাদ থাকবে।',
               initialValue: false,
             }),
           ],
@@ -650,10 +653,10 @@ export default defineType({
               const matched = HALLINFO_SECTION_OPTIONS.find((o) => o.value === section_id)
               const name = label || (matched ? matched.title : section_id) || 'Hall Info Section'
               const isHidden = invisible === true
-              const icon = isHidden ? '⚪' : '🟢'
+              const statusTag = isHidden ? '[Hidden]' : '[Visible]'
               return {
-                title: `${icon} ${name}`,
-                subtitle: isHidden ? 'Hidden (লুকানো)' : 'Visible (দৃশ্যমান)',
+                title: `${statusTag} ${name}`,
+                subtitle: isHidden ? 'Hidden from page' : 'Visible on page',
               }
             },
           },
@@ -669,7 +672,7 @@ export default defineType({
       title: 'Navigation Menu Visibility',
       type: 'object',
       group: 'menu_vis',
-      description: 'ওয়েবসাইটের প্রধান নেভিগেশন বারে কোন কোন বাটন প্রদর্শিত হবে তা অন/অফ করুন।',
+      description: 'ওয়েবসাইটের প্রধান নেভিগেশন বারে কোন কোন বাটন প্রদর্শিত হবে তা অন/অফ করুন।',
       fields: [
         { name: 'menu_home', title: 'Home Button', type: 'boolean', description: 'হোম পেজ বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
         { name: 'menu_students', title: 'Students Button', type: 'boolean', description: 'শিক্ষার্থী তালিকা বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
@@ -678,7 +681,7 @@ export default defineType({
         { name: 'menu_gallery', title: 'Gallery Button', type: 'boolean', description: 'ফটো গ্যালারি বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
         { name: 'menu_hostel', title: 'Hostel / Hall Info Button', type: 'boolean', description: 'হল পরিচিতি বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
         { name: 'menu_dc_clubs', title: 'College Clubs Button', type: 'boolean', description: 'কলেজ ক্লাবসমূহ বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
-        { name: 'menu_dc_social', title: 'Social Media Button', type: 'boolean', description: 'সোশ্যাল মিডিয়া পেজ বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
+        { name: 'menu_dc_social', title: 'Social Media Button', type: 'boolean', description: 'সোশ্যাল মিডিয়া পেজ বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
         { name: 'menu_developer', title: 'Developer Button', type: 'boolean', description: 'ডেভেলপার প্রোফাইল বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
         { name: 'menu_profile', title: 'Profile / Login Button', type: 'boolean', description: 'প্রোফাইল ও লগইন বাটনটি মেনুতে দেখাবেন কি না।', initialValue: true },
       ],
@@ -692,7 +695,7 @@ export default defineType({
       title: 'Footer Columns & Links',
       type: 'array',
       group: 'footer_settings',
-      description: 'ওয়েবসাইটের ফুটারের কলাম ও লিংকগুলো পরিচালনা করুন। কোনো কলাম বা লিংক বন্ধ (Inactive) করলে তা সাইট থেকে বাদ যাবে।',
+      description: 'ওয়েবসাইটের ফুটারের কলাম ও লিংকগুলো পরিচালনা করুন। কোনো কলাম বা লিংক বন্ধ (Inactive) করলে তা সাইট থেকে বাদ যাবে।',
       of: [
         {
           type: 'object',
@@ -701,14 +704,14 @@ export default defineType({
           fields: [
             defineField({
               name: 'title_en',
-              title: 'Column Title (English)',
+              title: 'Column Title English',
               type: 'string',
-              description: 'কলামের ইংরেজি শিরোনাম (যেমন: Quick Links / Students / Hall)।',
+              description: 'কলামের ইংরেজি শিরোনাম (যেমন: Quick Links, Students, Hall)।',
               validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: 'title_bn',
-              title: 'Column Title (Bangla)',
+              title: 'Column Title Bangla',
               type: 'string',
               description: 'কলামের বাংলা শিরোনাম (ঐচ্ছিক)।',
             }),
@@ -716,12 +719,12 @@ export default defineType({
               name: 'is_active',
               title: 'Active (Visible on Site)',
               type: 'boolean',
-              description: 'কলামটি ওয়েবসাইটে প্রদর্শিত হবে কি না।',
+              description: 'কলামটি ওয়েবসাইটে প্রদর্শিত হবে কি না।',
               initialValue: true,
             }),
             defineField({
               name: 'links',
-              title: 'Column Links (Drag to Reorder)',
+              title: 'Column Links',
               type: 'array',
               description: 'এই কলামের লিংকসমূহ ড্র্যাগ করে সাজান।',
               of: [
@@ -732,14 +735,14 @@ export default defineType({
                   fields: [
                     defineField({
                       name: 'title_en',
-                      title: 'Link Title (English)',
+                      title: 'Link Title English',
                       type: 'string',
                       description: 'লিংকের ইংরেজি নাম।',
                       validation: (Rule) => Rule.required(),
                     }),
                     defineField({
                       name: 'title_bn',
-                      title: 'Link Title (Bangla)',
+                      title: 'Link Title Bangla',
                       type: 'string',
                       description: 'লিংকের বাংলা নাম (ঐচ্ছিক)।',
                     }),
@@ -752,9 +755,9 @@ export default defineType({
                     }),
                     defineField({
                       name: 'is_active',
-                      title: 'Active (Visible)',
+                      title: 'Active',
                       type: 'boolean',
-                      description: 'লিংকটি ওয়েবসাইটে চালু রাখবেন কি না।',
+                      description: 'লিংকটি ওয়েবসাইটে চালু রাখবেন কি না।',
                       initialValue: true,
                     }),
                     defineField({
@@ -773,7 +776,7 @@ export default defineType({
                       isActive: 'is_active',
                     },
                     prepare({ titleEn, titleBn, url, isActive }) {
-                      const status = isActive !== false ? '🟢' : '⚪ Hidden'
+                      const status = isActive !== false ? '[Active]' : '[Hidden]'
                       const label = titleEn || titleBn || 'Link'
                       return {
                         title: `${status} ${label}`,
@@ -794,11 +797,11 @@ export default defineType({
             },
             prepare({ titleEn, titleBn, links, isActive }) {
               const count = Array.isArray(links) ? links.length : 0
-              const status = isActive !== false ? '🟢 Active' : '⚪ Hidden'
+              const status = isActive !== false ? 'Active' : 'Hidden'
               const label = titleEn || titleBn || 'Column'
               return {
                 title: `${label} (${count} links)`,
-                subtitle: status,
+                subtitle: `Status: ${status}`,
               }
             },
           },

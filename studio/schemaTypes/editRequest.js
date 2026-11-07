@@ -2,13 +2,14 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'editRequest',
-  title: 'Edit Request (সম্পাদনা অনুরোধ)',
+  title: 'Edit Request',
   type: 'document',
   fields: [
     defineField({
       name: 'batch',
-      title: 'Batch (ব্যাচ)',
+      title: 'Target Batch',
       type: 'string',
+      description: 'কোন ব্যাচের জন্য এই এডিট অনুরোধ পাঠানো হচ্ছে তা নির্বাচন করুন।',
       options: {
         list: [
           { title: 'HSC-27', value: 'HSC-27' },
@@ -21,28 +22,30 @@ export default defineType({
     }),
     defineField({
       name: 'target_type',
-      title: 'Target Type (কী পরিবর্তন করতে চান)',
+      title: 'Target Category',
       type: 'string',
+      description: 'কী ধরনের তথ্যের পরিবর্তন করতে চান তা নির্বাচন করুন।',
       options: {
         list: [
-          { title: '📚 Student Profile', value: 'student' },
-          { title: '🏠 Room / Roommate', value: 'room' },
-          { title: '🖼️ Gallery Photo', value: 'galleryItem' },
-          { title: '🎪 Event', value: 'galleryEvent' },
-          { title: '📝 Other / General', value: 'other' },
+          { title: 'Student Profile', value: 'student' },
+          { title: 'Room / Roommate', value: 'room' },
+          { title: 'Gallery Photo', value: 'galleryItem' },
+          { title: 'Event', value: 'galleryEvent' },
+          { title: 'Other / General', value: 'other' },
         ],
       },
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'request_type',
-      title: 'Request Type (অনুরোধের ধরন)',
+      title: 'Request Action Type',
       type: 'string',
+      description: 'নতুন তথ্য যোগ, বিদ্যমান তথ্য পরিবর্তন নাকি মুছে ফেলার অনুরোধ তা নির্বাচন করুন।',
       options: {
         list: [
-          { title: '➕ নতুন যোগ করা (Create)', value: 'create' },
-          { title: '✏️ তথ্য পরিবর্তন করা (Update)', value: 'update' },
-          { title: '🗑️ মুছে ফেলা (Delete)', value: 'delete' },
+          { title: 'Create / Add New', value: 'create' },
+          { title: 'Update Existing', value: 'update' },
+          { title: 'Delete / Remove', value: 'delete' },
         ],
       },
       initialValue: 'update',
@@ -50,58 +53,60 @@ export default defineType({
     }),
     defineField({
       name: 'title',
-      title: 'Request Title (অনুরোধের শিরোনাম)',
+      title: 'Request Title',
       type: 'string',
-      description: 'সংক্ষেপে কী পরিবর্তন চান লিখুন (যেমন: "রহিমের ফোন নম্বর আপডেট")',
+      description: 'সংক্ষেপে কী পরিবর্তন চান তা লিখুন (যেমন: "রহিমের ফোন নম্বর সংশোধন")।',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'description',
-      title: 'বিস্তারিত বিবরণ (Description)',
+      title: 'Detailed Description',
       type: 'text',
       rows: 5,
-      description: 'কী পরিবর্তন করতে চান তার বিস্তারিত লিখুন। যদি কোনো student এর তথ্য পরিবর্তন হয় তাহলে তার নাম, রোল নম্বর ও পুরনো-নতুন তথ্য লিখুন।',
+      description: 'কী পরিবর্তন করতে চান তার বিস্তারিত বিবরণ লিখুন। শিক্ষার্থীর ক্ষেত্রে নাম, রোল ও পূর্ববর্তী-নতুন তথ্য উল্লেখ করুন।',
     }),
     defineField({
       name: 'attachment',
-      title: 'Attachment (ছবি বা ফাইল সংযুক্তি)',
+      title: 'Attachment Image',
       type: 'image',
-      description: 'প্রয়োজনে স্ক্রিনশট বা নতুন ছবি সংযুক্ত করুন।',
+      description: 'প্রয়োজনে নতুন ছবি বা প্রমাণস্বরূপ স্ক্রিনশট যুক্ত করুন।',
     }),
     defineField({
       name: 'requester_email',
-      title: 'Requester Email (অনুরোধকারীর ইমেইল)',
+      title: 'Requester Email',
       type: 'string',
       readOnly: true,
-      description: 'স্বয়ংক্রিয়ভাবে আপনার ইমেইল বসবে।',
+      description: 'অনুরোধকারীর ইমেইল ঠিকানা (স্বয়ংক্রিয়ভাবে যুক্ত হয়)।',
     }),
     defineField({
       name: 'status',
-      title: 'Status (অবস্থা)',
+      title: 'Review Status',
       type: 'string',
+      description: 'অনুরোধটির বর্তমান অবস্থা (অপেক্ষমান, অনুমোদিত, বা বাতিল)।',
       options: {
         list: [
-          { title: '⏳ Pending (অপেক্ষমান)', value: 'pending' },
-          { title: '✅ Approved (অনুমোদিত)', value: 'approved' },
-          { title: '❌ Rejected (প্রত্যাখ্যাত)', value: 'rejected' },
-          { title: '🔄 In Progress (কাজ চলছে)', value: 'in_progress' },
-          { title: '✔️ Done (সম্পন্ন)', value: 'done' },
+          { title: 'Pending', value: 'pending' },
+          { title: 'Approved', value: 'approved' },
+          { title: 'Rejected', value: 'rejected' },
+          { title: 'In Progress', value: 'in_progress' },
+          { title: 'Done', value: 'done' },
         ],
       },
       initialValue: 'pending',
     }),
     defineField({
       name: 'reviewed_by',
-      title: 'Reviewed By (পর্যালোচনাকারী)',
+      title: 'Reviewed By',
       type: 'string',
       readOnly: true,
+      description: 'যে ব্যাচ অ্যাডমিন অনুরোধটি পর্যালোচনা করেছেন তার ইমেইল।',
     }),
     defineField({
       name: 'review_note',
-      title: 'Review Note (পর্যালোচনা মন্তব্য)',
+      title: 'Review Note',
       type: 'text',
       rows: 3,
-      description: 'Batch Admin এর মন্তব্য (অনুমোদন/প্রত্যাখ্যানের কারণ)।',
+      description: 'ব্যাচ অ্যাডমিনের পর্যালোচনা মন্তব্য বা সিদ্ধান্ত জানানোর কারণ।',
     }),
   ],
   orderings: [
@@ -123,21 +128,21 @@ export default defineType({
       type: 'request_type',
     },
     prepare({ title, batch, status, requester, type }) {
-      const statusIcons = {
-        pending: '⏳',
-        approved: '✅',
-        rejected: '❌',
-        in_progress: '🔄',
-        done: '✔️',
+      const statusMap = {
+        pending: '[Pending]',
+        approved: '[Approved]',
+        rejected: '[Rejected]',
+        in_progress: '[In Progress]',
+        done: '[Done]',
       }
-      const typeIcons = {
-        create: '➕',
-        update: '✏️',
-        delete: '🗑️',
+      const typeMap = {
+        create: 'Add',
+        update: 'Update',
+        delete: 'Delete',
       }
       return {
-        title: `${statusIcons[status] || '⏳'} ${title || 'Untitled Request'}`,
-        subtitle: `${typeIcons[type] || ''} ${batch || ''} — ${requester || 'Unknown'}`,
+        title: `${statusMap[status] || '[Request]'} ${title || 'Untitled Request'}`,
+        subtitle: `${typeMap[type] || 'Request'} • ${batch || ''} — ${requester || 'Unknown'}`,
       }
     },
   },

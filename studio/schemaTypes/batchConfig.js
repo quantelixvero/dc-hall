@@ -2,13 +2,14 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'batchConfig',
-  title: 'Batch Configuration (ব্যাচ কনফিগারেশন)',
+  title: 'Batch Configuration',
   type: 'document',
   fields: [
     defineField({
       name: 'batch',
-      title: 'Batch Name (ব্যাচের নাম)',
+      title: 'Batch Name',
       type: 'string',
+      description: 'এই ব্যাচটির পরিচিতি নাম। এটি সিস্টেম দ্বারা নির্ধারিত এবং অপরিবর্তনযোগ্য।',
       options: {
         list: [
           { title: 'HSC-27 (Founder Batch)', value: 'HSC-27' },
@@ -29,22 +30,18 @@ export default defineType({
       readOnly: true,
     }),
 
-    // ═══════════════════════════════════════════
     // Website Login Password for this batch
-    // ═══════════════════════════════════════════
     defineField({
       name: 'batch_password',
-      title: '🔑 Website Login Password (ওয়েবসাইটে এই ব্যাচের লগইন পাসওয়ার্ড)',
+      title: 'Website Login Password',
       type: 'string',
-      description: 'ওয়েবসাইটে এই ব্যাচের শিক্ষার্থীরা যে পাসওয়ার্ড দিয়ে লগইন করে তাদের ব্যাচের সংরক্ষিত তথ্য দেখতে পায়। এটি পরিবর্তন করলে ওয়েবসাইটে এই ব্যাচের নতুন পাসওয়ার্ড সেট হবে।',
+      description: 'ওয়েবসাইটে এই ব্যাচের সংরক্ষিত তথ্য দেখার পাসওয়ার্ড। শিক্ষার্থীরা এই পাসওয়ার্ড দিয়ে ওয়েবসাইটে লগইন করবে।',
     }),
 
-    // ═══════════════════════════════════════════
     // Batch Admin Emails
-    // ═══════════════════════════════════════════
-        defineField({
+    defineField({
       name: 'batch_admin_emails',
-      title: '👑 Batch Admin Emails (ব্যাচ এডমিন ইমেইল — শুধুমাত্র সুপার অ্যাডমিন দেখতে পাবেন)',
+      title: 'Batch Admin Emails',
       type: 'array',
       of: [{ type: 'string' }],
       hidden: ({ currentUser }) => {
@@ -52,15 +49,13 @@ export default defineType({
         const superAdmins = ['drseadib@gmail.com', 'seadibpc@outlook.com']
         return !superAdmins.includes(email)
       },
-      description: 'এই ইমেইলগুলো দিয়ে Sanity Studio তে login করলে এই ব্যাচের ফোল্ডারগুলোতে access পাবে। শুধুমাত্র সুপার অ্যাডমিন এটি পরিবর্তন করতে পারবেন।',
+      description: 'যে ইমেইলগুলো দিয়ে Sanity Studio-তে লগইন করলে এই ব্যাচের সব ফোল্ডার ও তথ্য এডিট করার পূর্ণ অধিকার পাওয়া যাবে। (শুধুমাত্র সুপার অ্যাডমিন পরিবর্তন করতে পারবেন)',
     }),
 
-    // ═══════════════════════════════════════════
     // Moderator Emails
-    // ═══════════════════════════════════════════
     defineField({
       name: 'moderator_emails',
-      title: '📝 Moderator Emails (মডারেটর ইমেইল — শুধুমাত্র সুপার অ্যাডমিন দেখতে পাবেন)',
+      title: 'Moderator Emails',
       type: 'array',
       of: [{ type: 'string' }],
       hidden: ({ currentUser }) => {
@@ -68,7 +63,7 @@ export default defineType({
         const superAdmins = ['drseadib@gmail.com', 'seadibpc@outlook.com']
         return !superAdmins.includes(email)
       },
-      description: 'এই ইমেইলগুলো দিয়ে login করলে শুধু Edit Request পাঠাতে পারবে। শুধুমাত্র সুপার অ্যাডমিন এটি পরিবর্তন করতে পারবেন।',
+      description: 'এই ইমেইলধারীরা সরাসরি ডাটা পরিবর্তন করতে পারবেন না, তারা শুধু স্টুডিও থেকে এডিট রিকোয়েস্ট পাঠাতে পারবেন। (শুধুমাত্র সুপার অ্যাডমিন পরিবর্তন করতে পারবেন)',
     }),
   ],
   preview: {
@@ -81,9 +76,9 @@ export default defineType({
     prepare({ batch, admins, mods, password }) {
       const adminCount = Array.isArray(admins) ? admins.length : 0
       const modCount = Array.isArray(mods) ? mods.length : 0
-      const passInfo = password ? '🔐 Password set' : '⚠️ No password'
+      const passInfo = password ? 'Password set' : 'No password'
       return {
-        title: `${batch || 'Unknown Batch'} Configuration`,
+        title: `${batch || 'Batch'} Configuration`,
         subtitle: `${adminCount} Admin(s), ${modCount} Mod(s) | ${passInfo}`,
       }
     },

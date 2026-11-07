@@ -2,47 +2,48 @@ import { defineField, defineType } from 'sanity'
 
 export default defineType({
   name: 'student',
-  title: 'Students (শিক্ষার্থী)',
+  title: 'Students',
   type: 'document',
   groups: [
-    { name: 'basic', title: '① নাম ও মৌলিক (Name & Basic)', default: true },
-    { name: 'academic', title: '② একাডেমিক ও রুম (Academic & Room)' },
-    { name: 'contact', title: '③ যোগাযোগ (Contact & Social)' },
-    { name: 'bio_media', title: '④ ছবি ও বায়ো (Photo & Bio)' },
-    { name: 'results_1st', title: '⑤ 1st Year ফলাফল (Class 11 Results)' },
-    { name: 'results_2nd', title: '⑥ 2nd Year ফলাফল (Class 12 Results)' },
+    { name: 'basic', title: 'Basic Information', default: true },
+    { name: 'academic', title: 'Academic & Room Details' },
+    { name: 'contact', title: 'Contact & Social Profiles' },
+    { name: 'bio_media', title: 'Photo & Biography' },
+    { name: 'results_1st', title: '1st Year Results (Class 11)' },
+    { name: 'results_2nd', title: '2nd Year Results (Class 12)' },
   ],
   fields: [
     // ═══════════════════════════════════════════
-    // ① Name & Basic
+    // Basic Information
     // ═══════════════════════════════════════════
     defineField({
       name: 'position',
-      title: 'Serial / Position (ক্রমিক নম্বর)',
+      title: 'Serial Position',
       type: 'number',
       group: 'basic',
-      description: 'Student display order. Lower number = appears first.',
+      description: 'শিক্ষার্থী তালিকার ক্রমিক নম্বর। ছোট নম্বর সবার আগে দেখাবে।',
     }),
     defineField({
       name: 'name_en',
       title: 'Full Name (English)',
       type: 'string',
       group: 'basic',
+      description: 'শিক্ষার্থীর পূর্ণ নাম ইংরেজিতে লিখুন।',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'name_bn',
-      title: 'সম্পূর্ণ নাম (বাংলা)',
+      title: 'Full Name (Bangla)',
       type: 'string',
       group: 'basic',
-      description: 'খালি থাকলে ইংরেজি নাম দেখাবে।',
+      description: 'শিক্ষার্থীর পূর্ণ নাম বাংলায় লিখুন (খালি রাখলে ইংরেজি নাম দেখাবে)।',
     }),
     defineField({
       name: 'dob_date',
-      title: '📅 Date of Birth / জন্ম তারিখ (ক্যালেন্ডার)',
+      title: 'Date of Birth (Calendar)',
       type: 'date',
       group: 'basic',
-      description: 'ক্যালেন্ডার থেকে জন্ম তারিখ ও মাস সিলেক্ট করুন। ⚠️ সাল গুরুত্বপূর্ণ নয় — শুধু দিন ও মাস ব্যবহৃত হবে।',
+      description: 'ক্যালেন্ডার থেকে জন্ম তারিখ ও মাস নির্বাচন করুন। সাল গুরুত্বপূর্ণ নয় — জন্মদিন ফিচারের জন্য শুধু দিন ও মাস ব্যবহৃত হবে।',
       options: {
         dateFormat: 'DD-MMMM',
       },
@@ -56,18 +57,18 @@ export default defineType({
       hidden: true,
       options: {
         list: [
-          { title: 'January (জানুয়ারি)', value: '01' },
-          { title: 'February (ফেব্রুয়ারি)', value: '02' },
-          { title: 'March (মার্চ)', value: '03' },
-          { title: 'April (এপ্রিল)', value: '04' },
-          { title: 'May (মে)', value: '05' },
-          { title: 'June (জুন)', value: '06' },
-          { title: 'July (জুলাই)', value: '07' },
-          { title: 'August (আগস্ট)', value: '08' },
-          { title: 'September (সেপ্টেম্বর)', value: '09' },
-          { title: 'October (অক্টোবর)', value: '10' },
-          { title: 'November (নভেম্বর)', value: '11' },
-          { title: 'December (ডিসেম্বর)', value: '12' },
+          { title: 'January', value: '01' },
+          { title: 'February', value: '02' },
+          { title: 'March', value: '03' },
+          { title: 'April', value: '04' },
+          { title: 'May', value: '05' },
+          { title: 'June', value: '06' },
+          { title: 'July', value: '07' },
+          { title: 'August', value: '08' },
+          { title: 'September', value: '09' },
+          { title: 'October', value: '10' },
+          { title: 'November', value: '11' },
+          { title: 'December', value: '12' },
         ],
         layout: 'dropdown',
       },
@@ -97,9 +98,10 @@ export default defineType({
     }),
     defineField({
       name: 'blood_group',
-      title: 'Blood Group (রক্তের গ্রুপ)',
+      title: 'Blood Group',
       type: 'string',
       group: 'basic',
+      description: 'শিক্ষার্থীর রক্তের গ্রুপ নির্বাচন করুন।',
       options: {
         list: ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'],
         layout: 'radio',
@@ -108,7 +110,7 @@ export default defineType({
     }),
     defineField({
       name: 'batch',
-      title: 'Batch (ব্যাচ)',
+      title: 'Batch',
       type: 'string',
       group: 'basic',
       readOnly: ({ currentUser }) => {
@@ -134,11 +136,11 @@ export default defineType({
         layout: 'dropdown',
       },
       initialValue: 'HSC-28',
-      description: 'স্বয়ংক্রিয় নির্ধারিত ব্যাচ। ব্যাচ পরিবর্তন করার সুযোগ শুধুমাত্র সুপার অ্যাডমিনের রয়েছে।',
+      description: 'শিক্ষার্থীর ব্যাচ। ব্যাচ পরিবর্তন করার অধিকার শুধুমাত্র সুপার অ্যাডমিনের রয়েছে।',
     }),
 
     // ═══════════════════════════════════════════
-    // ② Academic & Room
+    // Academic & Room Details
     // ═══════════════════════════════════════════
     defineField({
       name: 'room_ref',
@@ -166,14 +168,14 @@ export default defineType({
     }),
     defineField({
       name: 'room_1st_year',
-      title: 'Room (1st Year) - ১ম বর্ষের রুম ও বেডমেট',
+      title: 'Room (1st Year)',
       type: 'object',
       group: 'academic',
       description: '১ম বর্ষে থাকাকালীন রুম এবং নির্দিষ্ট বেডমেট ড্রপডাউন থেকে নির্বাচন করুন।',
       fields: [
         defineField({
           name: 'room_ref',
-          title: 'Room Selection (১ম বর্ষের রুম — ড্রপডাউন)',
+          title: 'Room Selection',
           type: 'reference',
           to: [{ type: 'room' }],
           options: {
@@ -185,17 +187,17 @@ export default defineType({
               }
             },
           },
-          description: 'সকল রুমের ড্রপডাউন থেকে ১ম বর্ষের নির্দিষ্ট রুম (১০২, ১০৩, ১০৪ ইত্যাদি) সিলেক্ট করুন।',
+          description: 'সকল রুমের তালিকা থেকে ১ম বর্ষের নির্দিষ্ট রুম (১০২, ১০৩, ১০৪ ইত্যাদি) নির্বাচন করুন।',
         }),
         defineField({
           name: 'room_no',
-          title: 'Room Number (ম্যানুয়াল/লেগ্যাসি)',
+          title: 'Room Number (Legacy)',
           type: 'string',
           hidden: true,
         }),
         defineField({
           name: 'bedmate_ref',
-          title: 'Bedmate Selection (১ম বর্ষের নির্দিষ্ট বেডমেট নির্বাচন)',
+          title: 'Bedmate Selection',
           type: 'reference',
           to: [{ type: 'student' }],
           options: {
@@ -213,20 +215,20 @@ export default defineType({
               }
             },
           },
-          description: '১০২, ১০৩, ১০৪ রুমে যিনি আপনার নির্দিষ্ট সিট/বেডমেট তাকে ড্রপডাউন থেকে নির্বাচন করুন।',
+          description: '১০২, ১০৩, ১০৪ রুমে যিনি আপনার নির্দিষ্ট বেডমেট তাকে নির্বাচন করুন।',
         }),
       ],
     }),
     defineField({
       name: 'room_2nd_year',
-      title: 'Room (2nd Year) - ২য় বর্ষের রুম ও রুমমেট',
+      title: 'Room (2nd Year)',
       type: 'object',
       group: 'academic',
-      description: '২য় বর্ষে ওঠার পর রুম এবং রুমমেট ড্রপডাউন থেকে নির্বাচন করুন। ১ম বর্ষে থাকাকালীন এটি খালি রাখুন।',
+      description: '২য় বর্ষে ওঠার পর রুম এবং রুমমেট নির্বাচন করুন। ১ম বর্ষের শিক্ষার্থীদের জন্য এটি খালি রাখুন।',
       fields: [
         defineField({
           name: 'room_ref',
-          title: 'Room Selection (২য় বর্ষের রুম — ড্রপডাউন)',
+          title: 'Room Selection',
           type: 'reference',
           to: [{ type: 'room' }],
           options: {
@@ -238,17 +240,17 @@ export default defineType({
               }
             },
           },
-          description: 'সকল রুমের ড্রপডাউন থেকে ২য় বর্ষের নির্দিষ্ট রুম (৩১৪–৩২৯ ইত্যাদি) সিলেক্ট করুন।',
+          description: '২য় বর্ষের নির্দিষ্ট রুম (৩১৪–৩২৯ ইত্যাদি) ড্রপডাউন থেকে নির্বাচন করুন।',
         }),
         defineField({
           name: 'room_no',
-          title: 'Room Number (ম্যানুয়াল/লেগ্যাসি)',
+          title: 'Room Number (Legacy)',
           type: 'string',
           hidden: true,
         }),
         defineField({
           name: 'bedmate_ref',
-          title: 'Roommate Selection (২য় বর্ষের রুমমেট নির্বাচন)',
+          title: 'Roommate Selection',
           type: 'reference',
           to: [{ type: 'student' }],
           options: {
@@ -266,39 +268,40 @@ export default defineType({
               }
             },
           },
-          description: '২য় বর্ষে আপনার রুমে অপর শিক্ষার্থীকে ড্রপডাউন থেকে সিলেক্ট করুন।',
+          description: '২য় বর্ষে আপনার রুমের অপর রুমমেট শিক্ষার্থীকে নির্বাচন করুন।',
         }),
       ],
     }),
     defineField({
       name: 'short_roll',
-      title: 'Roll Number (ছোট রোল)',
+      title: 'Roll Number',
       type: 'string',
       group: 'academic',
-      description: 'Just the roll digits: 161, 9, 78, 1132 etc. Leading zeros optional — system handles it. Full roll auto-generates from batch + group + this roll.',
+      description: 'শিক্ষার্থীর সংক্ষিপ্ত কলেজ রোল (যেমন: 161, 9, 78)। পূর্ণাঙ্গ রোল স্বয়ংক্রিয়ভাবে তৈরি হয়।',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'group',
-      title: 'Group (বিভাগ)',
+      title: 'Academic Group',
       type: 'string',
       group: 'academic',
+      description: 'শিক্ষার্থীর বিভাগ নির্বাচন করুন (বিজ্ঞান, ব্যবসায় শিক্ষা, বা মানবিক)।',
       options: {
         list: [
-          { title: 'Science — বিজ্ঞান (01)', value: 'science' },
-          { title: 'Business Studies — ব্যবসায় শিক্ষা (02)', value: 'commerce' },
-          { title: 'Humanities — মানবিক (03)', value: 'arts' },
+          { title: 'Science (01)', value: 'science' },
+          { title: 'Business Studies (02)', value: 'commerce' },
+          { title: 'Humanities (03)', value: 'arts' },
         ],
         layout: 'radio',
         direction: 'horizontal',
       },
-      description: 'Science = 01, B.Studies = 02, Humanities = 03 (for full roll generation).',
     }),
     defineField({
       name: 'section',
       title: 'Section',
       type: 'string',
       group: 'academic',
+      description: 'ক্লাস সেকশন A থেকে J নির্বাচন করুন। প্রযোজ্য না হলে None রাখুন।',
       options: {
         list: [
           { title: 'None', value: 'none' },
@@ -316,13 +319,13 @@ export default defineType({
         layout: 'radio',
         direction: 'horizontal',
       },
-      description: 'Select section A-J. Choose None for Business Studies or Humanities if not applicable.',
     }),
     defineField({
       name: 'practical_group',
       title: 'Practical Group',
       type: 'string',
       group: 'academic',
+      description: 'বিজ্ঞান বিভাগের ব্যবহারিক গ্রুপ (A1, A2 ইত্যাদি)। প্রযোজ্য না হলে None রাখুন।',
       options: {
         list: [
           { title: 'None', value: 'none' },
@@ -340,92 +343,95 @@ export default defineType({
         layout: 'radio',
         direction: 'horizontal',
       },
-      description: 'Select practical group. Choose None for non-science students or if not applicable.',
     }),
 
     // ═══════════════════════════════════════════
-    // ③ Contact & Social
+    // Contact & Social
     // ═══════════════════════════════════════════
     defineField({
       name: 'phone',
-      title: 'Student Phone Number (ফোন নম্বর)',
+      title: 'Student Phone Number',
       type: 'string',
       group: 'contact',
-      description: 'Main phone number.',
+      description: 'শিক্ষার্থীর প্রধান মোবাইল নম্বর।',
     }),
     defineField({
       name: 'phone_has_whatsapp',
-      title: 'This phone has WhatsApp',
+      title: 'Main Phone Has WhatsApp',
       type: 'boolean',
       group: 'contact',
       initialValue: true,
-      description: 'Tick if this main number is also on WhatsApp.',
+      description: 'প্রধান ফোন নম্বরেই হোয়াটসঅ্যাপ থাকলে এটি চালু রাখুন।',
     }),
     defineField({
       name: 'phone_has_telegram',
-      title: 'This phone has Telegram',
+      title: 'Main Phone Has Telegram',
       type: 'boolean',
       group: 'contact',
       initialValue: false,
+      description: 'প্রধান ফোন নম্বরে টেলিগ্রাম থাকলে এটি চালু রাখুন।',
     }),
     defineField({
       name: 'whatsapp_alt',
-      title: 'Separate WhatsApp Number (আলাদা হোয়াটসঅ্যাপ)',
+      title: 'Separate WhatsApp Number',
       type: 'string',
       group: 'contact',
-      description: 'Only fill if WhatsApp is on a DIFFERENT number than the main phone.',
+      description: 'প্রধান নম্বরের বাইরে ভিন্ন কোনো নম্বরে হোয়াটসঅ্যাপ থাকলে এখানে লিখুন।',
     }),
     defineField({
       name: 'telegram_alt',
-      title: 'Separate Telegram Number/Username',
+      title: 'Separate Telegram Number / Username',
       type: 'string',
       group: 'contact',
-      description: 'Only fill if Telegram is on a different number or username.',
+      description: 'ভিন্ন কোনো নম্বরে বা ইউজারনেমে টেলিগ্রাম থাকলে এখানে লিখুন।',
     }),
     defineField({
       name: 'father_phone',
-      title: 'Guardian / Father Phone (অভিভাবক নম্বর)',
+      title: 'Guardian / Father Phone Number',
       type: 'string',
       group: 'contact',
+      description: 'শিক্ষার্থীর অভিভাবকের মোবাইল নম্বর।',
     }),
     defineField({
       name: 'email',
       title: 'Email Address',
       type: 'string',
       group: 'contact',
+      description: 'শিক্ষার্থীর ব্যক্তিগত ইমেইল ঠিকানা।',
     }),
     defineField({
       name: 'address_en',
-      title: 'Address (English)',
+      title: 'Permanent Address (English)',
       type: 'string',
       group: 'contact',
+      description: 'স্থায়ী বা বর্তমান ঠিকানা (ইংরেজি)।',
     }),
     defineField({
       name: 'address_bn',
-      title: 'ঠিকানা (বাংলা)',
+      title: 'Permanent Address (Bangla)',
       type: 'string',
       group: 'contact',
-      description: 'খালি থাকলে ইংরেজি ঠিকানা দেখাবে।',
+      description: 'স্থায়ী বা বর্তমান ঠিকানা (বাংলা)।',
     }),
     defineField({
       name: 'facebook',
-      title: 'Facebook Profile URL or Username (ফেসবুক লিংক বা ইউজারনেম)',
+      title: 'Facebook Profile URL or Username',
       type: 'string',
       group: 'contact',
-      description: 'ফেসবুক লিংক (যেমন: https://www.facebook.com/seadix) অথবা শুধু ইউজারনেম (যেমন: seadix) — যেকোনোটি লিখলেই ফেসবুক ও মেসেঞ্জার দুটোই তৈরি হবে।',
-      placeholder: 'seadix বা https://facebook.com/seadix',
+      description: 'ফেসবুক প্রোফাইল লিংক বা ইউজারনেম। এটি থেকে সরাসরি মেসেঞ্জার লিংকও তৈরি হয়।',
+      placeholder: 'e.g. seadix or https://facebook.com/seadix',
     }),
 
     // ═══════════════════════════════════════════
-    // ④ Photo & Bio
+    // Photo & Bio
     // ═══════════════════════════════════════════
     defineField({
       name: 'photo',
-      title: 'Profile Photo (ছবি)',
+      title: 'Profile Photo',
       type: 'image',
       group: 'bio_media',
       options: { hotspot: true },
-      description: 'Portrait 3:4 ratio recommended.',
+      description: 'শিক্ষার্থীর পাসপোর্ট বা পোর্ট্রেট ছবি (৩:৪ অনুপাত বাঞ্ছনীয়)।',
     }),
     defineField({
       name: 'bio_en',
@@ -433,58 +439,58 @@ export default defineType({
       type: 'text',
       rows: 3,
       group: 'bio_media',
-      description: 'Empty → default bio auto-shows on website.',
+      description: 'শিক্ষার্থীর আত্মপরিচয় ও ভবিষ্যৎ লক্ষ্য (ইংরেজি)।',
     }),
     defineField({
       name: 'bio_bn',
-      title: 'পরিচয় / বায়ো (বাংলা)',
+      title: 'About / Bio (Bangla)',
       type: 'text',
       rows: 3,
       group: 'bio_media',
-      description: 'খালি থাকলে ইংরেজি বায়ো দেখাবে।',
+      description: 'শিক্ষার্থীর আত্মপরিচয় ও ভবিষ্যৎ লক্ষ্য (বাংলা)।',
     }),
 
     // ═══════════════════════════════════════════
-    // ⑤ 1st Year Results (Class 11)
+    // 1st Year Results (Class 11)
     // ═══════════════════════════════════════════
     defineField({
       name: 'results_1st_year',
-      title: '1st Year Results — Class 11 (একাদশ শ্রেণি ফলাফল)',
+      title: '1st Year Academic Results (Class 11)',
       type: 'object',
       group: 'results_1st',
-      description: 'Upload PDF or paste link for each exam.',
+      description: 'একাদশ শ্রেণির প্রতিটি পরীক্ষার ফলাফল পিডিএফ আপলোড বা ড্রাইভ লিংক যুক্ত করুন।',
       fields: [
-        { name: 'ct1_pdf', title: 'CT-1 Exam — PDF', type: 'file' },
-        { name: 'ct1_link', title: 'CT-1 Exam — Link URL', type: 'url' },
-        { name: 'ct2_pdf', title: 'CT-2 Exam — PDF', type: 'file' },
-        { name: 'ct2_link', title: 'CT-2 Exam — Link URL', type: 'url' },
-        { name: 'hy_pdf', title: 'Half Yearly — PDF', type: 'file' },
-        { name: 'hy_link', title: 'Half Yearly — Link URL', type: 'url' },
-        { name: 'ct3_pdf', title: 'CT-3 Exam — PDF', type: 'file' },
-        { name: 'ct3_link', title: 'CT-3 Exam — Link URL', type: 'url' },
-        { name: 'yearly_pdf', title: 'Yearly Final — PDF', type: 'file' },
-        { name: 'yearly_link', title: 'Yearly Final — Link URL', type: 'url' },
+        { name: 'ct1_pdf', title: 'CT-1 Exam PDF', type: 'file' },
+        { name: 'ct1_link', title: 'CT-1 Exam Link URL', type: 'url' },
+        { name: 'ct2_pdf', title: 'CT-2 Exam PDF', type: 'file' },
+        { name: 'ct2_link', title: 'CT-2 Exam Link URL', type: 'url' },
+        { name: 'hy_pdf', title: 'Half Yearly Exam PDF', type: 'file' },
+        { name: 'hy_link', title: 'Half Yearly Exam Link URL', type: 'url' },
+        { name: 'ct3_pdf', title: 'CT-3 Exam PDF', type: 'file' },
+        { name: 'ct3_link', title: 'CT-3 Exam Link URL', type: 'url' },
+        { name: 'yearly_pdf', title: 'Yearly Final Exam PDF', type: 'file' },
+        { name: 'yearly_link', title: 'Yearly Final Exam Link URL', type: 'url' },
       ],
     }),
 
     // ═══════════════════════════════════════════
-    // ⑥ 2nd Year Results (Class 12)
+    // 2nd Year Results (Class 12)
     // ═══════════════════════════════════════════
     defineField({
       name: 'results_2nd_year',
-      title: '2nd Year Results — Class 12 (দ্বাদশ শ্রেণি ফলাফল)',
+      title: '2nd Year Academic Results (Class 12)',
       type: 'object',
       group: 'results_2nd',
-      description: 'Upload PDF or paste link for each exam.',
+      description: 'দ্বাদশ শ্রেণির প্রতিটি পরীক্ষার ফলাফল পিডিএফ আপলোড বা ড্রাইভ লিংক যুক্ত করুন।',
       fields: [
-        { name: 'ct1_pdf', title: 'CT-1 Exam — PDF', type: 'file' },
-        { name: 'ct1_link', title: 'CT-1 Exam — Link URL', type: 'url' },
-        { name: 'ct2_pdf', title: 'CT-2 Exam — PDF', type: 'file' },
-        { name: 'ct2_link', title: 'CT-2 Exam — Link URL', type: 'url' },
-        { name: 'ct3_pdf', title: 'CT-3 Exam — PDF', type: 'file' },
-        { name: 'ct3_link', title: 'CT-3 Exam — Link URL', type: 'url' },
-        { name: 'test_pdf', title: 'Test Exam — PDF', type: 'file' },
-        { name: 'test_link', title: 'Test Exam — Link URL', type: 'url' },
+        { name: 'ct1_pdf', title: 'CT-1 Exam PDF', type: 'file' },
+        { name: 'ct1_link', title: 'CT-1 Exam Link URL', type: 'url' },
+        { name: 'ct2_pdf', title: 'CT-2 Exam PDF', type: 'file' },
+        { name: 'ct2_link', title: 'CT-2 Exam Link URL', type: 'url' },
+        { name: 'ct3_pdf', title: 'CT-3 Exam PDF', type: 'file' },
+        { name: 'ct3_link', title: 'CT-3 Exam Link URL', type: 'url' },
+        { name: 'test_pdf', title: 'Test Exam PDF', type: 'file' },
+        { name: 'test_link', title: 'Test Exam Link URL', type: 'url' },
       ],
     }),
 
