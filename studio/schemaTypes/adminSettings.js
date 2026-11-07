@@ -189,9 +189,9 @@ export default defineType({
               active: 'is_active',
             },
             prepare({ title, subtitle, batch, active }) {
-              const statusTag = active ? '[Active]' : '[Inactive]'
+              const statusTag = active ? '🟢 Active' : '🔴 Inactive'
               return {
-                title: `${statusTag} ${title || 'Slot'}: ${batch || 'Unassigned'}`,
+                title: `${statusTag} — ${title || 'Slot'}: ${batch || 'Unassigned'}`,
                 subtitle: subtitle || 'No email assigned',
               }
             },
@@ -228,7 +228,7 @@ export default defineType({
     }),
 
     defineField({
-      name: 'global_public_visibility',
+      name: 'global_visibility',
       title: 'Global Public Visibility',
       type: 'boolean',
       group: 'profile_controls',
@@ -321,14 +321,11 @@ export default defineType({
               is_locked: 'is_locked',
             },
             prepare({ title, page_id, is_visible, is_locked }) {
-              const statusParts = [];
-              if (is_visible === false) statusParts.push('Hidden');
-              else statusParts.push('Visible');
-              if (is_locked) statusParts.push('Locked');
-              else statusParts.push('Public');
+              const visTag = is_visible === false ? '🚫 Hidden' : '👁️ Visible'
+              const lockTag = is_locked ? '🔒 Locked' : '🔓 Public'
               return {
-                title: title || page_id,
-                subtitle: `${page_id}.html — ${statusParts.join(' · ')}`,
+                title: `${lockTag} · ${title || page_id}`,
+                subtitle: `${page_id}.html — ${visTag}`,
               }
             },
           },
@@ -418,14 +415,14 @@ export default defineType({
               const matched = PROFILE_FIELD_OPTIONS.find((o) => o.value === field_id)
               const name = label || (matched ? matched.title : field_id) || 'Profile Field'
               const isHidden = invisible === true
-              const statusTag = isHidden ? '[Hidden]' : '[Visible]'
-              const pubStr = public_lock ? 'Locked' : 'Open'
-              const batchStr = batch_lock ? 'Locked' : 'Open'
+              const statusTag = isHidden ? '⚪ Hidden' : '🟢 Visible'
+              const pubStr = public_lock ? '🔒 Locked' : '🔓 Public'
+              const batchStr = batch_lock ? '🔒 Locked' : '🔓 Open'
               return {
                 title: `${statusTag} ${name}`,
                 subtitle: isHidden
                   ? 'Hidden from website'
-                  : `Public: ${pubStr} | Juniors: ${batchStr}`,
+                  : `Visitors: ${pubStr} | Juniors: ${batchStr}`,
               }
             },
           },

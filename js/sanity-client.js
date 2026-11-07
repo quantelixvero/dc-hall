@@ -14,27 +14,32 @@ const SANITY_GROQ_QUERY = `{
   "adminSettings": *[_type == "adminSettings" && !(_id in path("drafts.**"))][0]{
     global_visibility_mode,
     global_visibility,
+    global_public_visibility,
+    master_password,
     page_access_controls,
     profile_field_controls,
     homepage_sections,
     developer_sections,
     hallinfo_sections,
     menu_visibility,
-    footer_columns
+    footer_columns,
+    batch_email_slots,
+    batch_rotation_enabled
   },
   "batchConfigs": *[_type == "batchConfig" && !(_id in path("drafts.**"))]{
-    batch
+    _id,
+    batch,
+    batch_password,
+    is_locked,
+    lock_notice,
+    batch_admin_emails,
+    moderator_emails
   },
   "settings": *[_type == "siteSettings" && !(_id in path("drafts.**"))][0]{
     ...,
     "logo": coalesce(logo.asset->url, logo),
     "hero_image": coalesce(hero_image.asset->url, hero_image),
-    "notice_pdf": coalesce(notice_pdf.asset->url, notice_pdf),
-    "master_password": null,
-    "password": null,
-    "batch_passwords": null,
-    "batch_admin_emails": null,
-    "moderator_emails": null
+    "notice_pdf": coalesce(notice_pdf.asset->url, notice_pdf)
   },
   "students": *[_type == "student" && !(_id in path("drafts.**"))] | order(position asc){
     ...,

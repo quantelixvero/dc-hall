@@ -169,26 +169,71 @@ export const structure = async (S, context) => {
 
   if (!isSuperAdmin && userEmail) {
     try {
-      const allConfigs = await client.fetch(
-        `*[_type == "batchConfig"]{
-          batch,
-          batch_admin_emails,
-          moderator_emails
-        }`
+      // 1. Check adminSettings for dynamic revolving batch email slots
+      const adminDoc = await client.fetch(
+        '*[_type == "adminSettings"][0]{ batch_email_slots, batch_rotation_enabled }'
       )
+      if (adminDoc?.batch_email_slots && Array.isArray(adminDoc.batch_email_slots)) {
+        for (const slot of adminDoc.batch_email_slots) {
+          const slotEmail = (slot?.admin_email || '').trim().toLowerCase()
+          if (slotEmail === userEmail && slot.is_active !== false) {
+            if (slot.expiry_date) {
+              const exp = new Date(slot.expiry_date)
+              if (!isNaN(exp.getTime()) && new Date() > exp) continue
+            }
+            userRole = 'batch_admin'
+            userBatch = slot.assigned_batch
+            break
+          }
+        }
+      }
 
-      for (const cfg of allConfigs) {
-        const admins = (cfg.batch_admin_emails || []).map((e) => e.toLowerCase().trim())
-        const mods = (cfg.moderator_emails || []).map((e) => e.toLowerCase().trim())
+      // 2. Check batchConfig documents
+      if (!userRole || userRole === 'viewer') {
+        const allConfigs = await client.fetch(
+          `*[_type == "batchConfig"]{
+            batch,
+            batch_admin_emails,
+            moderator_emails
+          }`
+        )
+        if (Array.isArray(allConfigs)) {
+          for (const cfg of allConfigs) {
+            const admins = (cfg.batch_admin_emails || []).map((e) => (e || '').toLowerCase().trim())
+            const mods = (cfg.moderator_emails || []).map((e) => (e || '').toLowerCase().trim())
 
-        if (admins.includes(userEmail)) {
-          userRole = 'batch_admin'
-          userBatch = cfg.batch
-          break
-        } else if (mods.includes(userEmail)) {
-          userRole = 'moderator'
-          userBatch = cfg.batch
-          break
+            if (admins.includes(userEmail)) {
+              userRole = 'batch_admin'
+              userBatch = cfg.batch
+              break
+            } else if (mods.includes(userEmail)) {
+              userRole = 'moderator'
+              userBatch = cfg.batch
+              break
+            }
+          }
+        }
+      }
+
+      // 3. Fallback: check legacy siteSettings.batch_administration
+      if (!userRole || userRole === 'viewer') {
+        const siteDoc = await client.fetch(
+          '*[_type == "siteSettings"][0]{ batch_administration }'
+        )
+        if (siteDoc?.batch_administration && Array.isArray(siteDoc.batch_administration)) {
+          for (const item of siteDoc.batch_administration) {
+            const admins = (item.batch_admin_emails || []).map((e) => (e || '').toLowerCase().trim())
+            const mods = (item.moderator_emails || []).map((e) => (e || '').toLowerCase().trim())
+            if (admins.includes(userEmail)) {
+              userRole = 'batch_admin'
+              userBatch = item.batch
+              break
+            } else if (mods.includes(userEmail)) {
+              userRole = 'moderator'
+              userBatch = item.batch
+              break
+            }
+          }
         }
       }
     } catch (err) {
@@ -245,7 +290,7 @@ export const structure = async (S, context) => {
 
         // 5th folder: ONLY this batch's password & moderator config
         S.listItem()
-          .title(`${userBatch} Password & Moderator`)
+          .title(`🔒 ${userBatch} Password & Moderator`)
           .icon(LockIcon)
           .child(
             S.document()
@@ -285,6 +330,24 @@ export const structure = async (S, context) => {
                       .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
                   ),
               ])
+          ),
+      ])
+  }
+
+  // ═════════════════════════════════════════════════════════════════════
+  // D. RESTRICTED / VIEWER VIEW — Unauthorized email fallback
+  // ═════════════════════════════════════════════════════════════════════
+  if (!isSuperAdmin) {
+    return S.list()
+      .title('Access Restricted / অনুমতি সীমিত')
+      .items([
+        S.listItem()
+          .title('🔒 Public Notices & Circulars')
+          .icon(BellIcon)
+          .child(
+            S.documentTypeList('notice')
+              .title('Official Notices')
+              .defaultOrdering([{ field: 'date', direction: 'desc' }])
           ),
       ])
   }

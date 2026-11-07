@@ -38,6 +38,24 @@ export default defineType({
       description: 'ওয়েবসাইটে এই ব্যাচের সংরক্ষিত তথ্য দেখার পাসওয়ার্ড। শিক্ষার্থীরা এই পাসওয়ার্ড দিয়ে ওয়েবসাইটে লগইন করবে।',
     }),
 
+    // Batch Public Lock
+    defineField({
+      name: 'is_locked',
+      title: 'Lock Batch Directory',
+      type: 'boolean',
+      description: 'চালু (ON) থাকলে সাধারণ ভিজিটররা এই ব্যাচের শিক্ষার্থী তালিকা ও রুমমেট তথ্য দেখতে পারবে না, ব্যাচ পাসওয়ার্ড দিয়ে আনলক করতে হবে।',
+      initialValue: false,
+    }),
+
+    // Batch Lock Notice
+    defineField({
+      name: 'lock_notice',
+      title: 'Batch Lock Notice Message',
+      type: 'string',
+      description: 'ব্যাচ লক থাকা অবস্থায় শিক্ষার্থীদের জন্য যে বার্তাটি প্রদর্শন করা হবে।',
+      placeholder: 'এই ব্যাচের তথ্য দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।',
+    }),
+
     // Batch Admin Emails
     defineField({
       name: 'batch_admin_emails',
@@ -72,13 +90,15 @@ export default defineType({
       admins: 'batch_admin_emails',
       mods: 'moderator_emails',
       password: 'batch_password',
+      isLocked: 'is_locked',
     },
-    prepare({ batch, admins, mods, password }) {
+    prepare({ batch, admins, mods, password, isLocked }) {
       const adminCount = Array.isArray(admins) ? admins.length : 0
       const modCount = Array.isArray(mods) ? mods.length : 0
-      const passInfo = password ? 'Password set' : 'No password'
+      const passInfo = password ? '🔒 Password set' : '🔓 No password'
+      const lockTag = isLocked ? '🔒 Locked' : '🟢 Active'
       return {
-        title: `${batch || 'Batch'} Configuration`,
+        title: `${lockTag} · ${batch || 'Batch'} Configuration`,
         subtitle: `${adminCount} Admin(s), ${modCount} Mod(s) | ${passInfo}`,
       }
     },
