@@ -6963,3 +6963,46 @@ body[data-lang="bn"] textarea {
   align-items: center !important;
   line-height: 1.3 !important;
 }
+
+
+/* ==========================================================================
+   ROOMMATE GRID: STANDARD (2 COLS) VS COMPACT (3 COLS) FIX (v7.9.1)
+   ========================================================================== */
+
+/* Standard Detailed View: Strictly 2 columns on Desktop & Laptop, NEVER 3 columns */
+.roommate-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+  width: 100% !important;
+}
+
+/* Compact Parallel View: 3 columns on Desktop & Laptop */
+.roommate-grid.view-compact {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  width: 100% !important;
+}
+
+/* Tablet (641px - 899px) */
+@media (max-width: 899px) {
+  .roommate-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .roommate-grid.view-compact {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+}
+
+/* Mobile (<= 640px) */
+@media (max-width: 640px) {
+  .roommate-grid,
+  .roommate-grid.view-compact {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+}

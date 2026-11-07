@@ -54,12 +54,17 @@ function initRoommateViewToggle() {
   }
 
   document.querySelectorAll("[data-roommate-view]").forEach(btn => {
-    btn.classList.toggle("is-active", btn.dataset.roommateView === saved);
+    const isActive = btn.dataset.roommateView === saved;
+    btn.classList.toggle("active", isActive);
+    btn.classList.toggle("is-active", isActive);
+
     btn.addEventListener("click", () => {
       const mode = btn.dataset.roommateView;
       localStorage.setItem("dc-roommate-view", mode);
       document.querySelectorAll("[data-roommate-view]").forEach(b => {
-        b.classList.toggle("is-active", b.dataset.roommateView === mode);
+        const active = b.dataset.roommateView === mode;
+        b.classList.toggle("active", active);
+        b.classList.toggle("is-active", active);
       });
       grid.classList.toggle("view-compact", mode === "compact");
       renderRoommates();
@@ -3718,7 +3723,7 @@ function applySanityPayload(sanityData) {
 async function loadCmsContent() {
   // ⚡ 1. FAST CACHE-FIRST HYDRATION (Instant 0ms render without waiting for network!)
   try {
-    const cachedRaw = localStorage.getItem("dc_sanity_cache_v79");
+    const cachedRaw = localStorage.getItem("dc_sanity_cache_v80");
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw);
       if (cached && cached.students && cached.students.length) {
@@ -3742,7 +3747,7 @@ async function loadCmsContent() {
 
   if (sanityData && sanityData.students && sanityData.students.length) {
     try {
-      localStorage.setItem("dc_sanity_cache_v79", JSON.stringify(sanityData));
+      localStorage.setItem("dc_sanity_cache_v80", JSON.stringify(sanityData));
     } catch (e) {}
     applySanityPayload(sanityData);
   } else if (!students || !students.length) {
@@ -4736,12 +4741,18 @@ function groupByRoom(list) {
       }
     });
 
-    // Pass 2: Remaining unlinked students are NEVER arbitrarily paired together!
-    // Each unlinked student gets their own slot with Empty Seat on the other side.
+    // Pass 2: Pair remaining students in the same room in twos
     const remaining = roomStudents.filter(s => !pairedIds.has(s.slug || s.id));
-    remaining.forEach(s => {
-      roomPairs.push([roomNum, [s]]);
-    });
+    for (let i = 0; i < remaining.length; i += 2) {
+      if (i + 1 < remaining.length) {
+        pairedIds.add(remaining[i].slug || remaining[i].id);
+        pairedIds.add(remaining[i + 1].slug || remaining[i + 1].id);
+        roomPairs.push([roomNum, [remaining[i], remaining[i + 1]]]);
+      } else {
+        pairedIds.add(remaining[i].slug || remaining[i].id);
+        roomPairs.push([roomNum, [remaining[i]]]);
+      }
+    }
 
     pairs.push(...roomPairs);
   });
