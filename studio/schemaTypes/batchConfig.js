@@ -42,85 +42,17 @@ export default defineType({
       type: 'string',
       description: 'ওয়েবসাইটে এই ব্যাচের সংরক্ষিত তথ্য দেখার পাসওয়ার্ড। শিক্ষার্থীরা এই পাসওয়ার্ড দিয়ে ওয়েবসাইটে লগইন করবে।',
     }),
-
-    // Batch Public Lock
-    defineField({
-      name: 'is_locked',
-      title: 'Lock Batch Directory',
-      type: 'boolean',
-      description: 'চালু (ON) থাকলে সাধারণ ভিজিটররা এই ব্যাচের শিক্ষার্থী তালিকা ও রুমমেট তথ্য দেখতে পারবে না, ব্যাচ পাসওয়ার্ড দিয়ে আনলক করতে হবে।',
-      initialValue: false,
-    }),
-
-    // Batch Lock Notice
-    defineField({
-      name: 'lock_notice',
-      title: 'Batch Lock Notice Message',
-      type: 'string',
-      description: 'ব্যাচ লক থাকা অবস্থায় শিক্ষার্থীদের জন্য যে বার্তাটি প্রদর্শন করা হবে।',
-      placeholder: 'এই ব্যাচের তথ্য দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।',
-    }),
-
-    // Batch Moderator Emails
-    defineField({
-      name: 'batch_admin_emails',
-      title: 'Batch Moderator Emails / মডারেটর ইমেইল তালিকা',
-      type: 'array',
-      of: [{ type: 'string' }],
-      hidden: ({ currentUser }) => {
-        const email = (currentUser?.email || '').toLowerCase().trim()
-        const name = (currentUser?.name || '').toLowerCase().trim()
-        const id = (currentUser?.id || '').toLowerCase().trim()
-        const superAdmins = ['quantelixvero@gmail.com', 'drseadib@gmail.com', 'seadibpc@outlook.com']
-        return !(
-          superAdmins.includes(email) ||
-          superAdmins.includes(name) ||
-          email.includes('quantelixvero') ||
-          name.includes('quantelixvero') ||
-          id.includes('quantelixvero')
-        )
-      },
-      description: 'যে ইমেইলগুলো দিয়ে Sanity Studio-তে লগইন করলে এই ব্যাচের ফোল্ডারে মডারেটর অ্যাক্সেস পাওয়া যাবে। (শুধুমাত্র সুপার অ্যাডমিন পরিবর্তন করতে পারবেন)',
-    }),
-
-    // Moderator Emails
-    defineField({
-      name: 'moderator_emails',
-      title: 'Moderator Emails',
-      type: 'array',
-      of: [{ type: 'string' }],
-      hidden: ({ currentUser }) => {
-        const email = (currentUser?.email || '').toLowerCase().trim()
-        const name = (currentUser?.name || '').toLowerCase().trim()
-        const id = (currentUser?.id || '').toLowerCase().trim()
-        const superAdmins = ['quantelixvero@gmail.com', 'drseadib@gmail.com', 'seadibpc@outlook.com']
-        return !(
-          superAdmins.includes(email) ||
-          superAdmins.includes(name) ||
-          email.includes('quantelixvero') ||
-          name.includes('quantelixvero') ||
-          id.includes('quantelixvero')
-        )
-      },
-      description: 'এই ইমেইলধারীরা সরাসরি ডাটা পরিবর্তন করতে পারবেন না, তারা শুধু স্টুডিও থেকে এডিট রিকোয়েস্ট পাঠাতে পারবেন। (শুধুমাত্র সুপার অ্যাডমিন পরিবর্তন করতে পারবেন)',
-    }),
   ],
   preview: {
     select: {
       batch: 'batch',
-      admins: 'batch_admin_emails',
-      mods: 'moderator_emails',
       password: 'batch_password',
-      isLocked: 'is_locked',
     },
-    prepare({ batch, admins, mods, password, isLocked }) {
-      const adminCount = Array.isArray(admins) ? admins.length : 0
-      const modCount = Array.isArray(mods) ? mods.length : 0
+    prepare({ batch, password }) {
       const passInfo = password ? '🔒 Password set' : '🔓 No password'
-      const lockTag = isLocked ? '🔒 Locked' : '🟢 Active'
       return {
-        title: `${lockTag} · ${batch || 'Batch'} Configuration`,
-        subtitle: `${adminCount} Admin(s), ${modCount} Mod(s) | ${passInfo}`,
+        title: `${batch || 'Batch'} Website Password`,
+        subtitle: passInfo,
       }
     },
   },

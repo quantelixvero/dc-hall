@@ -149,13 +149,13 @@ function createBatchPortalItem(S, batchName, isFounder = false) {
         .items([
           ...createBatchContentItems(S, batchName),
           S.listItem()
-            .title(`${batchName} Password & Lock`)
+            .title(`${batchName} Website Password`)
             .icon(LockIcon)
             .child(
               S.document()
                 .schemaType('batchConfig')
                 .documentId(`batchConfig-${cleanBatchKey}`)
-                .title(`${batchName} Password & Lock Configuration`)
+                .title(`${batchName} Website Password`)
             ),
         ])
     )
