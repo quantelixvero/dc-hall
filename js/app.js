@@ -1843,8 +1843,14 @@ function applySanityPayload(sanityData) {
       i18n.bn.gallery.title = homeData.gallery_title_bn || i18n.bn.gallery.title;
     }
     if (homeData.hero_phrases?.length) {
-      i18n.en.heroPhrases = homeData.hero_phrases.map(p => p.text_en);
-      i18n.bn.heroPhrases = homeData.hero_phrases.map(p => p.text_bn);
+      const cleanEn = homeData.hero_phrases
+        .map(p => (p.text_en || p.en || '').replace(/^["'\\]+|["'\\]+$/g, '').trim())
+        .filter(Boolean);
+      const cleanBn = homeData.hero_phrases
+        .map(p => (p.text_bn || p.bn || '').replace(/^["'\\]+|["'\\]+$/g, '').trim())
+        .filter(Boolean);
+      if (cleanEn.length) i18n.en.heroPhrases = cleanEn;
+      if (cleanBn.length) i18n.bn.heroPhrases = cleanBn;
     }
     const iframe = document.querySelector(".map-wrap iframe");
     if (iframe && homeData.map_url) {
@@ -2729,10 +2735,14 @@ function updateHeroPhrase(reset = false) {
   const rotator = byId("heroRotator");
   if (!rotator) return;
 
-  const phrases = i18n[currentLang].heroPhrases;
+  const phrases = i18n[currentLang]?.heroPhrases;
+  if (!phrases || !phrases.length) return;
   if (reset) heroPhraseIndex = 0;
+  const target = phrases[heroPhraseIndex % phrases.length];
+  if (!target) return;
+
   rotator.classList.remove("phrase-in");
-  rotator.textContent = phrases[heroPhraseIndex % phrases.length];
+  rotator.textContent = target;
   window.requestAnimationFrame(() => rotator.classList.add("phrase-in"));
 }
 
@@ -5920,6 +5930,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initMoreMenu();
   initHeroRotator();
   applySavedViewModes();
+  initAos(); // Initialize AOS immediately so hero and initial layout animate without waiting for network!
 
   await loadCmsContent();
   checkSessionValidity();
@@ -5939,7 +5950,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   initResultClassFilter();
   initModal();
   initImageFallbacks();
-  initAos();
+  refreshAos();
 
   // Initialize Sanity real-time listener for instant live syncing
   if (typeof initSanityRealtimeListener === "function") {
