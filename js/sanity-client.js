@@ -12,6 +12,8 @@ const SANITY_CONFIG = {
 
 const SANITY_GROQ_QUERY = `{
   "adminSettings": *[_type == "adminSettings" && !(_id in path("drafts.**"))][0]{
+    _id,
+    _updatedAt,
     global_visibility_mode,
     global_visibility,
     global_public_visibility,

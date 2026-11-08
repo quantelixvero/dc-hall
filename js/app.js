@@ -1989,6 +1989,7 @@ async function loadCmsContent() {
       localStorage.setItem("dc_sanity_cache_v81", JSON.stringify(sanityData));
     } catch (e) {}
     applySanityPayload(sanityData);
+    renderDynamicContent();
   } else if (!students || !students.length) {
     // Fallback only if both live and cache were unavailable
     try {
@@ -2105,9 +2106,29 @@ function t(key) {
   return key.split(".").reduce((value, part) => value && value[part], i18n[currentLang]) || key;
 }
 
+function getEffectiveStudentNameCase() {
+  const adminTime = cmsAdminSettings?._updatedAt ? new Date(cmsAdminSettings._updatedAt).getTime() : 0;
+  const siteTime = cmsSettings?._updatedAt ? new Date(cmsSettings._updatedAt).getTime() : 0;
+
+  if (siteTime > adminTime && cmsSettings?.student_name_case) {
+    return cmsSettings.student_name_case;
+  }
+  return cmsAdminSettings?.student_name_case || cmsSettings?.student_name_case || 'capitalize_each_word';
+}
+
+function getEffectiveCardMetaBadges() {
+  const adminTime = cmsAdminSettings?._updatedAt ? new Date(cmsAdminSettings._updatedAt).getTime() : 0;
+  const siteTime = cmsSettings?._updatedAt ? new Date(cmsSettings._updatedAt).getTime() : 0;
+
+  if (siteTime > adminTime && cmsSettings?.card_meta_badges) {
+    return cmsSettings.card_meta_badges;
+  }
+  return cmsAdminSettings?.card_meta_badges || cmsSettings?.card_meta_badges || null;
+}
+
 function formatStudentDisplayName(name) {
   if (!name || typeof name !== 'string') return '';
-  const caseMode = cmsAdminSettings?.student_name_case || 'capitalize_each_word';
+  const caseMode = getEffectiveStudentNameCase();
   if (caseMode === 'uppercase') {
     return name.toUpperCase();
   }
@@ -2837,9 +2858,9 @@ function getFilteredStudents() {
 
 
 function renderCardDynamicBadges(student, context = 'student_page') {
-  const cfg = cmsAdminSettings?.card_meta_badges || cmsSettings?.card_meta_badges;
+  const cfg = getEffectiveCardMetaBadges();
   let selected = cfg ? cfg[context + '_badges'] : null;
-  const maxBadges = Number(cfg?.max_badges_per_card) || 3;
+  const maxBadges = Math.max(1, Number(cfg?.max_badges_per_card) || 5);
 
   // If the admin panel has configured card_meta_badges and selected is an empty array:
   // It means the admin explicitly chose NO badges! Return empty string so card shrinks cleanly.
@@ -2847,8 +2868,20 @@ function renderCardDynamicBadges(student, context = 'student_page') {
     return "";
   }
 
-  // If cfg or selected is null/undefined (not yet configured in CMS at all):
-  if (!Array.isArray(selected) || !selected.length) {
+  // Fallback defaults only if selected is null or undefined (not configured in CMS yet)
+  if (!Array.isArray(selected)) {
+    const defaultBadgesMap = {
+      student_page: ['room', 'group'],
+      home_students: ['room', 'group'],
+      home_roommates: ['group'],
+      roommates_page: ['group'],
+      birthday_page: ['room', 'group'],
+      moderator_card: ['room', 'roll', 'group']
+    };
+    selected = defaultBadgesMap[context] || ['room', 'group'];
+  }
+
+  if (!selected.length) {
     return "";
   }
 
@@ -3516,7 +3549,7 @@ function renderRoomPerson(student, animation) {
   const nameUnlocked = isProfileFieldUnlocked("name", student);
   const nameDisplay = nameUnlocked ? studentValue(student, "name") : "••••••••";
 
-  const cfg = cmsAdminSettings?.card_meta_badges || cmsSettings?.card_meta_badges;
+  const cfg = getEffectiveCardMetaBadges();
   const isHome = Boolean(byId("roommates-preview"));
   const context = isHome ? "home_roommates" : "roommates_page";
   const selected = cfg ? cfg[context + '_badges'] : null;
@@ -6830,10 +6863,16 @@ function renderModeratorCard(mod, batchName, mIdx) {
   const targetId = mod._id || mod.student_id || mod.roll || "";
 
   // Dynamic Badges based on card_meta_badges.moderator_card_badges
-  const badgeConfig = cmsAdminSettings?.card_meta_badges?.moderator_card_badges || ['room', 'roll', 'group'];
+  const badgeCfg = getEffectiveCardMetaBadges();
+  let badgeConfig = badgeCfg ? badgeCfg.moderator_card_badges : null;
+  if (!Array.isArray(badgeConfig)) {
+    badgeConfig = ['room', 'roll', 'group'];
+  }
+  const maxBadges = Math.max(1, Number(badgeCfg?.max_badges_per_card) || 5);
   const pills = [];
   if (Array.isArray(badgeConfig)) {
-    badgeConfig.forEach(item => {
+    for (const item of badgeConfig) {
+      if (pills.length >= maxBadges) break;
       if (item === 'room' && roomVal) {
         pills.push(`<span class="moderator-pill">${t("common.room")} ${roomDisplay}</span>`);
       } else if (item === 'roll' && rollVal) {
@@ -6842,12 +6881,12 @@ function renderModeratorCard(mod, batchName, mIdx) {
         pills.push(`<span class="moderator-pill">${groupVal}</span>`);
       } else if (item === 'section' && mod.section) {
         pills.push(`<span class="moderator-pill">${t("common.section")} ${mod.section}</span>`);
-      } else if (item === 'blood_group' && mod.blood_group) {
-        pills.push(`<span class="moderator-pill">${mod.blood_group}</span>`);
+      } else if (item === 'blood_group' && (mod.blood_group || mod.blood)) {
+        pills.push(`<span class="moderator-pill">${mod.blood_group || mod.blood}</span>`);
       } else if (item === 'batch' && (batchName || mod.batch)) {
         pills.push(`<span class="moderator-pill">${batchName || mod.batch}</span>`);
       }
-    });
+    }
   }
 
   return `
