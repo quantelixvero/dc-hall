@@ -248,6 +248,7 @@ function renderRoommates() {
           </div>`;
       }
     }
+    html += `</div>`;
   });
 
   grid.innerHTML = html;

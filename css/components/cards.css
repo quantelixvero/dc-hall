@@ -529,7 +529,9 @@
 
 .page-hero p {
   max-width: 660px;
-  color: rgba(255, 255, 255, 0.86);
+  color: #ffffff !important;
+  opacity: 0.95;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 /* ====================================================
@@ -669,3 +671,15 @@ body.dark .active-batch-header .batch-count-pill {
 }
 
 
+
+
+/* Guaranteed Crisp White Description on all Page Heroes */
+.hero p,
+.page-hero p,
+.roommates-hero p,
+.developer-hero p,
+.roommates-hero [data-i18n="roommates.subtitle"] {
+  color: #ffffff !important;
+  opacity: 0.95 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
+}

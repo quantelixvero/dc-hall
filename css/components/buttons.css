@@ -176,7 +176,7 @@ body:not([data-page="home"]) .profile-toggle.logged-in,
   width: 11px;
   height: 11px;
   border-radius: 50%;
-  background: #10b981;
+  background: #00b87c !important;
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -242,7 +242,7 @@ html.user-logged-in #statusCard {
 
 /* Vibrant brand backgrounds */
 .contact-btn.call {
-  background: #10b981;
+  background: #00b87c !important;
 }
 .contact-btn.whatsapp {
   background: #25d366;

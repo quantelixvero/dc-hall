@@ -116,8 +116,9 @@
 .contact-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: -10px 0 20px;
+  gap: 12px;
+  margin: 16px 0 24px !important;
+  align-items: center;
 }
 
 .contact-btn {
@@ -125,19 +126,28 @@
   width: 44px;
   height: 44px;
   place-items: center;
-  border-radius: 8px;
-  color: #ffffff;
+  border-radius: 50% !important;
+  color: #ffffff !important;
   overflow: hidden;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
-  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.18s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.contact-btn svg {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+  width: 20px;
+  height: 20px;
 }
 
 .contact-btn:hover,
 .contact-btn:focus-visible {
-  color: #ffffff;
-  filter: brightness(1.04);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow);
+  color: #ffffff !important;
+  filter: brightness(1.06);
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 .contact-btn img {
@@ -147,27 +157,27 @@
 }
 
 .contact-btn.call {
-  background: #0f766e;
+  background: #00b87c !important;
 }
 
 .contact-btn.whatsapp {
-  background: #25d366;
+  background: #25d366 !important;
 }
 
 .contact-btn.email {
-  background: #ea4335;
+  background: #ea4335 !important;
 }
 
 .contact-btn.facebook {
-  background: #1877f2;
+  background: #1877f2 !important;
 }
 
 .contact-btn.messenger {
-  background: #0084ff;
+  background: #0084ff !important;
 }
 
 .contact-btn.telegram {
-  background: #229ed9;
+  background: #229ed9 !important;
 }
 
 .contact-btn.missing-icon {
@@ -2499,10 +2509,21 @@ body.dark .footer-links a:hover {
 }
 
 .student-grid.view-compact .prev-batch-preview-grid {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 12px !important;
   width: 100% !important;
+}
+@media (max-width: 860px) {
+  .student-grid.view-compact .prev-batch-preview-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+}
+@media (max-width: 580px) {
+  .student-grid.view-compact .prev-batch-preview-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 .student-grid.view-compact .student-card,

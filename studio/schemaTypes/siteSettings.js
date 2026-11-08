@@ -6,6 +6,7 @@ export default defineType({
   type: 'document',
   groups: [
     { name: 'general', title: 'General Settings', default: true },
+    { name: 'card_badges', title: 'Card Meta Badges & Display' },
     { name: 'hero', title: 'Hero Banner Settings' },
     { name: 'dhaka_college', title: 'Dhaka College Official Resources & Clubs' },
   ],
@@ -356,6 +357,114 @@ export default defineType({
             },
           },
         },
+      ],
+    }),
+
+    // ═══════════════════════════════════════════
+    // Card Meta Badges & Display Settings
+    // ═══════════════════════════════════════════
+    defineField({
+      name: 'card_meta_badges',
+      title: 'Card Meta Badges Settings / কার্ড মেটা ব্যাজ সেটিংস',
+      type: 'object',
+      group: 'card_badges',
+      description: 'স্টুডেন্ট কার্ড, হোমপেজ কার্ড, রুমমেট ও বার্থডে কার্ডে নামের নিচে কোন কোন ব্যাজ/তথ্য দেখাবে তা এখান থেকে নিয়ন্ত্রণ করুন।',
+      fields: [
+        defineField({
+          name: 'student_page_badges',
+          title: 'Student Page Badges / স্টুডেন্ট পেইজ ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'স্টুডেন্ট পেইজের কার্ডে নামের নিচে কোন কোন ব্যাজ দেখাবে। (ডিফল্ট: Room ও Group)',
+          options: {
+            list: [
+              { title: 'Room No (রুম নম্বর)', value: 'room' },
+              { title: 'Group (বিজ্ঞান/মানবিক/ব্যবসায় শিক্ষা)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+          initialValue: ['room', 'group'],
+        }),
+        defineField({
+          name: 'home_students_badges',
+          title: 'Home Page Students Badges / হোমপেজ স্টুডেন্ট ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'হোমপেজের নির্বাচিত ৬ জন শিক্ষার্থী কার্ডে কোন কোন ব্যাজ দেখাবে।',
+          options: {
+            list: [
+              { title: 'Room No (রুম নম্বর)', value: 'room' },
+              { title: 'Group (গ্রুপ)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+          initialValue: ['room', 'group'],
+        }),
+        defineField({
+          name: 'home_roommates_badges',
+          title: 'Home Page Roommates Badges / হোমপেজ রুমমেট ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'হোমপেজের রুমমেট সেকশনের কার্ডে প্রতিটি শিক্ষার্থীর সাথে কোন ব্যাজ দেখাবে।',
+          options: {
+            list: [
+              { title: 'Group (গ্রুপ)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+          initialValue: ['group'],
+        }),
+        defineField({
+          name: 'roommates_page_badges',
+          title: 'Roommates Page Badges / রুমমেট পেইজ ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'রুমমেট পেইজের কার্ডে প্রতিটি শিক্ষার্থীর নামের সাথে কোন তথ্য দেখাবে।',
+          options: {
+            list: [
+              { title: 'Group (গ্রুপ)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+          initialValue: ['group'],
+        }),
+        defineField({
+          name: 'birthday_page_badges',
+          title: 'Birthday Page Badges / বার্থডে পেইজ ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'বার্থডে পেইজের কার্ডে জন্মদিনের পাশাপাশি আর কোন কোন তথ্য ব্যাজ হিসেবে দেখাবে।',
+          options: {
+            list: [
+              { title: 'Room No (রুম নম্বর)', value: 'room' },
+              { title: 'Group (গ্রুপ)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+            ],
+          },
+          initialValue: ['room', 'group'],
+        }),
+        defineField({
+          name: 'max_badges_per_card',
+          title: 'Maximum Badges Per Card / প্রতি কার্ডে সর্বোচ্চ ব্যাজ সংখ্যা',
+          type: 'number',
+          description: 'কার্ডে সুন্দর লুক বজায় রাখতে সর্বোচ্চ কয়টি ব্যাজ দেখানো হবে (ডিফল্ট: ৩)।',
+          initialValue: 3,
+          validation: (Rule) => Rule.min(1).max(6),
+        }),
       ],
     }),
 

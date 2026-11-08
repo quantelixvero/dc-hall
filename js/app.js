@@ -5,38 +5,36 @@ function renderSingleRoomCompactCard(room, pair, index) {
 
   const p1Photo = isProfileFieldUnlocked("photo", p1) ? (p1.img || "images/student-avatar.png") : "images/student-avatar.png";
   const p1FullName = isProfileFieldUnlocked("name", p1) ? (studentValue(p1, "name") || "Student") : "••••••••";
-  const p1Short = p1FullName.split(" ")[0] || p1FullName;
 
   let p2Html = "";
   if (p2) {
     const p2Photo = isProfileFieldUnlocked("photo", p2) ? (p2.img || "images/student-avatar.png") : "images/student-avatar.png";
     const p2FullName = isProfileFieldUnlocked("name", p2) ? (studentValue(p2, "name") || "Student") : "••••••••";
-    const p2Short = p2FullName.split(" ")[0] || p2FullName;
     p2Html = `
       <div class="rm-compact-person right" onclick="openStudentModalById('${p2.id}')" title="${p2FullName}">
-        <span class="rm-compact-name">${p2Short}</span>
         <img src="${p2Photo}" alt="${p2FullName}" loading="lazy">
       </div>`;
   } else {
     p2Html = `
-      <div class="rm-compact-person right empty">
-        <span class="rm-compact-name empty">${currentLang === 'bn' ? 'ফাঁকা' : 'Empty'}</span>
+      <div class="rm-compact-person right empty" title="${currentLang === 'bn' ? 'ফাঁকা সিট' : 'Empty Seat'}">
         <div class="empty-avatar-circle">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
         </div>
       </div>`;
   }
 
+  const roomDisplay = currentLang === "bn" ? toBengaliDigits(room) : room;
+
   return `
     <article class="roommate-compact-card" data-aos="fade-up" data-aos-delay="${Math.min(index * 40, 240)}">
       <div class="rm-compact-person left" onclick="openStudentModalById('${p1?.id}')" title="${p1FullName}">
         <img src="${p1Photo}" alt="${p1FullName}" loading="lazy">
-        <span class="rm-compact-name">${p1Short}</span>
       </div>
-      <button class="room-number compact-badge" type="button" onclick="openRoomModal('${room}')" title="${currentLang === 'bn' ? 'রুমের বিবরণ' : 'Room details'}">
-        <span class="rn-label">ROOM</span>
-        <strong class="rn-no">${currentLang === 'bn' ? toBengaliDigits(room) : room}</strong>
+      <span class="rm-bridge-line"></span>
+      <button class="room-number compact-badge" type="button" onclick="openRoomModal('${room}')" title="${currentLang === 'bn' ? 'রুম ' + roomDisplay + ' এর বিবরণ' : 'Room ' + roomDisplay + ' details'}">
+        <strong class="rn-no">${roomDisplay}</strong>
       </button>
+      <span class="rm-bridge-line"></span>
       ${p2Html}
     </article>
   `;
@@ -2651,6 +2649,76 @@ function getFilteredStudents() {
   return students.filter((student) => studentPassesFilters(student, filters) && studentMatches(student, query));
 }
 
+
+function renderCardDynamicBadges(student, context = 'student_page') {
+  const cfg = cmsSettings?.card_meta_badges || {};
+  let selected = cfg[context + '_badges'];
+  const maxBadges = Number(cfg.max_badges_per_card) || 3;
+
+  if (!Array.isArray(selected) || !selected.length) {
+    if (context === 'home_roommates' || context === 'roommates_page') {
+      selected = ['group'];
+    } else {
+      selected = ['room', 'group'];
+    }
+  }
+
+  const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
+  const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
+  const roomDisplay = isRoomUnlocked && roomVal !== '-' ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : null;
+
+  const isRollUnlocked = isProfileFieldUnlocked("roll", student);
+  const rollVal = student.short_roll || student.roll || '';
+  const rollDisplay = isRollUnlocked && rollVal ? (currentLang === "bn" ? toBengaliDigits(rollVal) : rollVal) : null;
+
+  const pills = [];
+
+  for (const item of selected) {
+    if (pills.length >= maxBadges) break;
+
+    switch (item) {
+      case 'room':
+        if (roomDisplay) {
+          pills.push(`<span class="bday-meta-pill">${t("common.room")} ${roomDisplay}</span>`);
+        }
+        break;
+      case 'group':
+        if (student.group) {
+          pills.push(`<span class="bday-meta-pill">${formatGroupShort(student.group)}</span>`);
+        }
+        break;
+      case 'batch':
+        if (student.batch) {
+          pills.push(`<span class="bday-meta-pill">${student.batch}</span>`);
+        }
+        break;
+      case 'section':
+        if (student.section) {
+          pills.push(`<span class="bday-meta-pill">${currentLang === 'bn' ? 'সেকশন ' + student.section : 'Sec ' + student.section}</span>`);
+        }
+        break;
+      case 'blood_group':
+        const bg = student.blood_group || student.blood;
+        if (bg) {
+          pills.push(`<span class="bday-meta-pill">${bg}</span>`);
+        }
+        break;
+      case 'roll':
+        if (rollDisplay) {
+          pills.push(`<span class="bday-meta-pill">${t("common.roll")} ${rollDisplay}</span>`);
+        }
+        break;
+    }
+  }
+
+  if (!pills.length) {
+    if (roomDisplay) pills.push(`<span class="bday-meta-pill">${t("common.room")} ${roomDisplay}</span>`);
+    if (student.group) pills.push(`<span class="bday-meta-pill">${formatGroupShort(student.group)}</span>`);
+  }
+
+  return pills.join("");
+}
+
 function renderSingleStudentCard(student, index) {
   const showBadge = isProfileFieldVisible("room_badge");
   const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
@@ -2687,8 +2755,7 @@ function renderSingleStudentCard(student, index) {
         <span class="student-info-col">
           ${nameDisplay ? `<h3>${nameDisplay}</h3>` : ''}
           <span class="student-meta" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
-            ${showRoom && roomVal !== '-' ? `<span class="bday-meta-pill">${t("common.room")} ${roomDisplay}</span>` : ''}
-            ${showGroup ? `<span class="bday-meta-pill">${formatGroupShort(student.group)}</span>` : ''}
+            ${renderCardDynamicBadges(student, byId("studentGrid")?.dataset?.limit ? "home_students" : "student_page")}
           </span>
         </span>
         <span class="student-badge-col">
@@ -3148,6 +3215,7 @@ function renderRoommates() {
           </div>`;
       }
     }
+    html += `</div>`;
   });
 
   grid.innerHTML = html;
@@ -5444,8 +5512,7 @@ function renderBirthdays() {
               ${isToday ? `<span class="bday-pill today-pill">${currentLang === 'bn' ? 'শুভ জন্মদিন!' : 'Today!'}</span>` : ''}
             </div>
             <div class="bday-meta-pills">
-              ${roomVal !== '-' ? `<span class="bday-meta-pill">${roomDisplay}</span>` : ''}
-              <span class="bday-meta-pill">${formatGroupShort(student.group)}</span>
+              ${renderCardDynamicBadges(student, "birthday_page")}
             </div>
           </div>
           <div class="bday-card-action">

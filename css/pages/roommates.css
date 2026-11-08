@@ -55,17 +55,17 @@
   }
 }
 
-/* 2. Roommate Compact Card - Larger 56px Photo, Clean Short Name, No Roll, Small Room Badge */
+/* 2. Roommate Compact Card - Picture 3 Minimalist Bridge Design (Avatar ── [ Room No ] ── Avatar) */
 .roommate-compact-card {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
   background: var(--surface-strong);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 10px 14px !important;
+  border-radius: 16px;
+  padding: 8px 14px !important;
   gap: 8px !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   min-width: 0;
   box-sizing: border-box;
@@ -80,44 +80,35 @@
 .rm-compact-person {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
   cursor: pointer;
-  flex: 1;
-  min-width: 0;
+  flex-shrink: 0;
   text-decoration: none;
   background: transparent;
   border: none;
   padding: 0;
 }
 
-.rm-compact-person.left {
-  justify-content: flex-start;
-}
-
-.rm-compact-person.right {
-  justify-content: flex-end;
-}
-
 .rm-compact-person img {
-  width: 56px !important;
-  height: 56px !important;
-  min-width: 56px !important;
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
   border-radius: 50% !important;
   object-fit: cover;
   border: 2px solid var(--border);
   flex-shrink: 0;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .rm-compact-person:hover img {
-  transform: scale(1.05);
+  transform: scale(1.08);
   border-color: var(--accent);
 }
 
 .rm-compact-person .empty-avatar-circle {
-  width: 56px !important;
-  height: 56px !important;
-  min-width: 56px !important;
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
   border-radius: 50% !important;
   background: var(--surface);
   border: 1.5px dashed var(--border);
@@ -128,58 +119,46 @@
   flex-shrink: 0;
 }
 
-.rm-compact-name {
-  font-size: 0.92rem !important;
-  font-weight: 700 !important;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-  max-width: 85px;
+.rm-bridge-line {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  border-radius: 2px;
+  min-width: 10px;
+  opacity: 0.85;
 }
 
-.rm-compact-name.empty {
-  color: var(--muted);
-  font-style: italic;
-  font-weight: 500;
-  font-size: 0.85rem;
+.roommate-compact-card:hover .rm-bridge-line {
+  background: var(--accent);
+  opacity: 0.65;
 }
 
 .room-number.compact-badge {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 4px 8px !important;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 14px !important;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  transition: transform 0.15s ease, border-color 0.15s ease;
-  min-width: 52px;
+  transition: all 0.2s ease;
+  min-width: 48px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .room-number.compact-badge:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
   border-color: var(--accent);
-}
-
-.room-number.compact-badge .rn-label {
-  font-size: 0.62rem;
-  font-weight: 800;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-  line-height: 1;
+  background: var(--accent-soft);
 }
 
 .room-number.compact-badge .rn-no {
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   font-weight: 800;
   color: var(--text);
-  line-height: 1.1;
-  margin-top: 2px;
+  line-height: 1;
 }
 
 /* 3. Batch Header Tight Gap when Collapsed - Exactly Matches Picture 2 */
