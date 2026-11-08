@@ -26,7 +26,7 @@ function renderSingleRoomCompactCard(room, pair, index) {
   const roomDisplay = currentLang === "bn" ? toBengaliDigits(room) : room;
 
   return `
-    <article class="roommate-compact-card" data-aos="fade-up" data-aos-delay="${Math.min(index * 40, 240)}">
+    <article class="roommate-compact-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 60}">
       <div class="rm-compact-person left" onclick="openStudentModalById('${p1?.id}')" title="${p1FullName}">
         <img src="${p1Photo}" alt="${p1FullName}" loading="lazy">
       </div>
@@ -521,7 +521,7 @@ function renderNoticesPage() {
     return;
   }
 
-  container.innerHTML = filtered.map(n => {
+  container.innerHTML = filtered.map((n, index) => {
     const title = currentLang === 'bn' ? (n.title_bn || n.title_en) : (n.title_en || n.title_bn);
     const desc = currentLang === 'bn' ? (n.notice_text_bn || n.notice_text_en || '') : (n.notice_text_en || n.notice_text_bn || '');
     const excerpt = desc.length > 140 ? desc.substring(0, 140) + '...' : desc;
@@ -529,7 +529,7 @@ function renderNoticesPage() {
     const catLabel = n.category === 'urgent' ? (currentLang === 'bn' ? 'জরুরি নোটিশ' : 'Urgent') : n.category === 'hostel' ? (currentLang === 'bn' ? 'ছাত্রাবাস' : 'Hostel & Seats') : n.category === 'event' ? (currentLang === 'bn' ? 'ইভেন্ট' : 'Events') : (currentLang === 'bn' ? 'সাধারণ' : 'General');
 
     return `
-      <article class="notice-card" onclick="openNoticeModal('${n._id}')" tabindex="0" role="button">
+      <article class="notice-card" onclick="openNoticeModal('${n._id}')" tabindex="0" role="button" data-aos="fade-up" data-aos-delay="${(index % 3) * 70}">
         <div class="notice-badge-row">
           <span class="notice-cat-badge ${catClass}">${catLabel}</span>
           <span class="notice-date-text"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:4px; opacity:0.8;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>${n.date || ''}</span>
@@ -2946,7 +2946,7 @@ function renderSingleStudentCard(student, index) {
     : '';
 
   return `
-    <button class="student-card" type="button" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 60, 240)}">
+    <button class="student-card" type="button" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${(index % 3) * 75}">
       <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
       <span class="student-body">
         <span class="student-info-col">
@@ -3321,11 +3321,11 @@ function groupByRoom(list) {
   return pairs;
 }
 
-function renderEmptyRoomPerson(animation = "fade-left") {
+function renderEmptyRoomPerson() {
   const emptyLabel = currentLang === "bn" ? "ফাঁকা সিট" : "Empty Seat";
   const emptySub = currentLang === "bn" ? "বরাদ্দ নেই" : "Vacant";
   return `
-    <div class="room-person empty" data-aos="${animation}">
+    <div class="room-person empty">
       <div class="empty-avatar-circle big-empty-avatar">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
           <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -3406,10 +3406,10 @@ function renderRoommates() {
           html += renderSingleRoomCompactCard(room, pair, index);
         } else {
           html += `
-            <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
-              ${renderRoomPerson(pair[0], "fade-right")}
+            <article class="room-pair" data-aos="fade-up" data-aos-delay="${(index % 2) * 80}">
+              ${renderRoomPerson(pair[0])}
               <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : renderEmptyRoomPerson("fade-left")}
+              ${pair[1] ? renderRoomPerson(pair[1]) : renderEmptyRoomPerson()}
             </article>`;
         }
       });
@@ -3466,10 +3466,10 @@ function renderRoommates() {
           html += renderSingleRoomCompactCard(room, pair, index);
         } else {
           html += `
-            <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
-              ${renderRoomPerson(pair[0], "fade-right")}
+            <article class="room-pair" data-aos="fade-up" data-aos-delay="${(index % 2) * 80}">
+              ${renderRoomPerson(pair[0])}
               <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : renderEmptyRoomPerson("fade-left")}
+              ${pair[1] ? renderRoomPerson(pair[1]) : renderEmptyRoomPerson()}
             </article>`;
         }
       });
@@ -3481,10 +3481,10 @@ function renderRoommates() {
           html += renderSingleRoomCompactCard(room, pair, index);
         } else {
           html += `
-            <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
-              ${renderRoomPerson(pair[0], "fade-right")}
+            <article class="room-pair" data-aos="fade-up" data-aos-delay="${(index % 2) * 80}">
+              ${renderRoomPerson(pair[0])}
               <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : renderEmptyRoomPerson("fade-left")}
+              ${pair[1] ? renderRoomPerson(pair[1]) : renderEmptyRoomPerson()}
             </article>`;
         }
       });
@@ -3511,7 +3511,7 @@ function renderRoomPerson(student, animation) {
   const nameUnlocked = isProfileFieldUnlocked("name", student);
   const nameDisplay = nameUnlocked ? studentValue(student, "name") : "••••••••";
   return `
-    <button class="room-person" type="button" data-student-id="${student.id}" data-aos="${animation}">
+    <button class="room-person" type="button" data-student-id="${student.id}">
       <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
       <strong>${nameDisplay}</strong>
       <span>${classLabel(student.classNo, student)} · ${formatGroupShort(student.group)}</span>
@@ -3727,7 +3727,7 @@ async function renderDcSocialPage() {
 
   const links = cmsSettings?.dhaka_college?.social_links || [];
   if (links.length) {
-    grid.innerHTML = links.map((link) => {
+    grid.innerHTML = links.map((link, index) => {
       let title = currentLang === "bn" ? link.title_bn : link.title_en;
       // Clean trailing "Page" / "পেজ" if present
       title = (title || "").replace(/\s+(Page|পেজ)$/i, "");
@@ -3738,7 +3738,7 @@ async function renderDcSocialPage() {
 
       if (link.is_group) {
         return `
-          <div class="dc-card social-link-card group-card" data-aos="fade-up" style="padding: 16px; min-height: 620px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="dc-card social-link-card group-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 80}" style="padding: 16px; min-height: 620px; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                 <div class="card-badge group-badge" style="background: rgba(24, 119, 242, 0.15); color: #1877f2; border: 1px solid rgba(24, 119, 242, 0.3); font-weight: 700; margin-bottom: 0;">👥 ${typeLabel}</div>
@@ -3800,7 +3800,7 @@ async function renderDcSocialPage() {
         `;
       } else {
         return `
-          <div class="dc-card social-link-card page-embed-card" data-aos="fade-up" style="padding: 16px; min-height: 620px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div class="dc-card social-link-card page-embed-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 80}" style="padding: 16px; min-height: 620px; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
               <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                 <div class="card-badge page-badge" style="background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.25); font-weight: 700; margin-bottom: 0; display: inline-flex; align-items: center; gap: 6px;">
@@ -3835,7 +3835,7 @@ async function renderDcClubsPage() {
 
   const clubs = cmsSettings?.dhaka_college?.clubs || [];
   if (clubs.length) {
-    grid.innerHTML = clubs.map((club) => {
+    grid.innerHTML = clubs.map((club, index) => {
       let name = currentLang === "bn" ? club.name_bn : club.name_en;
       if (name.includes("International College Club") || name.includes("DCICC")) {
         name = currentLang === "bn" ? "ঢাকা কলেজ ইসলামিক কালচারাল ক্লাব" : "Dhaka College Islamic Cultural Club";
@@ -3851,7 +3851,7 @@ async function renderDcClubsPage() {
       const desc = currentLang === "bn" ? (club.desc_bn || club.desc_en) : (club.desc_en || club.desc_bn);
 
       return `
-        <div class="dc-card club-card" data-aos="fade-up" style="padding: 18px 16px; min-height: 590px; display: flex; flex-direction: column; justify-content: space-between;">
+        <div class="dc-card club-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 80}" style="padding: 18px 16px; min-height: 590px; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
             <div class="club-card-header" style="margin-bottom: 12px; text-align: center; padding: 4px 6px 6px;">
               <h3 class="club-card-title" style="font-size: 1.12rem; font-weight: 700; color: var(--text); margin: 0; line-height: 1.35; min-height: 44px; display: flex; align-items: center; justify-content: center; letter-spacing: -0.01em;">
@@ -5580,7 +5580,20 @@ function initImageFallbacks() {
 }
 
 function refreshAos() {
-  if (window.AOS) window.AOS.refreshHard();
+  if (!window.AOS) return;
+  try {
+    window.AOS.refresh();
+  } catch (e) {}
+  setTimeout(() => {
+    try {
+      if (window.AOS) window.AOS.refresh();
+    } catch (e) {}
+  }, 60);
+  setTimeout(() => {
+    try {
+      if (window.AOS) window.AOS.refreshHard();
+    } catch (e) {}
+  }, 250);
 }
 
 function initAos() {
@@ -5594,10 +5607,11 @@ function initAos() {
   }
 
   window.AOS.init({
-    duration: 900,
-    once: true,
-    offset: 80,
-    easing: "ease-out-cubic"
+    duration: 650,
+    once: false,
+    offset: 30,
+    easing: "ease-out-cubic",
+    mirror: true,
   });
 }
 
@@ -5781,7 +5795,7 @@ function renderBirthdays() {
       const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? `রুম ${toBengaliDigits(roomVal)}` : `ROOM ${roomVal}`) : maskData(roomVal);
 
       html += `
-        <article class="birthday-card ${isToday ? 'is-today-birthday' : ''}" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 30, 240)}" role="button" tabindex="0">
+        <article class="birthday-card ${isToday ? 'is-today-birthday' : ''}" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${(index % 3) * 60}" role="button" tabindex="0">
           <div class="bday-date-badge ${isToday ? 'bday-badge-today-glow' : ''}">
             <span class="bday-badge-month">${monthShort}</span>
             <span class="bday-badge-day">${dayStr}</span>

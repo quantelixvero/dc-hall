@@ -836,11 +836,12 @@ html.user-logged-in #statusCard {
   text-align: left;
   cursor: pointer;
   box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 
 .student-card:hover {
-  transform: scale(1.03);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(16, 201, 168, 0.12), 0 6px 14px rgba(0, 0, 0, 0.08);
   box-shadow: var(--shadow);
   border-color: var(--accent);
 }
@@ -1126,6 +1127,7 @@ html.user-logged-in #statusCard {
 }
 
 .room-pair {
+
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
@@ -1135,6 +1137,13 @@ html.user-logged-in #statusCard {
   border-radius: 8px;
   background: var(--surface-strong);
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.room-pair:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 30px rgba(16, 201, 168, 0.1);
 }
 
 .room-person {
