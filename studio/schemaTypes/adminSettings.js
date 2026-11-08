@@ -218,7 +218,7 @@ export default defineType({
     }),
 
     // ═══════════════════════════════════════════
-    // 1. MASTER PASSWORD
+    // 1. MASTER PASSWORD & BATCH DIRECTORY LOCKS
     // ═══════════════════════════════════════════
     defineField({
       name: 'master_password',
@@ -226,6 +226,122 @@ export default defineType({
       type: 'string',
       group: 'passwords',
       description: 'অ্যাডমিনের প্রধান সুপার মাস্টার পাসওয়ার্ড। এই পাসওয়ার্ড দিয়ে ওয়েবসাইটে লগইন করলে সকল ব্যাচ এবং সমস্ত সংরক্ষিত গোপন তথ্য অবিলম্বে আনলক হবে।',
+    }),
+
+    defineField({
+      name: 'batch_security_controls',
+      title: 'Batch Directory Locks & Passwords',
+      type: 'array',
+      group: 'passwords',
+      description: 'প্রতিটি ব্যাচের জন্য ওয়েবসাইট পাসওয়ার্ড ও ডিরেক্টরি লক নিয়ন্ত্রণ। "Lock Batch Directory" অন থাকলে সাধারণ ভিজিটররা এই ব্যাচের শিক্ষার্থী ও রুমমেট দেখতে পারবে না, পাসওয়ার্ড দিয়ে আনলক করতে হবে।',
+      initialValue: [
+        {
+          _key: 'sec_hsc27',
+          batch: 'HSC-27',
+          batch_password: '',
+          is_locked: false,
+          lock_notice: 'এই ব্যাচের তথ্য দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।',
+          moderator_emails: [],
+        },
+        {
+          _key: 'sec_hsc28',
+          batch: 'HSC-28',
+          batch_password: '',
+          is_locked: false,
+          lock_notice: 'এই ব্যাচের তথ্য দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।',
+          moderator_emails: [],
+        },
+        {
+          _key: 'sec_hsc29',
+          batch: 'HSC-29',
+          batch_password: '',
+          is_locked: false,
+          lock_notice: 'এই ব্যাচের তথ্য দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।',
+          moderator_emails: [],
+        },
+      ],
+      of: [
+        {
+          type: 'object',
+          name: 'batchSecurityItem',
+          title: 'Batch Security Item',
+          fields: [
+            defineField({
+              name: 'batch',
+              title: 'Batch',
+              type: 'string',
+              options: {
+                list: [
+                  'HSC-27', 'HSC-28', 'HSC-29', 'HSC-30',
+                  'HSC-31', 'HSC-32', 'HSC-33', 'HSC-34', 'HSC-35',
+                  'HSC-36', 'HSC-37', 'HSC-38', 'HSC-39', 'HSC-40',
+                ],
+              },
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'batch_password',
+              title: 'Batch Access Password',
+              type: 'string',
+              description: 'এই ব্যাচের ডিরেক্টরি আনলক করার পাসওয়ার্ড।',
+            }),
+            defineField({
+              name: 'is_locked',
+              title: 'Lock Batch Directory (লক করুন)',
+              type: 'boolean',
+              description: 'চালু (ON) থাকলে সাধারণ ভিজিটররা এই ব্যাচের শিক্ষার্থী তালিকা ও রুমমেট তথ্য দেখতে পারবে না, ব্যাচ পাসওয়ার্ড দিয়ে আনলক করতে হবে।',
+              initialValue: false,
+            }),
+            defineField({
+              name: 'lock_notice',
+              title: 'Batch Lock Notice Message',
+              type: 'string',
+              initialValue: 'এই ব্যাচের তথ্য দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।',
+              description: 'ব্যাচ লক থাকা অবস্থায় শিক্ষার্থীদের জন্য যে বার্তাটি প্রদর্শন করা হবে।',
+            }),
+            defineField({
+              name: 'moderator_emails',
+              title: 'Moderator Emails (মডারেটর ইমেইল)',
+              type: 'array',
+              of: [{ type: 'string' }],
+              description: 'এই ব্যাচের অনুমোদিত মডারেটরদের জিমেইল। এরা স্টুডিওতে শুধুমাত্র এডিট রিকোয়েস্ট পাঠাতে পারবে।',
+            }),
+          ],
+          preview: {
+            select: {
+              batch: 'batch',
+              is_locked: 'is_locked',
+              pass: 'batch_password',
+            },
+            prepare({ batch, is_locked, pass }) {
+              const lockTag = is_locked ? '🔒 Locked' : '🟢 Public'
+              const passTag = pass ? `Password: ${pass}` : 'No Password'
+              return {
+                title: `${lockTag} — ${batch || 'Batch'}`,
+                subtitle: passTag,
+              }
+            },
+          },
+        },
+      ],
+    }),
+
+    defineField({
+      name: 'student_name_case',
+      title: 'Student Name Display Case / শিক্ষার্থীর নামের ফরম্যাট',
+      type: 'string',
+      group: 'profile_controls',
+      description: 'অ্যাডমিন প্যানেলে যেভাবেই নাম লেখা হোক না কেন, ওয়েবসাইটে নাম প্রদর্শনের নির্দিষ্ট নিয়ম।',
+      options: {
+        list: [
+          { title: 'Capitalize Each Word / Title Case (যেমন: Md. Rahim Ali)', value: 'capitalize_each_word' },
+          { title: 'ALL UPPERCASE / সব বড় হাতের (যেমন: MD. RAHIM ALI)', value: 'uppercase' },
+          { title: 'all lowercase / সব ছোট হাতের (যেমন: md. rahim ali)', value: 'lowercase' },
+          { title: 'As Typed / যেমন লেখা হয়েছে তেমনই', value: 'as_typed' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'capitalize_each_word',
     }),
 
     defineField({

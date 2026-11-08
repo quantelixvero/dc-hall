@@ -32,48 +32,71 @@ const PERMANENT_SUPER_ADMINS = [
  */
 function createBatchContentItems(S, batchName) {
   const cleanBatchKey = batchName.toLowerCase().replace(/[^a-z0-9]/g, '')
+  const studentTpl = `student-${cleanBatchKey}`
+  const roomTpl = `room-${cleanBatchKey}`
+  const eventTpl = `galleryEvent-${cleanBatchKey}`
+  const formTpl = `hallForm-${cleanBatchKey}`
+
+  function createScopedList({ id, title, icon, schemaType, filter, params, defaultOrdering, templateId }) {
+    const list = S.documentList()
+      .id(id)
+      .title(title)
+      .schemaType(schemaType)
+      .filter(filter)
+      .params(params)
+      .defaultOrdering(defaultOrdering)
+      .canHandleIntent((intentName, p) => intentName === 'create' && p.template === templateId)
+      .initialValueTemplates([S.initialValueTemplateItem(templateId)])
+
+    list.initialValueTemplatesSpecified = true
+    const origClone = list.clone.bind(list)
+    list.clone = function(withSpec = {}) {
+      const cloned = origClone(withSpec)
+      cloned.initialValueTemplatesSpecified = true
+      cloned.spec.initialValueTemplates = [S.initialValueTemplateItem(templateId)]
+      return cloned
+    }
+
+    const origSerialize = list.serialize.bind(list)
+    list.serialize = function(options = { path: [] }) {
+      const serialized = origSerialize(options)
+      serialized.initialValueTemplates = [
+        S.initialValueTemplateItem(templateId).serialize({ path: options.path, index: 0 })
+      ]
+      return serialized
+    }
+
+    return S.listItem()
+      .title(title)
+      .icon(icon)
+      .child(list)
+  }
 
   return [
-    S.listItem()
-      .title(`${batchName} Students`)
-      .icon(UsersIcon)
-      .child(
-        S.documentList()
-          .id(`students-${cleanBatchKey}`)
-          .title(`${batchName} Students`)
-          .schemaType('student')
-          .filter('_type == "student" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
-          .params({ batch: batchName })
-          .canHandleIntent((intentName, params) => {
-            return intentName === 'create' && params.template === `student-${cleanBatchKey}`;
-          })
-          .defaultOrdering([
-            { field: 'position', direction: 'asc' },
-            { field: 'short_roll', direction: 'asc' },
-          ])
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`student-${cleanBatchKey}`),
-          ])
-      ),
+    createScopedList({
+      id: `students-${cleanBatchKey}`,
+      title: `${batchName} Students`,
+      icon: UsersIcon,
+      schemaType: 'student',
+      filter: '_type == "student" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))',
+      params: { batch: batchName },
+      defaultOrdering: [
+        { field: 'position', direction: 'asc' },
+        { field: 'short_roll', direction: 'asc' },
+      ],
+      templateId: studentTpl,
+    }),
 
-    S.listItem()
-      .title(`${batchName} Rooms & Roommates`)
-      .icon(PackageIcon)
-      .child(
-        S.documentList()
-          .id(`rooms-${cleanBatchKey}`)
-          .title(`${batchName} Rooms & Roommates`)
-          .schemaType('room')
-          .filter('_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
-          .params({ batch: batchName })
-          .canHandleIntent((intentName, params) => {
-            return intentName === 'create' && params.template === `room-${cleanBatchKey}`;
-          })
-          .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`room-${cleanBatchKey}`),
-          ])
-      ),
+    createScopedList({
+      id: `rooms-${cleanBatchKey}`,
+      title: `${batchName} Rooms & Roommates`,
+      icon: PackageIcon,
+      schemaType: 'room',
+      filter: '_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))',
+      params: { batch: batchName },
+      defaultOrdering: [{ field: 'room_no', direction: 'asc' }],
+      templateId: roomTpl,
+    }),
 
     S.listItem()
       .title(`${batchName} Photo Collection`)
@@ -85,43 +108,27 @@ function createBatchContentItems(S, batchName) {
           .title(`${batchName} Photo Collection`)
       ),
 
-    S.listItem()
-      .title(`${batchName} Events & Programs`)
-      .icon(CalendarIcon)
-      .child(
-        S.documentList()
-          .id(`events-${cleanBatchKey}`)
-          .title(`${batchName} Events & Programs`)
-          .schemaType('galleryEvent')
-          .filter('_type == "galleryEvent" && ($batch in batches || "all" in batches || (!defined(batches) && $batch == "HSC-27"))')
-          .params({ batch: batchName })
-          .canHandleIntent((intentName, params) => {
-            return intentName === 'create' && params.template === `galleryEvent-${cleanBatchKey}`;
-          })
-          .defaultOrdering([{ field: 'date', direction: 'desc' }])
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`galleryEvent-${cleanBatchKey}`),
-          ])
-      ),
+    createScopedList({
+      id: `events-${cleanBatchKey}`,
+      title: `${batchName} Events & Programs`,
+      icon: CalendarIcon,
+      schemaType: 'galleryEvent',
+      filter: '_type == "galleryEvent" && ($batch in batches || "all" in batches || (!defined(batches) && $batch == "HSC-27"))',
+      params: { batch: batchName },
+      defaultOrdering: [{ field: 'date', direction: 'desc' }],
+      templateId: eventTpl,
+    }),
 
-    S.listItem()
-      .title(`${batchName} Google Forms`)
-      .icon(DocumentIcon)
-      .child(
-        S.documentList()
-          .id(`forms-${cleanBatchKey}`)
-          .title(`${batchName} Google Forms`)
-          .schemaType('hallForm')
-          .filter('_type == "hallForm" && (batch == $batch || batch == "all")')
-          .params({ batch: batchName })
-          .canHandleIntent((intentName, params) => {
-            return intentName === 'create' && params.template === `hallForm-${cleanBatchKey}`;
-          })
-          .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`hallForm-${cleanBatchKey}`),
-          ])
-      ),
+    createScopedList({
+      id: `forms-${cleanBatchKey}`,
+      title: `${batchName} Google Forms`,
+      icon: DocumentIcon,
+      schemaType: 'hallForm',
+      filter: '_type == "hallForm" && (batch == $batch || batch == "all")',
+      params: { batch: batchName },
+      defaultOrdering: [{ field: '_createdAt', direction: 'desc' }],
+      templateId: formTpl,
+    }),
   ]
 }
 
@@ -129,7 +136,6 @@ function createBatchContentItems(S, batchName) {
  * Build complete Portal item for a batch
  */
 function createBatchPortalItem(S, batchName, isFounder = false) {
-  const cleanBatchKey = batchName.toLowerCase().replace(/[^a-z0-9]/g, '')
   return S.listItem()
     .title(`${batchName} Portal${isFounder ? ' (Founder)' : ''}`)
     .icon(isFounder ? StarIcon : FolderIcon)
@@ -138,15 +144,6 @@ function createBatchPortalItem(S, batchName, isFounder = false) {
         .title(`${batchName}${isFounder ? ' (Founder)' : ''} Management`)
         .items([
           ...createBatchContentItems(S, batchName),
-          S.listItem()
-            .title(`${batchName} Website Password`)
-            .icon(LockIcon)
-            .child(
-              S.document()
-                .schemaType('batchConfig')
-                .documentId(`batchConfig-${cleanBatchKey}`)
-                .title(`${batchName} Configuration`)
-            ),
         ])
     )
 }
@@ -306,17 +303,6 @@ export const structure = async (S, context) => {
       .items([
         ...createBatchContentItems(S, userBatch),
 
-        // 5th folder: ONLY this batch's password & moderator config (no extra emoji)
-        S.listItem()
-          .title(`${userBatch} Password & Moderator`)
-          .icon(LockIcon)
-          .child(
-            S.document()
-              .schemaType('batchConfig')
-              .documentId(batchConfigDocId)
-              .title(`${userBatch} Password & Moderator Management`)
-          ),
-
         S.divider(),
 
         // Incoming edit requests
@@ -388,15 +374,6 @@ export const structure = async (S, context) => {
         ),
 
       S.listItem()
-        .title('Batch Admin & Moderator')
-        .icon(UsersIcon)
-        .child(
-          S.documentTypeList('batchConfig')
-            .title('Batch Configurations')
-            .defaultOrdering([{ field: 'batch', direction: 'asc' }])
-        ),
-
-      S.listItem()
         .title('All Edit Requests')
         .icon(EnvelopeIcon)
         .child(
@@ -458,7 +435,7 @@ export const structure = async (S, context) => {
 
       S.divider(),
 
-      // ─── Batch Portals (HSC-27 Founder to HSC-35) ───
+      // ─── Batch Portals (HSC-27 Founder to HSC-40) ───
       createBatchPortalItem(S, 'HSC-27', true),
       createBatchPortalItem(S, 'HSC-28'),
       createBatchPortalItem(S, 'HSC-29'),
@@ -468,6 +445,11 @@ export const structure = async (S, context) => {
       createBatchPortalItem(S, 'HSC-33'),
       createBatchPortalItem(S, 'HSC-34'),
       createBatchPortalItem(S, 'HSC-35'),
+      createBatchPortalItem(S, 'HSC-36'),
+      createBatchPortalItem(S, 'HSC-37'),
+      createBatchPortalItem(S, 'HSC-38'),
+      createBatchPortalItem(S, 'HSC-39'),
+      createBatchPortalItem(S, 'HSC-40'),
 
       S.divider(),
 

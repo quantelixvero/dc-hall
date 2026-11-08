@@ -1,12 +1,13 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
-import { schemaTypes } from './schemaTypes'
+import { schemaTypes } from './schemaTypes/index.js'
 import { structure } from './structure'
 
 const ALL_BATCHES = [
   'HSC-27', 'HSC-28', 'HSC-29', 'HSC-30',
-  'HSC-31', 'HSC-32', 'HSC-33', 'HSC-34', 'HSC-35'
+  'HSC-31', 'HSC-32', 'HSC-33', 'HSC-34', 'HSC-35',
+  'HSC-36', 'HSC-37', 'HSC-38', 'HSC-39', 'HSC-40'
 ]
 
 // Generate dynamic batch templates

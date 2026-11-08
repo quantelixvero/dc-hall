@@ -1889,7 +1889,15 @@ function applySanityPayload(sanityData) {
         if (!roomNum) return;
         if (!room.title_en) room.title_en = `Room ${roomNum}`;
         if (!room.title_bn) room.title_bn = `রুম ${toBengaliDigits(roomNum)}`;
-        if (!room.capacity) room.capacity = 2;
+        if (!room.capacity) {
+          if (roomNum === '102' || roomNum === '103') {
+            room.capacity = 12;
+          } else if (roomNum === '104') {
+            room.capacity = 6;
+          } else {
+            room.capacity = 2;
+          }
+        }
         if (room.assigned_students && Array.isArray(room.assigned_students)) {
           room.assigned_students.forEach((as) => {
             const matched = students.find((s) => s.slug === as.student_id || (as.short_roll && String(s.roll) === String(as.short_roll)) || s.name === as.name_en);
@@ -2071,9 +2079,156 @@ function t(key) {
   return key.split(".").reduce((value, part) => value && value[part], i18n[currentLang]) || key;
 }
 
-function studentValue(student, field) {
-  return currentLang === "bn" && student.bn && student.bn[field] ? student.bn[field] : student[field];
+function formatStudentDisplayName(name) {
+  if (!name || typeof name !== 'string') return '';
+  const caseMode = cmsAdminSettings?.student_name_case || 'capitalize_each_word';
+  if (caseMode === 'uppercase') {
+    return name.toUpperCase();
+  }
+  if (caseMode === 'lowercase') {
+    return name.toLowerCase();
+  }
+  if (caseMode === 'as_typed') {
+    return name;
+  }
+  // Title Case / Capitalize Each Word:
+  // Capitalizes words, preserves dots like "Md. Rahim Ali"
+  return name.replace(/\b([a-z])/gi, m => m.toUpperCase());
 }
+
+function studentValue(student, field) {
+  let val = currentLang === "bn" && student.bn && student.bn[field] ? student.bn[field] : student[field];
+  if (field === "name" && val) {
+    return formatStudentDisplayName(val);
+  }
+  return val;
+}
+
+function getBatchSecurityConfig(batchName) {
+  if (!batchName) return null;
+  const cleanBatch = String(batchName).trim().toUpperCase();
+
+  // 1. Check adminSettings.batch_security_controls (Centralized Security & Visibility)
+  if (cmsAdminSettings?.batch_security_controls && Array.isArray(cmsAdminSettings.batch_security_controls)) {
+    const matched = cmsAdminSettings.batch_security_controls.find(c => String(c?.batch || '').trim().toUpperCase() === cleanBatch);
+    if (matched) return matched;
+  }
+
+  // 2. Check batchConfigs collection
+  if (Array.isArray(cmsBatchConfigs)) {
+    const matched = cmsBatchConfigs.find(c => String(c?.batch || '').trim().toUpperCase() === cleanBatch);
+    if (matched) return matched;
+  }
+
+  return null;
+}
+
+function isBatchDirectoryLocked(batchName) {
+  if (!batchName) return false;
+  // If master authenticated, always unlocked
+  const sessionRole = typeof getStoredSessionRole === "function" ? getStoredSessionRole() : (typeof getAuthRole === "function" ? getAuthRole() : "");
+  if (sessionRole === "master") return false;
+
+  const cleanBatch = String(batchName).trim().toUpperCase();
+  const batchNum = cleanBatch.replace(/[^0-9]/g, '');
+  if (sessionRole === `hsc${batchNum}`) return false;
+
+  // Check session unlock
+  const unlockKey = `dc_hall_batch_unlocked_${cleanBatch}`;
+  if (sessionStorage.getItem(unlockKey) === "1" || localStorage.getItem(unlockKey) === "1") {
+    return false;
+  }
+
+  const cfg = getBatchSecurityConfig(batchName);
+  if (cfg && cfg.is_locked === true) {
+    return true;
+  }
+  return false;
+}
+
+function unlockBatchDirectory(batchName, inputPassword) {
+  if (!batchName || !inputPassword) return { success: false, message: currentLang === 'bn' ? 'পাসওয়ার্ড লিখুন' : 'Password is required' };
+  const cleanPass = String(inputPassword).trim();
+  const cleanBatch = String(batchName).trim().toUpperCase();
+
+  // Check master password
+  const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
+  if (cmsMaster && cleanPass === String(cmsMaster).trim()) {
+    sessionStorage.setItem(`dc_hall_batch_unlocked_${cleanBatch}`, "1");
+    return { success: true };
+  }
+
+  const cfg = getBatchSecurityConfig(batchName);
+  if (cfg && cfg.batch_password && cleanPass === String(cfg.batch_password).trim()) {
+    sessionStorage.setItem(`dc_hall_batch_unlocked_${cleanBatch}`, "1");
+    return { success: true };
+  }
+
+  return { success: false, message: currentLang === 'bn' ? 'ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে চেষ্টা করুন।' : 'Incorrect password! Please try again.' };
+}
+
+function renderLockedBatchCard(batchName) {
+  const cleanBatch = String(batchName).trim().toUpperCase();
+  const cfg = getBatchSecurityConfig(cleanBatch);
+  const defaultNotice = currentLang === 'bn'
+    ? `${cleanBatch} ব্যাচের তথ্য সাময়িকভাবে লক করা আছে। দেখতে ব্যাচ পাসওয়ার্ড দিয়ে আনলক করুন।`
+    : `${cleanBatch} directory is currently locked. Enter batch password to unlock.`;
+  const noticeMsg = cfg?.lock_notice || defaultNotice;
+  const safeId = cleanBatch.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+  return `
+    <div class="locked-batch-banner" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(20, 24, 38, 0.95), rgba(15, 18, 30, 0.98)); border: 1px solid rgba(239, 68, 68, 0.35); border-radius: 14px; padding: 28px 24px; margin: 16px 0; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.35);" data-aos="fade-up">
+      <div style="display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); color: #ef4444; margin-bottom: 14px;">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+        </svg>
+      </div>
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: #f87171; margin-bottom: 8px;">
+        🔒 ${cleanBatch} ${currentLang === 'bn' ? 'ডিরেক্টরি লক করা' : 'Directory Locked'}
+      </h3>
+      <p style="color: #cbd5e1; font-size: 0.95rem; max-width: 540px; margin: 0 auto 20px auto; line-height: 1.6;">
+        ${noticeMsg}
+      </p>
+      <div style="display: flex; gap: 10px; max-width: 420px; margin: 0 auto; justify-content: center; flex-wrap: wrap;">
+        <input type="password" id="batchUnlockInput_${safeId}" placeholder="${currentLang === 'bn' ? 'পাসওয়ার্ড লিখুন...' : 'Enter password...'}" style="flex: 1; min-width: 200px; padding: 10px 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none;" onkeydown="if(event.key==='Enter') window.handleUnlockBatchClick('${cleanBatch}')">
+        <button type="button" class="btn primary" onclick="window.handleUnlockBatchClick('${cleanBatch}')" style="padding: 10px 22px; font-weight: 700; border-radius: 8px; cursor: pointer;">
+          ${currentLang === 'bn' ? 'আনলক করুন' : 'Unlock'}
+        </button>
+      </div>
+      <div id="batchUnlockErr_${safeId}" style="color: #ef4444; font-size: 0.85rem; margin-top: 10px; min-height: 20px;"></div>
+    </div>
+  `;
+}
+
+window.handleUnlockBatchClick = function(batchName) {
+  const cleanBatch = String(batchName).trim().toUpperCase();
+  const safeId = cleanBatch.toLowerCase().replace(/[^a-z0-9]/g, '');
+  const input = document.getElementById(`batchUnlockInput_${safeId}`);
+  const errBox = document.getElementById(`batchUnlockErr_${safeId}`);
+  if (!input) return;
+  const pass = input.value.trim();
+  const result = unlockBatchDirectory(cleanBatch, pass);
+  if (result.success) {
+    if (errBox) {
+      errBox.style.color = '#10b981';
+      errBox.textContent = currentLang === 'bn' ? 'সফলভাবে আনলক হয়েছে!' : 'Unlocked successfully!';
+    }
+    setTimeout(() => {
+      if (typeof renderStudentCards === 'function' && byId('studentGrid')) {
+        renderStudentCards();
+      }
+      if (typeof renderRoommates === 'function' && byId('roommateGrid')) {
+        renderRoommates();
+      }
+      if (typeof refreshAos === 'function') refreshAos();
+    }, 400);
+  } else {
+    if (errBox) {
+      errBox.style.color = '#ef4444';
+      errBox.textContent = result.message;
+    }
+  }
+};
 
 
 function formatGroupShort(group) {
@@ -2903,6 +3058,8 @@ function renderStudentCards(list = getFilteredStudents()) {
 
     if (!batchStudents.length) {
       html += `<div class="empty-state">${t("common.noStudent")}</div>`;
+    } else if (isBatchDirectoryLocked(batchLabel)) {
+      html += renderLockedBatchCard(batchLabel);
     } else {
       batchStudents.forEach((student, idx) => {
         html += renderSingleStudentCard(student, idx);
@@ -2947,9 +3104,13 @@ function renderStudentCards(list = getFilteredStudents()) {
           </div>
         </div>
         <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
-      filteredBatchStudents.forEach(student => {
-        html += renderSingleStudentCard(student, globalIdx++);
-      });
+      if (isBatchDirectoryLocked(batch)) {
+        html += renderLockedBatchCard(batch);
+      } else {
+        filteredBatchStudents.forEach(student => {
+          html += renderSingleStudentCard(student, globalIdx++);
+        });
+      }
       html += `</div>`;
     } else {
       const previewStudents = filteredBatchStudents.slice(0, 3);
@@ -2969,20 +3130,24 @@ function renderStudentCards(list = getFilteredStudents()) {
             </div>
           </div>
         </div>
-        <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">
-          <div class="prev-batch-preview-grid">`;
-      previewStudents.forEach(student => {
-        html += renderSingleStudentCard(student, globalIdx++);
-      });
-      html += `</div>`;
+        <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
+      if (isBatchDirectoryLocked(batch)) {
+        html += renderLockedBatchCard(batch);
+      } else {
+        html += `<div class="prev-batch-preview-grid">`;
+        previewStudents.forEach(student => {
+          html += renderSingleStudentCard(student, globalIdx++);
+        });
+        html += `</div>`;
 
-      if (filteredBatchStudents.length > 3) {
-        html += `
-          <div class="prev-batch-action" data-aos="fade-up">
-            <a href="students.html?batch=${batchSlug}" class="prev-batch-view-all-btn">
-              ${currentLang === 'bn' ? `সকল ${batch} শিক্ষার্থী দেখুন →` : `View All ${batch} Students →`}
-            </a>
-          </div>`;
+        if (filteredBatchStudents.length > 3) {
+          html += `
+            <div class="prev-batch-action" data-aos="fade-up">
+              <a href="students.html?batch=${batchSlug}" class="prev-batch-view-all-btn">
+                ${currentLang === 'bn' ? `সকল ${batch} শিক্ষার্থী দেখুন →` : `View All ${batch} Students →`}
+              </a>
+            </div>`;
+        }
       }
       html += `</div>`;
     }
@@ -3207,6 +3372,8 @@ function renderRoommates() {
     const isCompactView = grid.classList.contains("view-compact");
     if (!rooms.length) {
       html += `<div class="empty-state" style="grid-column: 1 / -1;">${t("common.noStudent")}</div>`;
+    } else if (isBatchDirectoryLocked(batchLabel)) {
+      html += renderLockedBatchCard(batchLabel);
     } else {
       rooms.forEach(([room, pair], index) => {
         if (isCompactView) {
@@ -3267,7 +3434,9 @@ function renderRoommates() {
       <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
 
     const isCompactView = grid.classList.contains("view-compact");
-    if (isLatest) {
+    if (isBatchDirectoryLocked(batch)) {
+      html += renderLockedBatchCard(batch);
+    } else if (isLatest) {
       rooms.forEach(([room, pair], index) => {
         if (isCompactView) {
           html += renderSingleRoomCompactCard(room, pair, index);

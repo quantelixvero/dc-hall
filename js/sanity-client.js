@@ -25,7 +25,9 @@ const SANITY_GROQ_QUERY = `{
     menu_visibility,
     footer_columns,
     batch_email_slots,
-    batch_rotation_enabled
+    batch_rotation_enabled,
+    batch_security_controls,
+    student_name_case
   },
   "batchConfigs": *[_type == "batchConfig" && !(_id in path("drafts.**"))]{
     _id,
