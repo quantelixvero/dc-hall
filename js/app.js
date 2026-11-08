@@ -1893,7 +1893,7 @@ function applySanityPayload(sanityData) {
           if (roomNum === '102' || roomNum === '103') {
             room.capacity = 12;
           } else if (roomNum === '104') {
-            room.capacity = 6;
+            room.capacity = 4;
           } else {
             room.capacity = 2;
           }
@@ -2808,25 +2808,31 @@ function getFilteredStudents() {
 
 
 function renderCardDynamicBadges(student, context = 'student_page') {
-  const cfg = cmsSettings?.card_meta_badges || {};
-  let selected = cfg[context + '_badges'];
-  const maxBadges = Number(cfg.max_badges_per_card) || 3;
+  const cfg = cmsAdminSettings?.card_meta_badges || cmsSettings?.card_meta_badges;
+  let selected = cfg ? cfg[context + '_badges'] : null;
+  const maxBadges = Number(cfg?.max_badges_per_card) || 3;
 
+  // If the admin panel has configured card_meta_badges and selected is an empty array:
+  // It means the admin explicitly chose NO badges! Return empty string so card shrinks cleanly.
+  if (Array.isArray(selected) && selected.length === 0) {
+    return "";
+  }
+
+  // If cfg or selected is null/undefined (not yet configured in CMS at all):
   if (!Array.isArray(selected) || !selected.length) {
-    if (context === 'home_roommates' || context === 'roommates_page') {
-      selected = ['group'];
-    } else {
-      selected = ['room', 'group'];
-    }
+    return "";
   }
 
   const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
-  const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
-  const roomDisplay = isRoomUnlocked && roomVal !== '-' ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : null;
+  const roomVal = (student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "").trim();
 
   const isRollUnlocked = isProfileFieldUnlocked("roll", student);
   const rollVal = student.short_roll || student.roll || '';
-  const rollDisplay = isRollUnlocked && rollVal ? (currentLang === "bn" ? toBengaliDigits(rollVal) : rollVal) : null;
+
+  const isGroupUnlocked = isProfileFieldUnlocked("group", student);
+  const isSectionUnlocked = isProfileFieldUnlocked("section", student);
+  const isBloodUnlocked = isProfileFieldUnlocked("blood_group", student);
+  const isBatchUnlocked = isProfileFieldUnlocked("batch", student);
 
   const pills = [];
 
@@ -2835,42 +2841,64 @@ function renderCardDynamicBadges(student, context = 'student_page') {
 
     switch (item) {
       case 'room':
-        if (roomDisplay) {
-          pills.push(`<span class="bday-meta-pill">${t("common.room")} ${roomDisplay}</span>`);
+        if (roomVal && roomVal !== '-') {
+          if (isRoomUnlocked) {
+            const roomDisplay = currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal;
+            pills.push(`<span class="bday-meta-pill">${t("common.room")} ${roomDisplay}</span>`);
+          } else {
+            // Locked: show badge with lock indicator instead of hiding!
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${t("common.room")} 🔒</span>`);
+          }
         }
         break;
       case 'group':
         if (student.group) {
-          pills.push(`<span class="bday-meta-pill">${formatGroupShort(student.group)}</span>`);
+          if (isGroupUnlocked) {
+            pills.push(`<span class="bday-meta-pill">${formatGroupShort(student.group)}</span>`);
+          } else {
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'গ্রুপ' : 'Group'} 🔒</span>`);
+          }
         }
         break;
       case 'batch':
         if (student.batch) {
-          pills.push(`<span class="bday-meta-pill">${student.batch}</span>`);
+          if (isBatchUnlocked) {
+            pills.push(`<span class="bday-meta-pill">${student.batch}</span>`);
+          } else {
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'ব্যাচ' : 'Batch'} 🔒</span>`);
+          }
         }
         break;
       case 'section':
         if (student.section) {
-          pills.push(`<span class="bday-meta-pill">${currentLang === 'bn' ? 'সেকশন ' + student.section : 'Sec ' + student.section}</span>`);
+          if (isSectionUnlocked) {
+            pills.push(`<span class="bday-meta-pill">${currentLang === 'bn' ? 'সেকশন ' + student.section : 'Sec ' + student.section}</span>`);
+          } else {
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'সেকশন' : 'Sec'} 🔒</span>`);
+          }
         }
         break;
       case 'blood_group':
         const bg = student.blood_group || student.blood;
         if (bg) {
-          pills.push(`<span class="bday-meta-pill">${bg}</span>`);
+          if (isBloodUnlocked) {
+            pills.push(`<span class="bday-meta-pill">${bg}</span>`);
+          } else {
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'রক্ত' : 'Blood'} 🔒</span>`);
+          }
         }
         break;
       case 'roll':
-        if (rollDisplay) {
-          pills.push(`<span class="bday-meta-pill">${t("common.roll")} ${rollDisplay}</span>`);
+        if (rollVal) {
+          if (isRollUnlocked) {
+            const rollDisplay = currentLang === "bn" ? toBengaliDigits(rollVal) : rollVal;
+            pills.push(`<span class="bday-meta-pill">${t("common.roll")} ${rollDisplay}</span>`);
+          } else {
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${t("common.roll")} 🔒</span>`);
+          }
         }
         break;
     }
-  }
-
-  if (!pills.length) {
-    if (roomDisplay) pills.push(`<span class="bday-meta-pill">${t("common.room")} ${roomDisplay}</span>`);
-    if (student.group) pills.push(`<span class="bday-meta-pill">${formatGroupShort(student.group)}</span>`);
   }
 
   return pills.join("");
@@ -2881,8 +2909,8 @@ function renderSingleStudentCard(student, index) {
   const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
   const isRollUnlocked = isProfileFieldUnlocked("roll", student);
   const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
-  const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : maskData(roomVal);
-  const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? toBengaliDigits(student.roll) : student.roll) : maskData(student.roll);
+  const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : (roomVal !== "-" ? "🔒" : "-");
+  const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? toBengaliDigits(student.roll) : student.roll) : (student.roll ? "🔒" : "");
 
   const showRoom = (isProfileFieldVisible("room_2nd_year") || isProfileFieldVisible("room_1st_year")) && roomVal !== "-";
   const showRoll = isProfileFieldVisible("roll") && student.roll;
@@ -2905,15 +2933,18 @@ function renderSingleStudentCard(student, index) {
   const photoSrc = (showPhoto && isPhotoUnlocked) ? student.img : "images/student-avatar.png";
   const nameDisplay = showName ? (isProfileFieldUnlocked("name", student) ? studentValue(student, "name") : maskData(studentValue(student, "name"))) : "";
 
+  const badgesHtml = renderCardDynamicBadges(student, byId("studentGrid")?.dataset?.limit ? "home_students" : "student_page");
+  const metaContainer = badgesHtml
+    ? `<span class="student-meta" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px;">${badgesHtml}</span>`
+    : '';
+
   return `
     <button class="student-card" type="button" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${Math.min(index * 60, 240)}">
       <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
       <span class="student-body">
         <span class="student-info-col">
           ${nameDisplay ? `<h3>${nameDisplay}</h3>` : ''}
-          <span class="student-meta" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
-            ${renderCardDynamicBadges(student, byId("studentGrid")?.dataset?.limit ? "home_students" : "student_page")}
-          </span>
+          ${metaContainer}
         </span>
         <span class="student-badge-col">
           ${badgeHtml}

@@ -72,8 +72,8 @@ export default defineType({
 
   groups: [
     { name: 'passwords', title: 'Passwords & Master Key', default: true },
-    { name: 'batch_rotation', title: 'Batch Email Slots & Rotation' },
-    { name: 'profile_controls', title: 'Profile Fields & Locks' },
+    { name: 'batch_rotation', title: 'Batch Moderators & Access' },
+    { name: 'profile_controls', title: 'Profile Fields & Badges' },
     { name: 'page_access', title: 'Page Access & Locks' },
     { name: 'homepage_vis', title: 'Home Page Sections' },
     { name: 'developer_vis', title: 'Developer Sections' },
@@ -101,8 +101,16 @@ export default defineType({
     }),
 
     // ═══════════════════════════════════════════
-    // BATCH EMAIL SLOTS & ANNUAL ROTATION SYSTEM
+    // BATCH MODERATORS & UNIVERSAL ACCESS
     // ═══════════════════════════════════════════
+    defineField({
+      name: 'universal_moderator_emails',
+      title: 'Universal Moderator Emails / যেকোনো ব্যাচের জন্য মডারেটর ইমেইল',
+      type: 'array',
+      group: 'batch_rotation',
+      description: 'এখানে যেকোনো জিমেইল যোগ করলে সেই ব্যক্তি যেকোনো ব্যাচের ফোল্ডার ও ডেটা দেখার এবং এডিট রিকোয়েস্ট পাঠানোর সার্বজনীন মডারেটর অ্যাক্সেস পাবেন। কোনো নির্দিষ্ট ব্যাচে সীমাবদ্ধ থাকবে না।',
+      of: [{ type: 'string' }],
+    }),
     defineField({
       name: 'batch_rotation_enabled',
       title: 'Annual Auto-Rotation on January 1st',
@@ -113,10 +121,10 @@ export default defineType({
     }),
     defineField({
       name: 'batch_email_slots',
-      title: 'Batch Admin Email Slots',
+      title: 'Batch Moderator Email Slots / নির্দিষ্ট ব্যাচের মডারেটর স্লট',
       type: 'array',
       group: 'batch_rotation',
-      description: 'স্টুডিওতে ব্যাচভিত্তিক অ্যাক্সেস নিয়ন্ত্রণের জন্য নির্ধারিত ৩টি ইমেইল স্লট। এখান থেকে যেকোনো সময় ইমেইল পরিবর্তন বা ব্যাচ অ্যাসাইনমেন্ট বদল করা যাবে।',
+      description: 'স্টুডিওতে নির্দিষ্ট ব্যাচভিত্তিক অ্যাক্সেস নিয়ন্ত্রণের জন্য মডারেটর ইমেইল স্লট। এখান থেকে যেকোনো সময় ইমেইল পরিবর্তন বা ব্যাচ অ্যাসাইনমেন্ট বদল করা যাবে।',
       initialValue: [
         {
           _key: 'slot_1_sr',
@@ -124,7 +132,7 @@ export default defineType({
           admin_email: 'dchall.hsc27@gmail.com',
           assigned_batch: 'HSC-27',
           is_active: true,
-          notes: 'HSC-27 ব্যাচ অ্যাডমিন ইমেইল স্লট। পাস আউট হলে এই স্লটটি HSC-30 ব্যাচকে হ্যান্ডওভার করা যাবে।'
+          notes: 'HSC-27 ব্যাচ মডারেটর ইমেইল স্লট।'
         },
         {
           _key: 'slot_2_mid',
@@ -132,7 +140,7 @@ export default defineType({
           admin_email: 'dchall.hsc28@gmail.com',
           assigned_batch: 'HSC-28',
           is_active: true,
-          notes: 'HSC-28 ব্যাচ অ্যাডমিন ইমেইল স্লট।'
+          notes: 'HSC-28 ব্যাচ মডারেটর ইমেইল স্লট।'
         },
         {
           _key: 'slot_3_jr',
@@ -140,14 +148,14 @@ export default defineType({
           admin_email: 'dchall.hsc29@gmail.com',
           assigned_batch: 'HSC-29',
           is_active: true,
-          notes: 'HSC-29 ব্যাচ অ্যাডমিন ইমেইল স্লট।'
+          notes: 'HSC-29 ব্যাচ মডারেটর ইমেইল স্লট।'
         }
       ],
       of: [
         {
           type: 'object',
           name: 'batchEmailSlot',
-          title: 'Batch Admin Slot',
+          title: 'Batch Moderator Slot / ব্যাচ মডারেটর স্লট',
           fields: [
             defineField({
               name: 'slot_name',
@@ -157,16 +165,16 @@ export default defineType({
             }),
             defineField({
               name: 'admin_email',
-              title: 'Admin Email',
+              title: 'Moderator Email / মডারেটর ইমেইল',
               type: 'string',
-              description: 'যে জিমেইলটি দিয়ে Sanity Studio-তে লগইন করার অনুমতি দেওয়া হবে। ইমেইল বদলালে এখানে আপডেট করুন।',
+              description: 'যে জিমেইলটি দিয়ে এই ব্যাচের জন্য মডারেটর হিসেবে Sanity Studio-তে লগইন করার অনুমতি দেওয়া হবে। ইমেইল বদলালে এখানে আপডেট করুন।',
               validation: (Rule) => Rule.required(),
             }),
             defineField({
               name: 'assigned_batch',
               title: 'Assigned Batch',
               type: 'string',
-              description: 'এই ইমেইলটি দিয়ে স্টুডিওতে লগইন করলে শুধুমাত্র এই নির্দিষ্ট ব্যাচের তথ্য সম্পাদনা করা যাবে।',
+              description: 'এই ইমেইলটি দিয়ে স্টুডিওতে লগইন করলে শুধুমাত্র এই নির্দিষ্ট ব্যাচের তথ্য ও ফোল্ডারে প্রবেশ করা যাবে।',
               options: {
                 list: [
                   { title: 'HSC-27 (Founder / 2025-26)', value: 'HSC-27' },
@@ -175,6 +183,14 @@ export default defineType({
                   { title: 'HSC-30 (2028-29)', value: 'HSC-30' },
                   { title: 'HSC-31 (2029-30)', value: 'HSC-31' },
                   { title: 'HSC-32 (2030-31)', value: 'HSC-32' },
+                  { title: 'HSC-33 (2031-32)', value: 'HSC-33' },
+                  { title: 'HSC-34 (2032-33)', value: 'HSC-34' },
+                  { title: 'HSC-35 (2033-34)', value: 'HSC-35' },
+                  { title: 'HSC-36', value: 'HSC-36' },
+                  { title: 'HSC-37', value: 'HSC-37' },
+                  { title: 'HSC-38', value: 'HSC-38' },
+                  { title: 'HSC-39', value: 'HSC-39' },
+                  { title: 'HSC-40', value: 'HSC-40' },
                 ],
               },
             }),
@@ -342,6 +358,106 @@ export default defineType({
         layout: 'radio',
       },
       initialValue: 'capitalize_each_word',
+    }),
+
+    defineField({
+      name: 'card_meta_badges',
+      title: 'Card Meta Badges Settings / কার্ড মেটা ব্যাজ সেটিংস',
+      type: 'object',
+      group: 'profile_controls',
+      description: 'স্টুডেন্ট কার্ড, হোমপেজ কার্ড, রুমমেট ও বার্থডে কার্ডে নামের নিচে কোন কোন ব্যাজ/তথ্য দেখাবে তা এখান থেকে নিয়ন্ত্রণ করুন। যদি কোনো ব্যাজ না চান তবে তালিকা ফাঁকা রাখুন (তাহলে কার্ডে কোনো ব্যাজ দেখাবে না এবং কার্ড ছোট দেখাবে)।',
+      fields: [
+        defineField({
+          name: 'student_page_badges',
+          title: 'Student Page Badges / স্টুডেন্ট পেইজ ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'স্টুডেন্ট পেইজের কার্ডে নামের নিচে কোন কোন ব্যাজ দেখাবে। (ফাঁকা রাখলে কোনো ব্যাজ দেখাবে না)',
+          options: {
+            list: [
+              { title: 'Room No (রুম নম্বর)', value: 'room' },
+              { title: 'Group (বিজ্ঞান/মানবিক/ব্যবসায় শিক্ষা)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+        }),
+        defineField({
+          name: 'home_students_badges',
+          title: 'Home Page Students Badges / হোমপেজ স্টুডেন্ট ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'হোমপেজের নির্বাচিত ৬ জন শিক্ষার্থী কার্ডে কোন কোন ব্যাজ দেখাবে। (ফাঁকা রাখলে কোনো ব্যাজ দেখাবে না)',
+          options: {
+            list: [
+              { title: 'Room No (রুম নম্বর)', value: 'room' },
+              { title: 'Group (গ্রুপ)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+        }),
+        defineField({
+          name: 'home_roommates_badges',
+          title: 'Home Page Roommates Badges / হোমপেজ রুমমেট ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'হোমপেজের রুমমেট সেকশনের কার্ডে প্রতিটি শিক্ষার্থীর সাথে কোন ব্যাজ দেখাবে।',
+          options: {
+            list: [
+              { title: 'Group (গ্রুপ)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+        }),
+        defineField({
+          name: 'roommates_page_badges',
+          title: 'Roommates Page Badges / রুমমেট পেইজ ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'রুমমেট পেইজের কার্ডে প্রতিটি শিক্ষার্থীর নামের সাথে কোন তথ্য দেখাবে।',
+          options: {
+            list: [
+              { title: 'Group (গ্রুপ)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+        }),
+        defineField({
+          name: 'birthday_page_badges',
+          title: 'Birthday Page Badges / বার্থডে পেইজ ব্যাজ',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'বার্থডে পেইজের কার্ডে জন্মদিনের পাশাপাশি আর কোন কোন তথ্য ব্যাজ হিসেবে দেখাবে।',
+          options: {
+            list: [
+              { title: 'Room No (রুম নম্বর)', value: 'room' },
+              { title: 'Group (গ্রুপ)', value: 'group' },
+              { title: 'Batch (ব্যাচ)', value: 'batch' },
+              { title: 'Section (সেকশন)', value: 'section' },
+              { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
+              { title: 'College Roll (রোল)', value: 'roll' },
+            ],
+          },
+        }),
+        defineField({
+          name: 'max_badges_per_card',
+          title: 'Maximum Badges per Card / কার্ড প্রতি সর্বোচ্চ ব্যাজ সংখ্যা',
+          type: 'number',
+          description: 'প্রতিটি কার্ডে একসাথে সর্বোচ্চ কয়টি ব্যাজ দেখানো হবে (ডিফল্ট: ৩)।',
+          initialValue: 3,
+        }),
+      ],
     }),
 
     defineField({

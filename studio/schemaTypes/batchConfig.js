@@ -21,6 +21,11 @@ export default defineType({
           { title: 'HSC-33', value: 'HSC-33' },
           { title: 'HSC-34', value: 'HSC-34' },
           { title: 'HSC-35', value: 'HSC-35' },
+          { title: 'HSC-36', value: 'HSC-36' },
+          { title: 'HSC-37', value: 'HSC-37' },
+          { title: 'HSC-38', value: 'HSC-38' },
+          { title: 'HSC-39', value: 'HSC-39' },
+          { title: 'HSC-40', value: 'HSC-40' },
           { title: 'HSC-26 (Alumni)', value: 'HSC-26' },
           { title: 'HSC-25 (Alumni)', value: 'HSC-25' },
           { title: 'HSC-24 (Alumni)', value: 'HSC-24' },
@@ -56,10 +61,10 @@ export default defineType({
       placeholder: 'এই ব্যাচের তথ্য দেখতে অনুগ্রহ করে ব্যাচ পাসওয়ার্ড দিয়ে লগইন করুন।',
     }),
 
-    // Batch Admin Emails
+    // Batch Moderator Emails
     defineField({
       name: 'batch_admin_emails',
-      title: 'Batch Admin Emails',
+      title: 'Batch Moderator Emails / মডারেটর ইমেইল তালিকা',
       type: 'array',
       of: [{ type: 'string' }],
       hidden: ({ currentUser }) => {
@@ -75,7 +80,7 @@ export default defineType({
           id.includes('quantelixvero')
         )
       },
-      description: 'যে ইমেইলগুলো দিয়ে Sanity Studio-তে লগইন করলে এই ব্যাচের সব ফোল্ডার ও তথ্য এডিট করার পূর্ণ অধিকার পাওয়া যাবে। (শুধুমাত্র সুপার অ্যাডমিন পরিবর্তন করতে পারবেন)',
+      description: 'যে ইমেইলগুলো দিয়ে Sanity Studio-তে লগইন করলে এই ব্যাচের ফোল্ডারে মডারেটর অ্যাক্সেস পাওয়া যাবে। (শুধুমাত্র সুপার অ্যাডমিন পরিবর্তন করতে পারবেন)',
     }),
 
     // Moderator Emails

@@ -364,6 +364,23 @@ export default defineType({
     // Card Meta Badges & Display Settings
     // ═══════════════════════════════════════════
     defineField({
+      name: 'student_name_case',
+      title: 'Student Name Display Case / শিক্ষার্থীর নামের ফরম্যাট',
+      type: 'string',
+      group: 'card_badges',
+      description: 'অ্যাডমিন প্যানেলে যেভাবেই নাম ইনপুট দেওয়া হোক না কেন, ওয়েবসাইটে নাম প্রদর্শনের নির্দিষ্ট নিয়ম।',
+      options: {
+        list: [
+          { title: 'Title Case / Capitalize Each Word (যেমন: Md. Rahim Ali)', value: 'capitalize_each_word' },
+          { title: 'ALL UPPERCASE / সব বড় হাতের (যেমন: MD. RAHIM ALI)', value: 'uppercase' },
+          { title: 'As Typed / Original (যেমন লেখা হয়েছে তেমনই)', value: 'as_typed' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'capitalize_each_word',
+    }),
+
+    defineField({
       name: 'card_meta_badges',
       title: 'Card Meta Badges Settings / কার্ড মেটা ব্যাজ সেটিংস',
       type: 'object',

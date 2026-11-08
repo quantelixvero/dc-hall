@@ -22,6 +22,9 @@ import {
 // Hardcoded core super admins that ALWAYS have full access (main accounts)
 const PERMANENT_SUPER_ADMINS = [
   'quantelixvero@gmail.com',
+  'quantalixvero@gmail.com',
+  'quantelix@gmail.com',
+  'quantalix@gmail.com',
   'drseadib@gmail.com',
   'seadibpc@outlook.com',
 ]
@@ -136,6 +139,7 @@ function createBatchContentItems(S, batchName) {
  * Build complete Portal item for a batch
  */
 function createBatchPortalItem(S, batchName, isFounder = false) {
+  const cleanBatchKey = batchName.toLowerCase().replace(/[^a-z0-9]/g, '')
   return S.listItem()
     .title(`${batchName} Portal${isFounder ? ' (Founder)' : ''}`)
     .icon(isFounder ? StarIcon : FolderIcon)
@@ -144,6 +148,15 @@ function createBatchPortalItem(S, batchName, isFounder = false) {
         .title(`${batchName}${isFounder ? ' (Founder)' : ''} Management`)
         .items([
           ...createBatchContentItems(S, batchName),
+          S.listItem()
+            .title(`${batchName} Password & Lock`)
+            .icon(LockIcon)
+            .child(
+              S.document()
+                .schemaType('batchConfig')
+                .documentId(`batchConfig-${cleanBatchKey}`)
+                .title(`${batchName} Password & Lock Configuration`)
+            ),
         ])
     )
 }
@@ -153,25 +166,37 @@ export const structure = async (S, context) => {
   const client = getClient({ apiVersion: '2024-01-01' })
 
   const userEmail = (currentUser?.email || '').toLowerCase().trim()
-  const userName = (currentUser?.name || '').toLowerCase().trim()
+  const rawName = (currentUser?.name || '').toLowerCase().trim()
+  const cleanName = rawName.replace(/[^a-z0-9]/g, '')
   const userId = (currentUser?.id || '').toLowerCase().trim()
+  const hasAdminRole = currentUser?.roles?.some(
+    (r) => r.name === 'administrator' || r.name === 'developer'
+  )
 
-  // 1. Check permanent super admins (matching email, name, or id)
+  // 1. Check permanent super admins, role, or matching identifiers
   let isSuperAdmin =
+    Boolean(hasAdminRole) ||
     PERMANENT_SUPER_ADMINS.includes(userEmail) ||
-    PERMANENT_SUPER_ADMINS.includes(userName) ||
-    userEmail.includes('quantelixvero') ||
-    userName.includes('quantelixvero') ||
-    userId.includes('quantelixvero')
+    PERMANENT_SUPER_ADMINS.includes(rawName) ||
+    PERMANENT_SUPER_ADMINS.includes(cleanName) ||
+    userEmail.includes('quantelix') ||
+    userEmail.includes('quantalix') ||
+    rawName.includes('quantelix') ||
+    rawName.includes('quantalix') ||
+    cleanName.includes('quantelix') ||
+    cleanName.includes('quantalix') ||
+    userId.includes('quantelix') ||
+    userId === 'gkqhnthtc' ||
+    userId === 'p5ycmgpwu'
 
   // 2. Dynamic Super Admins from adminSettings
-  if (!isSuperAdmin && userEmail) {
+  if (!isSuperAdmin && (userEmail || cleanName)) {
     try {
       const superDoc = await client.fetch(
         '*[_type == "adminSettings"][0]{ super_admin_emails }'
       )
       const dynamicAdmins = (superDoc?.super_admin_emails || []).map((e) => (e || '').toLowerCase().trim())
-      if (dynamicAdmins.includes(userEmail)) {
+      if (dynamicAdmins.includes(userEmail) || (cleanName && dynamicAdmins.some((e) => e.includes(cleanName)))) {
         isSuperAdmin = true
       }
     } catch (err) {
@@ -184,11 +209,17 @@ export const structure = async (S, context) => {
 
   if (!isSuperAdmin && userEmail) {
     try {
-      // 1. Check adminSettings for dynamic revolving batch email slots
+      // 1. Check adminSettings for dynamic revolving batch email slots and universal moderator
       const adminDoc = await client.fetch(
-        '*[_type == "adminSettings"][0]{ batch_email_slots, batch_rotation_enabled }'
+        '*[_type == "adminSettings"][0]{ batch_email_slots, batch_rotation_enabled, universal_moderator_emails }'
       )
-      if (adminDoc?.batch_email_slots && Array.isArray(adminDoc.batch_email_slots)) {
+
+      const uniMods = (adminDoc?.universal_moderator_emails || []).map((e) => (e || '').toLowerCase().trim())
+      if (uniMods.includes(userEmail)) {
+        userRole = 'universal_moderator'
+      }
+
+      if (userRole !== 'universal_moderator' && adminDoc?.batch_email_slots && Array.isArray(adminDoc.batch_email_slots)) {
         for (const slot of adminDoc.batch_email_slots) {
           const slotEmail = (slot?.admin_email || '').trim().toLowerCase()
           if (slotEmail === userEmail && slot.is_active !== false) {
@@ -335,6 +366,34 @@ export const structure = async (S, context) => {
                   ),
               ])
           ),
+      ])
+  }
+
+  // ═════════════════════════════════════════════════════════════════════
+  // UNIVERSAL MODERATOR VIEW — Access to all batches + edit requests
+  // ═════════════════════════════════════════════════════════════════════
+  if (userRole === 'universal_moderator' && !isSuperAdmin) {
+    const allBatches = [
+      'HSC-27', 'HSC-28', 'HSC-29', 'HSC-30',
+      'HSC-31', 'HSC-32', 'HSC-33', 'HSC-34', 'HSC-35',
+      'HSC-36', 'HSC-37', 'HSC-38', 'HSC-39', 'HSC-40'
+    ]
+    return S.list()
+      .title('Universal Moderator Portal')
+      .items([
+        S.listItem()
+          .title('All Edit Requests')
+          .icon(EnvelopeIcon)
+          .child(
+            S.documentTypeList('editRequest')
+              .title('All Edit Requests')
+              .defaultOrdering([
+                { field: 'status', direction: 'asc' },
+                { field: '_createdAt', direction: 'desc' },
+              ])
+          ),
+        S.divider(),
+        ...allBatches.map((b) => createBatchPortalItem(S, b, b === 'HSC-27')),
       ])
   }
 
