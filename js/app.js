@@ -2939,37 +2939,18 @@ function renderCardDynamicBadges(student, context = 'student_page') {
 }
 
 function renderSingleStudentCard(student, index) {
-  const showBadge = isProfileFieldVisible("room_badge");
-  const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
-  const isRollUnlocked = isProfileFieldUnlocked("roll", student);
-  const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
-  const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : (roomVal !== "-" ? "•••" : "-");
-  const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? toBengaliDigits(student.roll) : student.roll) : (student.roll ? "•••" : "");
-
-  const showRoom = (isProfileFieldVisible("room_2nd_year") || isProfileFieldVisible("room_1st_year")) && roomVal !== "-";
-  const showRoll = isProfileFieldVisible("roll") && student.roll;
-
-  let badgeParts = [];
-  if (showRoom) badgeParts.push(`${t("common.room")} ${roomDisplay}`);
-  if (showRoll) badgeParts.push(`${t("common.roll")} ${rollDisplay}`);
-
-  const badgeHtml = (showBadge && badgeParts.length)
-    ? `<p class="student-room-roll">${badgeParts.join(" · ")}</p>`
-    : "";
-
   const showPhoto = isProfileFieldVisible("photo");
   const showName = isProfileFieldVisible("name");
-  const showBatch = isProfileFieldVisible("batch");
-  const showGroup = isProfileFieldVisible("group");
-  const showSection = isProfileFieldVisible("section");
-
   const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
   const photoSrc = (showPhoto && isPhotoUnlocked) ? student.img : "images/student-avatar.png";
   const nameDisplay = showName ? (isProfileFieldUnlocked("name", student) ? studentValue(student, "name") : maskData(studentValue(student, "name"))) : "";
 
-  const badgesHtml = renderCardDynamicBadges(student, byId("studentGrid")?.dataset?.limit ? "home_students" : "student_page");
+  // Dynamic Badges strictly controlled by Card Meta Badges Settings in Sanity Studio!
+  const isHome = Boolean(byId("studentGrid")?.dataset?.limit);
+  const context = isHome ? "home_students" : "student_page";
+  const badgesHtml = renderCardDynamicBadges(student, context);
   const metaContainer = badgesHtml
-    ? `<span class="student-meta" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px;">${badgesHtml}</span>`
+    ? `<span class="student-meta" style="display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 8px;">${badgesHtml}</span>`
     : '';
 
   return `
@@ -2979,9 +2960,6 @@ function renderSingleStudentCard(student, index) {
         <span class="student-info-col">
           ${nameDisplay ? `<h3>${nameDisplay}</h3>` : ''}
           ${metaContainer}
-        </span>
-        <span class="student-badge-col">
-          ${badgeHtml}
         </span>
       </span>
     </button>
@@ -3537,11 +3515,29 @@ function renderRoomPerson(student, animation) {
   const photoSrc = photoUnlocked ? student.img : "images/student-avatar.png";
   const nameUnlocked = isProfileFieldUnlocked("name", student);
   const nameDisplay = nameUnlocked ? studentValue(student, "name") : "••••••••";
+
+  const cfg = cmsAdminSettings?.card_meta_badges || cmsSettings?.card_meta_badges;
+  const isHome = Boolean(byId("roommates-preview"));
+  const context = isHome ? "home_roommates" : "roommates_page";
+  const selected = cfg ? cfg[context + '_badges'] : null;
+
+  let metaLine = "";
+  if (Array.isArray(selected) && selected.length === 0) {
+    metaLine = ""; // Explicitly no badges
+  } else {
+    const badgesHtml = renderCardDynamicBadges(student, context);
+    if (badgesHtml) {
+      metaLine = `<span class="room-person-badges" style="display:inline-flex; align-items:center; flex-wrap:wrap; gap:4px; margin-top:4px;">${badgesHtml}</span>`;
+    } else if (!selected) {
+      metaLine = `<span>${classLabel(student.classNo, student)} · ${formatGroupShort(student.group)}</span>`;
+    }
+  }
+
   return `
     <button class="room-person" type="button" data-student-id="${student.id}">
       <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
       <strong>${nameDisplay}</strong>
-      <span>${classLabel(student.classNo, student)} · ${formatGroupShort(student.group)}</span>
+      ${metaLine}
     </button>
   `;
 }
