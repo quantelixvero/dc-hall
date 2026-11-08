@@ -117,11 +117,59 @@ body[data-lang="bn"] h3 {
 }
 
 .section-head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 28px;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+  width: 100% !important;
+}
+
+.section-head > div:first-child {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.section-head .eyebrow {
+  margin-bottom: 4px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--accent) !important;
+}
+
+.section-head h2 {
+  margin: 0 !important;
+  font-size: clamp(1.4rem, 3.6vw, 2.4rem) !important;
+  line-height: 1.15 !important;
+  word-break: break-word !important;
+}
+
+.section-head .btn,
+.section-head a.btn {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+  padding: 8px 18px !important;
+  font-size: 0.88rem !important;
+  margin-left: auto !important;
+  align-self: flex-end !important;
+}
+
+@media (max-width: 480px) {
+  .section-head {
+    gap: 10px !important;
+    margin-bottom: 18px !important;
+  }
+  .section-head h2 {
+    font-size: 1.35rem !important;
+  }
+  .section-head .btn,
+  .section-head a.btn {
+    padding: 6px 14px !important;
+    font-size: 0.82rem !important;
+  }
 }
 
 h2 {

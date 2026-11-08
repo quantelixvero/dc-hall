@@ -923,8 +923,12 @@ body.dark .footer-links a:hover {
   }
 
   .section-head {
-    align-items: flex-start;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    width: 100% !important;
   }
 
   .profile {
@@ -1089,7 +1093,7 @@ body.dark .footer-links a:hover {
     object-fit: cover;
   }
 
-  .room-number {
+  .room-pair .room-number:not(.compact-badge) {
     width: 100%;
     min-height: 58px;
   }

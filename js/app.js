@@ -1600,6 +1600,8 @@ function mapCmsStudent(item, index) {
 
   return {
     id: index + 1,
+    _id: item._id,
+    rawId: item._id,
     slug,
     position: Number(item.position || index + 1),
     roommateIds: item.roommate_ids || [],
@@ -3016,7 +3018,8 @@ function filteredRoommateStudents() {
 
 function groupByRoom(list) {
   // Groups students into render-ready pairs [ [roomNumber, [studentA, studentB]], ... ]
-  // For 1st Year shared rooms (102, 103, 104): pairs mutual/selected bedmates together!
+  // For 1st Year shared dorms (102, 103, 104): pairs mutual/selected bedmates together!
+  // If no bedmate was explicitly linked in the admin panel, the adjacent seat MUST remain empty.
   // For 2nd Year rooms (314–329): pairs 2 students per room card.
   const byRoom = {};
   list.forEach(student => {
@@ -3041,18 +3044,28 @@ function groupByRoom(list) {
     // Pass 1: Explicit bedmate / roommate links
     roomStudents.forEach(s1 => {
       const id1 = s1.slug || s1.id;
-      if (pairedIds.has(id1)) return;
+      const refId1 = s1._id || s1.rawId;
+      if (pairedIds.has(id1) || (refId1 && pairedIds.has(refId1))) return;
 
       const mateSlug = isShared1stYear
         ? s1.room_1st_year?.bedmate_slug
         : (s1.room_2nd_year?.bedmate_slug || (s1.roommateIds && s1.roommateIds[0]));
+      const mateId = isShared1stYear
+        ? s1.room_1st_year?.bedmate_id
+        : s1.room_2nd_year?.bedmate_id;
       const mateName = (isShared1stYear
         ? (s1.room_1st_year?.bedmate_name || "")
         : (s1.room_2nd_year?.bedmate_name || "")).trim().toLowerCase();
 
       let match = null;
-      if (mateSlug) {
-        match = roomStudents.find(s2 => (s2.slug || s2.id) === mateSlug && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
+      if (mateId) {
+        match = roomStudents.find(s2 => {
+          const s2Ref = s2._id || s2.rawId;
+          return s2Ref && s2Ref === mateId && !pairedIds.has(s2.slug || s2.id) && s2 !== s1;
+        });
+      }
+      if (!match && mateSlug) {
+        match = roomStudents.find(s2 => ((s2.slug && s2.slug === mateSlug) || (s2._id && s2._id === mateSlug) || (s2.id && String(s2.id) === String(mateSlug))) && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
       }
       if (!match && mateName) {
         match = roomStudents.find(s2 => (s2.name || '').trim().toLowerCase() === mateName && !pairedIds.has(s2.slug || s2.id) && s2 !== s1);
@@ -3065,30 +3078,47 @@ function groupByRoom(list) {
           const s2MateSlug = isShared1stYear
             ? s2.room_1st_year?.bedmate_slug
             : (s2.room_2nd_year?.bedmate_slug || (s2.roommateIds && s2.roommateIds[0]));
+          const s2MateId = isShared1stYear
+            ? s2.room_1st_year?.bedmate_id
+            : s2.room_2nd_year?.bedmate_id;
           const s2MateName = (isShared1stYear
             ? (s2.room_1st_year?.bedmate_name || "")
             : (s2.room_2nd_year?.bedmate_name || "")).trim().toLowerCase();
-          return s2MateSlug === id1 || (s1.name && s2MateName === s1.name.trim().toLowerCase());
+          return (refId1 && s2MateId === refId1) || (id1 && s2MateSlug === id1) || (s1.name && s2MateName === s1.name.trim().toLowerCase());
         });
       }
 
       if (match) {
         pairedIds.add(id1);
+        if (refId1) pairedIds.add(refId1);
         pairedIds.add(match.slug || match.id);
+        if (match._id || match.rawId) pairedIds.add(match._id || match.rawId);
         roomPairs.push([roomNum, [s1, match]]);
       }
     });
 
-    // Pass 2: Pair remaining students in the same room in twos
-    const remaining = roomStudents.filter(s => !pairedIds.has(s.slug || s.id));
-    for (let i = 0; i < remaining.length; i += 2) {
-      if (i + 1 < remaining.length) {
-        pairedIds.add(remaining[i].slug || remaining[i].id);
-        pairedIds.add(remaining[i + 1].slug || remaining[i + 1].id);
-        roomPairs.push([roomNum, [remaining[i], remaining[i + 1]]]);
-      } else {
-        pairedIds.add(remaining[i].slug || remaining[i].id);
-        roomPairs.push([roomNum, [remaining[i]]]);
+    // Pass 2: Remaining students
+    const remaining = roomStudents.filter(s => !pairedIds.has(s.slug || s.id) && (!s._id || !pairedIds.has(s._id)));
+    if (isShared1stYear) {
+      // 1st Year shared dorm rooms (102, 103, 104):
+      // NEVER auto-pair unlinked students! If they did not explicitly select each other
+      // as bedmates in the admin panel, the adjacent seat MUST remain empty.
+      remaining.forEach(s => {
+        pairedIds.add(s.slug || s.id);
+        if (s._id || s.rawId) pairedIds.add(s._id || s.rawId);
+        roomPairs.push([roomNum, [s]]);
+      });
+    } else {
+      // 2nd Year standard 2-person rooms (314–329):
+      for (let i = 0; i < remaining.length; i += 2) {
+        if (i + 1 < remaining.length) {
+          pairedIds.add(remaining[i].slug || remaining[i].id);
+          pairedIds.add(remaining[i + 1].slug || remaining[i + 1].id);
+          roomPairs.push([roomNum, [remaining[i], remaining[i + 1]]]);
+        } else {
+          pairedIds.add(remaining[i].slug || remaining[i].id);
+          roomPairs.push([roomNum, [remaining[i]]]);
+        }
       }
     }
 
@@ -3096,6 +3126,22 @@ function groupByRoom(list) {
   });
 
   return pairs;
+}
+
+function renderEmptyRoomPerson(animation = "fade-left") {
+  const emptyLabel = currentLang === "bn" ? "ফাঁকা সিট" : "Empty Seat";
+  const emptySub = currentLang === "bn" ? "বরাদ্দ নেই" : "Vacant";
+  return `
+    <div class="room-person empty" data-aos="${animation}">
+      <div class="empty-avatar-circle big-empty-avatar">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+      </div>
+      <strong>${emptyLabel}</strong>
+      <span>${emptySub}</span>
+    </div>
+  `;
 }
 
 function renderRoommates() {
@@ -3119,7 +3165,7 @@ function renderRoommates() {
       <article class="room-pair" data-aos="fade-up" data-aos-delay="${index * 70}">
         ${renderRoomPerson(pair[0], "fade-right")}
         <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-        ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+        ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : renderEmptyRoomPerson("fade-left")}
       </article>
     `).join("");
     return;
@@ -3170,7 +3216,7 @@ function renderRoommates() {
             <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
               ${renderRoomPerson(pair[0], "fade-right")}
               <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : renderEmptyRoomPerson("fade-left")}
             </article>`;
         }
       });
@@ -3230,7 +3276,7 @@ function renderRoommates() {
             <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
               ${renderRoomPerson(pair[0], "fade-right")}
               <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : renderEmptyRoomPerson("fade-left")}
             </article>`;
         }
       });
@@ -3245,7 +3291,7 @@ function renderRoommates() {
             <article class="room-pair" data-aos="fade-up" data-aos-delay="${Math.min(index * 70, 350)}">
               ${renderRoomPerson(pair[0], "fade-right")}
               <button class="room-number" type="button" data-room-id="${room}" onclick="openRoomModal(\'${room}\')">ROOM<br>${currentLang === "bn" ? toBengaliDigits(room) : room}</button>
-              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : `<div class="room-person empty">${t("common.emptySeat")}</div>`}
+              ${pair[1] ? renderRoomPerson(pair[1], "fade-left") : renderEmptyRoomPerson("fade-left")}
             </article>`;
         }
       });

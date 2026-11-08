@@ -2420,8 +2420,12 @@ body.dark .footer-links a:hover {
   }
 
   .section-head {
-    align-items: flex-start;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    width: 100% !important;
   }
 
   .profile {
@@ -2586,7 +2590,7 @@ body.dark .footer-links a:hover {
     object-fit: cover;
   }
 
-  .room-number {
+  .room-pair .room-number:not(.compact-badge) {
     width: 100%;
     min-height: 58px;
   }
@@ -4965,11 +4969,59 @@ body[data-lang="bn"] h3 {
 }
 
 .section-head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 24px;
-  margin-bottom: 28px;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+  width: 100% !important;
+}
+
+.section-head > div:first-child {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+
+.section-head .eyebrow {
+  margin-bottom: 4px !important;
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--accent) !important;
+}
+
+.section-head h2 {
+  margin: 0 !important;
+  font-size: clamp(1.4rem, 3.6vw, 2.4rem) !important;
+  line-height: 1.15 !important;
+  word-break: break-word !important;
+}
+
+.section-head .btn,
+.section-head a.btn {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+  padding: 8px 18px !important;
+  font-size: 0.88rem !important;
+  margin-left: auto !important;
+  align-self: flex-end !important;
+}
+
+@media (max-width: 480px) {
+  .section-head {
+    gap: 10px !important;
+    margin-bottom: 18px !important;
+  }
+  .section-head h2 {
+    font-size: 1.35rem !important;
+  }
+  .section-head .btn,
+  .section-head a.btn {
+    padding: 6px 14px !important;
+    font-size: 0.82rem !important;
+  }
 }
 
 h2 {
@@ -6871,20 +6923,25 @@ img.bday-avatar {
   }
 }
 
-/* 2. Roommate Compact Card - Picture 3 Minimalist Bridge Design (Avatar ── [ Room No ] ── Avatar) */
+/* 2. Roommate Compact Card - Picture 2 Structure (Avatar ── [ Room No ] ── Avatar) */
 .roommate-compact-card {
   display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
   justify-content: space-between !important;
   background: var(--surface-strong);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 8px 14px !important;
+  border-radius: 14px;
+  padding: 6px 12px !important;
   gap: 8px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  min-width: 0;
-  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 .roommate-compact-card:hover {
@@ -6893,88 +6950,147 @@ img.bday-avatar {
   box-shadow: var(--shadow);
 }
 
-.rm-compact-person {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.roommate-compact-card .rm-compact-person {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
-  flex-shrink: 0;
+  flex: 0 0 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
   text-decoration: none;
   background: transparent;
   border: none;
   padding: 0;
+  box-sizing: border-box;
 }
 
-.rm-compact-person img {
-  width: 52px !important;
-  height: 52px !important;
-  min-width: 52px !important;
+.roommate-compact-card .rm-compact-person img {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
   border-radius: 50% !important;
-  object-fit: cover;
-  border: 2px solid var(--border);
-  flex-shrink: 0;
+  object-fit: cover !important;
+  border: 2px solid var(--border) !important;
+  flex-shrink: 0 !important;
   transition: transform 0.2s ease, border-color 0.2s ease;
+  display: block;
 }
 
-.rm-compact-person:hover img {
+.roommate-compact-card .rm-compact-person:hover img {
   transform: scale(1.08);
-  border-color: var(--accent);
+  border-color: var(--accent) !important;
 }
 
-.rm-compact-person .empty-avatar-circle {
-  width: 52px !important;
-  height: 52px !important;
-  min-width: 52px !important;
+.roommate-compact-card .rm-compact-person .empty-avatar-circle {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  max-width: 40px !important;
   border-radius: 50% !important;
-  background: var(--surface);
-  border: 1.5px dashed var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--muted);
-  flex-shrink: 0;
+  background: var(--surface) !important;
+  border: 1.5px dashed var(--border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--muted) !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box;
 }
 
-.rm-bridge-line {
-  flex: 1;
-  height: 2px;
-  background: var(--border);
+.roommate-compact-card .rm-bridge-line {
+  flex: 1 1 auto !important;
+  height: 1.5px !important;
+  background: var(--border) !important;
   border-radius: 2px;
-  min-width: 10px;
+  min-width: 8px !important;
   opacity: 0.85;
 }
 
 .roommate-compact-card:hover .rm-bridge-line {
-  background: var(--accent);
-  opacity: 0.65;
+  background: var(--accent) !important;
+  opacity: 0.7;
 }
 
-.room-number.compact-badge {
-  background: var(--surface);
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  padding: 6px 14px !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.roommate-compact-card .room-number.compact-badge {
+  background: var(--surface) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: 8px !important;
+  padding: 3px 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer;
-  flex-shrink: 0;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 44px !important;
+  max-width: 64px !important;
+  height: 30px !important;
+  min-height: 30px !important;
   transition: all 0.2s ease;
-  min-width: 48px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box !important;
 }
 
-.room-number.compact-badge:hover {
-  transform: scale(1.08);
-  border-color: var(--accent);
-  background: var(--accent-soft);
+.roommate-compact-card .room-number.compact-badge:hover {
+  transform: scale(1.05);
+  border-color: var(--accent) !important;
+  background: var(--accent-soft) !important;
 }
 
-.room-number.compact-badge .rn-no {
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--text);
-  line-height: 1;
+.roommate-compact-card .room-number.compact-badge .rn-no {
+  font-size: 0.95rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  line-height: 1 !important;
+}
+
+/* Big View Empty Seat with Circle Logo */
+.room-person.empty {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: default !important;
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+.room-person.empty .empty-avatar-circle.big-empty-avatar {
+  width: 68px !important;
+  height: 68px !important;
+  min-width: 68px !important;
+  min-height: 68px !important;
+  border-radius: 50% !important;
+  background: var(--surface) !important;
+  border: 2px dashed var(--border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--muted) !important;
+  margin-bottom: 8px !important;
+  box-sizing: border-box !important;
+}
+
+.room-person.empty strong {
+  display: block !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: var(--muted) !important;
+  line-height: 1.2 !important;
+}
+
+.room-person.empty span {
+  display: block !important;
+  font-size: 0.8rem !important;
+  color: var(--muted) !important;
+  opacity: 0.75 !important;
+  margin-top: 2px !important;
 }
 
 /* 3. Batch Header Tight Gap when Collapsed - Exactly Matches Picture 2 */
