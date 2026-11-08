@@ -2150,25 +2150,6 @@ function getBatchSecurityConfig(batchName) {
 }
 
 function isBatchDirectoryLocked(batchName) {
-  if (!batchName) return false;
-  // If master authenticated, always unlocked
-  const sessionRole = typeof getStoredSessionRole === "function" ? getStoredSessionRole() : (typeof getAuthRole === "function" ? getAuthRole() : "");
-  if (sessionRole === "master") return false;
-
-  const cleanBatch = String(batchName).trim().toUpperCase();
-  const batchNum = cleanBatch.replace(/[^0-9]/g, '');
-  if (sessionRole === `hsc${batchNum}`) return false;
-
-  // Check session unlock
-  const unlockKey = `dc_hall_batch_unlocked_${cleanBatch}`;
-  if (sessionStorage.getItem(unlockKey) === "1" || localStorage.getItem(unlockKey) === "1") {
-    return false;
-  }
-
-  const cfg = getBatchSecurityConfig(batchName);
-  if (cfg && cfg.is_locked === true) {
-    return true;
-  }
   return false;
 }
 
@@ -3115,8 +3096,6 @@ function renderStudentCards(list = getFilteredStudents()) {
 
     if (!batchStudents.length) {
       html += `<div class="empty-state">${t("common.noStudent")}</div>`;
-    } else if (isBatchDirectoryLocked(batchLabel)) {
-      html += renderLockedBatchCard(batchLabel);
     } else {
       batchStudents.forEach((student, idx) => {
         html += renderSingleStudentCard(student, idx);
@@ -3161,13 +3140,9 @@ function renderStudentCards(list = getFilteredStudents()) {
           </div>
         </div>
         <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
-      if (isBatchDirectoryLocked(batch)) {
-        html += renderLockedBatchCard(batch);
-      } else {
-        filteredBatchStudents.forEach(student => {
-          html += renderSingleStudentCard(student, globalIdx++);
-        });
-      }
+      filteredBatchStudents.forEach(student => {
+        html += renderSingleStudentCard(student, globalIdx++);
+      });
       html += `</div>`;
     } else {
       const previewStudents = filteredBatchStudents.slice(0, 3);
@@ -3188,23 +3163,19 @@ function renderStudentCards(list = getFilteredStudents()) {
           </div>
         </div>
         <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
-      if (isBatchDirectoryLocked(batch)) {
-        html += renderLockedBatchCard(batch);
-      } else {
-        html += `<div class="prev-batch-preview-grid">`;
-        previewStudents.forEach(student => {
-          html += renderSingleStudentCard(student, globalIdx++);
-        });
-        html += `</div>`;
+      html += `<div class="prev-batch-preview-grid">`;
+      previewStudents.forEach(student => {
+        html += renderSingleStudentCard(student, globalIdx++);
+      });
+      html += `</div>`;
 
-        if (filteredBatchStudents.length > 3) {
-          html += `
-            <div class="prev-batch-action" data-aos="fade-up">
-              <a href="students.html?batch=${batchSlug}" class="prev-batch-view-all-btn">
-                ${currentLang === 'bn' ? `সকল ${batch} শিক্ষার্থী দেখুন →` : `View All ${batch} Students →`}
-              </a>
-            </div>`;
-        }
+      if (filteredBatchStudents.length > 3) {
+        html += `
+          <div class="prev-batch-action" data-aos="fade-up">
+            <a href="students.html?batch=${batchSlug}" class="prev-batch-view-all-btn">
+              ${currentLang === 'bn' ? `সকল ${batch} শিক্ষার্থী দেখুন →` : `View All ${batch} Students →`}
+            </a>
+          </div>`;
       }
       html += `</div>`;
     }
@@ -3429,8 +3400,6 @@ function renderRoommates() {
     const isCompactView = grid.classList.contains("view-compact");
     if (!rooms.length) {
       html += `<div class="empty-state" style="grid-column: 1 / -1;">${t("common.noStudent")}</div>`;
-    } else if (isBatchDirectoryLocked(batchLabel)) {
-      html += renderLockedBatchCard(batchLabel);
     } else {
       rooms.forEach(([room, pair], index) => {
         if (isCompactView) {
@@ -3491,9 +3460,7 @@ function renderRoommates() {
       <div class="batch-collapsible-wrapper" data-batch-wrapper="${batch}">`;
 
     const isCompactView = grid.classList.contains("view-compact");
-    if (isBatchDirectoryLocked(batch)) {
-      html += renderLockedBatchCard(batch);
-    } else if (isLatest) {
+    if (isLatest) {
       rooms.forEach(([room, pair], index) => {
         if (isCompactView) {
           html += renderSingleRoomCompactCard(room, pair, index);
