@@ -6829,7 +6829,6 @@ function renderModeratorCard(mod, batchName, mIdx) {
     </article>
   `;
 }
-}
 
 async function renderHallInfoPage(hallData) {
   if (document.body.dataset.page !== "hostel") return;
