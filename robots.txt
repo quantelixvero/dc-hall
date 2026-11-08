@@ -1,45 +1,38 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /studio/
+Disallow: /credentials/
+Disallow: /netlify/
 
 # Googlebot & Googlebot-Image
 User-agent: Googlebot
 Allow: /
+Disallow: /admin.html
+Disallow: /studio/
+Disallow: /credentials/
+Disallow: /netlify/
 
 User-agent: Googlebot-Image
 Allow: /
-Allow: /favicon.ico
-Allow: /favicon.png
-Allow: /favicon-*.png
-Allow: /apple-touch-icon.png
 Allow: /images/
+Allow: /assets/
 
-# Microsoft Bing & Yahoo (Bingbot / msnbot)
+# Microsoft Bing & Yahoo (Bingbot)
 User-agent: Bingbot
 Allow: /
-Allow: /favicon.ico
-Allow: /favicon.png
-Allow: /favicon-*.png
-Allow: /images/
-
-User-agent: msnbot
-Allow: /
+Disallow: /admin.html
+Disallow: /studio/
+Disallow: /credentials/
 
 # Yandex Search
 User-agent: Yandex
 Allow: /
-Allow: /favicon.ico
-Allow: /favicon.png
-Allow: /favicon-*.png
-Allow: /images/
+Disallow: /admin.html
+Disallow: /studio/
 
-# DuckDuckGo & Yahoo Slurp & Baidu
+# DuckDuckBot
 User-agent: DuckDuckBot
-Allow: /
-
-User-agent: Slurp
-Allow: /
-
-User-agent: Baiduspider
 Allow: /
 
 # Sitemap Index
