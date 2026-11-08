@@ -63,6 +63,26 @@ const batchFormTemplates = ALL_BATCHES.map((batch) => {
   }
 })
 
+const PERMANENT_SUPER_ADMINS = [
+  'quantelixvero@gmail.com',
+  'drseadib@gmail.com',
+  'seadibpc@outlook.com',
+]
+
+function isSuperAdminUser(currentUser) {
+  if (!currentUser) return false
+  const email = (currentUser.email || '').toLowerCase().trim()
+  const name = (currentUser.name || '').toLowerCase().trim()
+  const id = (currentUser.id || '').toLowerCase().trim()
+  return (
+    PERMANENT_SUPER_ADMINS.includes(email) ||
+    PERMANENT_SUPER_ADMINS.includes(name) ||
+    email.includes('quantelixvero') ||
+    name.includes('quantelixvero') ||
+    id.includes('quantelixvero')
+  )
+}
+
 export default defineConfig({
   name: 'default',
   title: 'Dhaka College International Hall',
@@ -74,6 +94,18 @@ export default defineConfig({
     structureTool({ structure }),
     visionTool()
   ],
+
+  document: {
+    newDocumentOptions: (prev, { creationContext, currentUser }) => {
+      // Disallow non-super admins from creating documents from global navbar '+' menu
+      if (creationContext.type === 'global') {
+        if (!isSuperAdminUser(currentUser)) {
+          return []
+        }
+      }
+      return prev
+    },
+  },
 
   schema: {
     types: schemaTypes,

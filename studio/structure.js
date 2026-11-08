@@ -44,15 +44,15 @@ function createBatchContentItems(S, batchName) {
           .schemaType('student')
           .filter('_type == "student" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
           .params({ batch: batchName })
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`student-${cleanBatchKey}`),
-          ])
           .canHandleIntent((intentName, params) => {
             return intentName === 'create' && params.template === `student-${cleanBatchKey}`;
           })
           .defaultOrdering([
             { field: 'position', direction: 'asc' },
             { field: 'short_roll', direction: 'asc' },
+          ])
+          .initialValueTemplates([
+            S.initialValueTemplateItem(`student-${cleanBatchKey}`),
           ])
       ),
 
@@ -66,13 +66,13 @@ function createBatchContentItems(S, batchName) {
           .schemaType('room')
           .filter('_type == "room" && (batch == $batch || (!defined(batch) && $batch == "HSC-27"))')
           .params({ batch: batchName })
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`room-${cleanBatchKey}`),
-          ])
           .canHandleIntent((intentName, params) => {
             return intentName === 'create' && params.template === `room-${cleanBatchKey}`;
           })
           .defaultOrdering([{ field: 'room_no', direction: 'asc' }])
+          .initialValueTemplates([
+            S.initialValueTemplateItem(`room-${cleanBatchKey}`),
+          ])
       ),
 
     S.listItem()
@@ -95,13 +95,13 @@ function createBatchContentItems(S, batchName) {
           .schemaType('galleryEvent')
           .filter('_type == "galleryEvent" && ($batch in batches || "all" in batches || (!defined(batches) && $batch == "HSC-27"))')
           .params({ batch: batchName })
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`galleryEvent-${cleanBatchKey}`),
-          ])
           .canHandleIntent((intentName, params) => {
             return intentName === 'create' && params.template === `galleryEvent-${cleanBatchKey}`;
           })
           .defaultOrdering([{ field: 'date', direction: 'desc' }])
+          .initialValueTemplates([
+            S.initialValueTemplateItem(`galleryEvent-${cleanBatchKey}`),
+          ])
       ),
 
     S.listItem()
@@ -114,13 +114,13 @@ function createBatchContentItems(S, batchName) {
           .schemaType('hallForm')
           .filter('_type == "hallForm" && (batch == $batch || batch == "all")')
           .params({ batch: batchName })
-          .initialValueTemplates([
-            S.initialValueTemplateItem(`hallForm-${cleanBatchKey}`),
-          ])
           .canHandleIntent((intentName, params) => {
             return intentName === 'create' && params.template === `hallForm-${cleanBatchKey}`;
           })
           .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
+          .initialValueTemplates([
+            S.initialValueTemplateItem(`hallForm-${cleanBatchKey}`),
+          ])
       ),
   ]
 }
@@ -278,10 +278,10 @@ export const structure = async (S, context) => {
               .title('New Edit Request')
               .filter('_type == "editRequest" && batch == $batch && requester_email == $email')
               .params({ batch: userBatch, email: userEmail })
+              .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
               .initialValueTemplates([
                 S.initialValueTemplateItem('editRequest-pending'),
               ])
-              .defaultOrdering([{ field: '_createdAt', direction: 'desc' }])
           ),
 
         S.listItem()

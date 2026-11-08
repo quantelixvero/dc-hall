@@ -125,6 +125,19 @@ export default defineType({
       type: 'string',
       group: 'setup',
       description: 'কোন ব্যাচের জন্য এই রুমটি নির্ধারিত তা নির্বাচন করুন।',
+      readOnly: ({ currentUser }) => {
+        const superAdmins = ['quantelixvero@gmail.com', 'drseadib@gmail.com', 'seadibpc@outlook.com'];
+        const email = (currentUser?.email || '').toLowerCase().trim();
+        const name = (currentUser?.name || '').toLowerCase().trim();
+        const id = (currentUser?.id || '').toLowerCase().trim();
+        return !(
+          superAdmins.includes(email) ||
+          superAdmins.includes(name) ||
+          email.includes('quantelixvero') ||
+          name.includes('quantelixvero') ||
+          id.includes('quantelixvero')
+        );
+      },
       options: {
         list: [
           { title: 'HSC-27 (Founder Batch)', value: 'HSC-27' },

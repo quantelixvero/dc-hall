@@ -2767,27 +2767,47 @@ function renderSingleStudentCard(student, index) {
 }
 
 function getHomepage6Students(allStudents) {
-  const batchMap = {};
+  // Deduplicate input list by unique identity
+  const seenIds = new Set();
+  const uniqueStudents = [];
   allStudents.forEach(s => {
+    const id = s._id || s.slug || (s.name + (s.roll || ''));
+    if (!seenIds.has(id)) {
+      seenIds.add(id);
+      uniqueStudents.push(s);
+    }
+  });
+
+  const batchMap = {};
+  uniqueStudents.forEach(s => {
     const b = s.batch || "HSC-27";
     batchMap[b] = batchMap[b] || [];
     batchMap[b].push(s);
   });
   const batchKeys = Object.keys(batchMap).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
   const latestBatchKey = batchKeys[0] || "HSC-28";
-  const prevBatchKey = batchKeys.find(k => k !== latestBatchKey) || "HSC-27";
+  const prevBatchKey = batchKeys.find(k => k !== latestBatchKey);
 
   const latestList = batchMap[latestBatchKey] || [];
-  const prevList = batchMap[prevBatchKey] || [];
+  const prevList = prevBatchKey ? (batchMap[prevBatchKey] || []) : [];
 
   // Fixed rule: Exactly 1st 3 from latest batch (HSC-28) + 3 from established batch (HSC-27)
   const top3Latest = latestList.slice(0, 3);
   const top3Prev = prevList.slice(0, 3);
 
-  let combined = [...top3Latest, ...top3Prev];
+  const combined = [...top3Latest];
+  const addedIds = new Set(top3Latest.map(s => s._id || s.slug || (s.name + (s.roll || ''))));
+  top3Prev.forEach(s => {
+    const id = s._id || s.slug || (s.name + (s.roll || ''));
+    if (!addedIds.has(id)) {
+      addedIds.add(id);
+      combined.push(s);
+    }
+  });
+
   if (combined.length < 6) {
     const remainingNeeded = 6 - combined.length;
-    const extra = allStudents.filter(s => !combined.includes(s)).slice(0, remainingNeeded);
+    const extra = uniqueStudents.filter(s => !addedIds.has(s._id || s.slug || (s.name + (s.roll || '')))).slice(0, remainingNeeded);
     combined.push(...extra);
   }
   return combined.slice(0, 6);
@@ -2812,9 +2832,33 @@ function renderStudentCards(list = getFilteredStudents()) {
 
   const isHomePage = !!grid.dataset.limit;
 
-  // === HOMEPAGE: 3+3 rule ===
+  // === HOMEPAGE: 3+3 rule or Direct Unique Search Results ===
   if (isHomePage) {
-    const homepage6 = getHomepage6Students(list.length ? list : students);
+    const searchVal = byId("studentSearch")?.value?.trim() || "";
+    const activeFilters = typeof getActiveFilters === "function" ? getActiveFilters() : {};
+    const hasFilterOrSearch = searchVal.length > 0 || Object.values(activeFilters).some(v => Array.isArray(v) ? v.length > 0 : Boolean(v));
+
+    if (hasFilterOrSearch) {
+      // Actively searching or filtering on homepage: Deduplicate and render matching cards directly
+      const seen = new Set();
+      const uniqueList = [];
+      list.forEach(s => {
+        const id = s._id || s.slug || (s.name + (s.roll || ""));
+        if (!seen.has(id)) {
+          seen.add(id);
+          uniqueList.push(s);
+        }
+      });
+
+      if (!uniqueList.length) {
+        grid.innerHTML = `<div class="empty-state">${t("common.noStudent")}</div>`;
+        return;
+      }
+      grid.innerHTML = uniqueList.slice(0, 6).map((student, index) => renderSingleStudentCard(student, index)).join("");
+      return;
+    }
+
+    const homepage6 = getHomepage6Students(students);
     if (!homepage6.length) {
       grid.innerHTML = `<div class="empty-state">${t("common.noStudent")}</div>`;
       return;
