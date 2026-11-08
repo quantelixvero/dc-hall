@@ -1,0 +1,2656 @@
+{
+ "page": "C:\\Users\\USER\\Downloads\\##aicode\\DC-hall (sanity)\\dc-hall\\index.html",
+ "url": "http://127.0.0.1:5200/index.html",
+ "at": "2026-11-07T23:27:08.559Z",
+ "out": "C:\\Users\\USER\\Downloads\\##aicode\\DC-hall (sanity)\\dc-hall\\.taste-skill\\consistency",
+ "widths": [
+  {
+   "width": 1440,
+   "height": 900,
+   "screens": 9,
+   "held": 0,
+   "errors": [],
+   "findings": [
+    {
+     "check": "assets",
+     "sev": "FAIL",
+     "sel": "(the page)",
+     "text": "",
+     "stop": null,
+     "msg": "the image images/student-avatar.png did not load (404)",
+     "fix": "fix the path, or remove the reference"
+    },
+    {
+     "check": "assets",
+     "sev": "FAIL",
+     "sel": "(the page)",
+     "text": "",
+     "stop": null,
+     "msg": "the image assets/uploads/hall-compressed.jpg did not load (404)",
+     "fix": "fix the path, or remove the reference"
+    },
+    {
+     "check": "hero-fill",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Preview",
+     "msg": "the next section shows on the first screen: it starts at 702px on a 900px screen (the hero ends at 702px)",
+     "stop": 0,
+     "crop": "1440-01-hero-fill.jpg",
+     "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#students-preview > div.container > div.search-wrap.aos-init",
+     "text": "Search students",
+     "msg": "7 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.search-wrap.aos-init, button.student-card.aos-init:nth-of-type(1), button.student-card.aos-init:nth-of-type(2), button.student-card.aos-init:nth-of-type(3), button.student-card.aos-init:nth-of-type(4), ...",
+     "stop": 1,
+     "crop": "1440-09-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1)",
+     "text": "•••••••• HSC-27 · SCI ROOM 314 •••••••• HSC-27 ·",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): article.room-pair.aos-init:nth-of-type(1), article.room-pair.aos-init:nth-of-type(2)",
+     "stop": 2,
+     "crop": "1440-14-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#results-preview > div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1)",
+     "text": "ACADEMIC PERFORMANCE Academic Results Demo resul",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate:nth-of-type(1), div.results-preview-card.aos-init",
+     "stop": 3,
+     "crop": "1440-18-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split > figure.hostel-photo.aos-init",
+     "text": "",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): figure.hostel-photo.aos-init, div.aos-init.aos-animate",
+     "stop": 4,
+     "crop": "1440-21-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.split > div.aos-init.aos-animate",
+     "text": "HALL INFO Legacy, achievement and student life I",
+     "msg": "5 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, figure.hostel-preview-photo.aos-init, article.info-box.aos-init:nth-of-type(1), article.info-box.aos-init:nth-of-type(2), article.info-box.aos-init:nth-of-type(3)",
+     "stop": 5,
+     "crop": "1440-25-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "DHAKA COLLEGE Official Portals & Resources",
+     "msg": "8 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, a.dc-resource-card.aos-init:nth-of-type(1), a.dc-resource-card.aos-init:nth-of-type(2), a.dc-resource-card.aos-init:nth-of-type(3), ...",
+     "stop": 6,
+     "crop": "1440-28-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#location > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "LOCATION International Hall, Dhaka College",
+     "msg": "3 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, div.map-wrap.aos-init",
+     "stop": 7,
+     "crop": "1440-31-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "no-visual",
+     "sev": "FAIL",
+     "sel": "section#dc-resources",
+     "text": "Official Portals & Resources",
+     "msg": "no picture, effect or mock in this section; a feature section needs a visual",
+     "stop": 6,
+     "crop": "1440-29-no-visual.jpg",
+     "fix": "give the section a visual: a UI fragment on a ground, real icons, or a photograph that fits"
+    },
+    {
+     "check": "card-layout",
+     "sev": "FAIL",
+     "sel": "div#studentGrid",
+     "text": "•••••••• ROOM •••••••• SCI ROOM •••••••• · Roll ",
+     "msg": "6 of 6 cards drawn one way (one panel, ground, placement and fragment): copies of one card",
+     "stop": 1,
+     "crop": "1440-10-card-layout.jpg",
+     "fix": "a card layout at most twice on a page: build the other sections another way"
+    },
+    {
+     "check": "button-styles",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1) > button.room-number",
+     "text": "ROOM 314",
+     "stop": 2,
+     "msg": "one button style (soft, fill #0f766e) in 2 heights: 46, 84px (\"ROOM 314\" 84px, \"View Students\" 46px)",
+     "crop": "1440-15-button-styles.jpg",
+     "fix": "one primary and one secondary button: one shape, one height per size, one label size"
+    },
+    {
+     "check": "cta",
+     "sev": "FAIL",
+     "sel": "section#location",
+     "text": "International Hall, Dhaka College",
+     "msg": "the last section before the footer ends with no button",
+     "stop": 7,
+     "crop": "1440-32-cta.jpg",
+     "fix": "add the action: a button in the hero, one on every priced item, one in the closing section"
+    },
+    {
+     "check": "copy-headline",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero > div.container.hero-content > h1.aos-init.aos-animate",
+     "text": "International Hall",
+     "msg": "\"International Hall\" does not name what is sold (official, student, hostel, portal, from the page title)",
+     "stop": 0,
+     "crop": "1440-02-copy-headline.jpg",
+     "fix": "put the category noun in the h1 (and who it is for, or where), in 2 to 8 words"
+    },
+    {
+     "check": "copy-fact",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero > div.container.hero-content > h1.aos-init.aos-animate",
+     "text": "International Hall",
+     "msg": "the first screen holds no number, price, date or place name",
+     "stop": 0,
+     "crop": "1440-03-copy-fact.jpg",
+     "fix": "put one hard fact on the first screen: a number, a price, a date or the place"
+    },
+    {
+     "check": "copy-headings",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > h2",
+     "text": "Academic Results",
+     "msg": "\"Academic Results\" names no product, part, place or section (2 headings like it; at most one brand line per page) (and 1 more like it: \"Prof. Md. Kamruzzaman\")",
+     "stop": 3,
+     "crop": "1440-19-copy-headings.jpg",
+     "fix": "name the thing in every heading: the product, a part, the place or a section noun"
+    },
+    {
+     "check": "contrast",
+     "sev": "FAIL",
+     "sel": "header#navbar > div.container.nav-inner > nav.nav-links > a.active",
+     "text": "Home",
+     "stop": 0,
+     "msg": "body text over a effect reads at 1.7:1 at its worst tenth (needs 4.5:1)",
+     "crop": "1440-04-contrast.jpg",
+     "fix": "put the text on a calm part of the picture, or on a solid panel"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > p.lead",
+     "text": "Demo result overview. Detailed CT and yearly PDF",
+     "stop": 3,
+     "msg": "body text in #5b6472 on #ffffff reads 5.98:1 (needs 7:1); 3 like it, like \"International Hall bri\", \"Use the live Google ma\"",
+     "crop": "1440-20-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "p#homeHallSuperBio",
+     "text": "Prof. Md. Kamruzzaman serves as the Provost of D",
+     "stop": 4,
+     "msg": "body text in #5b6472 on #f6f7f9 reads 5.58:1 (needs 7:1); 2 like it, like \"Direct access to offic\"",
+     "crop": "1440-22-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "photo-upscale",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > figure.hostel-photo.aos-init > img",
+     "text": "img: Hall Super Portrait",
+     "msg": "hallsuper1.webp: 286x291 shown at 320x400, blown up 1.37x",
+     "stop": 4,
+     "crop": "1440-23-photo-upscale.jpg",
+     "fix": "use a source at least as wide as the picture is shown (twice that for sharp screens)"
+    },
+    {
+     "check": "assets",
+     "sev": "WARN",
+     "sel": "(the page)",
+     "text": "",
+     "stop": null,
+     "msg": "the data file https://w16kaeyg.api.sanity.io/v2023-01-01/data/query/production?query=%7B%0A%20%20%22adminSettings%22%3A%20*%5B_type%20%3D%3D%20%22adminSettings%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%5B0%5D%7B%0A%20%20%20%20global_visibility_mode%2C%0A%20%20%20%20global_visibility%2C%0A%20%20%20%20global_public_visibility%2C%0A%20%20%20%20master_password%2C%0A%20%20%20%20page_access_controls%2C%0A%20%20%20%20profile_field_controls%2C%0A%20%20%20%20homepage_sections%2C%0A%20%20%20%20developer_sections%2C%0A%20%20%20%20hallinfo_sections%2C%0A%20%20%20%20menu_visibility%2C%0A%20%20%20%20footer_columns%2C%0A%20%20%20%20batch_email_slots%2C%0A%20%20%20%20batch_rotation_enabled%0A%20%20%7D%2C%0A%20%20%22batchConfigs%22%3A%20*%5B_type%20%3D%3D%20%22batchConfig%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%7B%0A%20%20%20%20_id%2C%0A%20%20%20%20batch%2C%0A%20%20%20%20batch_password%2C%0A%20%20%20%20is_locked%2C%0A%20%20%20%20lock_notice%2C%0A%20%20%20%20batch_admin_emails%2C%0A%20%20%20%20moderator_emails%0A%20%20%7D%2C%0A%20%20%22settings%22%3A%20*%5B_type%20%3D%3D%20%22siteSettings%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%5B0%5D%7B%0A%20%20%20%20...%2C%0A%20%20%20%20%22logo%22%3A%20coalesce(logo.asset-%3Eurl%2C%20logo)%2C%0A%20%20%20%20%22hero_image%22%3A%20coalesce(hero_image.asset-%3Eurl%2C%20hero_image)%2C%0A%20%20%20%20%22notice_pdf%22%3A%20coalesce(notice_pdf.asset-%3Eurl%2C%20notice_pdf)%0A%20%20%7D%2C%0A%20%20%22students%22%3A%20*%5B_type%20%3D%3D%20%22student%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%20%7C%20order(position%20asc)%7B%0A%20%20%20%20...%2C%0A%20%20%20%20%22photo%22%3A%20coalesce(photo.asset-%3Eurl%2C%20photo)%2C%0A%20%20%20%20%22room_no%22%3A%20coalesce(room_2nd_year.room_ref-%3Eroom_no%2C%20room_2nd_year.room_no%2C%20room_1st_year.room_ref-%3Eroom_no%2C%20room_1st_year.room_no%2C%20room_ref-%3Eroom_no%2C%20room_no)%2C%0A%20%20%20%20%22room_title_en%22%3A%20coalesce(room_2nd_year.room_ref-%3Etitle_en%2C%20room_1st_year.room_ref-%3Etitle_en%2C%20room_ref-%3Etitle_en)%2C%0A%20%20%20%20%22room_title_bn%22%3A%20coalesce(room_2nd_year.room_ref-%3Etitle_bn%2C%20room_1st_year.room_ref-%3Etitle_bn%2C%20room_ref-%3Etitle_bn)%2C%0A%20%20%20%20%22room_1st_year%22%3A%20%7B%0A%20%20%20%20%20%20%22room_no%22%3A%20coalesce(room_1st_year.room_ref-%3Eroom_no%2C%20room_1st_year.room_no)%2C%0A%20%20%20%20%20%20%22bedmate_name%22%3A%20coalesce(room_1st_year.bedmate_name%2C%20room_1st_year.bedmate_ref-%3Ename_en)%2C%0A%20%20%20%20%20%20%22bedmate_slug%22%3A%20room_1st_year.bedmate_ref-%3Estudent_id%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22room_2nd_year%22%3A%20%7B%0A%20%20%20%20%20%20%22room_no%22%3A%20coalesce(room_2nd_year.room_ref-%3Eroom_no%2C%20room_2nd_year.room_no)%2C%0A%20%20%20%20%20%20%22bedmate_name%22%3A%20coalesce(room_2nd_year.bedmate_name%2C%20room_2nd_year.bedmate_ref-%3Ename_en)%2C%0A%20%20%20%20%20%20%22bedmate_slug%22%3A%20room_2nd_year.bedmate_ref-%3Estudent_id%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22results_1st_year%22%3A%20%7B%0A%20%20%20%20%20%20...%2C%0A%20%20%20%20%20%20%22ct1_pdf%22%3A%20coalesce(results_1st_year.ct1_pdf.asset-%3Eurl%2C%20results_1st_year.ct1_pdf)%2C%0A%20%20%20%20%20%20%22ct2_pdf%22%3A%20coalesce(results_1st_year.ct2_pdf.asset-%3Eurl%2C%20results_1st_year.ct2_pdf)%2C%0A%20%20%20%20%20%20%22hy_pdf%22%3A%20coalesce(results_1st_year.hy_pdf.asset-%3Eurl%2C%20results_1st_year.hy_pdf)%2C%0A%20%20%20%20%20%20%22ct3_pdf%22%3A%20coalesce(results_1st_year.ct3_pdf.asset-%3Eurl%2C%20results_1st_year.ct3_pdf)%2C%0A%20%20%20%20%20%20%22yearly_pdf%22%3A%20coalesce(results_1st_year.yearly_pdf.asset-%3Eurl%2C%20results_1st_year.yearly_pdf)%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22results_2nd_year%22%3A%20%7B%0A%20%20%20%20%20%20...%2C%0A%20%20%20%20%20%20%22ct1_pdf%22%3A%20coalesce(results_2nd_year.ct1_pdf.asset-%3Eurl%2C%20results_2nd_year.ct1_pdf)%2C%0A%20%20%20%20%20%20%22ct2_pdf%22%3A%20coalesce(results_2nd_year.ct2_pdf.asset-%3Eurl%2C%20results_2nd_year.ct2_pdf)%2C%0A%20%20%20%20%20%20%22ct3_pdf%22%3A%20coalesce(results_2nd_year.ct3_pdf.asset-%3Eurl%2C%20results_2nd_year.ct3_pdf)%2C%0A%20%20%20%20%20%20%22test_pdf%22%3A%20coalesce(results_2nd_year.test_pdf.asset-%3Eurl%2C%20results_2nd_year.test_pdf)%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22pdfs%22%3A%20%7B%0A%20%20%20%20%20%20%22ct1%22%3A%20coalesce(pdfs.ct1.asset-%3Eurl%2C%20pdfs.ct1)%2C%0A%20%20%20%20%20%20%22ct2%22%3A%20coalesce(pdfs.ct2.asset-%3Eurl%2C%20pdfs.ct2)%2C%0A%20%20%20%20%20%20%22hy%22%3A%20coalesce(pdfs.hy.asset-%3Eurl%2C%20pdfs.hy)%2C%0A%20%20%20%20%20%20%22ct3%22%3A%20coalesce(pdfs.ct3.asset-%3Eurl%2C%20pdfs.ct3)%2C%0A%20%20%20%20%20%20%22yearly%22%3A%20coalesce(pdfs.yearly.asset-%3Eurl%2C%20pdfs.yearly)%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22rooms%22%3A%20*%5B_type%20%3D%3D%20%22room%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%20%7C%20order(room_no%20asc)%7B%0A%20%20%20%20...%2C%0A%20%20%20%20%22photos%22%3A%20coalesce(photos%5B%5D.asset-%3Eurl%2C%20photos)%2C%0A%20%20%20%20%22assigned_students%22%3A%20coalesce(%0A%20%20%20%20%20%20(coalesce(assigned_students%5B%5D-%3E%7B%20_id%2C%20name_en%2C%20name_bn%2C%20short_roll%2C%20student_id%2C%20batch%2C%20%22photo%22%3A%20photo.asset-%3Eurl%20%7D%2C%20%5B%5D)%20%2B%0A%20%20%20%20%20%20*%5B_type%20%3D%3D%20%22student%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%20%26%26%20(room_ref._ref%20%3D%3D%20%5E._id%20%7C%7C%20references(%5E._id)%20%7C%7C%20(room_no%20%3D%3D%20%5E.room_no%20%26%26%20(!defined(%5E.batch)%20%7C%7C%20batch%20%3D%3D%20%5E.batch)))%5D%7B%20_id%2C%20name_en%2C%20name_bn%2C%20short_roll%2C%20student_id%2C%20batch%2C%20%22photo%22%3A%20photo.asset-%3Eurl%20%7D)%2C%0A%20%20%20%20%20%20%5B%5D%0A%20%20%20%20)%0A%20%20%7D%2C%0A%20%20%22home%22%3A%20*%5B_type%20%3D%3D%20%22homePage%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%5B0%5D%2C%0A%20%20%22hall%22%3A%20*%5B_type%20%3D%3D%20%22hallInfo%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%5B0%5D%7B%0A%20%20%20%20...%2C%0A%20%20%20%20%22hall_photo%22%3A%20coalesce(hall_photo.asset-%3Eurl%2C%20hall_photo)%2C%0A%20%20%20%20%22home_page_photo%22%3A%20coalesce(home_page_photo.asset-%3Eurl%2C%20home_page_photo)%2C%0A%20%20%20%20%22hall_super_photo%22%3A%20coalesce(hall_super_photo.asset-%3Eurl%2C%20hall_super_photo)%2C%0A%20%20%20%20%22campus_photos%22%3A%20campus_photos%5B%5D%7B%0A%20%20%20%20%20%20...%2C%0A%20%20%20%20%20%20%22photo%22%3A%20coalesce(asset-%3Eurl%2C%20photo)%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22alumni_profiles%22%3A%20alumni_profiles%5B%5D%7B%0A%20%20%20%20%20%20...%2C%0A%20%20%20%20%20%20%22photo%22%3A%20coalesce(photo.asset-%3Eurl%2C%20photo%2C%20asset-%3Eurl)%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22developer%22%3A%20*%5B_type%20%3D%3D%20%22developerProfile%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%5B0%5D%7B%0A%20%20%20%20...%2C%0A%20%20%20%20%22portrait%22%3A%20coalesce(portrait.asset-%3Eurl%2C%20portrait)%2C%0A%20%20%20%20%22contributors%22%3A%20contributors%5B%5D%7B%0A%20%20%20%20%20%20...%2C%0A%20%20%20%20%20%20%22photo%22%3A%20coalesce(photo.asset-%3Eurl%2C%20photo%2C%20asset-%3Eurl)%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22galleries%22%3A%20*%5B_type%20%3D%3D%20%22galleryItem%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%20%7C%20order(position%20asc)%7B%0A%20%20%20%20_id%2C%0A%20%20%20%20heading%2C%0A%20%20%20%20%22slug%22%3A%20slug.current%2C%0A%20%20%20%20preview_limit%2C%0A%20%20%20%20default_caption%2C%0A%20%20%20%20batch%2C%0A%20%20%20%20gallery_title%2C%0A%20%20%20%20position%2C%0A%20%20%20%20%22photos%22%3A%20photos%5B%5D%7B%0A%20%20%20%20%20%20%22photo%22%3A%20coalesce(asset-%3Eurl%2C%20photo.asset-%3Eurl%2C%20photo)%2C%0A%20%20%20%20%20%20caption%2C%0A%20%20%20%20%20%20title_en%2C%0A%20%20%20%20%20%20title_bn%2C%0A%20%20%20%20%20%20caption_en%2C%0A%20%20%20%20%20%20caption_bn%2C%0A%20%20%20%20%20%20description_en%2C%0A%20%20%20%20%20%20description_bn%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22gallery%22%3A%20*%5B_type%20%3D%3D%20%22galleryItem%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%5B0%5D%7B%0A%20%20%20%20%22photos%22%3A%20photos%5B%5D%7B%0A%20%20%20%20%20%20%22photo%22%3A%20coalesce(asset-%3Eurl%2C%20photo.asset-%3Eurl%2C%20photo)%2C%0A%20%20%20%20%20%20title_en%2C%0A%20%20%20%20%20%20title_bn%2C%0A%20%20%20%20%20%20caption_en%2C%0A%20%20%20%20%20%20caption_bn%2C%0A%20%20%20%20%20%20description_en%2C%0A%20%20%20%20%20%20description_bn%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22galleryEvents%22%3A%20*%5B_type%20%3D%3D%20%22galleryEvent%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%20%7C%20order(date%20desc%2C%20position%20asc)%7B%0A%20%20%20%20...%2C%0A%20%20%20%20%22event_id%22%3A%20event_id.current%2C%0A%20%20%20%20media_order%2C%0A%20%20%20%20%22photos%22%3A%20photos%5B%5D%7B%0A%20%20%20%20%20%20...%2C%0A%20%20%20%20%20%20%22photo%22%3A%20coalesce(asset-%3Eurl%2C%20photo.asset-%3Eurl%2C%20photo)%0A%20%20%20%20%7D%2C%0A%20%20%20%20%22videos%22%3A%20videos%5B%5D%7B%0A%20%20%20%20%20%20...%2C%0A%20%20%20%20%20%20%22video_file_url%22%3A%20coalesce(video_file.asset-%3Eurl%2C%20null)%0A%20%20%20%20%7D%0A%20%20%7D%2C%0A%20%20%22notices%22%3A%20*%5B_type%20%3D%3D%20%22notice%22%20%26%26%20!(_id%20in%20path(%22drafts.**%22))%5D%20%7C%20order(is_pinned%20desc%2C%20date%20desc)%7B%0A%20%20%20%20...%2C%0A%20%20%20%20%22photo%22%3A%20coalesce(photo.asset-%3Eurl%2C%20photo)%2C%0A%20%20%20%20%22file_url%22%3A%20coalesce(file.asset-%3Eurl%2C%20null)%0A%20%20%7D%0A%7D&%24ts=1794094029497 did not load (ERR_FAILED)",
+     "fix": "fix the path, or remove the reference"
+    },
+    {
+     "check": "text-only",
+     "sev": "WARN",
+     "sel": "section#gallery-preview",
+     "text": "International Hall Gallery",
+     "msg": "the section is only text: no picture, icon, mock or effect in it",
+     "stop": 5,
+     "crop": "1440-26-text-only.jpg",
+     "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground"
+    },
+    {
+     "check": "card-visual",
+     "sev": "WARN",
+     "sel": "section#hostel-info-preview > div.container > div.info-grid.three",
+     "text": "01 History A short look at Dhaka College's acade",
+     "msg": "3 cards hold only text: no picture, icon, UI fragment or effect in any of them",
+     "stop": 5,
+     "crop": "1440-27-card-visual.jpg",
+     "fix": "give the cards a visual: an inset panel with a UI fragment, a photograph or real icons"
+    },
+    {
+     "check": "copy-buttons",
+     "sev": "WARN",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1) > button.room-number",
+     "text": "ROOM 314",
+     "msg": "\"ROOM 314\" does not start with a verb (book, buy, try, start, get, see...) (and 3 more like it: \"ROOM 315\", \"Emergency Helpdesk\", \"Hall Super Message\")",
+     "stop": 2,
+     "crop": "1440-16-copy-buttons.jpg",
+     "fix": "label buttons with a verb and what the visitor gets (\"Book a room\", \"Start free trial\")"
+    },
+    {
+     "check": "copy-actions",
+     "sev": "WARN",
+     "sel": "(the page)",
+     "text": "",
+     "msg": "11 different button labels on the page (at most 10)",
+     "stop": null,
+     "fix": "few actions, one wording: at most 2 in the hero, the main action word for word in nav, hero and close"
+    },
+    {
+     "check": "copy-actions",
+     "sev": "WARN",
+     "sel": "div.split > div.aos-init.aos-animate > div > a.btn.primary",
+     "text": "View Details & Contact →",
+     "msg": "2 labels for one target /hostel.html#hallsuper: \"View Details & Contact →\", \"Hall Super Message\"",
+     "stop": 4,
+     "crop": "1440-24-copy-actions.jpg",
+     "fix": "few actions, one wording: at most 2 in the hero, the main action word for word in nav, hero and close"
+    },
+    {
+     "check": "copy-actions",
+     "sev": "WARN",
+     "sel": "(the page)",
+     "text": "",
+     "msg": "the main action \"View Students\" does not read word for word the same in the closing section",
+     "stop": null,
+     "fix": "few actions, one wording: at most 2 in the hero, the main action word for word in nav, hero and close"
+    },
+    {
+     "check": "col-edge",
+     "sev": "WARN",
+     "sel": "section#dc-resources > div.container > div.section-head > p.location-copy.aos-init",
+     "text": "Direct access to official Dhaka College institut",
+     "msg": "the second column starts at 4 places: 688px (section#dc-resources), 730px (section#roommates-preview, section#hallsuper-preview, section#hostel-info-preview), 752px (section#location), 824px (section#results-preview)",
+     "stop": 6,
+     "crop": "1440-30-col-edge.jpg",
+     "fix": "start the second column of every split on the same one or two grid columns"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "main.page-main.home-main > section.hero / section#students-preview",
+     "text": "",
+     "stop": 0,
+     "msg": "292px between these sections, +29% against the median 226px of gaps at a change of ground",
+     "crop": "1440-05-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "section#location / footer.footer",
+     "text": "",
+     "stop": 8,
+     "msg": "156px between these sections, -31% against the median 226px of gaps at a change of ground",
+     "crop": "1440-33-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "main.page-main.home-main > section.hero / section#students-preview",
+     "text": "",
+     "stop": 0,
+     "msg": "uneven space at the edge of a band: 114px outside its edge, 178px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "1440-06-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "section#location / footer.footer",
+     "text": "",
+     "stop": 8,
+     "msg": "uneven space at the edge of a band: 112px outside its edge, 44px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "1440-34-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 0,
+     "msg": "the nav's links come in 3 sizes (14, 13, 16px)",
+     "crop": "1440-07-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 1,
+     "msg": "the nav changes form as the page scrolls: its fill changes from none to #ffffff",
+     "crop": "1440-11-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "stranded-action",
+     "sev": "WARN",
+     "sel": "section#students-preview > div.container > div.section-head > a.btn.secondary",
+     "text": "View All",
+     "msg": "stands 681px across from the nearest text of its block (\"Students Preview\") (and 3 more like it: \"View Rooms\", \"ROOM 315\", \"View Full Gallery\")",
+     "stop": 1,
+     "crop": "1440-12-stranded-action.jpg",
+     "fix": "put the button under or beside the text it belongs to"
+    },
+    {
+     "check": "photo-repeat",
+     "sev": "WARN",
+     "sel": "div#studentGrid > button.student-card.aos-init:nth-of-type(2) > img",
+     "text": "hostel-building.jpg",
+     "msg": "the photograph hostel-building.jpg is shown 7 times on the page: a picture the visitor has already seen",
+     "fix": "show each photograph once: a different picture of what this section names, or none",
+     "stop": 1,
+     "crop": "1440-13-photo-repeat.jpg"
+    },
+    {
+     "check": "one-screen",
+     "sev": "WARN",
+     "sel": "section#roommates-preview",
+     "text": "Roommate Preview",
+     "msg": "3 sections are shorter than the screen, so the next one's heading or picture shows with them: \"Roommate Preview\" is 529px of the 824px under the nav, and \"Academic Results\" shows below it (\"Academic Results\", \"Prof. Md. Kamruzzama\")",
+     "fix": "give each section the screen (min-height: 100svh less the nav, its content centred), or join two short ones into one",
+     "stop": 2,
+     "crop": "1440-17-one-screen.jpg"
+    },
+    {
+     "check": "font-load",
+     "sev": "WARN",
+     "sel": "main.page-main.home-main > section.hero > div.container.hero-content > h1.aos-init.aos-animate",
+     "text": "Soin Sans Pro",
+     "msg": "\"Soin Sans Pro\" is asked for by the h1 and the h2s but never loaded (no font link or @font-face loads it): it shows in its fallback",
+     "stop": 0,
+     "crop": "1440-08-font-load.jpg",
+     "fix": "load every family the type asks for: name it in the font link as start.mjs prints it, spelt as Google Fonts spells it, or ask for a family the page loads"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#students-preview > div.container > div.search-wrap.aos-init",
+     "text": "Search students",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-01-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1)",
+     "text": "•••••••• HSC-27 · SCI ROOM 314 •••••••• HSC-27 ·",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-02-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(2)",
+     "text": "•••••••• HSC-27 · SCI ROOM 315 •••••••• HSC-27 ·",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-03-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#results-preview > div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1)",
+     "text": "ACADEMIC PERFORMANCE Academic Results Demo resul",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-04-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split > figure.hostel-photo.aos-init",
+     "text": "",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-05-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split > div.aos-init.aos-animate",
+     "text": "HALL SUPER Prof. Md. Kamruzzaman Provost · Inter",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-06-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.split > div.aos-init.aos-animate",
+     "text": "HALL INFO Legacy, achievement and student life I",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-07-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.split > figure.hostel-preview-photo.aos-init",
+     "text": "",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-08-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.info-grid.three > article.info-box.aos-init:nth-of-type(1)",
+     "text": "01 History A short look at Dhaka College's acade",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-09-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.info-grid.three > article.info-box.aos-init:nth-of-type(2)",
+     "text": "02 Notable Students Demo profiles for notable fo",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-10-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.info-grid.three > article.info-box.aos-init:nth-of-type(3)",
+     "text": "03 Admission Success Medical, university and eng",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-11-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "DHAKA COLLEGE Official Portals & Resources",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "crop": "1440-rm-12-reduced-motion.jpg",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "reduced-motion",
+     "sev": "FAIL",
+     "sel": "section#location > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "LOCATION International Hall, Dhaka College",
+     "msg": "with reduced motion asked for, it still animates in as it comes on screen (opacity, 900 ms)",
+     "fix": "under prefers-reduced-motion: reduce, show every reveal in its finished state and hold every loop on its finished picture"
+    },
+    {
+     "check": "hero-screen",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero",
+     "text": "Dhaka College International Hall Discipl",
+     "msg": "the hero ends at 702px on a 900px screen, 198px above the fold: it ends at the fold, 1px either way (SR-1)",
+     "fix": "make the hero exactly one screen (height: 100svh, its content fitted inside), never taller or shorter",
+     "rule": "SR-1 T1",
+     "crop": "1440-rhythm-01-hero-screen.jpg"
+    },
+    {
+     "check": "hero-screen",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Students Preview View All Searc",
+     "msg": "198px of the next section shows on the first screen (from 702px on a 900px screen): nothing below the hero shows at load (SR-1)",
+     "fix": "end the hero at the fold so nothing of the next section shows at load (hero height: 100svh)",
+     "rule": "SR-1 T2",
+     "crop": "1440-rhythm-02-hero-screen.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#gallery-preview",
+     "text": "Moments & Memories International Hall Ga",
+     "msg": "the section is 338px tall (0.4 screens), 562px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "1440-rhythm-03-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "footer.footer",
+     "text": "International Hall This website is devel",
+     "msg": "the section is 365px tall (0.4 screens), 535px short of one screen (900px): every section after the hero is one screen or two, 2px either way (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "1440-rhythm-04-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#roommates-preview",
+     "text": "Rooms Roommate Preview View Rooms ••••••",
+     "msg": "the section is 529px tall (0.6 screens), 371px short of one screen (900px): every section after the hero is one screen or two, 2px either way (and 6 more like it: \"Students Students Previe\", \"ACADEMIC PERFORMANCE Aca\", \"Hall Super Prof. Md. Kam\") (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "1440-rhythm-05-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview",
+     "text": "Hall Super Prof. Md. Kamruzzaman Provost",
+     "msg": "the section starts at 3031px, 331px below the screen grid (3 x 900px): sections start on whole screens (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "1440-rhythm-06-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#results-preview",
+     "text": "ACADEMIC PERFORMANCE Academic Results De",
+     "msg": "the section starts at 2448px, 252px above the screen grid (3 x 900px): sections start on whole screens (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "1440-rhythm-07-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#dc-resources",
+     "text": "Dhaka College Official Portals & Resourc",
+     "msg": "the section starts at 4704px, 204px below the screen grid (5 x 900px): sections start on whole screens (and 6 more like it: \"Students Students Previe\", \"Moments & Memories Inter\", \"Rooms Roommate Preview V\") (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "1440-rhythm-08-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "footer.footer",
+     "text": "International Hall This website is devel",
+     "msg": "the section's content does not fit it: its lowest content ends 331px below its top, past 293px (the section less 72px of bottom padding) (SR-2)",
+     "fix": "fit the content above the section's bottom padding (--padb), or make it two screens (.g2) in two groups",
+     "rule": "SR-2 T-fit",
+     "crop": "1440-rhythm-09-section-height.jpg"
+    },
+    {
+     "check": "section-air",
+     "sev": "FAIL",
+     "sel": "section#location",
+     "text": "Location International Hall, Dhaka Colle",
+     "msg": "the content fills 16.9% of the section's height (143 of 845px): 55% or more (40% WARN) (SR-3)",
+     "fix": "fill the section to 55%: more content, a picture or a background layer, or merge it into the section above as its last block",
+     "rule": "SR-3 T-fill",
+     "crop": "1440-rhythm-10-section-air.jpg"
+    },
+    {
+     "check": "section-air",
+     "sev": "FAIL",
+     "sel": "section#gallery-preview",
+     "text": "Moments & Memories International Hall Ga",
+     "msg": "the content fills 26.3% of the section's height (89 of 338px): 55% or more (40% WARN) (SR-3)",
+     "fix": "fill the section to 55%: more content, a picture or a background layer, or merge it into the section above as its last block",
+     "rule": "SR-3 T-fill",
+     "crop": "1440-rhythm-11-section-air.jpg"
+    },
+    {
+     "check": "section-air",
+     "sev": "WARN",
+     "sel": "section#roommates-preview",
+     "text": "Rooms Roommate Preview View Rooms ••••••",
+     "msg": "the content fills 53.6% of the section's height (284 of 529px): 55% or more (40% WARN) (SR-3)",
+     "fix": "fill the section to 55%: more content, a picture or a background layer, or merge it into the section above as its last block",
+     "rule": "SR-3 T-fill",
+     "crop": "1440-rhythm-32-section-air.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > h2",
+     "text": "Academic Results",
+     "msg": "the screen at scroll 1919px (the top of section 3) shows 371px of section 4 and the heading of section 4 whole and the content of 2 sections, over 24px each beside section 3: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "1440-rhythm-12-one-section.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "h2#homeHallSuperName",
+     "text": "Prof. Md. Kamruzzaman",
+     "msg": "the screen at scroll 2448px (the top of section 4) shows 317px of section 5 and the heading of section 5 whole and the content of 2 sections, over 24px each beside section 4: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "1440-rhythm-13-one-section.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > div.aos-init.aos-animate > h2",
+     "text": "Legacy, achievement and student life",
+     "msg": "the screen at scroll 3031px (the top of section 5) shows 276px of section 6 and the heading of section 6 whole and the content of 2 sections, over 24px each beside section 5: a screen shows one section (another may peek 8px, 24px WARN) (and 9 more like it: scroll 4366px, scroll 2700px, scroll 1800px) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "1440-rhythm-14-one-section.jpg"
+    },
+    {
+     "check": "one-heading",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > h2",
+     "text": "Academic Results",
+     "msg": "headings of two sections show whole on one screen at 18 of 117 scroll positions (15.4%; at scroll 1750, 1800, 1850, 1900px), here with \"Roommate Preview\": at most 3% on a desktop (SR-5)",
+     "fix": "make the sections one screen tall so their headings sit a screen apart and two never share one",
+     "rule": "SR-5 T2",
+     "crop": "1440-rhythm-15-one-heading.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero",
+     "text": "Dhaka College International Hall Discipl",
+     "msg": "the content of section 1 runs 340px from the left and 340px from the right (read from its outermost blocks: no .wrap): the page's container starts at 120px; the margin is 64-120px at 1440px (one container, equal margins, 2px either way) (SR-6)",
+     "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+     "rule": "SR-6 T1-margins",
+     "crop": "1440-rhythm-16-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "header#navbar",
+     "text": "International Hall Home Hall Students Ro",
+     "msg": "a <header> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+     "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+     "rule": "SR-6 T1-structure",
+     "crop": "1440-rhythm-17-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "footer.footer",
+     "text": "International Hall This website is devel",
+     "msg": "a <footer> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+     "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+     "rule": "SR-6 T1-structure",
+     "crop": "1440-rhythm-18-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero",
+     "text": "Dhaka College International Hall Discipl",
+     "msg": "the section needs exactly one in-flow child .wrap (it has 1 in-flow child, 0 .wrap) (and 10 more like it: main.page-main.home-main > section.hero > div.hero-overlay, \"Students Students Previe\", \"Rooms Roommate Preview V\") (SR-6)",
+     "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+     "rule": "SR-6 T1-structure",
+     "crop": "1440-rhythm-19-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero > div.hero-overlay",
+     "text": "",
+     "msg": "a box runs 0-1440px, outside the container lines of section 1 at 340-1100px: full width is for background layers and grounds only (SR-6)",
+     "fix": "keep it inside the container lines (.wrap): full width is for background layers and grounds only",
+     "rule": "SR-6 T2-containment",
+     "crop": "1440-rhythm-20-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > div.aos-init.aos-animate > p:nth-of-type(2)",
+     "text": "Provost · International Hall, Dhaka Coll",
+     "msg": "1 text block starts on a left line at x 742, 622px from the container's left: text starts on the container's left, or on one split line (x 630, 732, 834) (SR-6)",
+     "fix": "start the text on the container's left, or on the one split line every split shares",
+     "rule": "SR-6 T3-left-lines",
+     "crop": "1440-rhythm-21-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > div.aos-init.aos-animate > p.eyebrow",
+     "text": "Hall Super",
+     "msg": "3 text blocks start on a left line at x 728, 608px from the container's left: text starts on the container's left, or on one split line (x 630, 732, 834) (also \"Prof. Md. Kamruzzaman\", \"Prof. Md. Kamruzzaman serves as \") (and 1 more like it: \"Prof. Md. Kamruzzaman\") (SR-6)",
+     "fix": "start the text on the container's left, or on the one split line every split shares",
+     "rule": "SR-6 T3-left-lines",
+     "crop": "1440-rhythm-22-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero > div.hero-overlay",
+     "text": "",
+     "msg": "a box over half the container wide runs 0-1440px, not on the container's lines at 340-1100px (SR-6)",
+     "fix": "run the picture or box from the container's left line to its right line, or put it in a row or a split",
+     "rule": "SR-6 T6-right-edges",
+     "crop": "1440-rhythm-23-container-edges.jpg"
+    },
+    {
+     "check": "split-pair",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head",
+     "text": "Dhaka College Official Portals & Resourc",
+     "msg": "the two columns of the split start 59px apart at the top: a split's columns are top-aligned, 8px either way (SR-8)",
+     "fix": "top-align both columns of the split (align-items: start)",
+     "rule": "SR-8 T-mode",
+     "crop": "1440-rhythm-24-split-pair.jpg"
+    },
+    {
+     "check": "split-pair",
+     "sev": "FAIL",
+     "sel": "section#location > div.container > div.section-head",
+     "text": "Location International Hall, Dhaka Colle",
+     "msg": "the two columns of the split start 59px apart at the top: a split's columns are top-aligned, 8px either way (SR-8)",
+     "fix": "top-align both columns of the split (align-items: start)",
+     "rule": "SR-8 T-mode",
+     "crop": "1440-rhythm-25-split-pair.jpg"
+    },
+    {
+     "check": "split-pair",
+     "sev": "FAIL",
+     "sel": "section#results-preview > div.container > div.results-preview-wrap",
+     "text": "ACADEMIC PERFORMANCE Academic Results De",
+     "msg": "the two columns of the split start 48px apart at the top (centred on each other): a split's columns are top-aligned, 8px either way (and 2 more like it: \"Hall Super Prof. Md. Kam\", \"Hall Info Legacy, achiev\") (SR-8)",
+     "fix": "top-align both columns of the split (align-items: start)",
+     "rule": "SR-8 T-mode",
+     "crop": "1440-rhythm-26-split-pair.jpg"
+    },
+    {
+     "check": "split-pair",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split",
+     "text": "Hall Super Prof. Md. Kamruzzaman Provost",
+     "msg": "the split's left column starts with a picture or a box, not text: text left, the visual right, on every split (SR-8)",
+     "fix": "put the text in the left column and the visual in the right, on every split",
+     "rule": "SR-8 T-orientation",
+     "crop": "1440-rhythm-27-split-pair.jpg"
+    },
+    {
+     "check": "split-pair",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head",
+     "text": "Dhaka College Official Portals & Resourc",
+     "msg": "the split's columns are off the page's one pair of lines: its right column starts at x 688, the first split's at 824; its right column starts at x 688, on none of the split lines 630 (k=5), 732 (k=6), 834 (k=7) (SR-8)",
+     "fix": "start every split's right column on one shared line (wrap.left + k x (width + 24) / 12, k 5, 6 or 7; 6 on a place page) and end the left one 24px before it",
+     "rule": "SR-8 T-pair",
+     "crop": "1440-rhythm-28-split-pair.jpg"
+    },
+    {
+     "check": "split-pair",
+     "sev": "FAIL",
+     "sel": "section#location > div.container > div.section-head",
+     "text": "Location International Hall, Dhaka Colle",
+     "msg": "the split's columns are off the page's one pair of lines: its right column starts at x 752, the first split's at 824; its right column starts at x 752, on none of the split lines 630 (k=5), 732 (k=6), 834 (k=7) (SR-8)",
+     "fix": "start every split's right column on one shared line (wrap.left + k x (width + 24) / 12, k 5, 6 or 7; 6 on a place page) and end the left one 24px before it",
+     "rule": "SR-8 T-pair",
+     "crop": "1440-rhythm-29-split-pair.jpg"
+    },
+    {
+     "check": "split-pair",
+     "sev": "FAIL",
+     "sel": "section#results-preview > div.container > div.results-preview-wrap",
+     "text": "ACADEMIC PERFORMANCE Academic Results De",
+     "msg": "the split's columns are off the page's one pair of lines: its right column starts at x 824, on none of the split lines 630 (k=5), 732 (k=6), 834 (k=7) (and 2 more like it: \"Hall Super Prof. Md. Kam\", \"Hall Info Legacy, achiev\") (SR-8)",
+     "fix": "start every split's right column on one shared line (wrap.left + k x (width + 24) / 12, k 5, 6 or 7; 6 on a place page) and end the left one 24px before it",
+     "rule": "SR-8 T-pair",
+     "crop": "1440-rhythm-30-split-pair.jpg"
+    },
+    {
+     "check": "split-pair",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split",
+     "text": "Hall Super Prof. Md. Kamruzzaman Provost",
+     "msg": "the split does not run edge to edge on the container: its left column starts at 228px, the container's left at 120px (SR-8)",
+     "fix": "run the split from the container's left line to its right line",
+     "rule": "SR-8 T-edges",
+     "crop": "1440-rhythm-31-split-pair.jpg"
+    }
+   ],
+   "glAsked": 0
+  },
+  {
+   "width": 1024,
+   "height": 768,
+   "screens": 10,
+   "held": 0,
+   "errors": [],
+   "findings": [
+    {
+     "check": "hero-fill",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Preview",
+     "msg": "the next section shows on the first screen: it starts at 599px on a 768px screen (the hero ends at 599px)",
+     "stop": 0,
+     "crop": "1024-01-hero-fill.jpg",
+     "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#students-preview > div.container > div.search-wrap.aos-init",
+     "text": "Search students",
+     "msg": "7 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.search-wrap.aos-init, button.student-card.aos-init:nth-of-type(1), button.student-card.aos-init:nth-of-type(2), button.student-card.aos-init:nth-of-type(3), button.student-card.aos-init:nth-of-type(4), ...",
+     "stop": 1,
+     "crop": "1024-05-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1)",
+     "text": "•••••••• HSC-27 · SCI ROOM 314 •••••••• HSC-27 ·",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): article.room-pair.aos-init:nth-of-type(1), article.room-pair.aos-init:nth-of-type(2)",
+     "stop": 3,
+     "crop": "1024-10-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#results-preview > div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1)",
+     "text": "ACADEMIC PERFORMANCE Academic Results Demo resul",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate:nth-of-type(1), div.results-preview-card.aos-init",
+     "stop": 3,
+     "crop": "1024-11-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split > figure.hostel-photo.aos-init",
+     "text": "",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): figure.hostel-photo.aos-init, div.aos-init.aos-animate",
+     "stop": 4,
+     "crop": "1024-14-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.split > div.aos-init.aos-animate",
+     "text": "HALL INFO Legacy, achievement and student life I",
+     "msg": "5 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, figure.hostel-preview-photo.aos-init, article.info-box.aos-init:nth-of-type(1), article.info-box.aos-init:nth-of-type(2), article.info-box.aos-init:nth-of-type(3)",
+     "stop": 5,
+     "crop": "1024-17-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "DHAKA COLLEGE Official Portals & Resources",
+     "msg": "8 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, a.dc-resource-card.aos-init:nth-of-type(1), a.dc-resource-card.aos-init:nth-of-type(2), a.dc-resource-card.aos-init:nth-of-type(3), ...",
+     "stop": 6,
+     "crop": "1024-19-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#location > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "LOCATION International Hall, Dhaka College",
+     "msg": "3 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, div.map-wrap.aos-init",
+     "stop": 8,
+     "crop": "1024-22-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "no-visual",
+     "sev": "FAIL",
+     "sel": "section#dc-resources",
+     "text": "Official Portals & Resources",
+     "msg": "no picture, effect or mock in this section; a feature section needs a visual",
+     "stop": 7,
+     "crop": "1024-21-no-visual.jpg",
+     "fix": "give the section a visual: a UI fragment on a ground, real icons, or a photograph that fits"
+    },
+    {
+     "check": "card-layout",
+     "sev": "FAIL",
+     "sel": "div#studentGrid",
+     "text": "•••••••• ROOM •••••••• SCI ROOM •••••••• · Roll ",
+     "msg": "6 of 6 cards drawn one way (one panel, ground, placement and fragment): copies of one card",
+     "stop": 1,
+     "crop": "1024-06-card-layout.jpg",
+     "fix": "a card layout at most twice on a page: build the other sections another way"
+    },
+    {
+     "check": "button-styles",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1) > button.room-number",
+     "text": "ROOM 314",
+     "stop": 3,
+     "msg": "one button style (soft, fill #0f766e) in 2 heights: 46, 84px (\"ROOM 314\" 84px, \"View Students\" 46px)",
+     "crop": "1024-12-button-styles.jpg",
+     "fix": "one primary and one secondary button: one shape, one height per size, one label size"
+    },
+    {
+     "check": "cta",
+     "sev": "FAIL",
+     "sel": "section#location",
+     "text": "International Hall, Dhaka College",
+     "msg": "the last section before the footer ends with no button",
+     "stop": 8,
+     "crop": "1024-23-cta.jpg",
+     "fix": "add the action: a button in the hero, one on every priced item, one in the closing section"
+    },
+    {
+     "check": "contrast",
+     "sev": "FAIL",
+     "sel": "header#navbar > div.container.nav-inner > nav.nav-links > a.active",
+     "text": "Home",
+     "stop": 0,
+     "msg": "body text over a effect reads at 2.2:1 at its worst tenth (needs 4.5:1)",
+     "crop": "1024-02-contrast.jpg",
+     "fix": "put the text on a calm part of the picture, or on a solid panel"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > p.lead",
+     "text": "Demo result overview. Detailed CT and yearly PDF",
+     "stop": 3,
+     "msg": "body text in #5b6472 on #ffffff reads 5.98:1 (needs 7:1); 3 like it, like \"International Hall bri\", \"Use the live Google ma\"",
+     "crop": "1024-13-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "p#homeHallSuperBio",
+     "text": "Prof. Md. Kamruzzaman serves as the Provost of D",
+     "stop": 4,
+     "msg": "body text in #5b6472 on #f6f7f9 reads 5.58:1 (needs 7:1); 2 like it, like \"Direct access to offic\"",
+     "crop": "1024-15-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "photo-upscale",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > figure.hostel-photo.aos-init > img",
+     "text": "img: Hall Super Portrait",
+     "msg": "hallsuper1.webp: 286x291 shown at 320x400, blown up 1.37x",
+     "stop": 4,
+     "crop": "1024-16-photo-upscale.jpg",
+     "fix": "use a source at least as wide as the picture is shown (twice that for sharp screens)"
+    },
+    {
+     "check": "text-only",
+     "sev": "WARN",
+     "sel": "section#gallery-preview",
+     "text": "International Hall Gallery",
+     "msg": "the section is only text: no picture, icon, mock or effect in it",
+     "stop": 6,
+     "crop": "1024-20-text-only.jpg",
+     "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground"
+    },
+    {
+     "check": "card-visual",
+     "sev": "WARN",
+     "sel": "section#hostel-info-preview > div.container > div.info-grid.three",
+     "text": "01 History A short look at Dhaka College's acade",
+     "msg": "3 cards hold only text: no picture, icon, UI fragment or effect in any of them",
+     "stop": 5,
+     "crop": "1024-18-card-visual.jpg",
+     "fix": "give the cards a visual: an inset panel with a UI fragment, a photograph or real icons"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "section#location / footer.footer",
+     "text": "",
+     "stop": 8,
+     "msg": "136px between these sections, -27% against the median 186px of gaps at a change of ground",
+     "crop": "1024-24-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "section#location / footer.footer",
+     "text": "",
+     "stop": 8,
+     "msg": "uneven space at the edge of a band: 92px outside its edge, 44px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "1024-25-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 0,
+     "msg": "the nav's links come in 3 sizes (14, 13, 16px)",
+     "crop": "1024-03-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 1,
+     "msg": "the nav changes form as the page scrolls: its fill changes from none to #ffffff",
+     "crop": "1024-07-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "stranded-action",
+     "sev": "WARN",
+     "sel": "section#students-preview > div.container > div.section-head > a.btn.secondary",
+     "text": "View All",
+     "msg": "stands 556px across from the nearest text of its block (\"Students Preview\") (and 3 more like it: \"View Rooms\", \"ROOM 315\", \"View Full Gallery\")",
+     "stop": 0,
+     "crop": "1024-04-stranded-action.jpg",
+     "fix": "put the button under or beside the text it belongs to"
+    },
+    {
+     "check": "photo-repeat",
+     "sev": "WARN",
+     "sel": "div#studentGrid > button.student-card.aos-init:nth-of-type(2) > img",
+     "text": "hostel-building.jpg",
+     "msg": "the photograph hostel-building.jpg is shown 7 times on the page: a picture the visitor has already seen",
+     "fix": "show each photograph once: a different picture of what this section names, or none",
+     "stop": 1,
+     "crop": "1024-08-photo-repeat.jpg"
+    },
+    {
+     "check": "one-screen",
+     "sev": "WARN",
+     "sel": "section#roommates-preview",
+     "text": "Roommate Preview",
+     "msg": "1 section is shorter than the screen, so the next one's heading or picture shows with it: \"Roommate Preview\" is 478px of the 692px under the nav, and \"Academic Results\" shows below it",
+     "fix": "give each section the screen (min-height: 100svh less the nav, its content centred), or join two short ones into one",
+     "stop": 2,
+     "crop": "1024-09-one-screen.jpg"
+    }
+   ],
+   "glAsked": 0
+  },
+  {
+   "width": 820,
+   "height": 1180,
+   "screens": 9,
+   "held": 0,
+   "errors": [],
+   "findings": [
+    {
+     "check": "hero-fill",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Preview",
+     "msg": "the next section shows on the first screen: it starts at 920px on a 1180px screen (the hero ends at 920px)",
+     "stop": 0,
+     "crop": "820-01-hero-fill.jpg",
+     "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#students-preview > div.container > div.search-wrap.aos-init",
+     "text": "Search students",
+     "msg": "7 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.search-wrap.aos-init, button.student-card.aos-init:nth-of-type(1), button.student-card.aos-init:nth-of-type(2), button.student-card.aos-init:nth-of-type(3), button.student-card.aos-init:nth-of-type(4), ...",
+     "stop": 1,
+     "crop": "820-07-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1)",
+     "text": "•••••••• HSC-27 · SCI ROOM 314 •••••••• HSC-27 ·",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): article.room-pair.aos-init:nth-of-type(1), article.room-pair.aos-init:nth-of-type(2)",
+     "stop": 2,
+     "crop": "820-11-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#results-preview > div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1)",
+     "text": "ACADEMIC PERFORMANCE Academic Results Demo resul",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate:nth-of-type(1), div.results-preview-card.aos-init",
+     "stop": 3,
+     "crop": "820-14-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split > figure.hostel-photo.aos-init",
+     "text": "",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): figure.hostel-photo.aos-init, div.aos-init.aos-animate",
+     "stop": 4,
+     "crop": "820-17-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.split > div.aos-init.aos-animate",
+     "text": "HALL INFO Legacy, achievement and student life I",
+     "msg": "5 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, figure.hostel-preview-photo.aos-init, article.info-box.aos-init:nth-of-type(1), article.info-box.aos-init:nth-of-type(2), article.info-box.aos-init:nth-of-type(3)",
+     "stop": 4,
+     "crop": "820-18-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "DHAKA COLLEGE Official Portals & Resources",
+     "msg": "8 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, a.dc-resource-card.aos-init:nth-of-type(1), a.dc-resource-card.aos-init:nth-of-type(2), a.dc-resource-card.aos-init:nth-of-type(3), ...",
+     "stop": 6,
+     "crop": "820-24-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#location > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "LOCATION International Hall, Dhaka College",
+     "msg": "3 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, div.map-wrap.aos-init",
+     "stop": 7,
+     "crop": "820-29-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "no-visual",
+     "sev": "FAIL",
+     "sel": "section#dc-resources",
+     "text": "Official Portals & Resources",
+     "msg": "no picture, effect or mock in this section; a feature section needs a visual",
+     "stop": 6,
+     "crop": "820-25-no-visual.jpg",
+     "fix": "give the section a visual: a UI fragment on a ground, real icons, or a photograph that fits"
+    },
+    {
+     "check": "card-layout",
+     "sev": "FAIL",
+     "sel": "div#studentGrid",
+     "text": "•••••••• ROOM •••••••• SCI ROOM •••••••• · Roll ",
+     "msg": "6 of 6 cards drawn one way (one panel, ground, placement and fragment): copies of one card",
+     "stop": 1,
+     "crop": "820-08-card-layout.jpg",
+     "fix": "a card layout at most twice on a page: build the other sections another way"
+    },
+    {
+     "check": "button-styles",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1) > button.room-number",
+     "text": "ROOM 314",
+     "stop": 2,
+     "msg": "one button style (soft, fill #0f766e) in 2 heights: 46, 84px (\"ROOM 314\" 84px, \"View Students\" 46px)",
+     "crop": "820-12-button-styles.jpg",
+     "fix": "one primary and one secondary button: one shape, one height per size, one label size"
+    },
+    {
+     "check": "cta",
+     "sev": "FAIL",
+     "sel": "section#location",
+     "text": "International Hall, Dhaka College",
+     "msg": "the last section before the footer ends with no button",
+     "stop": 7,
+     "crop": "820-30-cta.jpg",
+     "fix": "add the action: a button in the hero, one on every priced item, one in the closing section"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero > div.container.hero-content > a.btn.primary",
+     "text": "View Students",
+     "stop": 0,
+     "msg": "left edge at 30px, 14px off the page margin at 16px (44 elements); 3 more in this section off the grid too (p.eyebrow.aos-init at 30px, h1.aos-init.aos-animate at 30px, p#heroRotator at 30px)",
+     "crop": "820-02-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "div.aos-init.aos-animate:nth-of-type(1) > div.result-academic-track > div.track-row:nth-of-type(1) > span.track-badge",
+     "text": "1st Year",
+     "stop": 3,
+     "msg": "left edge at 33px, 12px off a common edge of its section at 45px (3 elements, like div.results-card-icon); 1 more in this section off the grid too (span.track-badge at 33px)",
+     "crop": "820-15-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "div.container > div.info-grid.three > article.info-box.aos-init:nth-of-type(1) > span.info-icon",
+     "text": "01",
+     "stop": 5,
+     "msg": "left edge at 37px, 21px off the page margin at 16px (44 elements); 8 more in this section off the grid too (span.info-icon at 37px, span.info-icon at 37px, h3 at 37px, p at 37px, ...)",
+     "crop": "820-22-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head > p.location-copy.aos-init",
+     "text": "Direct access to official Dhaka College institut",
+     "stop": 6,
+     "msg": "left edge at 38px, 22px off the page margin at 16px (44 elements, like a.dc-resource-card.aos-init:nth-of-type(1))",
+     "crop": "820-26-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "contrast",
+     "sev": "FAIL",
+     "sel": "header#navbar > div.container.nav-inner > nav.nav-links > a.active",
+     "text": "Home",
+     "stop": 0,
+     "msg": "body text over a effect reads at 1.8:1 at its worst tenth (needs 4.5:1)",
+     "crop": "820-03-contrast.jpg",
+     "fix": "put the text on a calm part of the picture, or on a solid panel"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > p.lead",
+     "text": "Demo result overview. Detailed CT and yearly PDF",
+     "stop": 3,
+     "msg": "body text in #5b6472 on #ffffff reads 5.98:1 (needs 7:1); 3 like it, like \"International Hall bri\", \"Use the live Google ma\"",
+     "crop": "820-16-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "p#homeHallSuperBio",
+     "text": "Prof. Md. Kamruzzaman serves as the Provost of D",
+     "stop": 4,
+     "msg": "body text in #5b6472 on #f6f7f9 reads 5.58:1 (needs 7:1); 2 like it, like \"Direct access to offic\"",
+     "crop": "820-19-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero / section#students-preview",
+     "text": "",
+     "stop": 0,
+     "msg": "384px between these sections, +156% against the median 150px of gaps at a change of ground",
+     "crop": "820-04-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "photo-upscale",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > figure.hostel-photo.aos-init > img",
+     "text": "img: Hall Super Portrait",
+     "msg": "hallsuper1.webp: 286x291 shown at 320x400, blown up 1.37x",
+     "stop": 4,
+     "crop": "820-20-photo-upscale.jpg",
+     "fix": "use a source at least as wide as the picture is shown (twice that for sharp screens)"
+    },
+    {
+     "check": "text-only",
+     "sev": "WARN",
+     "sel": "section#gallery-preview",
+     "text": "International Hall Gallery",
+     "msg": "the section is only text: no picture, icon, mock or effect in it",
+     "stop": 6,
+     "crop": "820-27-text-only.jpg",
+     "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground"
+    },
+    {
+     "check": "off-grid",
+     "sev": "WARN",
+     "sel": "div.container > div.section-head > div > h2",
+     "text": "International Hall Gallery",
+     "msg": "the section's heading starts at 413px, 397px off the page margin (16px), and no other section starts there",
+     "stop": 5,
+     "crop": "820-23-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "WARN",
+     "sel": "div.container > div.section-head > div.aos-init.aos-animate > h2",
+     "text": "Official Portals & Resources",
+     "msg": "the section's heading starts at 382px, 366px off the page margin (16px), and no other section starts there",
+     "stop": 6,
+     "crop": "820-28-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "main.page-main.home-main > section.hero / section#students-preview",
+     "text": "",
+     "stop": 0,
+     "msg": "uneven space at the edge of a band: 76px outside its edge, 308px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "820-05-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "section#location / footer.footer",
+     "text": "",
+     "stop": 7,
+     "msg": "uneven space at the edge of a band: 74px outside its edge, 45px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "820-31-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "photo-set",
+     "sev": "WARN",
+     "sel": "div.container > div.split > figure.hostel-photo.aos-init > img",
+     "text": "hallsuper1.webp",
+     "stop": 4,
+     "msg": "8 photographs in more than one look: saturation from 0.21 to 0.52; the odd one out is hallsuper1.webp",
+     "crop": "820-21-photo-set.jpg",
+     "fix": "grade the photographs to one look (light, colour, warmth), or replace the odd one out"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 0,
+     "msg": "the nav's links come in 2 sizes (14, 16px)",
+     "crop": "820-06-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 1,
+     "msg": "the nav changes form as the page scrolls: its fill changes from none to #ffffff",
+     "crop": "820-09-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "stranded-action",
+     "sev": "WARN",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(2) > button.room-number",
+     "text": "ROOM 315",
+     "msg": "stands 358px down from the nearest text of its block (\"Roommate Preview\")",
+     "stop": 2,
+     "crop": "820-13-stranded-action.jpg",
+     "fix": "put the button under or beside the text it belongs to"
+    },
+    {
+     "check": "photo-repeat",
+     "sev": "WARN",
+     "sel": "div#studentGrid > button.student-card.aos-init:nth-of-type(2) > img",
+     "text": "hostel-building.jpg",
+     "msg": "the photograph hostel-building.jpg is shown 7 times on the page: a picture the visitor has already seen",
+     "fix": "show each photograph once: a different picture of what this section names, or none",
+     "stop": 1,
+     "crop": "820-10-photo-repeat.jpg"
+    }
+   ],
+   "glAsked": 0
+  },
+  {
+   "width": 768,
+   "height": 1024,
+   "screens": 10,
+   "held": 0,
+   "errors": [],
+   "findings": [
+    {
+     "check": "hero-fill",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Preview",
+     "msg": "the next section shows on the first screen: it starts at 799px on a 1024px screen (the hero ends at 799px)",
+     "stop": 0,
+     "crop": "768-01-hero-fill.jpg",
+     "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#students-preview > div.container > div.search-wrap.aos-init",
+     "text": "Search students",
+     "msg": "7 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.search-wrap.aos-init, button.student-card.aos-init:nth-of-type(1), button.student-card.aos-init:nth-of-type(2), button.student-card.aos-init:nth-of-type(3), button.student-card.aos-init:nth-of-type(4), ...",
+     "stop": 1,
+     "crop": "768-06-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1)",
+     "text": "•••••••• HSC-27 · SCI ROOM 314 •••••••• HSC-27 ·",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): article.room-pair.aos-init:nth-of-type(1), article.room-pair.aos-init:nth-of-type(2)",
+     "stop": 3,
+     "crop": "768-11-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#results-preview > div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1)",
+     "text": "ACADEMIC PERFORMANCE Academic Results Demo resul",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate:nth-of-type(1), div.results-preview-card.aos-init",
+     "stop": 3,
+     "crop": "768-12-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split > figure.hostel-photo.aos-init",
+     "text": "",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): figure.hostel-photo.aos-init, div.aos-init.aos-animate",
+     "stop": 4,
+     "crop": "768-16-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.split > div.aos-init.aos-animate",
+     "text": "HALL INFO Legacy, achievement and student life I",
+     "msg": "5 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, figure.hostel-preview-photo.aos-init, article.info-box.aos-init:nth-of-type(1), article.info-box.aos-init:nth-of-type(2), article.info-box.aos-init:nth-of-type(3)",
+     "stop": 5,
+     "crop": "768-18-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "DHAKA COLLEGE Official Portals & Resources",
+     "msg": "8 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, a.dc-resource-card.aos-init:nth-of-type(1), a.dc-resource-card.aos-init:nth-of-type(2), a.dc-resource-card.aos-init:nth-of-type(3), ...",
+     "stop": 6,
+     "crop": "768-20-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#location > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "LOCATION International Hall, Dhaka College",
+     "msg": "3 parts of this section animate in when scrolled into view (fades in from 0.0, rises 98px): div.aos-init.aos-animate, p.location-copy.aos-init, div.map-wrap.aos-init",
+     "stop": 8,
+     "crop": "768-26-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "no-visual",
+     "sev": "FAIL",
+     "sel": "section#dc-resources",
+     "text": "Official Portals & Resources",
+     "msg": "no picture, effect or mock in this section; a feature section needs a visual",
+     "stop": 7,
+     "crop": "768-25-no-visual.jpg",
+     "fix": "give the section a visual: a UI fragment on a ground, real icons, or a photograph that fits"
+    },
+    {
+     "check": "card-layout",
+     "sev": "FAIL",
+     "sel": "div#studentGrid",
+     "text": "•••••••• ROOM •••••••• SCI ROOM •••••••• · Roll ",
+     "msg": "6 of 6 cards drawn one way (one panel, ground, placement and fragment): copies of one card",
+     "stop": 1,
+     "crop": "768-07-card-layout.jpg",
+     "fix": "a card layout at most twice on a page: build the other sections another way"
+    },
+    {
+     "check": "button-styles",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1) > button.room-number",
+     "text": "ROOM 314",
+     "stop": 2,
+     "msg": "one button style (soft, fill #0f766e) in 2 heights: 46, 84px (\"ROOM 314\" 84px, \"View Students\" 46px)",
+     "crop": "768-10-button-styles.jpg",
+     "fix": "one primary and one secondary button: one shape, one height per size, one label size"
+    },
+    {
+     "check": "cta",
+     "sev": "FAIL",
+     "sel": "section#location",
+     "text": "International Hall, Dhaka College",
+     "msg": "the last section before the footer ends with no button",
+     "stop": 8,
+     "crop": "768-27-cta.jpg",
+     "fix": "add the action: a button in the hero, one on every priced item, one in the closing section"
+    },
+    {
+     "check": "contrast",
+     "sev": "FAIL",
+     "sel": "header#navbar > div.container.nav-inner > nav.nav-links > a.active",
+     "text": "Home",
+     "stop": 0,
+     "msg": "body text over a effect reads at 1.7:1 at its worst tenth (needs 4.5:1)",
+     "crop": "768-02-contrast.jpg",
+     "fix": "put the text on a calm part of the picture, or on a solid panel"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > p.lead",
+     "text": "Demo result overview. Detailed CT and yearly PDF",
+     "stop": 3,
+     "msg": "body text in #5b6472 on #ffffff reads 5.98:1 (needs 7:1); 3 like it, like \"International Hall bri\", \"Use the live Google ma\"",
+     "crop": "768-13-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "p#homeHallSuperBio",
+     "text": "Prof. Md. Kamruzzaman serves as the Provost of D",
+     "stop": 5,
+     "msg": "body text in #5b6472 on #f6f7f9 reads 5.58:1 (needs 7:1); 2 like it, like \"Direct access to offic\"",
+     "crop": "768-19-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero / section#students-preview",
+     "text": "",
+     "stop": 0,
+     "msg": "324px between these sections, +128% against the median 142px of gaps at a change of ground",
+     "crop": "768-03-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "photo-upscale",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > figure.hostel-photo.aos-init > img",
+     "text": "img: Hall Super Portrait",
+     "msg": "hallsuper1.webp: 286x291 shown at 320x400, blown up 1.37x",
+     "stop": 4,
+     "crop": "768-17-photo-upscale.jpg",
+     "fix": "use a source at least as wide as the picture is shown (twice that for sharp screens)"
+    },
+    {
+     "check": "text-only",
+     "sev": "WARN",
+     "sel": "section#gallery-preview",
+     "text": "International Hall Gallery",
+     "msg": "the section is only text: no picture, icon, mock or effect in it",
+     "stop": 6,
+     "crop": "768-21-text-only.jpg",
+     "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground"
+    },
+    {
+     "check": "card-visual",
+     "sev": "WARN",
+     "sel": "section#hostel-info-preview > div.container > div.info-grid.three",
+     "text": "01 History A short look at Dhaka College's acade",
+     "msg": "3 cards hold only text: no picture, icon, UI fragment or effect in any of them",
+     "stop": 6,
+     "crop": "768-22-card-visual.jpg",
+     "fix": "give the cards a visual: an inset panel with a UI fragment, a photograph or real icons"
+    },
+    {
+     "check": "off-grid",
+     "sev": "WARN",
+     "sel": "div.container > div.section-head > div > h2",
+     "text": "International Hall Gallery",
+     "msg": "the section's heading starts at 386px, 370px off the page margin (16px), and no other section starts there",
+     "stop": 6,
+     "crop": "768-23-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "WARN",
+     "sel": "div.container > div.section-head > div.aos-init.aos-animate > h2",
+     "text": "Official Portals & Resources",
+     "msg": "the section's heading starts at 357px, 341px off the page margin (16px), and no other section starts there",
+     "stop": 6,
+     "crop": "768-24-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "body-size",
+     "sev": "WARN",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > p.lead",
+     "text": "Demo result overview. Detailed CT and yearly PDF",
+     "stop": 3,
+     "msg": "3 of 5 paragraphs of running text are set under 16px (14.1px)",
+     "crop": "768-14-body-size.jpg",
+     "fix": "set running text at 16px or more"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "main.page-main.home-main > section.hero / section#students-preview",
+     "text": "",
+     "stop": 0,
+     "msg": "uneven space at the edge of a band: 72px outside its edge, 252px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "768-04-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "section#location / footer.footer",
+     "text": "",
+     "stop": 8,
+     "msg": "uneven space at the edge of a band: 70px outside its edge, 45px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "768-28-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 0,
+     "msg": "the nav's links come in 2 sizes (14, 16px)",
+     "crop": "768-05-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 1,
+     "msg": "the nav changes form as the page scrolls: its fill changes from none to #ffffff",
+     "crop": "768-08-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "stranded-action",
+     "sev": "WARN",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(2) > button.room-number",
+     "text": "ROOM 315",
+     "msg": "stands 358px down from the nearest text of its block (\"Roommate Preview\")",
+     "stop": 3,
+     "crop": "768-15-stranded-action.jpg",
+     "fix": "put the button under or beside the text it belongs to"
+    },
+    {
+     "check": "photo-repeat",
+     "sev": "WARN",
+     "sel": "div#studentGrid > button.student-card.aos-init:nth-of-type(2) > img",
+     "text": "hostel-building.jpg",
+     "msg": "the photograph hostel-building.jpg is shown 7 times on the page: a picture the visitor has already seen",
+     "fix": "show each photograph once: a different picture of what this section names, or none",
+     "stop": 1,
+     "crop": "768-09-photo-repeat.jpg"
+    },
+    {
+     "check": "hero-screen",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero",
+     "text": "Dhaka College International Hall Discipl",
+     "msg": "the hero ends at 799px on a 1024px screen, 225px above the fold: it ends at the fold, 1px either way (SR-1)",
+     "fix": "make the hero exactly one screen (height: 100svh, its content fitted inside), never taller or shorter",
+     "rule": "SR-1 T1",
+     "crop": "768-rhythm-01-hero-screen.jpg"
+    },
+    {
+     "check": "hero-screen",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Students Preview View All Searc",
+     "msg": "225px of the next section shows on the first screen (from 799px on a 1024px screen): nothing below the hero shows at load (SR-1)",
+     "fix": "end the hero at the fold so nothing of the next section shows at load (hero height: 100svh)",
+     "rule": "SR-1 T2",
+     "crop": "768-rhythm-02-hero-screen.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#gallery-preview",
+     "text": "Moments & Memories International Hall Ga",
+     "msg": "the section is 303px tall (0.3 screens), 721px short of one screen (1024px): every section after the hero is one screen or two, 2px either way (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "768-rhythm-03-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Students Preview View All Searc",
+     "msg": "the section is 1586px tall (1.5 screens), 462px short of two screens (2048px): every section after the hero is one screen or two, 2px either way (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "768-rhythm-04-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#roommates-preview",
+     "text": "Rooms Roommate Preview View Rooms ••••••",
+     "msg": "the section is 700px tall (0.7 screens), 324px short of one screen (1024px): every section after the hero is one screen or two, 2px either way (and 6 more like it: \"ACADEMIC PERFORMANCE Aca\", \"Location International H\", \"Hall Super Prof. Md. Kam\") (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "768-rhythm-05-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview",
+     "text": "Hall Info Legacy, achievement and studen",
+     "msg": "the section starts at 4691px, 429px above the screen grid (5 x 1024px): sections start on whole screens (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "768-rhythm-06-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#gallery-preview",
+     "text": "Moments & Memories International Hall Ga",
+     "msg": "the section starts at 5789px, 355px above the screen grid (6 x 1024px): sections start on whole screens (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "768-rhythm-07-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#roommates-preview",
+     "text": "Rooms Roommate Preview View Rooms ••••••",
+     "msg": "the section starts at 2385px, 337px below the screen grid (2 x 1024px): sections start on whole screens (and 6 more like it: \"International Hall This \", \"Hall Super Prof. Md. Kam\", \"Students Students Previe\") (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "768-rhythm-08-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "footer.footer",
+     "text": "International Hall This website is devel",
+     "msg": "the section's content does not fit it: its lowest content ends 927px below its top, past 889px (the section less 72px of bottom padding) (SR-2)",
+     "fix": "fit the content above the section's bottom padding (--padb), or make it two screens (.g2) in two groups",
+     "rule": "SR-2 T-fit",
+     "crop": "768-rhythm-09-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Students Preview View All Searc",
+     "msg": "the section's content does not fit it: its lowest content ends 1516px below its top, past 1514px (the section less 72px of bottom padding) (and 2 more like it: \"Hall Super Prof. Md. Kam\", \"Dhaka College Official P\") (SR-2)",
+     "fix": "fit the content above the section's bottom padding (--padb), or make it two screens (.g2) in two groups",
+     "rule": "SR-2 T-fit",
+     "crop": "768-rhythm-10-section-height.jpg"
+    },
+    {
+     "check": "section-air",
+     "sev": "FAIL",
+     "sel": "section#location",
+     "text": "Location International Hall, Dhaka Colle",
+     "msg": "the content fills 19.1% of the section's height (154 of 808px): 55% or more (40% WARN) (SR-3)",
+     "fix": "fill the section to 55%: more content, a picture or a background layer, or merge it into the section above as its last block",
+     "rule": "SR-3 T-fill",
+     "crop": "768-rhythm-11-section-air.jpg"
+    },
+    {
+     "check": "section-air",
+     "sev": "WARN",
+     "sel": "section#gallery-preview",
+     "text": "Moments & Memories International Hall Ga",
+     "msg": "the content fills 43.8% of the section's height (133 of 303px): 55% or more (40% WARN) (SR-3)",
+     "fix": "fill the section to 55%: more content, a picture or a background layer, or merge it into the section above as its last block",
+     "rule": "SR-3 T-fill",
+     "crop": "768-rhythm-25-section-air.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > div.aos-init.aos-animate > h2",
+     "text": "Legacy, achievement and student life",
+     "msg": "the screen at scroll 4096px (stride 4) shows 429px of section 6 and the heading of section 6 whole and the content of 2 sections, over 24px each beside section 5: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "768-rhythm-12-one-section.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > h2",
+     "text": "Academic Results",
+     "msg": "the screen at scroll 2385px (the top of section 3) shows 325px of section 4 and the heading of section 4 whole and the content of 2 sections, over 24px each beside section 3: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "768-rhythm-13-one-section.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "footer.footer",
+     "text": "International Hall This website is devel",
+     "msg": "the screen at scroll 7168px (stride 7) shows 306px of section 10 beside section 9: a screen shows one section (another may peek 8px, 24px WARN) (and 9 more like it: scroll 3084px, scroll 3072px, scroll 0px) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "768-rhythm-14-one-section.jpg"
+    },
+    {
+     "check": "one-heading",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > h2",
+     "text": "Academic Results",
+     "msg": "headings of two sections show whole on one screen at 21 of 157 scroll positions (13.4%; at scroll 2200, 2250, 2300, 3850px), here with \"Roommate Preview\": at most 3% on a desktop (SR-5)",
+     "fix": "make the sections one screen tall so their headings sit a screen apart and two never share one",
+     "rule": "SR-5 T2",
+     "crop": "768-rhythm-15-one-heading.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "header#navbar",
+     "text": "International Hall Home Hall Students Ro",
+     "msg": "the nav's content runs 16px from the left and 16px from the right (read from its outermost blocks: no .wrap): the margin is 64-120px at 768px (one container, equal margins, 2px either way) (SR-6)",
+     "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+     "rule": "SR-6 T1-margins",
+     "crop": "768-rhythm-16-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Students Preview View All Searc",
+     "msg": "the content of section 2 runs 16px from the left and 16px from the right (read from its outermost blocks: no .wrap): the margin is 64-120px at 768px (one container, equal margins, 2px either way) (and 5 more like it: \"Rooms Roommate Preview V\", \"Hall Super Prof. Md. Kam\", \"Dhaka College Official P\") (SR-6)",
+     "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+     "rule": "SR-6 T1-margins",
+     "crop": "768-rhythm-17-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "header#navbar",
+     "text": "International Hall Home Hall Students Ro",
+     "msg": "a <header> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+     "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+     "rule": "SR-6 T1-structure",
+     "crop": "768-rhythm-18-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "footer.footer",
+     "text": "International Hall This website is devel",
+     "msg": "a <footer> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (and 11 more like it: \"Dhaka College Internatio\", main.page-main.home-main > section.hero > div.hero-overlay, \"Students Students Previe\") (SR-6)",
+     "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+     "rule": "SR-6 T1-structure",
+     "crop": "768-rhythm-19-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > div.result-academic-track > div.track-row:nth-of-type(1)",
+     "text": "1st Year CT-1 Exam CT-2 Exam Half Yearly",
+     "msg": "a box runs 16-752px, outside the container lines of section 4 at 33-723px: full width is for background layers and grounds only (SR-6)",
+     "fix": "keep it inside the container lines (.wrap): full width is for background layers and grounds only",
+     "rule": "SR-6 T2-containment",
+     "crop": "768-rhythm-20-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > div.result-academic-track > div.track-row:nth-of-type(2)",
+     "text": "2nd Year CT-1 Exam CT-2 Exam CT-3 Exam T",
+     "msg": "a box runs 16-752px, outside the container lines of section 4 at 33-723px: full width is for background layers and grounds only (and 7 more like it: \"Verified Result Archive \", \"ACADEMIC PERFORMANCE\", \"Academic Results\") (SR-6)",
+     "fix": "keep it inside the container lines (.wrap): full width is for background layers and grounds only",
+     "rule": "SR-6 T2-containment",
+     "crop": "768-rhythm-21-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "div.container > div.section-head > div > p.eyebrow",
+     "text": "Students",
+     "msg": "2 text blocks start on a left line at x 502, 486px from the container's left: text starts on the container's left, or on one split line (x 333, 396, 459) (also \"Students Preview\") (and 9 more like it: \"Students Preview\", x 473, x 386) (SR-6)",
+     "fix": "start the text on the container's left, or on the one split line every split shares",
+     "rule": "SR-6 T3-left-lines",
+     "crop": "768-rhythm-22-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero > div.hero-overlay",
+     "text": "",
+     "msg": "a box over half the container wide runs 0-768px, not on the container's lines at 16-752px (SR-6)",
+     "fix": "run the picture or box from the container's left line to its right line, or put it in a row or a split",
+     "rule": "SR-6 T6-right-edges",
+     "crop": "768-rhythm-23-container-edges.jpg"
+    },
+    {
+     "check": "row-lines",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.results-preview-card.aos-init > div.results-card-stats",
+     "text": "09 Official Terms 100% Digital Archive",
+     "msg": "a row of 2 items: its first item starts at 45px, the container's left line at 33px (2px either way) (SR-7)",
+     "fix": "start the row's first item on the container's left line and end its last on the right line, every item one height",
+     "rule": "SR-7 T-rows",
+     "crop": "768-rhythm-24-row-lines.jpg"
+    }
+   ],
+   "glAsked": 0
+  },
+  {
+   "width": 390,
+   "height": 844,
+   "screens": 16,
+   "held": 0,
+   "errors": [],
+   "findings": [
+    {
+     "check": "hero-fill",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Preview",
+     "msg": "the next section shows on the first screen: it starts at 658px on a 844px screen (the hero ends at 658px)",
+     "stop": 0,
+     "crop": "390-01-hero-fill.jpg",
+     "fix": "let the hero fill the first screen alone (min-height: 100svh, less above it): nothing of the next section on load"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#students-preview > div.container > div.search-wrap.aos-init",
+     "text": "Search students",
+     "msg": "7 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.search-wrap.aos-init, button.student-card.aos-init:nth-of-type(1), button.student-card.aos-init:nth-of-type(2), button.student-card.aos-init:nth-of-type(3), button.student-card.aos-init:nth-of-type(4), ...",
+     "stop": 1,
+     "crop": "390-08-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1)",
+     "text": "•••••••• HSC-27 · SCI ROOM 314 •••••••• HSC-27 ·",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): article.room-pair.aos-init:nth-of-type(1), article.room-pair.aos-init:nth-of-type(2)",
+     "stop": 5,
+     "crop": "390-10-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#results-preview > div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1)",
+     "text": "ACADEMIC PERFORMANCE Academic Results Demo resul",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate:nth-of-type(1), div.results-preview-card.aos-init",
+     "stop": 6,
+     "crop": "390-14-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview > div.container > div.split > figure.hostel-photo.aos-init",
+     "text": "",
+     "msg": "2 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): figure.hostel-photo.aos-init, div.aos-init.aos-animate",
+     "stop": 7,
+     "crop": "390-18-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview > div.container > div.split > div.aos-init.aos-animate",
+     "text": "HALL INFO Legacy, achievement and student life I",
+     "msg": "5 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, figure.hostel-preview-photo.aos-init, article.info-box.aos-init:nth-of-type(1), article.info-box.aos-init:nth-of-type(2), article.info-box.aos-init:nth-of-type(3)",
+     "stop": 9,
+     "crop": "390-21-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#dc-resources > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "DHAKA COLLEGE Official Portals & Resources",
+     "msg": "8 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, a.dc-resource-card.aos-init:nth-of-type(1), a.dc-resource-card.aos-init:nth-of-type(2), a.dc-resource-card.aos-init:nth-of-type(3), ...",
+     "stop": 10,
+     "crop": "390-23-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "scroll-reveal",
+     "sev": "FAIL",
+     "sel": "section#location > div.container > div.section-head > div.aos-init.aos-animate",
+     "text": "LOCATION International Hall, Dhaka College",
+     "msg": "3 parts of this section animate in when scrolled into view (fades in from 0.0, rises 100px): div.aos-init.aos-animate, p.location-copy.aos-init, div.map-wrap.aos-init",
+     "stop": 13,
+     "crop": "390-27-scroll-reveal.jpg",
+     "fix": "show it at rest: no fade, rise or unmask when it is scrolled into view"
+    },
+    {
+     "check": "no-visual",
+     "sev": "FAIL",
+     "sel": "section#dc-resources",
+     "text": "Official Portals & Resources",
+     "msg": "no picture, effect or mock in this section; a feature section needs a visual",
+     "stop": 11,
+     "crop": "390-26-no-visual.jpg",
+     "fix": "give the section a visual: a UI fragment on a ground, real icons, or a photograph that fits"
+    },
+    {
+     "check": "button-styles",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1) > button.room-number",
+     "text": "ROOM 314",
+     "stop": 5,
+     "msg": "one button style (soft, fill #0f766e) in 2 heights: 46, 58px (\"ROOM 314\" 58px, \"View Students\" 46px)",
+     "crop": "390-11-button-styles.jpg",
+     "fix": "one primary and one secondary button: one shape, one height per size, one label size"
+    },
+    {
+     "check": "cta",
+     "sev": "FAIL",
+     "sel": "section#location",
+     "text": "International Hall, Dhaka College",
+     "msg": "the last section before the footer ends with no button",
+     "stop": 13,
+     "crop": "390-28-cta.jpg",
+     "fix": "add the action: a button in the hero, one on every priced item, one in the closing section"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "div.container > div.section-head > div > p.eyebrow",
+     "text": "STUDENTS",
+     "stop": 0,
+     "msg": "left edge at 144px, 13px off a common edge of its section at 131px (6 elements); 19 more in this section off the grid too (h2 at 144px, span.bday-meta-pill:nth-of-type(1) at 29px, h3 at 29px, p.student-room-roll at 29px, ...)",
+     "crop": "390-02-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1) > button.room-number",
+     "text": "ROOM 314",
+     "stop": 5,
+     "msg": "left edge at 21px, 9px off the page margin at 12px (56 elements); 1 more in this section off the grid too (button.room-number at 21px)",
+     "crop": "390-12-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "div.aos-init.aos-animate:nth-of-type(1) > div.result-academic-track > div.track-row:nth-of-type(1) > span.track-badge",
+     "text": "1st Year",
+     "stop": 6,
+     "msg": "left edge at 29px, 12px off a common edge of its section at 41px (3 elements); 4 more in this section off the grid too (span.exam-pill:nth-of-type(1) at 29px, span.exam-pill:nth-of-type(4) at 29px, span.track-badge at 29px, span.exam-pill:nth-of-type(1) at 29px)",
+     "crop": "390-15-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "div.container > div.info-grid.three > article.info-box.aos-init:nth-of-type(1) > span.info-icon",
+     "text": "01",
+     "stop": 9,
+     "msg": "left edge at 27px, 15px off the page margin at 12px (56 elements, like a.btn.secondary); 8 more in this section off the grid too (span.info-icon at 27px, h3 at 27px, p at 27px, h3 at 27px, ...)",
+     "crop": "390-22-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "off-grid",
+     "sev": "FAIL",
+     "sel": "div.container > div.section-head > div > p.eyebrow",
+     "text": "MOMENTS & MEMORIES",
+     "stop": 10,
+     "msg": "left edge at 34.5px, 22.5px off the page margin at 12px (56 elements, like p.eyebrow); 1 more in this section off the grid too (h2 at 34.5px)",
+     "crop": "390-24-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "contrast",
+     "sev": "FAIL",
+     "sel": "header#navbar > div.container.nav-inner > nav.nav-links > a.active",
+     "text": "Home",
+     "stop": 0,
+     "msg": "body text over a effect reads at 1.9:1 at its worst tenth (needs 4.5:1)",
+     "crop": "390-03-contrast.jpg",
+     "fix": "put the text on a calm part of the picture, or on a solid panel"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > p.lead",
+     "text": "Demo result overview. Detailed CT and yearly PDF",
+     "stop": 6,
+     "msg": "body text in #5b6472 on #ffffff reads 5.98:1 (needs 7:1); 3 like it, like \"International Hall bri\", \"Use the live Google ma\"",
+     "crop": "390-16-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "text-contrast",
+     "sev": "FAIL",
+     "sel": "p#homeHallSuperBio",
+     "text": "Prof. Md. Kamruzzaman serves as the Provost of D",
+     "stop": 8,
+     "msg": "body text in #5b6472 on #f6f7f9 reads 5.58:1 (needs 7:1); 2 like it, like \"Direct access to offic\"",
+     "crop": "390-19-text-contrast.jpg",
+     "fix": "body text in the ink at 7:1 or more; grey (4.5:1 or more) only for captions and labels"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero / section#students-preview",
+     "text": "",
+     "stop": 0,
+     "msg": "261px between these sections, +84% against the median 142px of gaps at a change of ground",
+     "crop": "390-04-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "photo-upscale",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > figure.hostel-photo.aos-init > img",
+     "text": "img: Hall Super Portrait",
+     "msg": "hallsuper1.webp: 286x291 shown at 320x400, blown up 1.37x",
+     "stop": 8,
+     "crop": "390-20-photo-upscale.jpg",
+     "fix": "use a source at least as wide as the picture is shown (twice that for sharp screens)"
+    },
+    {
+     "check": "text-only",
+     "sev": "WARN",
+     "sel": "section#gallery-preview",
+     "text": "International Hall Gallery",
+     "msg": "the section is only text: no picture, icon, mock or effect in it",
+     "stop": 10,
+     "crop": "390-25-text-only.jpg",
+     "fix": "give the section a visual: a photograph that fits, the real icons, or a UI fragment on a ground"
+    },
+    {
+     "check": "off-grid",
+     "sev": "WARN",
+     "sel": "div.container > div.section-head > div > h2",
+     "text": "Students Preview",
+     "msg": "the section's heading starts at 144px, 132px off the page margin (12px), and no other section starts there",
+     "stop": 0,
+     "crop": "390-05-off-grid.jpg",
+     "fix": "move it onto the page margin, or the column edge its section uses"
+    },
+    {
+     "check": "body-size",
+     "sev": "WARN",
+     "sel": "div.container > div.results-preview-wrap > div.aos-init.aos-animate:nth-of-type(1) > p.lead",
+     "text": "Demo result overview. Detailed CT and yearly PDF",
+     "stop": 6,
+     "msg": "3 of 5 paragraphs of running text are set under 16px (14.1px)",
+     "crop": "390-17-body-size.jpg",
+     "fix": "set running text at 16px or more"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "main.page-main.home-main > section.hero / section#students-preview",
+     "text": "",
+     "stop": 0,
+     "msg": "uneven space at the edge of a band: 72px outside its edge, 189px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "390-06-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "section-gaps",
+     "sev": "WARN",
+     "sel": "section#location / footer.footer",
+     "text": "",
+     "stop": 14,
+     "msg": "uneven space at the edge of a band: 70px outside its edge, 45px inside it (the space on either side of a change of ground reads as one gap only when the two match)",
+     "crop": "390-29-section-gaps.jpg",
+     "fix": "use one gap between sections (all within 25% of each other)"
+    },
+    {
+     "check": "nav-family",
+     "sev": "WARN",
+     "sel": "header#navbar",
+     "text": "",
+     "stop": 0,
+     "msg": "the nav's links come in 2 sizes (14, 16px)",
+     "crop": "390-07-nav-family.jpg",
+     "fix": "keep one nav on every screen: the same bar, fill, links and type"
+    },
+    {
+     "check": "stranded-action",
+     "sev": "WARN",
+     "sel": "div#roommateGrid > article.room-pair.aos-init:nth-of-type(1) > button.room-number",
+     "text": "ROOM 314",
+     "msg": "stands 260px down from the nearest text of its block (\"Roommate Preview\") (and 2 more like it: \"ROOM 315\", \"Open Result Portal →\")",
+     "stop": 5,
+     "crop": "390-13-stranded-action.jpg",
+     "fix": "put the button under or beside the text it belongs to"
+    },
+    {
+     "check": "photo-repeat",
+     "sev": "WARN",
+     "sel": "div#studentGrid > button.student-card.aos-init:nth-of-type(2) > img",
+     "text": "hostel-building.jpg",
+     "msg": "the photograph hostel-building.jpg is shown 7 times on the page: a picture the visitor has already seen",
+     "fix": "show each photograph once: a different picture of what this section names, or none",
+     "stop": 2,
+     "crop": "390-09-photo-repeat.jpg"
+    },
+    {
+     "check": "hero-screen",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero",
+     "text": "Dhaka College International Hall Discipl",
+     "msg": "the hero ends at 658px on a 844px screen, 186px above the fold: it ends at the fold, 1px either way (SR-1)",
+     "fix": "make the hero exactly one screen (height: 100svh, its content fitted inside), never taller or shorter",
+     "rule": "SR-1 T1",
+     "crop": "390-rhythm-01-hero-screen.jpg"
+    },
+    {
+     "check": "hero-screen",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Students Preview View All Searc",
+     "msg": "186px of the next section shows on the first screen (from 658px on a 844px screen): nothing below the hero shows at load (SR-1)",
+     "fix": "end the hero at the fold so nothing of the next section shows at load (hero height: 100svh)",
+     "rule": "SR-1 T2",
+     "crop": "390-rhythm-02-hero-screen.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#students-preview",
+     "text": "Students Students Preview View All Searc",
+     "msg": "the section is 2796px tall (3.3 screens), 1108px over two screens (1688px): every section after the hero is one screen or two, 2px either way (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "390-rhythm-03-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#gallery-preview",
+     "text": "Moments & Memories International Hall Ga",
+     "msg": "the section is 300px tall (0.4 screens), 544px short of one screen (844px): every section after the hero is one screen or two, 2px either way (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "390-rhythm-04-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview",
+     "text": "Hall Info Legacy, achievement and studen",
+     "msg": "the section is 1116px tall (1.3 screens), 272px over one screen (844px): every section after the hero is one screen or two, 2px either way (and 6 more like it: \"Rooms Roommate Preview V\", \"International Hall This \", \"Hall Super Prof. Md. Kam\") (SR-2)",
+     "fix": "set the section to one screen or two (height: calc(var(--h,1) * 100vh), --h 1 or 2) and cut or split its content to fit",
+     "rule": "SR-2 T-height",
+     "crop": "390-rhythm-05-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#hallsuper-preview",
+     "text": "Hall Super Prof. Md. Kamruzzaman Provost",
+     "msg": "the section starts at 5455px, 391px below the screen grid (6 x 844px): sections start on whole screens (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "390-rhythm-06-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#hostel-info-preview",
+     "text": "Hall Info Legacy, achievement and studen",
+     "msg": "the section starts at 6403px, 349px above the screen grid (8 x 844px): sections start on whole screens (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "390-rhythm-07-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "section#results-preview",
+     "text": "ACADEMIC PERFORMANCE Academic Results De",
+     "msg": "the section starts at 4528px, 308px below the screen grid (5 x 844px): sections start on whole screens (and 6 more like it: \"Dhaka College Official P\", \"International Hall This \", \"Location International H\") (SR-2)",
+     "fix": "make every section above it exactly one or two screens tall, so this one starts on a whole screen",
+     "rule": "SR-2 T-grid",
+     "crop": "390-rhythm-08-section-height.jpg"
+    },
+    {
+     "check": "section-height",
+     "sev": "FAIL",
+     "sel": "footer.footer",
+     "text": "International Hall This website is devel",
+     "msg": "the section's content does not fit it: its lowest content ends 973px below its top, past 959px (the section less 48px of bottom padding) (SR-2)",
+     "fix": "fit the content above the section's bottom padding (--padb), or make it two screens (.g2) in two groups",
+     "rule": "SR-2 T-fit",
+     "crop": "390-rhythm-09-section-height.jpg"
+    },
+    {
+     "check": "section-air",
+     "sev": "FAIL",
+     "sel": "section#location",
+     "text": "Location International Hall, Dhaka Colle",
+     "msg": "the content fills 24.2% of the section's height (210 of 864px): 55% or more (40% WARN) (SR-3)",
+     "fix": "fill the section to 55%: more content, a picture or a background layer, or merge it into the section above as its last block",
+     "rule": "SR-3 T-fill",
+     "crop": "390-rhythm-10-section-air.jpg"
+    },
+    {
+     "check": "section-air",
+     "sev": "WARN",
+     "sel": "section#gallery-preview",
+     "text": "Moments & Memories International Hall Ga",
+     "msg": "the content fills 43.4% of the section's height (130 of 300px): 55% or more (40% WARN) (SR-3)",
+     "fix": "fill the section to 55%: more content, a picture or a background layer, or merge it into the section above as its last block",
+     "rule": "SR-3 T-fill",
+     "crop": "390-rhythm-25-section-air.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > div.aos-init.aos-animate > h2",
+     "text": "Legacy, achievement and student life",
+     "msg": "the screen at scroll 5908px (stride 7) shows 349px of section 6 and the heading of section 6 whole and the content of 2 sections, over 24px each beside section 5: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "390-rhythm-11-one-section.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "section#results-preview",
+     "text": "ACADEMIC PERFORMANCE Academic Results De",
+     "msg": "the screen at scroll 5064px (stride 6) shows 285px of section 4 and the content of 2 sections, over 24px each beside section 5: a screen shows one section (another may peek 8px, 24px WARN) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "390-rhythm-12-one-section.jpg"
+    },
+    {
+     "check": "one-section",
+     "sev": "FAIL",
+     "sel": "section#roommates-preview",
+     "text": "Rooms Roommate Preview View Rooms ••••••",
+     "msg": "the screen at scroll 4220px (stride 5) shows 202px of section 3 and the content of 2 sections, over 24px each beside section 4: a screen shows one section (another may peek 8px, 24px WARN) (and 5 more like it: scroll 7519px, scroll 0px, scroll 10128px) (SR-4)",
+     "fix": "make each section exactly one screen or two, so a screen shows one section and no neighbour peeks",
+     "rule": "SR-4 T-views",
+     "crop": "390-rhythm-13-one-section.jpg"
+    },
+    {
+     "check": "one-heading",
+     "sev": "FAIL",
+     "sel": "div.container > div.split > div.aos-init.aos-animate > h2",
+     "text": "Legacy, achievement and student life",
+     "msg": "headings of two sections show whole on one screen at 11 of 210 scroll positions (5.2%; at scroll 5750, 5800, 5850, 7150px), here with \"Prof. Md. Kamruzzaman\": at most 5% on a phone (SR-5)",
+     "fix": "make the sections one screen tall so their headings sit a screen apart and two never share one",
+     "rule": "SR-5 T2",
+     "crop": "390-rhythm-14-one-heading.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "header#navbar",
+     "text": "International Hall Home Hall Students Ro",
+     "msg": "the nav's content runs 12px from the left and 12px from the right (read from its outermost blocks: no .wrap): the margin is 16-24px at 390px (one container, equal margins, 2px either way) (SR-6)",
+     "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+     "rule": "SR-6 T1-margins",
+     "crop": "390-rhythm-15-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero",
+     "text": "Dhaka College International Hall Discipl",
+     "msg": "the content of section 1 runs 12px from the left and 12px from the right (read from its outermost blocks: no .wrap): the margin is 16-24px at 390px (one container, equal margins, 2px either way) (and 9 more like it: \"Students Students Previe\", \"Rooms Roommate Preview V\", \"ACADEMIC PERFORMANCE Aca\") (SR-6)",
+     "fix": "use one container on every section and the nav (.wrap): one margin left and right, 64-120px on a desktop, 16-24px on a phone",
+     "rule": "SR-6 T1-margins",
+     "crop": "390-rhythm-16-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "header#navbar",
+     "text": "International Hall Home Hall Students Ro",
+     "msg": "a <header> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (SR-6)",
+     "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+     "rule": "SR-6 T1-structure",
+     "crop": "390-rhythm-17-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "footer.footer",
+     "text": "International Hall This website is devel",
+     "msg": "a <footer> at the top of the page, outside header.nav, main, footer.closing and nav.actionbar (and 11 more like it: \"Dhaka College Internatio\", main.page-main.home-main > section.hero > div.hero-overlay, \"Students Students Previe\") (SR-6)",
+     "fix": "build the page as header.nav, a main of sections (each one in-flow .wrap plus background layers) and footer.closing",
+     "rule": "SR-6 T1-structure",
+     "crop": "390-rhythm-18-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero > div.hero-overlay",
+     "text": "",
+     "msg": "a box runs 0-390px, outside the container lines of section 1 at 12-378px: full width is for background layers and grounds only (SR-6)",
+     "fix": "keep it inside the container lines (.wrap): full width is for background layers and grounds only",
+     "rule": "SR-6 T2-containment",
+     "crop": "390-rhythm-19-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "div.container > div.section-head > div > p.eyebrow",
+     "text": "Students",
+     "msg": "2 text blocks start on a left line at x 144, 132px from the container's left: text starts on the container's left, or on one split line (x 175, 207, 240) (also \"Students Preview\") (SR-6)",
+     "fix": "start the text on the container's left, or on the one split line every split shares",
+     "rule": "SR-6 T3-left-lines",
+     "crop": "390-rhythm-20-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "div.container > div.section-head > div > h2",
+     "text": "Students Preview",
+     "msg": "the h2 starts 132px right of the container's left: every h1 and h2 starts on it, 2px either way (and 3 more like it: x 116, x 35, x 26) (SR-6)",
+     "fix": "start the text on the container's left, or on the one split line every split shares",
+     "rule": "SR-6 T3-left-lines",
+     "crop": "390-rhythm-21-container-edges.jpg"
+    },
+    {
+     "check": "container-edges",
+     "sev": "FAIL",
+     "sel": "main.page-main.home-main > section.hero > div.hero-overlay",
+     "text": "",
+     "msg": "a box over half the container wide runs 0-390px, not on the container's lines at 12-378px (SR-6)",
+     "fix": "run the picture or box from the container's left line to its right line, or put it in a row or a split",
+     "rule": "SR-6 T6-right-edges",
+     "crop": "390-rhythm-22-container-edges.jpg"
+    },
+    {
+     "check": "row-lines",
+     "sev": "FAIL",
+     "sel": "div.aos-init.aos-animate:nth-of-type(1) > div.result-academic-track > div.track-row:nth-of-type(1) > div.track-exam-pills",
+     "text": "CT-1 Exam CT-2 Exam Half Yearly CT-3 Exa",
+     "msg": "a row of 3 items: its first item starts at 29px, the container's left line at 12px; its last item ends at 292px, the container's right line at 378px (2px either way) (SR-7)",
+     "fix": "start the row's first item on the container's left line and end its last on the right line, every item one height",
+     "rule": "SR-7 T-rows",
+     "crop": "390-rhythm-23-row-lines.jpg"
+    },
+    {
+     "check": "row-lines",
+     "sev": "FAIL",
+     "sel": "div.container > div.results-preview-wrap > div.results-preview-card.aos-init > div.results-card-stats",
+     "text": "09 Official Terms 100% Digital Archive",
+     "msg": "a row of 2 items: its first item starts at 41px, the container's left line at 12px; its last item ends at 349px, the container's right line at 378px (2px either way) (SR-7)",
+     "fix": "start the row's first item on the container's left line and end its last on the right line, every item one height",
+     "rule": "SR-7 T-rows",
+     "crop": "390-rhythm-24-row-lines.jpg"
+    }
+   ],
+   "glAsked": 0
+  }
+ ],
+ "shaders": 0,
+ "reduced": {
+  "screens": 8,
+  "notRead": 0
+ },
+ "hidden": {
+  "screens": 8
+ },
+ "slow": {
+  "stops": 16,
+  "late": 0
+ },
+ "sweep": {
+  "widths": [
+   1280,
+   1152,
+   896
+  ],
+  "errors": [],
+  "findings": []
+ },
+ "counts": {
+  "FAIL": 188,
+  "WARN": 59
+ },
+ "checks": {
+  "assets": "FAIL",
+  "shader-lint": "PASS",
+  "gl-fallback": "PASS",
+  "empty-visual": "PASS",
+  "hero-fill": "FAIL",
+  "flush": "PASS",
+  "placeholder": "PASS",
+  "sample-label": "PASS",
+  "caption": "PASS",
+  "credit-wall": "PASS",
+  "nav": "PASS",
+  "nav-covers": "PASS",
+  "spill": "PASS",
+  "off-viewport": "PASS",
+  "fold-card": "PASS",
+  "hover-spill": "PASS",
+  "overlap-text": "PASS",
+  "row-gap": "PASS",
+  "cut-text": "PASS",
+  "fold-cut": "PASS",
+  "marquee": "PASS",
+  "scroll-linked": "PASS",
+  "scroll-reveal": "FAIL",
+  "pinned": "PASS",
+  "loop-pause": "PASS",
+  "reduced-motion": "FAIL",
+  "hidden-content": "PASS",
+  "webgl": "PASS",
+  "no-visual": "FAIL",
+  "text-only": "WARN",
+  "card-visual": "WARN",
+  "hidden-visual": "PASS",
+  "card-family": "PASS",
+  "card-layout": "FAIL",
+  "nesting": "PASS",
+  "effect-repeat": "PASS",
+  "ui-fit": "PASS",
+  "ui-centre": "PASS",
+  "dark-ground": "PASS",
+  "button-styles": "FAIL",
+  "button-shape": "PASS",
+  "same-action": "PASS",
+  "button-picture": "PASS",
+  "cta": "FAIL",
+  "pricing-tiers": "PASS",
+  "copy-headline": "FAIL",
+  "copy-fact": "FAIL",
+  "copy-headings": "FAIL",
+  "copy-buttons": "WARN",
+  "copy-actions": "WARN",
+  "heading-scale": "PASS",
+  "stagger": "PASS",
+  "top-stagger": "PASS",
+  "off-grid": "FAIL",
+  "col-edge": "WARN",
+  "right-edge": "PASS",
+  "centre-axis": "PASS",
+  "tilt": "PASS",
+  "contrast": "FAIL",
+  "text-contrast": "FAIL",
+  "body-size": "WARN",
+  "busy-ground": "PASS",
+  "section-gaps": "FAIL",
+  "proximity": "PASS",
+  "hole": "PASS",
+  "links": "PASS",
+  "forms": "PASS",
+  "photo-upscale": "FAIL",
+  "photo-set": "WARN",
+  "photo-credit": "PASS",
+  "nav-family": "WARN",
+  "nav-labels": "PASS",
+  "link-styles": "PASS",
+  "heading-align": "PASS",
+  "label-centre": "PASS",
+  "fake-button": "PASS",
+  "stranded-action": "WARN",
+  "orphan": "PASS",
+  "unit-break": "PASS",
+  "tab-wrap": "PASS",
+  "effects-fit": "PASS",
+  "fade-cut": "PASS",
+  "photo-weight": "PASS",
+  "copy-length": "PASS",
+  "nav-current": "PASS",
+  "progress-bar": "PASS",
+  "photo-repeat": "WARN",
+  "button-contrast": "PASS",
+  "photo-print": "PASS",
+  "grounds": "PASS",
+  "split-align": "PASS",
+  "fact-agree": "PASS",
+  "fold-action": "PASS",
+  "action-count": "PASS",
+  "one-screen": "WARN",
+  "hover": "PASS",
+  "hover-move": "PASS",
+  "product-shown": "PASS",
+  "same-object": "PASS",
+  "font-load": "WARN",
+  "visual-caption": "PASS",
+  "visual-empty": "PASS",
+  "effect-kind": "PASS",
+  "street-number": "PASS",
+  "postcode": "PASS",
+  "coordinates": "PASS",
+  "company-number": "PASS",
+  "phone-number": "PASS",
+  "hero-screen": "FAIL",
+  "section-height": "FAIL",
+  "section-air": "FAIL",
+  "one-section": "FAIL",
+  "one-heading": "FAIL",
+  "container-edges": "FAIL",
+  "row-lines": "FAIL",
+  "split-pair": "FAIL",
+  "motion-layer": "PASS",
+  "count-text": "PASS",
+  "loop-cycle": "PASS",
+  "section-tile": "PASS"
+ }
+}
