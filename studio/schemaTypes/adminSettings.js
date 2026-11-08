@@ -106,11 +106,96 @@ export default defineType({
     // ═══════════════════════════════════════════
     defineField({
       name: 'universal_moderator_emails',
-      title: 'Universal Moderator Emails / যেকোনো ব্যাচের জন্য মডারেটর ইমেইল',
+      title: 'Universal & Batch Moderator Access / যেকোনো ব্যাচ বা নির্দিষ্ট ব্যাচের মডারেটর অ্যাক্সেস',
       type: 'array',
       group: 'batch_rotation',
-      description: 'এখানে যেকোনো জিমেইল যোগ করলে সেই ব্যক্তি যেকোনো ব্যাচের ফোল্ডার ও ডেটা দেখার এবং এডিট রিকোয়েস্ট পাঠানোর সার্বজনীন মডারেটর অ্যাক্সেস পাবেন। কোনো নির্দিষ্ট ব্যাচে সীমাবদ্ধ থাকবে না।',
-      of: [{ type: 'string' }],
+      description: 'হুট করে যেকোনো জিমেইলকে নির্দিষ্ট কোনো ব্যাচে অথবা সকল ব্যাচে অ্যাক্সেস দিতে চাইলে এখানে যোগ করুন। ব্যাচ সিলেক্ট করে দিলে সেই ব্যক্তি কেবল ওই ব্যাচের ডেটা অ্যাক্সেস করতে পারবে, অন্য ব্যাচ দেখতে পারবে না।',
+      of: [
+        {
+          type: 'object',
+          name: 'moderatorAccess',
+          title: 'Moderator Access Entry / মডারেটর অ্যাক্সেস',
+          fields: [
+            defineField({
+              name: 'email',
+              title: 'Moderator Email / মডারেটর ইমেইল',
+              type: 'string',
+              description: 'ব্যবহারকারীর গুগল বা স্যানিটি অ্যাকাউন্ট ইমেইল ঠিকানা।',
+              validation: (Rule) => Rule.required().error('মডারেটরের ইমেইল প্রদান করা আবশ্যক।'),
+            }),
+            defineField({
+              name: 'assigned_batch',
+              title: 'Assigned Batch / নির্ধারিত ব্যাচ',
+              type: 'string',
+              description: 'কোন ব্যাচের অ্যাক্সেস দিতে চান? "সকল ব্যাচ (Universal)" নির্বাচন করলে সব ব্যাচের পোর্টাল অ্যাক্সেস করতে পারবে। নির্দিষ্ট ব্যাচ দিলে শুধুমাত্র সেই ব্যাচে প্রবেশাধিকার থাকবে।',
+              initialValue: 'all',
+              options: {
+                list: [
+                  { title: 'All Batches / সার্বজনীন (সকল ব্যাচ)', value: 'all' },
+                  { title: 'HSC-27 (Founder Batch)', value: 'HSC-27' },
+                  { title: 'HSC-28 (2026-27)', value: 'HSC-28' },
+                  { title: 'HSC-29 (2027-28)', value: 'HSC-29' },
+                  { title: 'HSC-30 (2028-29)', value: 'HSC-30' },
+                  { title: 'HSC-31 (2029-30)', value: 'HSC-31' },
+                  { title: 'HSC-32 (2030-31)', value: 'HSC-32' },
+                  { title: 'HSC-33 (2031-32)', value: 'HSC-33' },
+                  { title: 'HSC-34 (2032-33)', value: 'HSC-34' },
+                  { title: 'HSC-35 (2033-34)', value: 'HSC-35' },
+                  { title: 'HSC-36', value: 'HSC-36' },
+                  { title: 'HSC-37', value: 'HSC-37' },
+                  { title: 'HSC-38', value: 'HSC-38' },
+                  { title: 'HSC-39', value: 'HSC-39' },
+                  { title: 'HSC-40', value: 'HSC-40' },
+                ],
+              },
+            }),
+            defineField({
+              name: 'role',
+              title: 'Access Level / অ্যাক্সেসের ধরন',
+              type: 'string',
+              initialValue: 'batch_admin',
+              description: 'ব্যাচ অ্যাডমিন সরাসরি তথ্য এডিট ও যুক্ত করতে পারে। মডারেটর শুধুমাত্র এডিট রিকোয়েস্ট পাঠাতে পারে।',
+              options: {
+                list: [
+                  { title: 'Batch Admin (সরাসরি শিক্ষার্থী, রুম, ফটো, ইভেন্ট ও ফর্ম এডিটের পূর্ণ ক্ষমতা)', value: 'batch_admin' },
+                  { title: 'Moderator (শুধুমাত্র এডিট রিকোয়েস্ট পাঠানোর সীমিত ক্ষমতা)', value: 'moderator' },
+                ],
+              },
+            }),
+            defineField({
+              name: 'is_active',
+              title: 'Active Access / সক্রিয় অ্যাক্সেস',
+              type: 'boolean',
+              initialValue: true,
+              description: 'সক্রিয় (ON) থাকলে স্টুডিওতে প্রবেশাধিকার কার্যকর থাকবে। সাময়িক বন্ধ রাখতে এটি অফ করুন।',
+            }),
+            defineField({
+              name: 'notes',
+              title: 'Notes & Identity / মডারেটরের নাম বা নোট',
+              type: 'string',
+              description: 'কার কাছে দায়িত্ব দেওয়া হয়েছে বা মডারেটরের নাম লিখে রাখুন (ঐচ্ছিক)।',
+            }),
+          ],
+          preview: {
+            select: {
+              email: 'email',
+              batch: 'assigned_batch',
+              role: 'role',
+              active: 'is_active',
+              notes: 'notes',
+            },
+            prepare({ email, batch, role, active, notes }) {
+              const statusTag = active !== false ? 'Active' : 'Inactive'
+              const bLabel = batch === 'all' || !batch ? 'Universal (All Batches)' : batch
+              const rLabel = role === 'moderator' ? 'Moderator (Requests)' : 'Batch Admin'
+              return {
+                title: `${statusTag} — ${email || 'No email'} [${bLabel}]`,
+                subtitle: `${rLabel}${notes ? ` • ${notes}` : ''}`,
+              }
+            },
+          },
+        },
+      ],
     }),
     defineField({
       name: 'batch_rotation_enabled',

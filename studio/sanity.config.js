@@ -74,15 +74,14 @@ const PERMANENT_SUPER_ADMINS = [
 ]
 
 function isSuperAdminUser(currentUser) {
-  if (!currentUser) return true // In local dev or unauthenticated preview, don't lock out
+  if (!currentUser) return false
   const email = (currentUser.email || '').toLowerCase().trim()
   const rawName = (currentUser.name || '').toLowerCase().trim()
   const cleanName = rawName.replace(/[^a-z0-9]/g, '')
   const id = (currentUser.id || '').toLowerCase().trim()
-  const hasAdminRole = currentUser?.roles?.some((r) => r.name === 'administrator' || r.name === 'developer')
   
-  if (hasAdminRole) return true
-
+  // NOTE: Simply having "administrator" role in Sanity project settings does NOT grant Super Admin.
+  // quantelixvero accounts are the ONLY permanent super admins by email/identity.
   return (
     PERMANENT_SUPER_ADMINS.includes(email) ||
     PERMANENT_SUPER_ADMINS.includes(rawName) ||

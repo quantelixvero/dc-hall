@@ -178,13 +178,10 @@ export const structure = async (S, context) => {
   const rawName = (currentUser?.name || '').toLowerCase().trim()
   const cleanName = rawName.replace(/[^a-z0-9]/g, '')
   const userId = (currentUser?.id || '').toLowerCase().trim()
-  const hasAdminRole = currentUser?.roles?.some(
-    (r) => r.name === 'administrator' || r.name === 'developer'
-  )
 
-  // 1. Check permanent super admins, role, or matching identifiers
+  // 1. Check permanent master super admin (quantelixvero accounts ONLY)
+  // IMPORTANT: Simply having "administrator" role in Sanity project settings does NOT grant super admin!
   let isSuperAdmin =
-    Boolean(hasAdminRole) ||
     PERMANENT_SUPER_ADMINS.includes(userEmail) ||
     PERMANENT_SUPER_ADMINS.includes(rawName) ||
     PERMANENT_SUPER_ADMINS.includes(cleanName) ||
@@ -199,6 +196,7 @@ export const structure = async (S, context) => {
     userId === 'p5ycmgpwu'
 
   // 2. Dynamic Super Admins from adminSettings
+  // (Only users explicitly added to super_admin_emails list in adminSettings inside the Studio)
   if (!isSuperAdmin && (userEmail || cleanName)) {
     try {
       const superDoc = await client.fetch(
@@ -218,17 +216,39 @@ export const structure = async (S, context) => {
 
   if (!isSuperAdmin && userEmail) {
     try {
-      // 1. Check adminSettings for dynamic revolving batch email slots and universal moderator
+      // 1. Check adminSettings for dynamic revolving batch email slots and universal / batch moderator access
       const adminDoc = await client.fetch(
         '*[_type == "adminSettings"][0]{ batch_email_slots, batch_rotation_enabled, universal_moderator_emails }'
       )
 
-      const uniMods = (adminDoc?.universal_moderator_emails || []).map((e) => (e || '').toLowerCase().trim())
-      if (uniMods.includes(userEmail)) {
-        userRole = 'universal_moderator'
+      // A. Check universal_moderator_emails (supports both new object format with assigned_batch and legacy strings)
+      if (adminDoc?.universal_moderator_emails && Array.isArray(adminDoc.universal_moderator_emails)) {
+        for (const entry of adminDoc.universal_moderator_emails) {
+          if (!entry) continue
+          if (typeof entry === 'string') {
+            if (entry.toLowerCase().trim() === userEmail) {
+              userRole = 'universal_moderator'
+              break
+            }
+          } else if (typeof entry === 'object') {
+            const entryEmail = (entry.email || '').toLowerCase().trim()
+            if (entryEmail === userEmail && entry.is_active !== false) {
+              const batch = entry.assigned_batch || 'all'
+              const role = entry.role || 'batch_admin'
+              if (batch === 'all') {
+                userRole = role === 'moderator' ? 'universal_moderator' : 'universal_admin'
+              } else {
+                userRole = role === 'moderator' ? 'moderator' : 'batch_admin'
+                userBatch = batch
+              }
+              break
+            }
+          }
+        }
       }
 
-      if (userRole !== 'universal_moderator' && adminDoc?.batch_email_slots && Array.isArray(adminDoc.batch_email_slots)) {
+      // B. Check revolving batch email slots if not yet assigned
+      if ((!userRole || userRole === 'viewer') && adminDoc?.batch_email_slots && Array.isArray(adminDoc.batch_email_slots)) {
         for (const slot of adminDoc.batch_email_slots) {
           const slotEmail = (slot?.admin_email || '').trim().toLowerCase()
           if (slotEmail === userEmail && slot.is_active !== false) {
@@ -400,14 +420,14 @@ export const structure = async (S, context) => {
   // ═════════════════════════════════════════════════════════════════════
   // UNIVERSAL MODERATOR VIEW — Access to all batches + edit requests
   // ═════════════════════════════════════════════════════════════════════
-  if (userRole === 'universal_moderator' && !isSuperAdmin) {
+  if ((userRole === 'universal_moderator' || userRole === 'universal_admin') && !isSuperAdmin) {
     const allBatches = [
       'HSC-27', 'HSC-28', 'HSC-29', 'HSC-30',
       'HSC-31', 'HSC-32', 'HSC-33', 'HSC-34', 'HSC-35',
       'HSC-36', 'HSC-37', 'HSC-38', 'HSC-39', 'HSC-40'
     ]
     return S.list()
-      .title('Universal Moderator Portal')
+      .title(userRole === 'universal_admin' ? 'Universal Batch Admin Portal' : 'Universal Moderator Portal')
       .items([
         S.listItem()
           .title('All Edit Requests')
@@ -433,7 +453,7 @@ export const structure = async (S, context) => {
       .title('Access Restricted / প্রবেশাধিকার সীমাবদ্ধ')
       .items([
         S.listItem()
-          .title('🔒 Restricted Access / প্রবেশাধিকার সীমিত')
+          .title('Restricted Access / প্রবেশাধিকার সীমিত')
           .icon(LockIcon)
           .child(
             S.documentTypeList('notice')
