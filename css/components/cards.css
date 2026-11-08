@@ -673,6 +673,228 @@ body.dark .active-batch-header .batch-count-pill {
 
 
 
+/* ═══════════════════════════════════════════════════════════════
+   BATCH MODERATOR SECTION & CARDS (DEVELOPER PAGE)
+   ═══════════════════════════════════════════════════════════════ */
+.batch-moderators-section {
+  position: relative;
+}
+
+.batch-moderator-group {
+  margin-bottom: 28px;
+}
+
+.batch-moderator-header {
+  margin: 16px 0 14px;
+  min-width: 0;
+}
+
+.batch-moderator-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.batch-moderator-heading {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.batch-moderator-heading .batch-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.batch-moderator-heading .batch-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.batch-moderator-heading .batch-label {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.batch-moderator-heading .batch-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 6px;
+  background: #0f766e;
+  color: #ffffff !important;
+  font-weight: 800;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.2);
+}
+
+.batch-moderator-header .batch-count-pill {
+  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.moderator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.moderator-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 14px 16px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease, box-shadow 0.22s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.moderator-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #0f766e);
+  opacity: 0.8;
+}
+
+.moderator-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 28px rgba(16, 201, 168, 0.14);
+}
+
+.moderator-tag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: rgba(16, 201, 168, 0.12);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.moderator-tag-pill svg {
+  width: 12px;
+  height: 12px;
+}
+
+.moderator-avatar-wrap {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--accent), #0f766e);
+  box-shadow: 0 4px 12px rgba(16, 201, 168, 0.2);
+}
+
+.moderator-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  background: var(--surface);
+}
+
+.moderator-name {
+  margin: 0 0 6px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.moderator-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.moderator-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.moderator-view-hint {
+  margin-top: 10px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.2s ease;
+}
+
+.moderator-card:hover .moderator-view-hint {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .moderator-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .moderator-avatar-wrap {
+    width: 68px;
+    height: 68px;
+  }
+}
+
+@media (max-width: 400px) {
+  .moderator-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Guaranteed Crisp White Description on all Page Heroes */
 .hero p,
 .page-hero p,

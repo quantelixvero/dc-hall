@@ -174,7 +174,16 @@ window.closeEventShareModal = function() {
 window.openStudentModalById = function(id) {
   if (!id) return;
   const numId = parseInt(id, 10);
-  const s = students.find(item => item.id === numId || String(item.slug) === String(id) || String(item.roll) === String(id) || String(item.id) === String(id));
+  let s = students.find(item => (item._id && item._id === id) || item.id === numId || String(item.slug) === String(id) || String(item.roll) === String(id) || String(item.id) === String(id));
+  if (!s && Array.isArray(cmsBatchModerators)) {
+    for (const bm of cmsBatchModerators) {
+      const found = (bm.moderators || []).find(m => m && (m._id === id || m.student_id === id || String(m.roll) === String(id)));
+      if (found) {
+        s = mapCmsStudent(found, 0);
+        break;
+      }
+    }
+  }
   if (s) openStudentModal(s);
 };
 
@@ -1046,7 +1055,10 @@ const i18n = {
       photographer: "Photographer",
       photographerText: "Supports the project with hall and student event photos.",
       contentHelper: "Content Helper",
-      contentHelperText: "Helps collect student data, event descriptions and hall updates."
+      contentHelperText: "Helps collect student data, event descriptions and hall updates.",
+      moderatorsEyebrow: "Batch Administration",
+      moderatorsTitle: "Batch Moderators",
+      moderatorsSubtitle: "The student moderators maintaining batch records, roommate assignments, and hall communications."
     },
     pdf: {
       ct1: "CT-1",
@@ -1320,7 +1332,10 @@ const i18n = {
       photographer: "Photographer",
       photographerText: "হল ও student event photo দিয়ে project support করে।",
       contentHelper: "Content Helper",
-      contentHelperText: "Student data, event description ও hall update collect করতে সাহায্য করে।"
+      contentHelperText: "Student data, event description ও hall update collect করতে সাহায্য করে।",
+      moderatorsEyebrow: "ব্যাচ অ্যাডমিনিস্ট্রেশন",
+      moderatorsTitle: "ব্যাচ মডারেটরবৃন্দ",
+      moderatorsSubtitle: "হল ডিরেক্টরি ও ব্যাচ সংক্রান্ত তথ্য নির্ভুল রাখতে দায়িত্ব পালনকারী শিক্ষার্থী প্রতিনিধি।"
     },
     pdf: {
       ct1: "CT-1",
@@ -1401,6 +1416,7 @@ const famousProfiles = {
 let cmsSettings = null;
 let cmsAdminSettings = null;
 let cmsBatchConfigs = [];
+let cmsBatchModerators = [];
 let cmsGalleryData = null;
 let cmsHallData = null;
 let cmsDevData = null;
@@ -1694,6 +1710,9 @@ function applySanityPayload(sanityData) {
     }
     if (sanityData.batchConfigs) {
       cmsBatchConfigs = sanityData.batchConfigs;
+    }
+    if (sanityData.batchModerators) {
+      cmsBatchModerators = sanityData.batchModerators;
     }
     settings = sanityData.settings || {};
     studentData = { students: sanityData.students || [] };
@@ -2032,15 +2051,22 @@ function applyPageSectionControls() {
       location_map: byId("sec-location")
     };
     applySectionMap(hostelSec, hostelMap);
-  } else if (page === "developer" && devSec) {
-    const devMap = {
-      hero_bio: byId("sec-hero-bio"),
-      overview_panels: byId("sec-overview-panels"),
-      featured_projects: byId("projects"),
-      skills_timeline: byId("sec-skills-timeline"),
-      contributors: byId("sec-contributors")
-    };
-    applySectionMap(devSec, devMap);
+  } else if (page === "developer") {
+    if (devSec) {
+      const devMap = {
+        hero_bio: byId("sec-hero-bio"),
+        overview_panels: byId("sec-overview-panels"),
+        featured_projects: byId("projects"),
+        skills_timeline: byId("sec-skills-timeline"),
+        batch_moderators: byId("sec-batch-moderators"),
+        contributors: byId("sec-contributors")
+      };
+      applySectionMap(devSec, devMap);
+    }
+    const modSec = byId("sec-batch-moderators");
+    if (modSec && cmsAdminSettings?.show_batch_moderators === false) {
+      modSec.style.display = "none";
+    }
   }
 }
 
@@ -2184,7 +2210,7 @@ function renderLockedBatchCard(batchName) {
         </svg>
       </div>
       <h3 style="font-size: 1.25rem; font-weight: 800; color: #f87171; margin-bottom: 8px;">
-        🔒 ${cleanBatch} ${currentLang === 'bn' ? 'ডিরেক্টরি লক করা' : 'Directory Locked'}
+        ${cleanBatch} ${currentLang === 'bn' ? 'ডিরেক্টরি লক করা' : 'Directory Locked'}
       </h3>
       <p style="color: #cbd5e1; font-size: 0.95rem; max-width: 540px; margin: 0 auto 20px auto; line-height: 1.6;">
         ${noticeMsg}
@@ -2846,8 +2872,8 @@ function renderCardDynamicBadges(student, context = 'student_page') {
             const roomDisplay = currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal;
             pills.push(`<span class="bday-meta-pill">${t("common.room")} ${roomDisplay}</span>`);
           } else {
-            // Locked: show badge with lock indicator instead of hiding!
-            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${t("common.room")} 🔒</span>`);
+            // Locked: show badge with clean dot design instead of emoji!
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${t("common.room")} •••</span>`);
           }
         }
         break;
@@ -2856,7 +2882,7 @@ function renderCardDynamicBadges(student, context = 'student_page') {
           if (isGroupUnlocked) {
             pills.push(`<span class="bday-meta-pill">${formatGroupShort(student.group)}</span>`);
           } else {
-            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'গ্রুপ' : 'Group'} 🔒</span>`);
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'গ্রুপ' : 'Group'} •••</span>`);
           }
         }
         break;
@@ -2865,7 +2891,7 @@ function renderCardDynamicBadges(student, context = 'student_page') {
           if (isBatchUnlocked) {
             pills.push(`<span class="bday-meta-pill">${student.batch}</span>`);
           } else {
-            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'ব্যাচ' : 'Batch'} 🔒</span>`);
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'ব্যাচ' : 'Batch'} •••</span>`);
           }
         }
         break;
@@ -2874,7 +2900,7 @@ function renderCardDynamicBadges(student, context = 'student_page') {
           if (isSectionUnlocked) {
             pills.push(`<span class="bday-meta-pill">${currentLang === 'bn' ? 'সেকশন ' + student.section : 'Sec ' + student.section}</span>`);
           } else {
-            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'সেকশন' : 'Sec'} 🔒</span>`);
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'সেকশন' : 'Sec'} •••</span>`);
           }
         }
         break;
@@ -2884,7 +2910,7 @@ function renderCardDynamicBadges(student, context = 'student_page') {
           if (isBloodUnlocked) {
             pills.push(`<span class="bday-meta-pill">${bg}</span>`);
           } else {
-            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'রক্ত' : 'Blood'} 🔒</span>`);
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'রক্ত' : 'Blood'} •••</span>`);
           }
         }
         break;
@@ -2894,7 +2920,7 @@ function renderCardDynamicBadges(student, context = 'student_page') {
             const rollDisplay = currentLang === "bn" ? toBengaliDigits(rollVal) : rollVal;
             pills.push(`<span class="bday-meta-pill">${t("common.roll")} ${rollDisplay}</span>`);
           } else {
-            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${t("common.roll")} 🔒</span>`);
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${t("common.roll")} •••</span>`);
           }
         }
         break;
@@ -2909,8 +2935,8 @@ function renderSingleStudentCard(student, index) {
   const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
   const isRollUnlocked = isProfileFieldUnlocked("roll", student);
   const roomVal = student.room_2nd_year?.room_no || student.room_1st_year?.room_no || student.room || "-";
-  const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : (roomVal !== "-" ? "🔒" : "-");
-  const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? toBengaliDigits(student.roll) : student.roll) : (student.roll ? "🔒" : "");
+  const roomDisplay = isRoomUnlocked ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : (roomVal !== "-" ? "•••" : "-");
+  const rollDisplay = isRollUnlocked ? (currentLang === "bn" ? toBengaliDigits(student.roll) : student.roll) : (student.roll ? "•••" : "");
 
   const showRoom = (isProfileFieldVisible("room_2nd_year") || isProfileFieldVisible("room_1st_year")) && roomVal !== "-";
   const showRoll = isProfileFieldVisible("roll") && student.roll;
@@ -3600,7 +3626,7 @@ function renderResults(filterClass = "all") {
     table.innerHTML = `
       <tr>
         <td colspan="7" style="text-align: center; padding: 3.5rem 1rem; color: var(--text-muted); font-size: 1.05rem;">
-          ${currentLang === "bn" ? "🔒 ফলাফল সাময়িকভাবে অ্যাডমিন কর্তৃক লুকানো রয়েছে।" : "🔒 Academic results are currently hidden by admin."}
+          ${currentLang === "bn" ? "ফলাফল সাময়িকভাবে অ্যাডমিন কর্তৃক লুকানো রয়েছে।" : "Academic results are currently hidden by admin."}
         </td>
       </tr>
     `;
@@ -6713,6 +6739,96 @@ async function renderDeveloperPage(devData) {
       </article>
     `).join("");
   }
+
+  // Render Batch Moderators section with compact batch header and distinct cards
+  renderBatchModeratorsSection(cmsBatchModerators, cmsAdminSettings);
+}
+
+function renderBatchModeratorsSection(batchMods, adminSettings) {
+  const container = byId("batchModeratorsContainer");
+  const section = byId("sec-batch-moderators");
+  if (!container || !section) return;
+
+  if (adminSettings?.show_batch_moderators === false) {
+    section.style.display = "none";
+    return;
+  }
+  section.style.display = "";
+
+  const maxMods = Math.max(1, parseInt(adminSettings?.max_moderators_per_batch, 10) || 5);
+  const list = Array.isArray(batchMods) ? batchMods : [];
+
+  // Filter batches that have active moderators
+  const batchesWithMods = list.filter(b => Array.isArray(b?.moderators) && b.moderators.filter(Boolean).length > 0);
+
+  if (!batchesWithMods.length) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 36px 16px; color: var(--text-muted); background: var(--surface-strong); border-radius: 12px; border: 1px dashed var(--border);">
+        <p style="margin: 0; font-size: 0.95rem;">
+          ${currentLang === "bn" ? "বর্তমানে কোনো ব্যাচ মডারেটর যুক্ত করা হয়নি।" : "No batch moderators currently assigned."}
+        </p>
+      </div>
+    `;
+    return;
+  }
+
+  let html = "";
+  batchesWithMods.forEach((batchDoc, bIdx) => {
+    const rawMods = (batchDoc.moderators || []).filter(Boolean);
+    const mods = rawMods.slice(0, maxMods);
+    const batchName = batchDoc.batch || "HSC-27";
+
+    html += `
+      <div class="batch-moderator-group" data-aos="fade-up" data-aos-delay="${Math.min(bIdx * 80, 240)}">
+        <div class="batch-moderator-header">
+          <div class="batch-moderator-header-inner">
+            <h3 class="batch-moderator-heading">
+              <span class="batch-icon">${BATCH_LOGO_SVG}</span>
+              <span class="batch-label">${currentLang === "bn" ? "মডারেটর:" : "Moderator:"}</span>
+              <span class="batch-badge">${batchName}</span>
+            </h3>
+            <span class="batch-count-pill">${mods.length} ${currentLang === "bn" ? "জন" : "Assigned"}</span>
+          </div>
+        </div>
+        <div class="moderator-grid">
+          ${mods.map((mod, mIdx) => renderModeratorCard(mod, batchName, mIdx)).join("")}
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function renderModeratorCard(mod, batchName, mIdx) {
+  const name = currentLang === "bn" ? (mod.name_bn || mod.name_en || mod.name || "শিক্ষার্থী") : (mod.name_en || mod.name || mod.name_bn || "Student");
+  const photo = mod.photo ? normalizeCmsPath(mod.photo) : "images/student-avatar.png";
+  const roomVal = mod.room_2nd_year?.room_no || mod.room_1st_year?.room_no || mod.room_no || mod.room || "";
+  const roomDisplay = roomVal ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : "•••";
+  const rollVal = mod.roll || mod.short_roll || "";
+  const rollDisplay = rollVal ? (currentLang === "bn" ? toBengaliDigits(rollVal) : rollVal) : "";
+  const groupVal = formatGroupShort(mod.group || "science");
+  const targetId = mod._id || mod.student_id || mod.roll || "";
+
+  return `
+    <article class="moderator-card" onclick="openStudentModalById('${targetId}')" tabindex="0" role="button" data-aos="fade-up" data-aos-delay="${Math.min(mIdx * 60, 240)}" title="${currentLang === 'bn' ? name + ' এর প্রোফাইল দেখুন' : 'View ' + name + '\'s profile'}">
+      <span class="moderator-tag-pill">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+        ${currentLang === "bn" ? "মডারেটর" : "MODERATOR"}
+      </span>
+      <div class="moderator-avatar-wrap">
+        <img src="${photo}" alt="${name}" loading="lazy" class="moderator-avatar-img">
+      </div>
+      <h4 class="moderator-name">${name}</h4>
+      <div class="moderator-meta-row">
+        <span class="moderator-pill">${t("common.room")} ${roomDisplay}</span>
+        ${rollDisplay ? `<span class="moderator-pill">${t("common.roll")} ${rollDisplay}</span>` : ""}
+        <span class="moderator-pill">${groupVal}</span>
+      </div>
+      <span class="moderator-view-hint">${currentLang === "bn" ? "প্রোফাইল দেখুন →" : "View Profile →"}</span>
+    </article>
+  `;
+}
 }
 
 async function renderHallInfoPage(hallData) {

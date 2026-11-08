@@ -51,6 +51,7 @@ const DEVELOPER_SECTION_OPTIONS = [
   { title: 'Overview Panels', value: 'overview_panels' },
   { title: 'Featured Projects', value: 'featured_projects' },
   { title: 'Skills & Project Method', value: 'skills_timeline' },
+  { title: 'Batch Moderators', value: 'batch_moderators' },
   { title: 'Contributors', value: 'contributors' },
 ]
 
@@ -831,6 +832,24 @@ export default defineType({
           },
         },
       ],
+    }),
+
+    defineField({
+      name: 'max_moderators_per_batch',
+      title: 'Max Moderators Per Batch / ব্যাচ প্রতি সর্বোচ্চ মডারেটর সংখ্যা',
+      type: 'number',
+      group: 'developer_vis',
+      description: 'ডেভেলপার পেজে প্রতিটি ব্যাচের জন্য সর্বোচ্চ কতজন মডারেটর নির্বাচন ও প্রদর্শন করা যাবে। (ডিফল্ট: ৫ জন, সর্বোচ্চ ২০)',
+      initialValue: 5,
+      validation: (Rule) => Rule.min(1).max(20),
+    }),
+    defineField({
+      name: 'show_batch_moderators',
+      title: 'Show Batch Moderators on Developer Page / ডেভেলপার পেজে ব্যাচ মডারেটর সেকশন',
+      type: 'boolean',
+      group: 'developer_vis',
+      description: 'চালু থাকলে ডেভেলপার পেজে প্রতিটি ব্যাচের নির্বাচিত মডারেটরদের কার্ড ও তালিকা প্রদর্শিত হবে।',
+      initialValue: true,
     }),
 
     // ═══════════════════════════════════════════

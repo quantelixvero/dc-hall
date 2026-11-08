@@ -29,8 +29,35 @@ const SANITY_GROQ_QUERY = `{
     batch_email_slots,
     batch_rotation_enabled,
     batch_security_controls,
-    student_name_case
+    student_name_case,
+    max_moderators_per_batch,
+    show_batch_moderators
   },
+  "batchModerators": *[_type == "batchModerators" && !(_id in path("drafts.**"))]{
+    _id,
+    batch,
+    "moderators": moderators[]->{
+      _id,
+      name_en,
+      name_bn,
+      name,
+      student_id,
+      roll,
+      short_roll,
+      room_no,
+      "room_1st_year": {
+        "room_no": room_1st_year.room_ref->room_no
+      },
+      "room_2nd_year": {
+        "room_no": room_2nd_year.room_ref->room_no
+      },
+      batch,
+      group,
+      "photo": coalesce(photo.asset->url, photo),
+      facebook,
+      phone
+    }
+  } | order(batch asc),
   "batchConfigs": *[_type == "batchConfig" && !(_id in path("drafts.**"))]{
     _id,
     batch,

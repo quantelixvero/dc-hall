@@ -149,6 +149,15 @@ function createBatchPortalItem(S, batchName, isFounder = false) {
         .items([
           ...createBatchContentItems(S, batchName),
           S.listItem()
+            .title(`${batchName} Moderators`)
+            .icon(UsersIcon)
+            .child(
+              S.document()
+                .schemaType('batchModerators')
+                .documentId(`batchModerators-${cleanBatchKey}`)
+                .title(`${batchName} Moderators / মডারেটর নির্বাচন`)
+            ),
+          S.listItem()
             .title(`${batchName} Website Password`)
             .icon(LockIcon)
             .child(
@@ -329,10 +338,29 @@ export const structure = async (S, context) => {
   // B. BATCH ADMIN VIEW — 5 folders + incoming edit requests
   // ═════════════════════════════════════════════════════════════════════
   if (userRole === 'batch_admin' && userBatch && !isSuperAdmin) {
+    const cleanBatchKey = userBatch.toLowerCase().replace(/[^a-z0-9]/g, '')
     return S.list()
       .title(`${userBatch} Batch Admin Portal`)
       .items([
         ...createBatchContentItems(S, userBatch),
+        S.listItem()
+          .title(`${userBatch} Moderators`)
+          .icon(UsersIcon)
+          .child(
+            S.document()
+              .schemaType('batchModerators')
+              .documentId(`batchModerators-${cleanBatchKey}`)
+              .title(`${userBatch} Moderators / মডারেটর নির্বাচন`)
+          ),
+        S.listItem()
+          .title(`${userBatch} Website Password`)
+          .icon(LockIcon)
+          .child(
+            S.document()
+              .schemaType('batchConfig')
+              .documentId(`batchConfig-${cleanBatchKey}`)
+              .title(`${userBatch} Website Password`)
+          ),
 
         S.divider(),
 
@@ -490,6 +518,14 @@ export const structure = async (S, context) => {
             .schemaType('developerProfile')
             .documentId('developerProfile')
             .title('Developer Profile')
+        ),
+      S.listItem()
+        .title('All Batch Moderators')
+        .icon(UsersIcon)
+        .child(
+          S.documentTypeList('batchModerators')
+            .title('All Batch Moderators / সকল ব্যাচ মডারেটর')
+            .defaultOrdering([{ field: 'batch', direction: 'asc' }])
         ),
 
       S.divider(),

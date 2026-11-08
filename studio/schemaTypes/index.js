@@ -11,6 +11,7 @@ import batchConfig from './batchConfig'
 import adminSettings from './adminSettings'
 import notice from './notice'
 import hallForm from './hallForm'
+import batchModerators from './batchModerators'
 
 export const schemaTypes = [
   student,
@@ -26,4 +27,5 @@ export const schemaTypes = [
   adminSettings,
   notice,
   hallForm,
+  batchModerators,
 ]
