@@ -2117,9 +2117,31 @@ function formatStudentDisplayName(name) {
   if (caseMode === 'as_typed') {
     return name;
   }
-  // Title Case / Capitalize Each Word:
-  // Capitalizes words, preserves dots like "Md. Rahim Ali"
-  return name.replace(/\b([a-z])/gi, m => m.toUpperCase());
+  // Title Case / Capitalize Each Word (e.g. Md. Rahim Ali, Naimul Islam (Shanto))
+  // Converts other letters to lowercase and capitalizes initial letters
+  return name.toLowerCase().replace(/(?:^|[\s.(/[-])([a-z])/g, m => m.toUpperCase());
+}
+
+function isStudentModerator(student) {
+  if (!student || !Array.isArray(cmsBatchModerators)) return false;
+  const sId = String(student._id || student.rawId || student.id || student.slug || '').trim();
+  const sRoll = String(student.short_roll || student.roll || '').trim();
+  const sName = String(student.name || '').trim().toLowerCase();
+  for (const b of cmsBatchModerators) {
+    if (!b || !Array.isArray(b.moderators)) continue;
+    for (const m of b.moderators) {
+      if (!m) continue;
+      const mId = String(m._id || m.student_id || '').trim();
+      const mRoll = String(m.short_roll || m.roll || '').trim();
+      const mName = String(m.name_en || m.name || '').trim().toLowerCase();
+      if ((sId && mId && (sId === mId || sId.includes(mId) || mId.includes(sId))) ||
+          (sRoll && mRoll && sRoll === mRoll) ||
+          (sName && mName && sName === mName)) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 function studentValue(student, field) {
@@ -2865,6 +2887,11 @@ function renderCardDynamicBadges(student, context = 'student_page') {
           } else {
             pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'গ্রুপ' : 'Group'} •••</span>`);
           }
+        }
+        break;
+      case 'moderator':
+        if (isStudentModerator(student)) {
+          pills.push(`<span class="bday-meta-pill mod-badge" style="background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.3); font-weight: 700; text-transform: uppercase;">${currentLang === 'bn' ? 'মডারেটর' : 'MODERATOR'}</span>`);
         }
         break;
       case 'batch':
@@ -5608,10 +5635,10 @@ function initAos() {
 
   window.AOS.init({
     duration: 650,
-    once: false,
-    offset: 30,
+    once: true,
+    offset: 20,
     easing: "ease-out-cubic",
-    mirror: true,
+    mirror: false,
   });
 }
 
@@ -6753,26 +6780,40 @@ function renderBatchModeratorsSection(batchMods, adminSettings) {
     return;
   }
 
+  // Sort batches descending by batch number (e.g. HSC-30, HSC-29, HSC-28, HSC-27)
+  batchesWithMods.sort((a, b) => {
+    const numA = parseInt(String(a?.batch || '').replace(/\D/g, ''), 10) || 0;
+    const numB = parseInt(String(b?.batch || '').replace(/\D/g, ''), 10) || 0;
+    return numB - numA;
+  });
+
   let html = "";
   batchesWithMods.forEach((batchDoc, bIdx) => {
     const rawMods = (batchDoc.moderators || []).filter(Boolean);
     const mods = rawMods.slice(0, maxMods);
     const batchName = batchDoc.batch || "HSC-27";
+    const isLatest = bIdx === 0;
+    const chevronSvg = `<span class="batch-collapse-chevron" style="display:inline-flex; align-items:center; color:var(--accent); transition:transform 0.25s ease;"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>`;
 
     html += `
       <div class="batch-moderator-group" data-aos="fade-up" data-aos-delay="${Math.min(bIdx * 80, 240)}">
-        <div class="batch-moderator-header">
+        <div class="batch-moderator-header batch-section-header${isLatest ? ' active-batch-header' : ' is-collapsed'}" style="cursor: pointer; user-select: none;" data-batch-toggle="${batchName}">
           <div class="batch-moderator-header-inner">
             <h3 class="batch-moderator-heading">
               <span class="batch-icon">${BATCH_LOGO_SVG}</span>
               <span class="batch-label">${currentLang === "bn" ? "মডারেটর:" : "Moderator:"}</span>
               <span class="batch-badge">${batchName}</span>
             </h3>
-            <span class="batch-count-pill">${mods.length} ${currentLang === "bn" ? "জন" : "Assigned"}</span>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="batch-count-pill">${mods.length} ${currentLang === "bn" ? "জন" : "Assigned"}</span>
+              ${chevronSvg}
+            </div>
           </div>
         </div>
-        <div class="moderator-grid">
-          ${mods.map((mod, mIdx) => renderModeratorCard(mod, batchName, mIdx)).join("")}
+        <div class="batch-collapsible-wrapper${isLatest ? '' : ' is-collapsed'}" data-batch-wrapper="${batchName}">
+          <div class="moderator-grid" style="padding-top: 10px;">
+            ${mods.map((mod, mIdx) => renderModeratorCard(mod, batchName, mIdx)).join("")}
+          </div>
         </div>
       </div>
     `;
@@ -6782,7 +6823,8 @@ function renderBatchModeratorsSection(batchMods, adminSettings) {
 }
 
 function renderModeratorCard(mod, batchName, mIdx) {
-  const name = currentLang === "bn" ? (mod.name_bn || mod.name_en || mod.name || "শিক্ষার্থী") : (mod.name_en || mod.name || mod.name_bn || "Student");
+  const rawName = currentLang === "bn" ? (mod.name_bn || mod.name_en || mod.name || "শিক্ষার্থী") : (mod.name_en || mod.name || mod.name_bn || "Student");
+  const name = formatStudentDisplayName(rawName);
   const photo = mod.photo ? normalizeCmsPath(mod.photo) : "images/student-avatar.png";
   const roomVal = mod.room_2nd_year?.room_no || mod.room_1st_year?.room_no || mod.room_no || mod.room || "";
   const roomDisplay = roomVal ? (currentLang === "bn" ? toBengaliDigits(roomVal) : roomVal) : "•••";
@@ -6790,6 +6832,27 @@ function renderModeratorCard(mod, batchName, mIdx) {
   const rollDisplay = rollVal ? (currentLang === "bn" ? toBengaliDigits(rollVal) : rollVal) : "";
   const groupVal = formatGroupShort(mod.group || "science");
   const targetId = mod._id || mod.student_id || mod.roll || "";
+
+  // Dynamic Badges based on card_meta_badges.moderator_card_badges
+  const badgeConfig = cmsAdminSettings?.card_meta_badges?.moderator_card_badges || ['room', 'roll', 'group'];
+  const pills = [];
+  if (Array.isArray(badgeConfig)) {
+    badgeConfig.forEach(item => {
+      if (item === 'room' && roomVal) {
+        pills.push(`<span class="moderator-pill">${t("common.room")} ${roomDisplay}</span>`);
+      } else if (item === 'roll' && rollVal) {
+        pills.push(`<span class="moderator-pill">${t("common.roll")} ${rollDisplay}</span>`);
+      } else if (item === 'group' && mod.group) {
+        pills.push(`<span class="moderator-pill">${groupVal}</span>`);
+      } else if (item === 'section' && mod.section) {
+        pills.push(`<span class="moderator-pill">${t("common.section")} ${mod.section}</span>`);
+      } else if (item === 'blood_group' && mod.blood_group) {
+        pills.push(`<span class="moderator-pill">${mod.blood_group}</span>`);
+      } else if (item === 'batch' && (batchName || mod.batch)) {
+        pills.push(`<span class="moderator-pill">${batchName || mod.batch}</span>`);
+      }
+    });
+  }
 
   return `
     <article class="moderator-card" onclick="openStudentModalById('${targetId}')" tabindex="0" role="button" data-aos="fade-up" data-aos-delay="${Math.min(mIdx * 60, 240)}" title="${currentLang === 'bn' ? name + ' এর প্রোফাইল দেখুন' : 'View ' + name + '\'s profile'}">
@@ -6802,9 +6865,7 @@ function renderModeratorCard(mod, batchName, mIdx) {
       </div>
       <h4 class="moderator-name">${name}</h4>
       <div class="moderator-meta-row">
-        <span class="moderator-pill">${t("common.room")} ${roomDisplay}</span>
-        ${rollDisplay ? `<span class="moderator-pill">${t("common.roll")} ${rollDisplay}</span>` : ""}
-        <span class="moderator-pill">${groupVal}</span>
+        ${pills.join("")}
       </div>
       <span class="moderator-view-hint">${currentLang === "bn" ? "প্রোফাইল দেখুন →" : "View Profile →"}</span>
     </article>

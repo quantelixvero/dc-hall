@@ -54,6 +54,7 @@ body[data-lang="bn"] h3 {
 .rotating-line {
   min-height: 2.8em;
   transition: opacity 0.35s ease, transform 0.35s ease;
+  opacity: 1;
 }
 
 .rotating-line.phrase-in {

@@ -696,6 +696,14 @@ body.dark .active-batch-header .batch-count-pill {
 .batch-moderator-header {
   margin: 16px 0 14px;
   min-width: 0;
+  cursor: pointer;
+  user-select: none;
+}
+.batch-moderator-header.is-collapsed .batch-collapse-chevron svg {
+  transform: rotate(-90deg);
+}
+.batch-moderator-group .batch-collapsible-wrapper.is-collapsed {
+  display: none !important;
 }
 
 .batch-moderator-header-inner {
