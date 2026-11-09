@@ -7783,13 +7783,14 @@ function initDeveloperFeedbackForm() {
       formData.append("submitted_at", new Date().toISOString());
       formData.set("_subject", `[${category}] ${batch}${roll ? ' - Roll ' + roll : ''} | ${name}`);
 
-      // FormSubmit AJAX endpoint
+      // FormSubmit AJAX endpoint (Accept header required for JSON response)
       const response = await fetch("https://formsubmit.co/ajax/quantelixvero@gmail.com", {
         method: "POST",
+        headers: { "Accept": "application/json" },
         body: formData
       });
       const resJson = await response.json().catch(() => null);
-      if (!response.ok || !resJson || !resJson.success) {
+      if (!response.ok || !resJson || resJson.success === "false") {
         throw new Error(resJson?.message || "Submission failed.");
       }
 
