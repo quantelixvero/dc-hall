@@ -1885,7 +1885,7 @@ function applySanityPayload(sanityData) {
     }
 
     galleryData = {
-      events: cmsEvents.length ? cmsEvents : undefined,
+      events: cmsEvents.length ? cmsEvents : [],
       items: galleryItems,
       collections: galleryCollections,
     };
@@ -6241,6 +6241,10 @@ async function renderGalleryPage(galleryData) {
 
   const data = galleryData || await fetchJson("data/gallery.json");
   if (!data) return;
+  // v8.29.2: Preserve existing events if new data doesn't have any (prevents cache->live overwrite bug)
+  if (currentGalleryData && currentGalleryData.events && (!data.events || !data.events.length)) {
+    data.events = currentGalleryData.events;
+  }
   currentGalleryData = data;
   if (data && data.events) {
     injectDynamicGalleryStructuredData(data.events);
