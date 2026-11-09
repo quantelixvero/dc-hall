@@ -2750,6 +2750,84 @@ body.dark .footer-links a:hover {
     width: min(100% - 24px, 1200px);
   }
 
+  /* v8.29.1: Restored grid-collapse rules (were lost when 920px block was scoped to min-width:641px) */
+  .info-grid.three,
+  .roommate-grid.wide,
+  .split,
+  .developer-layout,
+  .developer-hero-inner,
+  .developer-info-grid,
+  .project-grid,
+  .developer-split,
+  .footer-inner,
+  .room-info-grid,
+  .room-photo-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .person-grid,
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .person-card img,
+  .developer-card img {
+    max-height: 200px;
+  }
+
+  .gallery-card img {
+    max-height: 200px;
+  }
+
+  .student-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .filter-panel {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .section-head {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .profile {
+    grid-template-columns: 1fr !important;
+    padding: 24px;
+    gap: 20px;
+  }
+
+  .profile-photo-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 0 16px 0;
+  }
+
+  .profile-photo-wrapper img {
+    width: 100%;
+    max-width: 100%;
+    height: clamp(260px, 46vh, 340px);
+    aspect-ratio: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    object-position: center center;
+    margin: 0;
+    display: block;
+  }
+
+  .developer-portrait {
+    max-width: 300px;
+  }
+
   .navbar {
     padding: 8px 0;
   }
