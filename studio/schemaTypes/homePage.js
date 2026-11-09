@@ -183,6 +183,95 @@ export default defineType({
       description: 'হলের সংক্ষিপ্ত ইতিহাস ও ঐতিহ্য (বাংলা)।',
     }),
 
+    defineField({
+      name: 'hall_overview_cards',
+      title: 'Hall Overview Cards (01, 02, 03) / হলের পরিচিতি কার্ডসমূহ',
+      type: 'array',
+      group: 'history_info',
+      description: 'হোমপেজের হল ইনফো সেকশনের নিচের ৩টি পরিচিতি কার্ড (History, Notable Students, Admission Success)। ড্র্যাগ করে কার্ডগুলো আগে-পরে সাজাতে পারেন (Reorder), নতুন কার্ড যোগ করতে পারেন বা তথ্য এডিট করতে পারেন।',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'number',
+              title: 'Card Number / নম্বর (যেমন: 01, 02, 03)',
+              type: 'string',
+              description: 'কার্ডের ক্রমিক নম্বর (ফাঁকা রাখলে স্বয়ংক্রিয়ভাবে সিরিয়াল অনুযায়ী বসবে)।',
+            }),
+            defineField({
+              name: 'title_en',
+              title: 'Card Title (English)',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'title_bn',
+              title: 'Card Title (Bangla)',
+              type: 'string',
+            }),
+            defineField({
+              name: 'desc_en',
+              title: 'Description (English)',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'desc_bn',
+              title: 'Description (Bangla)',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'link_url',
+              title: 'Optional Link URL (ক্লিকযোগ্য লিংক — ঐচ্ছিক)',
+              type: 'string',
+            }),
+          ],
+          preview: {
+            select: {
+              number: 'number',
+              titleEn: 'title_en',
+              titleBn: 'title_bn',
+              descEn: 'desc_en',
+            },
+            prepare({ number, titleEn, titleBn, descEn }) {
+              return {
+                title: `${number ? number + ' · ' : ''}${titleEn || titleBn || 'Overview Card'}`,
+                subtitle: descEn || 'Overview Card',
+              };
+            },
+          },
+        },
+      ],
+      initialValue: [
+        {
+          _key: 'ovc1',
+          number: '01',
+          title_en: 'History',
+          title_bn: 'ইতিহাস ও ঐতিহ্য',
+          desc_en: "A short look at Dhaka College's academic legacy and hall life.",
+          desc_bn: 'ঢাকা কলেজের গৌরবময় ঐতিহ্য ও হল জীবনের সংক্ষিপ্ত রূপরেখা।',
+        },
+        {
+          _key: 'ovc2',
+          number: '02',
+          title_en: 'Notable Students',
+          title_bn: 'কৃতী শিক্ষার্থী',
+          desc_en: 'Demo profiles for notable former students and their achievements.',
+          desc_bn: 'হলের প্রাক্তন কৃতী শিক্ষার্থীদের অনন্য অর্জন ও গৌরবগাথা।',
+        },
+        {
+          _key: 'ovc3',
+          number: '03',
+          title_en: 'Admission Success',
+          title_bn: 'ভর্তি সাফল্য',
+          desc_en: 'Medical, university and engineering admission success preview.',
+          desc_bn: 'মেডিকেল, বুয়েট ও পাবলিক বিশ্ববিদ্যালয় ভর্তি পরীক্ষার সাফল্যের ঝলক।',
+        },
+      ],
+    }),
+
     // --- Group: Stats & Location ---
     defineField({
       name: 'famous_text_en',

@@ -1846,6 +1846,9 @@ function applySanityPayload(sanityData) {
       i18n.bn.gallery.eyebrow = homeData.gallery_eyebrow_bn || i18n.bn.gallery.eyebrow;
       i18n.bn.gallery.title = homeData.gallery_title_bn || i18n.bn.gallery.title;
     }
+    if (homeData.hall_overview_cards) {
+      renderHomeOverviewCards(homeData.hall_overview_cards);
+    }
     if (homeData.hero_phrases?.length) {
       const cleanEn = homeData.hero_phrases
         .map(p => (p.text_en || p.en || '').replace(/^["'\\]+|["'\\]+$/g, '').trim())
@@ -1965,6 +1968,7 @@ function applySanityPayload(sanityData) {
 
   applyPageSectionControls();
   ensureNavigation();
+  renderHomeOverviewCards();
   // ── Sync Section Descriptions (Location & Official Portals) ──
   // Rule: If empty/blank in CMS, hide on desktop and mobile. If provided, show on desktop and hide on mobile via CSS.
   const locDescEl = byId("locationDesc");
@@ -2980,9 +2984,9 @@ function renderCardDynamicBadges(student, context = 'student_page') {
       case 'section':
         if (student.section) {
           if (isSectionUnlocked) {
-            pills.push(`<span class="bday-meta-pill">${currentLang === 'bn' ? 'সেকশন ' + student.section : 'Sec ' + student.section}</span>`);
+            pills.push(`<span class="bday-meta-pill">${student.section}</span>`);
           } else {
-            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">${currentLang === 'bn' ? 'সেকশন' : 'Sec'} •••</span>`);
+            pills.push(`<span class="bday-meta-pill locked-badge" title="${currentLang === 'bn' ? 'লক করা' : 'Locked'}">•••</span>`);
           }
         }
         break;
@@ -6922,7 +6926,7 @@ function renderModeratorCard(mod, batchName, mIdx) {
       } else if (item === 'group' && mod.group) {
         pills.push(`<span class="moderator-pill">${groupVal}</span>`);
       } else if (item === 'section' && mod.section) {
-        pills.push(`<span class="moderator-pill">${t("common.section")} ${mod.section}</span>`);
+        pills.push(`<span class="moderator-pill">${mod.section}</span>`);
       } else if (item === 'blood_group' && (mod.blood_group || mod.blood)) {
         pills.push(`<span class="moderator-pill">${mod.blood_group || mod.blood}</span>`);
       } else if (item === 'batch' && (batchName || mod.batch)) {
@@ -7671,3 +7675,59 @@ function initDeveloperFeedbackForm() {
 }
 
 initDeveloperFeedbackForm();
+
+
+// ==========================================================================
+// Dynamic Hall Overview Cards (01 History, 02 Notable, 03 Admission)
+// Reorderable, editable from Sanity Studio (Point 5 from user)
+// ==========================================================================
+function renderHomeOverviewCards(cardsData) {
+  const container = byId("homeOverviewCardsGrid");
+  if (!container) return;
+
+  const cards = (cardsData && Array.isArray(cardsData) && cardsData.length > 0)
+    ? cardsData
+    : (cmsHomeData?.hall_overview_cards && Array.isArray(cmsHomeData.hall_overview_cards) && cmsHomeData.hall_overview_cards.length > 0)
+      ? cmsHomeData.hall_overview_cards
+      : null;
+
+  if (cards && cards.length > 0) {
+    container.innerHTML = cards.map((card, idx) => {
+      const num = card.number || String(idx + 1).padStart(2, '0');
+      const title = currentLang === "bn" ? (card.title_bn || card.title_en || "") : (card.title_en || card.title_bn || "");
+      const desc = currentLang === "bn" ? (card.desc_bn || card.desc_en || "") : (card.desc_en || card.desc_bn || "");
+      const link = card.link_url ? ` onclick="window.location.href='${card.link_url}'" style="cursor: pointer;"` : "";
+
+      return `
+        <article class="info-box" data-aos="fade-up" data-aos-delay="${idx * 120}"${link}>
+          <span class="info-icon">${num}</span>
+          <h3>${title}</h3>
+          <p>${desc}</p>
+        </article>
+      `;
+    }).join("");
+  } else {
+    // Graceful fallback to default 3 cards using localized text
+    const hText = currentLang === "bn" ? (i18n.bn?.home?.historyText || "") : (i18n.en?.home?.historyText || "A short look at Dhaka College's academic legacy and hall life.");
+    const fText = currentLang === "bn" ? (i18n.bn?.home?.famousText || "") : (i18n.en?.home?.famousText || "Demo profiles for notable former students and their achievements.");
+    const sText = currentLang === "bn" ? (i18n.bn?.home?.successText || "") : (i18n.en?.home?.successText || "Medical, university and engineering admission success preview.");
+
+    container.innerHTML = `
+      <article class="info-box" data-aos="fade-up" data-aos-delay="0">
+        <span class="info-icon">01</span>
+        <h3 data-i18n="common.history">${t("common.history")}</h3>
+        <p>${hText}</p>
+      </article>
+      <article class="info-box" data-aos="fade-up" data-aos-delay="140">
+        <span class="info-icon">02</span>
+        <h3 data-i18n="common.famousStudents">${t("common.famousStudents")}</h3>
+        <p>${fText}</p>
+      </article>
+      <article class="info-box" data-aos="fade-up" data-aos-delay="280">
+        <span class="info-icon">03</span>
+        <h3 data-i18n="common.admissionSuccess">${t("common.admissionSuccess")}</h3>
+        <p>${sText}</p>
+      </article>
+    `;
+  }
+}

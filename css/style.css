@@ -1737,6 +1737,43 @@ body.dark .active-batch-header .batch-count-pill {
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
 }
 
+
+
+/* Mobile Optimization for Batch Moderator Accordion Header (Image 1 fix) */
+@media (max-width: 640px) {
+  .batch-moderator-header-inner {
+    padding: 8px 12px !important;
+    gap: 8px !important;
+    border-radius: 12px !important;
+  }
+  .batch-moderator-heading {
+    font-size: 0.92rem !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+  }
+  .batch-moderator-heading .batch-label {
+    font-size: 0.8rem !important;
+  }
+  .batch-moderator-heading .batch-badge {
+    font-size: 0.82rem !important;
+    padding: 2px 7px !important;
+  }
+  .batch-count-pill {
+    white-space: nowrap !important;
+    font-size: 0.76rem !important;
+    padding: 3px 8px !important;
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1.3 !important;
+  }
+  .batch-collapse-chevron {
+    flex-shrink: 0 !important;
+  }
+}
+
 /* ==========================================================================
    6. Modals, Drawers & Lightboxes (css/components/modals.css)
    ========================================================================== */
@@ -5634,6 +5671,48 @@ h3 {
   #locationDesc,
   #hostelLocationDesc {
     display: none !important;
+  }
+}
+
+
+
+/* Emergency Helpdesk: Hidden on mobile view, shown on laptop view */
+@media (max-width: 768px) {
+  .btn-desktop-only,
+  .hallsuper-preview-actions .btn.secondary,
+  .hallsuper-preview-actions a[href*="hallsuper-contact"] {
+    display: none !important;
+  }
+  .hallsuper-preview-actions .btn.primary {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
+
+/* Hall Info Preview Buttons on Mobile View (Side-by-side balanced 2-column grid) */
+.hostel-info-preview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+@media (max-width: 640px) {
+  .hostel-info-preview-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .hostel-info-preview-actions .btn {
+    width: 100% !important;
+    min-height: 44px !important;
+    padding: 8px 10px !important;
+    font-size: 0.88rem !important;
+    text-align: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
   }
 }
 
