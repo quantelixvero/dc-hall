@@ -534,3 +534,14 @@ h3 {
   }
 }
 
+
+
+/* Section Descriptions: Desktop-Only Display Rule (Mobile View Always Hidden) */
+@media (max-width: 768px) {
+  .section-desc-desktop-only,
+  #dcResourcesDesc,
+  #locationDesc,
+  #hostelLocationDesc {
+    display: none !important;
+  }
+}

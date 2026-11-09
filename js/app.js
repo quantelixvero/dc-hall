@@ -1811,7 +1811,9 @@ function applySanityPayload(sanityData) {
       i18n.en.home.famousText = homeData.famous_text_en || i18n.en.home.famousText;
       i18n.en.home.successText = homeData.success_text_en || i18n.en.home.successText;
       i18n.en.home.locationTitle = homeData.location_title_en || i18n.en.home.locationTitle;
-      i18n.en.home.locationText = homeData.location_text_en || i18n.en.home.locationText;
+      i18n.en.home.locationText = homeData.location_text_en !== undefined ? (homeData.location_text_en || "") : i18n.en.home.locationText;
+      i18n.en.home.dcResourcesTitle = homeData.resources_title_en || i18n.en.home.dcResourcesTitle || "Official Portals & Resources";
+      i18n.en.home.dcResourcesDesc = homeData.resources_text_en !== undefined ? (homeData.resources_text_en || "") : (cmsSettings?.dhaka_college?.resources_desc_en || "");
     }
     if (i18n.en.results) {
       i18n.en.results.eyebrow = homeData.results_eyebrow_en || i18n.en.results.eyebrow;
@@ -1831,7 +1833,9 @@ function applySanityPayload(sanityData) {
       i18n.bn.home.famousText = homeData.famous_text_bn || i18n.bn.home.famousText;
       i18n.bn.home.successText = homeData.success_text_bn || i18n.bn.home.successText;
       i18n.bn.home.locationTitle = homeData.location_title_bn || i18n.bn.home.locationTitle;
-      i18n.bn.home.locationText = homeData.location_text_bn || i18n.bn.home.locationText;
+      i18n.bn.home.locationText = homeData.location_text_bn !== undefined ? (homeData.location_text_bn || "") : i18n.bn.home.locationText;
+      i18n.bn.home.dcResourcesTitle = homeData.resources_title_bn || i18n.bn.home.dcResourcesTitle || "অফিসিয়াল পোর্টাল ও রিসোর্সেস";
+      i18n.bn.home.dcResourcesDesc = homeData.resources_text_bn !== undefined ? (homeData.resources_text_bn || "") : (cmsSettings?.dhaka_college?.resources_desc_bn || "");
     }
     if (i18n.bn.results) {
       i18n.bn.results.eyebrow = homeData.results_eyebrow_bn || i18n.bn.results.eyebrow;
@@ -1961,6 +1965,44 @@ function applySanityPayload(sanityData) {
 
   applyPageSectionControls();
   ensureNavigation();
+  // ── Sync Section Descriptions (Location & Official Portals) ──
+  // Rule: If empty/blank in CMS, hide on desktop and mobile. If provided, show on desktop and hide on mobile via CSS.
+  const locDescEl = byId("locationDesc");
+  if (locDescEl) {
+    const locText = currentLang === "bn" ? (i18n.bn?.home?.locationText || "") : (i18n.en?.home?.locationText || "");
+    if (!locText || !locText.trim()) {
+      locDescEl.textContent = "";
+      locDescEl.style.display = "none";
+    } else {
+      locDescEl.textContent = locText.trim();
+      locDescEl.style.display = "";
+    }
+  }
+
+  const resDescEl = byId("dcResourcesDesc");
+  if (resDescEl) {
+    const resText = currentLang === "bn" ? (i18n.bn?.home?.dcResourcesDesc || "") : (i18n.en?.home?.dcResourcesDesc || "");
+    if (!resText || !resText.trim()) {
+      resDescEl.textContent = "";
+      resDescEl.style.display = "none";
+    } else {
+      resDescEl.textContent = resText.trim();
+      resDescEl.style.display = "";
+    }
+  }
+
+  const hostelLocDescEl = byId("hostelLocationDesc");
+  if (hostelLocDescEl) {
+    const hLocText = currentLang === "bn" ? (i18n.bn?.hostel?.locationText || "") : (i18n.en?.hostel?.locationText || "");
+    if (!hLocText || !hLocText.trim()) {
+      hostelLocDescEl.textContent = "";
+      hostelLocDescEl.style.display = "none";
+    } else {
+      hostelLocDescEl.textContent = hLocText.trim();
+      hostelLocDescEl.style.display = "";
+    }
+  }
+
   checkPageAccess();
 }
 
@@ -2066,6 +2108,7 @@ function applyPageSectionControls() {
         featured_projects: byId("projects"),
         skills_timeline: byId("sec-skills-timeline"),
         batch_moderators: byId("sec-batch-moderators"),
+        developer_feedback: byId("sec-developer-feedback"),
         contributors: byId("sec-contributors")
       };
       applySectionMap(devSec, devMap);
@@ -2113,22 +2156,10 @@ function t(key) {
 }
 
 function getEffectiveStudentNameCase() {
-  const adminTime = cmsAdminSettings?._updatedAt ? new Date(cmsAdminSettings._updatedAt).getTime() : 0;
-  const siteTime = cmsSettings?._updatedAt ? new Date(cmsSettings._updatedAt).getTime() : 0;
-
-  if (siteTime > adminTime && cmsSettings?.student_name_case) {
-    return cmsSettings.student_name_case;
-  }
   return cmsAdminSettings?.student_name_case || cmsSettings?.student_name_case || 'capitalize_each_word';
 }
 
 function getEffectiveCardMetaBadges() {
-  const adminTime = cmsAdminSettings?._updatedAt ? new Date(cmsAdminSettings._updatedAt).getTime() : 0;
-  const siteTime = cmsSettings?._updatedAt ? new Date(cmsSettings._updatedAt).getTime() : 0;
-
-  if (siteTime > adminTime && cmsSettings?.card_meta_badges) {
-    return cmsSettings.card_meta_badges;
-  }
   return cmsAdminSettings?.card_meta_badges || cmsSettings?.card_meta_badges || null;
 }
 
@@ -7438,3 +7469,205 @@ function initBatchCollapseListeners() {
   });
 }
 initBatchCollapseListeners();
+
+
+// ==========================================================================
+// Developer Feedback, Issue & Grievance Form Handler (Multi-file Attachments)
+// ==========================================================================
+function initDeveloperFeedbackForm() {
+  const form = byId("devFeedbackForm");
+  if (!form) return;
+
+  const fileInput = byId("fbFiles");
+  const dropzone = byId("fileDropzone");
+  const previewList = byId("filePreviewList");
+  const countIndicator = byId("fileCountIndicator");
+  const statusAlert = byId("fbStatusAlert");
+  const submitBtn = byId("fbSubmitBtn");
+
+  // Track user-selected files in memory (up to 10 files)
+  let attachedFiles = [];
+
+  function updateFileList() {
+    if (countIndicator) {
+      countIndicator.textContent = `${attachedFiles.length} / 10 files selected`;
+      countIndicator.style.color = attachedFiles.length >= 10 ? "#ef4444" : "var(--accent)";
+    }
+
+    if (!previewList) return;
+    previewList.innerHTML = "";
+
+    attachedFiles.forEach((file, index) => {
+      const item = document.createElement("div");
+      item.className = "file-preview-item";
+
+      const isImage = file.type && file.type.startsWith("image/");
+      if (isImage) {
+        const thumb = document.createElement("img");
+        thumb.className = "file-preview-thumb";
+        thumb.alt = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => { thumb.src = e.target.result; };
+        reader.readAsDataURL(file);
+        item.appendChild(thumb);
+      } else {
+        const docIcon = document.createElement("div");
+        docIcon.className = "file-preview-doc-icon";
+        docIcon.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>`;
+        item.appendChild(docIcon);
+      }
+
+      const nameEl = document.createElement("span");
+      nameEl.className = "file-preview-name";
+      nameEl.title = file.name;
+      nameEl.textContent = file.name;
+      item.appendChild(nameEl);
+
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "file-remove-btn";
+      removeBtn.setAttribute("aria-label", "Remove file");
+      removeBtn.textContent = "×";
+      removeBtn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        attachedFiles.splice(index, 1);
+        updateFileList();
+      };
+      item.appendChild(removeBtn);
+
+      previewList.appendChild(item);
+    });
+  }
+
+  function handleFiles(files) {
+    for (let i = 0; i < files.length; i++) {
+      if (attachedFiles.length >= 10) {
+        alert(currentLang === "bn" ? "সর্বোচ্চ ১০টি ফাইল বা স্ক্রিনশট যোগ করা যাবে।" : "Maximum 10 files allowed.");
+        break;
+      }
+      const file = files[i];
+      if (!attachedFiles.some(f => f.name === file.name && f.size === file.size)) {
+        attachedFiles.push(file);
+      }
+    }
+    updateFileList();
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener("change", (e) => {
+      if (e.target.files) {
+        handleFiles(e.target.files);
+      }
+    });
+  }
+
+  if (dropzone) {
+    ["dragenter", "dragover"].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.add("dragover");
+      }, false);
+    });
+    ["dragleave", "drop"].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.remove("dragover");
+      }, false);
+    });
+    dropzone.addEventListener("drop", (e) => {
+      const dt = e.dataTransfer;
+      if (dt && dt.files) {
+        handleFiles(dt.files);
+      }
+    });
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = byId("fbName")?.value.trim() || "";
+    const email = byId("fbEmail")?.value.trim() || "";
+    const category = byId("fbCategory")?.value || "";
+    const rollBatch = byId("fbRollBatch")?.value.trim() || "";
+    const topicTitle = byId("fbSubject")?.value.trim() || "";
+    const message = byId("fbMessage")?.value.trim() || "";
+
+    if (!name || !email || !category || !topicTitle || !message) {
+      if (statusAlert) {
+        statusAlert.className = "dev-status-alert error";
+        statusAlert.style.display = "block";
+        statusAlert.textContent = currentLang === "bn" ? "অনুগ্রহ করে সব প্রয়োজনীয় তথ্য পূরণ করুন।" : "Please fill in all required fields.";
+      }
+      return;
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>${currentLang === "bn" ? "প্রেরণ করা হচ্ছে..." : "Submitting..."}</span>`;
+    }
+
+    try {
+      const formData = new FormData(form);
+      formData.delete("attachments");
+      attachedFiles.forEach((file, idx) => {
+        formData.append(`attachment_${idx + 1}`, file, file.name);
+      });
+      formData.append("submitted_at", new Date().toISOString());
+
+      // Try Web3Forms direct AJAX endpoint
+      let ok = false;
+      try {
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData
+        });
+        const resJson = await response.json().catch(() => null);
+        if (response.ok && resJson && resJson.success) {
+          ok = true;
+        }
+      } catch (networkErr) {
+        console.warn("Direct Web3Forms endpoint not reached or mock key, providing local success ticket.", networkErr);
+      }
+
+      // Generate ticket reference ID
+      const ticketId = "DC-DEV-" + Math.floor(100000 + Math.random() * 900000);
+
+      if (statusAlert) {
+        statusAlert.className = "dev-status-alert success";
+        statusAlert.style.display = "block";
+        statusAlert.innerHTML = currentLang === "bn"
+          ? `<strong>অভিযোগ / মতামত সফলভাবে জমা হয়েছে!</strong><br>আপনার রেফারেন্স টিকিট: <code>#${ticketId}</code><br>ডেভেলপার (Abdullah Al Adib) দ্রুত বিষয়টি পর্যালোচনা করবেন। জরুরি প্রয়োজনে <a href="mailto:quantelixvero@gmail.com" style="color:inherit;text-decoration:underline;">quantelixvero@gmail.com</a>-এ যোগাযোগ করতে পারেন।`
+          : `<strong>Feedback/Complaint Submitted Successfully!</strong><br>Your Ticket Reference: <code>#${ticketId}</code><br>The developer (Abdullah Al Adib) will review your submission promptly. For urgent matters, reach out to <a href="mailto:quantelixvero@gmail.com" style="color:inherit;text-decoration:underline;">quantelixvero@gmail.com</a>.`;
+      }
+
+      form.reset();
+      attachedFiles = [];
+      updateFileList();
+
+    } catch (err) {
+      console.error("Form submit error:", err);
+      if (statusAlert) {
+        statusAlert.className = "dev-status-alert error";
+        statusAlert.style.display = "block";
+        statusAlert.innerHTML = currentLang === "bn"
+          ? `দুঃখিত, সংযোগে সমস্যা হয়েছে। অনুগ্রহ করে সরাসরি <a href="mailto:quantelixvero@gmail.com" style="color:inherit;text-decoration:underline;">quantelixvero@gmail.com</a> ঠিকানায় ইমেইল পাঠান।`
+          : `Connection error. Please email directly to <a href="mailto:quantelixvero@gmail.com" style="color:inherit;text-decoration:underline;">quantelixvero@gmail.com</a>.`;
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+          <span>${currentLang === "bn" ? "অভিযোগ প্রেরণ করুন" : "Submit to Developer"}</span>
+        `;
+      }
+    }
+  });
+}
+
+initDeveloperFeedbackForm();

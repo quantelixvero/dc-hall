@@ -6,7 +6,6 @@ export default defineType({
   type: 'document',
   groups: [
     { name: 'general', title: 'General Settings', default: true },
-    { name: 'card_badges', title: 'Card Meta Badges & Display' },
     { name: 'hero', title: 'Hero Banner Settings' },
     { name: 'dhaka_college', title: 'Dhaka College Official Resources & Clubs' },
   ],
@@ -211,6 +210,20 @@ export default defineType({
         { name: 'result_admit_title_bn', title: 'Result & Admit Title (Bangla)', type: 'string', description: 'কলেজ রেজাল্ট ও এডমিট কার্ড পোর্টালে নাম (বাংলা)।' },
         { name: 'result_admit_url', title: 'Result & Admit Card URL', type: 'url', description: 'এডমিট কার্ড ও ফলাফল ডাউনলোড পোর্টাল লিংক।' },
         {
+          name: 'resources_desc_en',
+          title: 'Official Portals Description (English)',
+          type: 'text',
+          rows: 2,
+          description: 'অফিসিয়াল পোর্টাল ও রিসোর্সেস সেকশনের বিবরণ (ইংরেজি)। খালি রাখলে ওয়েবসাইটে কোনো বিবরণ দেখাবে না।',
+        },
+        {
+          name: 'resources_desc_bn',
+          title: 'Official Portals Description (Bangla)',
+          type: 'text',
+          rows: 2,
+          description: 'অফিসিয়াল পোর্টাল ও রিসোর্সেস সেকশনের বিবরণ (বাংলা)। খালি রাখলে ওয়েবসাইটে কোনো বিবরণ দেখাবে না।',
+        },
+        {
           name: 'social_links',
           title: 'Official Social Pages & Groups',
           type: 'array',
@@ -360,176 +373,6 @@ export default defineType({
       ],
     }),
 
-    // ═══════════════════════════════════════════
-    // Card Meta Badges & Display Settings
-    // ═══════════════════════════════════════════
-    defineField({
-      name: 'student_name_case',
-      title: 'Student Name Display Case / শিক্ষার্থীর নামের ফরম্যাট',
-      type: 'string',
-      group: 'card_badges',
-      description: 'অ্যাডমিন প্যানেলে যেভাবেই নাম ইনপুট দেওয়া হোক না কেন, ওয়েবসাইটে নাম প্রদর্শনের নির্দিষ্ট নিয়ম।',
-      options: {
-        list: [
-          { title: 'Capitalize Each Word / Title Case (যেমন: Md. Rahim Ali)', value: 'capitalize_each_word' },
-          { title: 'ALL UPPERCASE / সব বড় হাতের (যেমন: MD. RAHIM ALI)', value: 'uppercase' },
-          { title: 'all lowercase / সব ছোট হাতের (যেমন: md. rahim ali)', value: 'lowercase' },
-          { title: 'As Typed / যেমন লেখা হয়েছে তেমনই', value: 'as_typed' },
-        ],
-        layout: 'radio',
-      },
-      initialValue: 'capitalize_each_word',
-    }),
-
-    defineField({
-      name: 'card_meta_badges',
-      title: 'Card Meta Badges Settings / কার্ড মেটা ব্যাজ সেটিংস',
-      type: 'object',
-      group: 'card_badges',
-      description: 'স্টুডেন্ট কার্ড, হোমপেজ কার্ড, রুমমেট, বার্থডে ও মডারেটর কার্ডে নামের নিচে কোন কোন ব্যাজ দেখাবে তা এখান থেকে নিয়ন্ত্রণ করুন। ড্র্যাগ করে ব্যাজের ক্রম আগে-পরে সাজানো (Reorder) যাবে। কোনো ব্যাজ না চাইলে তালিকা ফাঁকা রাখুন (তাহলে কার্ডে কোনো ব্যাজ দেখাবে না এবং কার্ড ছোট দেখাবে)।',
-      fields: [
-        defineField({
-          name: 'student_page_badges',
-          title: 'Student Page Badges / স্টুডেন্ট পেইজ ব্যাজ',
-          type: 'array',
-          description: 'স্টুডেন্ট পেইজের কার্ডে নামের নিচে কোন কোন ব্যাজ দেখাবে। ড্র্যাগ করে ব্যাজের ক্রম আগে-পরে সাজাতে পারেন। (ফাঁকা রাখলে কোনো ব্যাজ দেখাবে না)',
-          of: [
-            {
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Room No (রুম নম্বর)', value: 'room' },
-                  { title: 'College Roll (রোল)', value: 'roll' },
-                  { title: 'Academic Group (গ্রুপ)', value: 'group' },
-                  { title: 'Batch (ব্যাচ)', value: 'batch' },
-                  { title: 'Section (সেকশন)', value: 'section' },
-                  { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
-                  { title: 'Moderator Badge (মডারেটর ব্যাজ)', value: 'moderator' },
-                ],
-              },
-            },
-          ],
-        }),
-        defineField({
-          name: 'home_students_badges',
-          title: 'Home Page Students Badges / হোমপেজ স্টুডেন্ট ব্যাজ',
-          type: 'array',
-          description: 'হোমপেজের নির্বাচিত ৬ জন শিক্ষার্থী কার্ডে কোন কোন ব্যাজ দেখাবে। ড্র্যাগ করে আগে-পরে সাজাতে পারেন।',
-          of: [
-            {
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Room No (রুম নম্বর)', value: 'room' },
-                  { title: 'College Roll (রোল)', value: 'roll' },
-                  { title: 'Academic Group (গ্রুপ)', value: 'group' },
-                  { title: 'Batch (ব্যাচ)', value: 'batch' },
-                  { title: 'Section (সেকশন)', value: 'section' },
-                  { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
-                  { title: 'Moderator Badge (মডারেটর ব্যাজ)', value: 'moderator' },
-                ],
-              },
-            },
-          ],
-        }),
-        defineField({
-          name: 'home_roommates_badges',
-          title: 'Home Page Roommates Badges / হোমপেজ রুমমেট ব্যাজ',
-          type: 'array',
-          description: 'হোমপেজের রুমমেট সেকশনের কার্ডে প্রতিটি শিক্ষার্থীর সাথে কোন ব্যাজ দেখাবে। ড্র্যাগ করে আগে-পরে সাজাতে পারেন।',
-          of: [
-            {
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Room No (রুম নম্বর)', value: 'room' },
-                  { title: 'College Roll (রোল)', value: 'roll' },
-                  { title: 'Academic Group (গ্রুপ)', value: 'group' },
-                  { title: 'Batch (ব্যাচ)', value: 'batch' },
-                  { title: 'Section (সেকশন)', value: 'section' },
-                  { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
-                  { title: 'Moderator Badge (মডারেটর ব্যাজ)', value: 'moderator' },
-                ],
-              },
-            },
-          ],
-        }),
-        defineField({
-          name: 'roommates_page_badges',
-          title: 'Roommates Page Badges / রুমমেট পেইজ ব্যাজ',
-          type: 'array',
-          description: 'রুমমেট পেইজের কার্ডে প্রতিটি শিক্ষার্থীর নামের সাথে কোন তথ্য দেখাবে। ড্র্যাগ করে আগে-পরে সাজাতে পারেন।',
-          of: [
-            {
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Room No (রুম নম্বর)', value: 'room' },
-                  { title: 'College Roll (রোল)', value: 'roll' },
-                  { title: 'Academic Group (গ্রুপ)', value: 'group' },
-                  { title: 'Batch (ব্যাচ)', value: 'batch' },
-                  { title: 'Section (সেকশন)', value: 'section' },
-                  { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
-                  { title: 'Moderator Badge (মডারেটর ব্যাজ)', value: 'moderator' },
-                ],
-              },
-            },
-          ],
-        }),
-        defineField({
-          name: 'birthday_page_badges',
-          title: 'Birthday Page Badges / বার্থডে পেইজ ব্যাজ',
-          type: 'array',
-          description: 'বার্থডে পেইজের কার্ডে জন্মদিনের পাশাপাশি আর কোন কোন তথ্য ব্যাজ হিসেবে দেখাবে। ড্র্যাগ করে আগে-পরে সাজাতে পারেন।',
-          of: [
-            {
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Room No (রুম নম্বর)', value: 'room' },
-                  { title: 'College Roll (রোল)', value: 'roll' },
-                  { title: 'Academic Group (গ্রুপ)', value: 'group' },
-                  { title: 'Batch (ব্যাচ)', value: 'batch' },
-                  { title: 'Section (সেকশন)', value: 'section' },
-                  { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
-                  { title: 'Moderator Badge (মডারেটর ব্যাজ)', value: 'moderator' },
-                ],
-              },
-            },
-          ],
-        }),
-        defineField({
-          name: 'moderator_card_badges',
-          title: 'Moderator Card Badges / মডারেটর কার্ডের ব্যাজ',
-          type: 'array',
-          description: 'ডেভেলপার পেজের ব্যাচ মডারেটর কার্ডে নামের নিচে কোন কোন ব্যাজ দেখাবে। ড্র্যাগ করে আগে-পরে সাজাতে পারেন।',
-          of: [
-            {
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Room No (রুম নম্বর)', value: 'room' },
-                  { title: 'College Roll (রোল)', value: 'roll' },
-                  { title: 'Academic Group (গ্রুপ)', value: 'group' },
-                  { title: 'Batch (ব্যাচ)', value: 'batch' },
-                  { title: 'Section (সেকশন)', value: 'section' },
-                  { title: 'Blood Group (রক্তের গ্রুপ)', value: 'blood_group' },
-                  { title: 'Moderator Badge (মডারেটর ব্যাজ)', value: 'moderator' },
-                ],
-              },
-            },
-          ],
-        }),
-        defineField({
-          name: 'max_badges_per_card',
-          title: 'Maximum Badges per Card / কার্ড প্রতি সর্বোচ্চ ব্যাজ সংখ্যা',
-          type: 'number',
-          description: 'প্রতিটি কার্ডে একসাথে সর্বোচ্চ কয়টি ব্যাজ দেখানো হবে (ডিফল্ট: ৫)।',
-          initialValue: 5,
-        }),
-      ],
-    }),
-
     defineField({
       name: 'quick_links',
       title: 'Legacy Quick Links (hidden)',

@@ -52,6 +52,7 @@ const DEVELOPER_SECTION_OPTIONS = [
   { title: 'Featured Projects', value: 'featured_projects' },
   { title: 'Skills & Project Method', value: 'skills_timeline' },
   { title: 'Batch Moderators', value: 'batch_moderators' },
+  { title: 'Feedback & Grievance Form', value: 'developer_feedback' },
   { title: 'Contributors', value: 'contributors' },
 ]
 

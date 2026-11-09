@@ -216,6 +216,39 @@ export default defineType({
       group: 'stats_location',
       description: 'বিশ্ববিদ্যালয় ও মেডিকেল ভর্তি সাফল্য চার্টের ভূমিকা (বাংলা)।',
     }),
+    // --- Group: Portals & Resources ---
+    defineField({
+      name: 'resources_title_en',
+      title: 'Official Portals Section Title (English)',
+      type: 'string',
+      group: 'stats_location',
+      description: 'অফিসিয়াল পোর্টাল ও রিসোর্সেস সেকশনের শিরোনাম (ইংরেজি)। ডিফল্ট: "Official Portals & Resources"',
+      initialValue: 'Official Portals & Resources',
+    }),
+    defineField({
+      name: 'resources_title_bn',
+      title: 'Official Portals Section Title (Bangla)',
+      type: 'string',
+      group: 'stats_location',
+      description: 'অফিসিয়াল পোর্টাল ও রিসোর্সেস সেকশনের শিরোনাম (বাংলা)। ডিফল্ট: "অফিসিয়াল পোর্টাল ও রিসোর্সেস"',
+    }),
+    defineField({
+      name: 'resources_text_en',
+      title: 'Official Portals Section Description (English)',
+      type: 'text',
+      rows: 2,
+      group: 'stats_location',
+      description: 'পোর্টাল ও রিসোর্সের বিবরণ (ইংরেজি)। খালি রাখলে ওয়েবসাইট বা মোবাইলে কোনো বিবরণ দেখাবে না।',
+    }),
+    defineField({
+      name: 'resources_text_bn',
+      title: 'Official Portals Section Description (Bangla)',
+      type: 'text',
+      rows: 2,
+      group: 'stats_location',
+      description: 'পোর্টাল ও রিসোর্সের বিবরণ (বাংলা)। খালি রাখলে ওয়েবসাইট বা মোবাইলে কোনো বিবরণ দেখাবে না।',
+    }),
+
     defineField({
       name: 'location_title_en',
       title: 'Location Title (English)',
