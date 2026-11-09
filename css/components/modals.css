@@ -1017,6 +1017,37 @@ body.dark .footer-links a:hover {
     padding: 0 12px;
   }
 
+  /* Language switch: single toggle on mobile */
+  .language-switch {
+    width: 38px !important;
+    height: 38px !important;
+    padding: 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    overflow: hidden !important;
+  }
+
+  .language-switch button {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .language-switch button.active {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: var(--accent) !important;
+    color: #ffffff !important;
+    font-size: 0.8rem !important;
+    font-weight: 800 !important;
+  }
+
   .hero {
     min-height: 74vh;
   }

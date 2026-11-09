@@ -38,6 +38,8 @@ export default defineType({
                   { title: 'Overview Panels', value: 'overview_panels' },
                   { title: 'Featured Projects', value: 'featured_projects' },
                   { title: 'Skills & Project Method', value: 'skills_timeline' },
+                  { title: 'Batch Moderators (ব্যাচ মডারেটর)', value: 'batch_moderators' },
+                  { title: 'Developer Helpdesk & Grievance Portal (হেল্পডেস্ক)', value: 'feedback_helpdesk' },
                   { title: 'Contributors', value: 'contributors' },
                 ],
               },
@@ -62,6 +64,8 @@ export default defineType({
                 overview_panels: 'Overview Panels',
                 featured_projects: 'Featured Projects',
                 skills_timeline: 'Skills & Timeline',
+                batch_moderators: 'Batch Moderators',
+                feedback_helpdesk: 'Helpdesk & Grievance Portal',
                 contributors: 'Contributors',
               }
               const isOff = enabled === false
