@@ -7776,10 +7776,7 @@ function initDeveloperFeedbackForm() {
     try {
       const formData = new FormData(form);
       formData.delete("attachments");
-      // Web3Forms free tier: only one file under "attachment"
-      if (attachedFiles.length > 0) {
-        formData.append("attachment", attachedFiles[0], attachedFiles[0].name);
-      }
+      // Web3Forms free tier does not support file attachments — skip files
       formData.append("submitted_at", new Date().toISOString());
       formData.append("subject", `[${category}] ${batch}${roll ? ' - Roll ' + roll : ''} | ${name}`);
 
@@ -7807,7 +7804,7 @@ function initDeveloperFeedbackForm() {
       if (statusAlert) {
         statusAlert.className = "dev-status-alert success";
         statusAlert.style.display = "block";
-        statusAlert.innerHTML = `<strong>Feedback / Grievance Submitted Successfully!</strong><br>Your Ticket Reference: <code>#${ticketId}</code><br>The developer (Abdullah Al Adib) will review your submission promptly. For urgent matters, email directly to <a href="mailto:${recipientEmail}" style="color:inherit;text-decoration:underline;">${recipientEmail}</a>.`;
+        statusAlert.innerHTML = `<strong>Submitted Successfully!</strong> Ticket: <code>#${ticketId}</code>`;
       }
 
       form.reset();
