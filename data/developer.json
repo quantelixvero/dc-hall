@@ -98,8 +98,36 @@
     }
   ],
   "focus_title_bn": "মূল লক্ষ্য",
-  "portrait": "images/adib1.jpg",
+  "portrait": "images/developer/developer.jpg",
   "contact_text_en": "drseadib@gmail.com\nHatiya Island, Noakhali, Bangladesh\nDhaka College — HSC 2027",
   "name_en": "Abdullah Al Adib",
-  "contact_text_bn": "drseadib@gmail.com\nহাতিয়া দ্বীপ, নোয়াখালী, বাংলাদেশ\nঢাকা কলেজ — এইচএসসি ২০২৭"
+  "contact_text_bn": "drseadib@gmail.com\nহাতিয়া দ্বীপ, নোয়াখালী, বাংলাদেশ\nঢাকা কলেজ — এইচএসসি ২০২৭",
+  "eyebrow_org_en": "Dhaka College",
+  "eyebrow_org_bn": "ঢাকা কলেজ",
+  "portrait_badge_en": "Lead Developer · Dhaka College",
+  "portrait_badge_bn": "প্রধান ডেভেলপার · ঢাকা কলেজ",
+  "feedback_eyebrow": "Developer Helpdesk & Grievance Portal",
+  "feedback_title": "Submit Feedback or Grievance",
+  "feedback_subtitle": "Send website issues, moderator concerns, or feature suggestions directly to the developer at quantelixvero@gmail.com.",
+  "feedback_email": "quantelixvero@gmail.com",
+  "metrics": [
+    {
+      "title_en": "HSC '27",
+      "title_bn": "এইচএসসি '২৭",
+      "subtitle_en": "Science Dept",
+      "subtitle_bn": "বিজ্ঞান বিভাগ"
+    },
+    {
+      "title_en": "Full-Stack",
+      "title_bn": "ফুল-স্ট্যাক",
+      "subtitle_en": "Web & Cloud Systems",
+      "subtitle_bn": "ওয়েব ও ক্লাউড সিস্টেম"
+    },
+    {
+      "title_en": "International Hall",
+      "title_bn": "আন্তর্জাতিক ছাত্রাবাস",
+      "subtitle_en": "Dhaka College",
+      "subtitle_bn": "ঢাকা কলেজ"
+    }
+  ]
 }

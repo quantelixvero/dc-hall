@@ -142,38 +142,38 @@
         <div class="developer-intro" data-aos="fade-up">
           <div class="dev-badge-pill">
             <span class="dev-pulse-dot"></span>
-            <span data-i18n="developer.eyebrow">Aspiring Software Engineer</span>
+            <span id="devEyebrow" data-i18n="developer.eyebrow">Aspiring Software Engineer</span>
             <span class="dev-badge-sep">&bull;</span>
-            <span>Dhaka College</span>
+            <span id="devEyebrowOrg">Dhaka College</span>
           </div>
           <h1 class="dev-hero-name" data-i18n="developer.name">Abdullah Al Adib</h1>
           <p class="developer-lead" data-i18n="developer.bio">I'm studying in the science department at Dhaka College. I build small apps and websites, and I try to learn something new every day. Goal — to create something no one has done before!</p>
           <div class="developer-actions">
             <a class="btn primary dev-btn-primary" href="https://adi.pro.bd/#projects" target="_blank" rel="noopener">
               <span>View Projects</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
             </a>
             <a class="btn secondary dev-btn-secondary" href="https://adi.pro.bd/" target="_blank" rel="noopener">
               <span>Portfolio</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
             </a>
-            <a class="btn dev-btn-feedback" href="#sec-developer-feedback">
+            <a class="btn dev-btn-feedback" href="#sec-developer-feedback" title="Feedback & Complaints" aria-label="Feedback & Complaints">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
-              <span>Feedback & Complaints</span>
+              <span class="dev-fb-btn-text">Feedback & Complaints</span>
             </a>
           </div>
-          <div class="dev-metrics-strip">
+          <div class="dev-metrics-strip" id="devMetricsStrip">
             <div class="dev-metric">
-              <strong>HSC '27</strong>
-              <span>Science Dept</span>
+              <strong class="dev-metric-title">HSC '27</strong>
+              <span class="dev-metric-sub">Science Dept</span>
             </div>
             <div class="dev-metric">
-              <strong>Full-Stack</strong>
-              <span>Web & Cloud Systems</span>
+              <strong class="dev-metric-title">Full-Stack</strong>
+              <span class="dev-metric-sub">Web & Cloud Systems</span>
             </div>
             <div class="dev-metric">
-              <strong>International Hall</strong>
-              <span>Dhaka College</span>
+              <strong class="dev-metric-title">International Hall</strong>
+              <span class="dev-metric-sub">Dhaka College</span>
             </div>
           </div>
         </div>
@@ -187,7 +187,7 @@
               <span class="dev-verified-icon">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
               </span>
-              <span>Lead Developer · Dhaka College</span>
+              <span id="devPortraitBadge">Lead Developer · Dhaka College</span>
             </div>
           </div>
         </div>
@@ -308,10 +308,10 @@
       <div class="container">
         <div class="dev-feedback-card" data-aos="fade-up">
           <div class="dev-feedback-header">
-            <span class="eyebrow dev-feedback-eyebrow">Developer Helpdesk & Grievance Portal</span>
-            <h2 class="dev-feedback-title">Submit Feedback, Issues or Grievances / মতামত ও অভিযোগ</h2>
-            <p class="dev-feedback-subtitle">
-              ওয়েবসাইট সম্পর্কিত যেকোনো সমস্যা, মতামত বা ব্যাচ মডারেটরের বিরুদ্ধে অভিযোগ সরাসরি ডেভেলপারকে জানান। আপনার পাঠানো তথ্য সরাসরি ডেভেলপারের ইনবক্সে (quantelixvero@gmail.com) পৌঁছে যাবে।
+            <span class="eyebrow dev-feedback-eyebrow" id="devFeedbackEyebrow">Developer Helpdesk & Grievance Portal</span>
+            <h2 class="dev-feedback-title" id="devFeedbackTitle">Submit Feedback or Grievance</h2>
+            <p class="dev-feedback-subtitle" id="devFeedbackSubtitle">
+              Send website issues, moderator concerns, or feature suggestions directly to the developer at quantelixvero@gmail.com.
             </p>
           </div>
 
@@ -319,7 +319,7 @@
           <form id="devFeedbackForm" class="dev-feedback-form" method="POST" enctype="multipart/form-data">
             <!-- Web3Forms free key & notification configuration -->
             <input type="hidden" name="access_key" value="dc-hall-developer-contact">
-            <input type="hidden" name="to_email" value="quantelixvero@gmail.com">
+            <input type="hidden" name="to_email" id="devFeedbackToEmail" value="quantelixvero@gmail.com">
             <input type="hidden" name="subject" value="DC Hall Website Feedback / Grievance Submission">
             <input type="hidden" name="from_name" value="DC Hall Website Helpdesk">
             <!-- Anti-Spam Honeypot -->
@@ -327,60 +327,78 @@
 
             <div class="form-row-2">
               <div class="dev-form-group">
-                <label for="fbName">Full Name / আপনার নাম <span class="req">*</span></label>
-                <input type="text" id="fbName" name="name" required placeholder="e.g. Md. Tanvir Ahmed" class="dev-form-input">
+                <label for="fbName">Full Name <span class="req">*</span></label>
+                <input type="text" id="fbName" name="name" required placeholder="Tanvir Ahmed" class="dev-form-input">
               </div>
               <div class="dev-form-group">
-                <label for="fbEmail">Email Address / আপনার ইমেইল <span class="req">*</span></label>
-                <input type="email" id="fbEmail" name="email" required placeholder="e.g. yourname@gmail.com" class="dev-form-input">
+                <label for="fbEmail">Email Address <span class="req">*</span></label>
+                <input type="email" id="fbEmail" name="email" required placeholder="username@gmail.com" class="dev-form-input">
               </div>
             </div>
 
             <div class="form-row-2">
               <div class="dev-form-group">
-                <label for="fbCategory">Category / অভিযোগ বা বিষয়ের ধরণ <span class="req">*</span></label>
+                <label for="fbCategory">Category <span class="req">*</span></label>
                 <select id="fbCategory" name="category" required class="dev-form-input dev-form-select">
-                  <option value="" disabled selected>-- Select Category / ক্যাটাগরি নির্বাচন করুন --</option>
-                  <option value="moderator_complaint">Complaint Against Batch Moderator (ব্যাচ মডারেটরের বিরুদ্ধে অভিযোগ)</option>
-                  <option value="website_bug">Website Issue or Bug (ওয়েবসাইটের কারিগরি সমস্যা বা ত্রুটি)</option>
-                  <option value="data_correction">Student Data Correction (শিক্ষার্থীর তথ্য সংশোধন বা আপডেট অনুরোধ)</option>
-                  <option value="suggestion">Feedback & Suggestion (মতামত বা নতুন ফিচারের পরামর্শ)</option>
-                  <option value="general_query">General Inquiry (অন্যান্য তথ্য বা অনুরোধ)</option>
+                  <option value="" disabled selected>Select Category</option>
+                  <option value="Moderator Complaint">Moderator Complaint</option>
+                  <option value="Website Bug / Error">Website Bug / Error</option>
+                  <option value="Data Correction">Data Correction</option>
+                  <option value="Feature Suggestion">Feature Suggestion</option>
+                  <option value="Other / General">Other / General</option>
                 </select>
               </div>
               <div class="dev-form-group">
-                <label for="fbRollBatch">College Roll / Batch (রোল বা ব্যাচ — ঐচ্ছিক)</label>
-                <input type="text" id="fbRollBatch" name="roll_batch" placeholder="e.g. Roll 2501 · Batch 25-26" class="dev-form-input">
+                <label for="fbBatch">College Batch <span class="req">*</span></label>
+                <select id="fbBatch" name="batch" required class="dev-form-input dev-form-select">
+                  <option value="" disabled selected>Select HSC Batch</option>
+                  <option value="HSC 27">HSC 27</option>
+                  <option value="HSC 28">HSC 28</option>
+                  <option value="HSC 29">HSC 29</option>
+                  <option value="HSC 30">HSC 30</option>
+                  <option value="HSC 31">HSC 31</option>
+                  <option value="HSC 32">HSC 32</option>
+                  <option value="HSC 33">HSC 33</option>
+                  <option value="HSC 34">HSC 34</option>
+                  <option value="HSC 35">HSC 35</option>
+                  <option value="HSC 36">HSC 36</option>
+                  <option value="HSC 37">HSC 37</option>
+                  <option value="HSC 38">HSC 38</option>
+                  <option value="HSC 39">HSC 39</option>
+                  <option value="HSC 40">HSC 40</option>
+                  <option value="Alumni">Alumni / Earlier Batch</option>
+                  <option value="Other">Other / Visitor</option>
+                </select>
               </div>
             </div>
 
             <div class="dev-form-group">
-              <label for="fbSubject">Subject / সংক্ষিপ্ত শিরোনাম <span class="req">*</span></label>
-              <input type="text" id="fbSubject" name="topic_title" required placeholder="e.g. Issue with room search or moderator action" class="dev-form-input">
+              <label for="fbRoll">College Roll (Optional)</label>
+              <input type="text" id="fbRoll" name="roll" placeholder="2501" class="dev-form-input">
             </div>
 
             <div class="dev-form-group">
-              <label for="fbMessage">Details / বিস্তারিত বিবরণ <span class="req">*</span></label>
-              <textarea id="fbMessage" name="message" rows="5" required placeholder="আপনার অভিযোগ, মতামত বা সমস্যার বিস্তারিত বিবরণ এখানে লিখুন..." class="dev-form-input dev-form-textarea"></textarea>
+              <label for="fbMessage">Details & Message <span class="req">*</span></label>
+              <textarea id="fbMessage" name="message" rows="5" required placeholder="Write your feedback, issue, or complaint in detail..." class="dev-form-input dev-form-textarea"></textarea>
             </div>
 
             <!-- Multi-file Attachment Zone (5-10 files/screenshots) -->
             <div class="dev-form-group">
               <div class="dev-dropzone-header">
-                <label>Attachments & Screenshots / স্ক্রিনশট বা ফাইল সংযুক্তি (সর্বোচ্চ ১০টি ফাইল)</label>
+                <label>Attachments & Screenshots (Optional)</label>
                 <span class="file-count-indicator" id="fileCountIndicator">0 / 10 files selected</span>
               </div>
               <div class="dev-file-dropzone" id="fileDropzone">
                 <input type="file" id="fbFiles" name="attachments" multiple accept="image/*,.pdf,.doc,.docx" class="dev-file-input">
                 <div class="dropzone-prompt">
                   <div class="dropzone-icon-circle">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
                     </svg>
                   </div>
                   <div class="dropzone-text">
-                    <strong>Click to browse or drag & drop screenshots/files here</strong>
-                    <span>Supports JPG, PNG, WebP, PDF & DOC (Select up to 10 files)</span>
+                    <strong>Click to browse or drag & drop files here</strong>
+                    <span>Supports JPG, PNG, WebP & PDF (Up to 10 files)</span>
                   </div>
                 </div>
               </div>
@@ -393,7 +411,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
                 </svg>
-                <span>Submit to Developer / অভিযোগ প্রেরণ করুন</span>
+                <span>Submit Feedback</span>
               </button>
               <a href="mailto:quantelixvero@gmail.com?subject=Website%20Feedback%20or%20Complaint" class="btn secondary dev-mail-fallback">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

@@ -6738,20 +6738,49 @@ async function renderDeveloperPage(devData) {
   const dev = devData || await fetchJson("data/developer.json");
   if (!dev) return;
 
-  const eyebrowEl = document.querySelector(".developer-intro .eyebrow");
+  const eyebrowEl = byId("devEyebrow") || document.querySelector(".developer-intro .dev-badge-pill [data-i18n='developer.eyebrow']") || document.querySelector(".developer-intro .eyebrow");
   if (eyebrowEl && (dev.eyebrow_en || dev.eyebrow_bn)) eyebrowEl.textContent = currentLang === "bn" ? (dev.eyebrow_bn || dev.eyebrow_en) : (dev.eyebrow_en || dev.eyebrow_bn);
+
+  const orgEl = byId("devEyebrowOrg");
+  if (orgEl && (dev.eyebrow_org_en || dev.eyebrow_org_bn)) orgEl.textContent = currentLang === "bn" ? (dev.eyebrow_org_bn || dev.eyebrow_org_en) : (dev.eyebrow_org_en || dev.eyebrow_org_bn);
 
   const subEl = document.querySelector(".developer-subtitle");
   if (subEl && (dev.subtitle_en || dev.subtitle_bn)) subEl.textContent = currentLang === "bn" ? (dev.subtitle_bn || dev.subtitle_en) : (dev.subtitle_en || dev.subtitle_bn);
 
-  const nameEl = document.querySelector(".developer-intro h1");
-  if (nameEl) nameEl.textContent = currentLang === "bn" ? dev.name_bn : dev.name_en;
+  const nameEl = document.querySelector(".dev-hero-name") || document.querySelector(".developer-intro h1");
+  if (nameEl) nameEl.textContent = currentLang === "bn" ? (dev.name_bn || dev.name_en) : (dev.name_en || dev.name_bn);
 
   const bioEl = document.querySelector(".developer-lead");
-  if (bioEl) bioEl.textContent = currentLang === "bn" ? dev.lead_bn : dev.lead_en;
+  if (bioEl) bioEl.textContent = currentLang === "bn" ? (dev.lead_bn || dev.lead_en) : (dev.lead_en || dev.lead_bn);
 
-  const portraitEl = document.querySelector(".developer-portrait img");
+  const portraitEl = byId("devPortraitImg") || document.querySelector(".developer-portrait img");
   if (portraitEl && dev.portrait) portraitEl.src = normalizeCmsPath(dev.portrait);
+
+  const portraitBadgeEl = byId("devPortraitBadge");
+  if (portraitBadgeEl && (dev.portrait_badge_en || dev.portrait_badge_bn)) portraitBadgeEl.textContent = currentLang === "bn" ? (dev.portrait_badge_bn || dev.portrait_badge_en) : (dev.portrait_badge_en || dev.portrait_badge_bn);
+
+  const metricsStrip = byId("devMetricsStrip");
+  if (metricsStrip && Array.isArray(dev.metrics) && dev.metrics.length > 0) {
+    metricsStrip.innerHTML = dev.metrics.map(m => `
+      <div class="dev-metric">
+        <strong class="dev-metric-title">${currentLang === "bn" ? (m.title_bn || m.title_en) : (m.title_en || m.title_bn)}</strong>
+        <span class="dev-metric-sub">${currentLang === "bn" ? (m.subtitle_bn || m.subtitle_en) : (m.subtitle_en || m.subtitle_bn)}</span>
+      </div>
+    `).join("");
+  }
+
+  // Feedback Portal Dynamic CMS Sync
+  const fbEyebrow = byId("devFeedbackEyebrow");
+  if (fbEyebrow && dev.feedback_eyebrow) fbEyebrow.textContent = dev.feedback_eyebrow;
+
+  const fbTitle = byId("devFeedbackTitle");
+  if (fbTitle && dev.feedback_title) fbTitle.textContent = dev.feedback_title;
+
+  const fbSubtitle = byId("devFeedbackSubtitle");
+  if (fbSubtitle && dev.feedback_subtitle) fbSubtitle.textContent = dev.feedback_subtitle;
+
+  const fbToEmail = byId("devFeedbackToEmail");
+  if (fbToEmail && dev.feedback_email) fbToEmail.value = dev.feedback_email;
 
   const panels = document.querySelectorAll(".developer-info-grid .developer-panel");
   if (panels.length >= 3) {
@@ -6880,7 +6909,7 @@ function renderBatchModeratorsSection(batchMods, adminSettings) {
               <span class="batch-badge">${batchName}</span>
             </h3>
             <div style="display:flex; align-items:center; gap:10px;">
-              <span class="batch-count-pill">${mods.length} ${currentLang === "bn" ? "জন" : "Assigned"}</span>
+              <span class="batch-count-pill"><span class="mod-count-val">${mods.length}</span><span class="mod-count-label"> ${currentLang === "bn" ? "জন" : "Assigned"}</span></span>
               ${chevronSvg}
             </div>
           </div>
@@ -7595,22 +7624,22 @@ function initDeveloperFeedbackForm() {
     const name = byId("fbName")?.value.trim() || "";
     const email = byId("fbEmail")?.value.trim() || "";
     const category = byId("fbCategory")?.value || "";
-    const rollBatch = byId("fbRollBatch")?.value.trim() || "";
-    const topicTitle = byId("fbSubject")?.value.trim() || "";
+    const batch = byId("fbBatch")?.value || "";
+    const roll = byId("fbRoll")?.value.trim() || "";
     const message = byId("fbMessage")?.value.trim() || "";
 
-    if (!name || !email || !category || !topicTitle || !message) {
+    if (!name || !email || !category || !batch || !message) {
       if (statusAlert) {
         statusAlert.className = "dev-status-alert error";
         statusAlert.style.display = "block";
-        statusAlert.textContent = currentLang === "bn" ? "অনুগ্রহ করে সব প্রয়োজনীয় তথ্য পূরণ করুন।" : "Please fill in all required fields.";
+        statusAlert.textContent = "Please fill in all required fields (Name, Email, Category, Batch, Message).";
       }
       return;
     }
 
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = `<span>${currentLang === "bn" ? "প্রেরণ করা হচ্ছে..." : "Submitting..."}</span>`;
+      submitBtn.innerHTML = `<span>Submitting...</span>`;
     }
 
     try {
@@ -7620,6 +7649,7 @@ function initDeveloperFeedbackForm() {
         formData.append(`attachment_${idx + 1}`, file, file.name);
       });
       formData.append("submitted_at", new Date().toISOString());
+      formData.append("subject", `[${category}] ${batch}${roll ? ' - Roll ' + roll : ''} | ${name}`);
 
       // Try Web3Forms direct AJAX endpoint
       let ok = false;
@@ -7638,13 +7668,12 @@ function initDeveloperFeedbackForm() {
 
       // Generate ticket reference ID
       const ticketId = "DC-DEV-" + Math.floor(100000 + Math.random() * 900000);
+      const recipientEmail = byId("devFeedbackToEmail")?.value || "quantelixvero@gmail.com";
 
       if (statusAlert) {
         statusAlert.className = "dev-status-alert success";
         statusAlert.style.display = "block";
-        statusAlert.innerHTML = currentLang === "bn"
-          ? `<strong>অভিযোগ / মতামত সফলভাবে জমা হয়েছে!</strong><br>আপনার রেফারেন্স টিকিট: <code>#${ticketId}</code><br>ডেভেলপার (Abdullah Al Adib) দ্রুত বিষয়টি পর্যালোচনা করবেন। জরুরি প্রয়োজনে <a href="mailto:quantelixvero@gmail.com" style="color:inherit;text-decoration:underline;">quantelixvero@gmail.com</a>-এ যোগাযোগ করতে পারেন।`
-          : `<strong>Feedback/Complaint Submitted Successfully!</strong><br>Your Ticket Reference: <code>#${ticketId}</code><br>The developer (Abdullah Al Adib) will review your submission promptly. For urgent matters, reach out to <a href="mailto:quantelixvero@gmail.com" style="color:inherit;text-decoration:underline;">quantelixvero@gmail.com</a>.`;
+        statusAlert.innerHTML = `<strong>Feedback / Grievance Submitted Successfully!</strong><br>Your Ticket Reference: <code>#${ticketId}</code><br>The developer (Abdullah Al Adib) will review your submission promptly. For urgent matters, email directly to <a href="mailto:${recipientEmail}" style="color:inherit;text-decoration:underline;">${recipientEmail}</a>.`;
       }
 
       form.reset();
@@ -7653,12 +7682,11 @@ function initDeveloperFeedbackForm() {
 
     } catch (err) {
       console.error("Form submit error:", err);
+      const recipientEmail = byId("devFeedbackToEmail")?.value || "quantelixvero@gmail.com";
       if (statusAlert) {
         statusAlert.className = "dev-status-alert error";
         statusAlert.style.display = "block";
-        statusAlert.innerHTML = currentLang === "bn"
-          ? `দুঃখিত, সংযোগে সমস্যা হয়েছে। অনুগ্রহ করে সরাসরি <a href="mailto:quantelixvero@gmail.com" style="color:inherit;text-decoration:underline;">quantelixvero@gmail.com</a> ঠিকানায় ইমেইল পাঠান।`
-          : `Connection error. Please email directly to <a href="mailto:quantelixvero@gmail.com" style="color:inherit;text-decoration:underline;">quantelixvero@gmail.com</a>.`;
+        statusAlert.innerHTML = `Connection error. Please email directly to <a href="mailto:${recipientEmail}" style="color:inherit;text-decoration:underline;">${recipientEmail}</a>.`;
       }
     } finally {
       if (submitBtn) {
@@ -7667,7 +7695,7 @@ function initDeveloperFeedbackForm() {
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
           </svg>
-          <span>${currentLang === "bn" ? "অভিযোগ প্রেরণ করুন" : "Submit to Developer"}</span>
+          <span>Submit Feedback</span>
         `;
       }
     }

@@ -9,6 +9,7 @@ export default defineType({
     { name: 'panels', title: 'About, Contact & Focus' },
     { name: 'skills_projects', title: 'Skills & Projects' },
     { name: 'contributors', title: 'Contributors' },
+    { name: 'feedback_portal', title: 'Feedback & Grievance Portal' },
   ],
   fields: [
     // ═══════════════════════════════════════════
@@ -154,6 +155,77 @@ export default defineType({
       type: 'image',
       group: 'bio',
       description: 'ডেভেলপারের পরিষ্কার প্রোফাইল বা পোর্ট্রেট ছবি।',
+    }),
+    defineField({
+      name: 'eyebrow_org_en',
+      title: 'Eyebrow Organization (English)',
+      type: 'string',
+      group: 'bio',
+      placeholder: 'Dhaka College',
+      initialValue: 'Dhaka College',
+      description: 'নামের উপরের ট্যাগের প্রতিষ্ঠানের নাম (ইংরেজি)।',
+    }),
+    defineField({
+      name: 'eyebrow_org_bn',
+      title: 'Eyebrow Organization (Bangla)',
+      type: 'string',
+      group: 'bio',
+      placeholder: 'ঢাকা কলেজ',
+      initialValue: 'ঢাকা কলেজ',
+      description: 'নামের উপরের ট্যাগের প্রতিষ্ঠানের নাম (বাংলা)।',
+    }),
+    defineField({
+      name: 'portrait_badge_en',
+      title: 'Portrait Badge / Caption (English)',
+      type: 'string',
+      group: 'bio',
+      placeholder: 'Lead Developer · Dhaka College',
+      initialValue: 'Lead Developer · Dhaka College',
+      description: 'ছবির নিচের ভেরিফাইড ব্যাজের লেখা (ইংরেজি)।',
+    }),
+    defineField({
+      name: 'portrait_badge_bn',
+      title: 'Portrait Badge / Caption (Bangla)',
+      type: 'string',
+      group: 'bio',
+      placeholder: 'প্রধান ডেভেলপার · ঢাকা কলেজ',
+      initialValue: 'প্রধান ডেভেলপার · ঢাকা কলেজ',
+      description: 'ছবির নিচের ভেরিফাইড ব্যাজের লেখা (বাংলা)।',
+    }),
+    defineField({
+      name: 'metrics',
+      title: 'Hero Metrics Strip (3 Cards)',
+      type: 'array',
+      group: 'bio',
+      description: 'হিরো সেকশনের নিচের ৩টি তথ্য কার্ড (যেমন: ব্যাচ, দক্ষতা, হল)। ইচ্ছামত এডিট বা নতুন কার্ড যোগ করতে পারেন।',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title_en', title: 'Metric Title (English)', type: 'string', placeholder: "HSC '27" },
+            { name: 'title_bn', title: 'Metric Title (Bangla)', type: 'string', placeholder: "এইচএসসি '২৭" },
+            { name: 'subtitle_en', title: 'Subtitle (English)', type: 'string', placeholder: 'Science Dept' },
+            { name: 'subtitle_bn', title: 'Subtitle (Bangla)', type: 'string', placeholder: 'বিজ্ঞান বিভাগ' },
+          ],
+          preview: {
+            select: {
+              title: 'title_en',
+              subtitle: 'subtitle_en',
+            },
+            prepare({ title, subtitle }) {
+              return {
+                title: title || 'Metric',
+                subtitle: subtitle || '',
+              }
+            },
+          },
+        },
+      ],
+      initialValue: [
+        { _key: 'm1', title_en: "HSC '27", title_bn: "এইচএসসি '২৭", subtitle_en: "Science Dept", subtitle_bn: "বিজ্ঞান বিভাগ" },
+        { _key: 'm2', title_en: "Full-Stack", title_bn: "ফুল-স্ট্যাক", subtitle_en: "Web & Cloud Systems", subtitle_bn: "ওয়েব ও ক্লাউড সিস্টেম" },
+        { _key: 'm3', title_en: "International Hall", title_bn: "আন্তর্জাতিক ছাত্রাবাস", subtitle_en: "Dhaka College", subtitle_bn: "ঢাকা কলেজ" },
+      ],
     }),
 
     // ═══════════════════════════════════════════
@@ -337,6 +409,47 @@ export default defineType({
           },
         },
       ],
+    }),
+
+    // ═══════════════════════════════════════════
+    // Feedback & Grievance Portal
+    // ═══════════════════════════════════════════
+    defineField({
+      name: 'feedback_eyebrow',
+      title: 'Feedback Eyebrow Tag',
+      type: 'string',
+      group: 'feedback_portal',
+      placeholder: 'Developer Helpdesk & Grievance Portal',
+      initialValue: 'Developer Helpdesk & Grievance Portal',
+      description: 'ফিডব্যাক ও অভিযোগ পোর্টালের উপরের ছোট ট্যাগ।',
+    }),
+    defineField({
+      name: 'feedback_title',
+      title: 'Feedback Section Title',
+      type: 'string',
+      group: 'feedback_portal',
+      placeholder: 'Submit Feedback or Grievance',
+      initialValue: 'Submit Feedback or Grievance',
+      description: 'ফিডব্যাক ও অভিযোগ ফর্মের প্রধান শিরোনাম (ইংরেজি)।',
+    }),
+    defineField({
+      name: 'feedback_subtitle',
+      title: 'Feedback Section Subtitle',
+      type: 'text',
+      rows: 2,
+      group: 'feedback_portal',
+      placeholder: 'Send website issues, moderator concerns, or feature suggestions directly to the developer at quantelixvero@gmail.com.',
+      initialValue: 'Send website issues, moderator concerns, or feature suggestions directly to the developer at quantelixvero@gmail.com.',
+      description: 'ফিডব্যাক ও অভিযোগ ফর্মের বিবরণ (ইংরেজি)।',
+    }),
+    defineField({
+      name: 'feedback_email',
+      title: 'Developer Contact Email',
+      type: 'string',
+      group: 'feedback_portal',
+      placeholder: 'quantelixvero@gmail.com',
+      initialValue: 'quantelixvero@gmail.com',
+      description: 'যে ইমেইলে ওয়েবসাইটের সমস্ত ফিডব্যাক ও অভিযোগ বার্তা পৌঁছাবে।',
     }),
   ],
   preview: {
