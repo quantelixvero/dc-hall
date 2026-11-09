@@ -7776,12 +7776,14 @@ function initDeveloperFeedbackForm() {
     try {
       const formData = new FormData(form);
       formData.delete("attachments");
-      // Re-attach files for FormSubmit (supports file uploads on free tier)
-      attachedFiles.forEach((file, idx) => {
-        formData.append(`attachment`, file, file.name);
-      });
+      // Attach files for FormSubmit — each as "attachment" (FormSubmit merges them)
+      if (attachedFiles.length > 0) {
+        attachedFiles.forEach((file) => {
+          formData.append("attachment", file, file.name);
+        });
+      }
       formData.append("submitted_at", new Date().toISOString());
-      formData.set("_subject", `[${category}] ${batch}${roll ? ' - Roll ' + roll : ''} | ${name}`);
+      formData.set("_subject", `${name} sent DC Hall Feedback`);
 
       // FormSubmit AJAX endpoint (Accept header required for JSON response)
       const response = await fetch("https://formsubmit.co/ajax/quantelixvero@gmail.com", {
