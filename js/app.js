@@ -1,4 +1,81 @@
 
+// ==========================================
+// AUTOMATED SEO ALT TEXT & STRUCTURED DATA (AUTO TEMPLATES)
+// ==========================================
+function getStudentPhotoAlt(student, fallbackName) {
+  let name = "";
+  if (student) {
+    if (typeof studentValue === "function") {
+      name = studentValue(student, "name");
+    }
+    if (!name) name = student.name_en || student.name_bn || student.name || "";
+  }
+  if (!name && fallbackName) {
+    name = fallbackName;
+  }
+  if (!name) name = "Student";
+
+  let batchStr = "";
+  if (student) {
+    if (student.batch && String(student.batch).trim()) {
+      batchStr = String(student.batch).trim();
+    } else if (student.classNo && typeof classLabel === "function") {
+      batchStr = classLabel(student.classNo, student);
+    }
+  }
+  const batchLabelPart = batchStr ? `, Batch ${batchStr}` : "";
+  return `${name} - Student${batchLabelPart}, International Hall Dhaka College`;
+}
+
+function getEventPhotoAlt(title, caption) {
+  const primary = (caption && String(caption).trim()) || (title && String(title).trim()) || "Event";
+  return `${primary} - Event Photo, International Hall Dhaka College`;
+}
+
+function injectDynamicGalleryStructuredData(events) {
+  if (!events || !Array.isArray(events) || !events.length) return;
+  try {
+    let scriptTag = document.getElementById("dynamic-gallery-schema");
+    if (!scriptTag) {
+      scriptTag = document.createElement("script");
+      scriptTag.id = "dynamic-gallery-schema";
+      scriptTag.type = "application/ld+json";
+      document.head.appendChild(scriptTag);
+    }
+    const schemaList = events.slice(0, 10).map(ev => {
+      const title = ev.title_en || ev.title_bn || "Campus Event";
+      const desc = ev.desc_en || ev.desc_bn || ev.description || `${title} at International Hall Dhaka College`;
+      const images = (ev.photos || []).map(p => typeof normalizeCmsPath === "function" ? normalizeCmsPath(p.photo) : p.photo).filter(Boolean);
+      return {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": `${title} - International Hall Dhaka College`,
+        "description": desc,
+        "startDate": ev.date || "2026-01-01",
+        "location": {
+          "@type": "Place",
+          "name": "Dhaka College International Hall",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Dhaka",
+            "addressCountry": "BD"
+          }
+        },
+        "image": images.slice(0, 5),
+        "organizer": {
+          "@type": "Organization",
+          "name": "Dhaka College International Hall",
+          "url": "https://dchall.pro.bd/"
+        }
+      };
+    });
+    scriptTag.textContent = JSON.stringify(schemaList);
+  } catch (err) {
+    console.warn("Failed to inject dynamic gallery schema:", err);
+  }
+}
+
+
 function renderSingleRoomCompactCard(room, pair, index) {
   const p1 = pair[0];
   const p2 = pair[1];
@@ -12,7 +89,7 @@ function renderSingleRoomCompactCard(room, pair, index) {
     const p2FullName = isProfileFieldUnlocked("name", p2) ? (studentValue(p2, "name") || "Student") : "••••••••";
     p2Html = `
       <div class="rm-compact-person right" onclick="openStudentModalById('${p2.id}')" title="${p2FullName}">
-        <img src="${p2Photo}" alt="${p2FullName}" loading="lazy">
+        <img src="${p2Photo}" alt="${getStudentPhotoAlt(p2, p2FullName)}" loading="lazy">
       </div>`;
   } else {
     p2Html = `
@@ -28,7 +105,7 @@ function renderSingleRoomCompactCard(room, pair, index) {
   return `
     <article class="roommate-compact-card" data-aos="fade-up" data-aos-delay="${(index % 3) * 60}">
       <div class="rm-compact-person left" onclick="openStudentModalById('${p1?.id}')" title="${p1FullName}">
-        <img src="${p1Photo}" alt="${p1FullName}" loading="lazy">
+        <img src="${p1Photo}" alt="${getStudentPhotoAlt(p1, p1FullName)}" loading="lazy">
       </div>
       <span class="rm-bridge-line"></span>
       <button class="room-number compact-badge" type="button" onclick="openRoomModal('${room}')" title="${currentLang === 'bn' ? 'রুম ' + roomDisplay + ' এর বিবরণ' : 'Room ' + roomDisplay + ' details'}">
@@ -3053,7 +3130,7 @@ function renderSingleStudentCard(student, index) {
 
   return `
     <button class="student-card" type="button" data-student-id="${student.id}" data-aos="fade-up" data-aos-delay="${(index % 3) * 75}">
-      <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
+      <img src="${photoSrc}" alt="${getStudentPhotoAlt(student, nameDisplay)}" loading="lazy">
       <span class="student-body">
         <span class="student-info-col">
           ${nameDisplay ? `<h3>${nameDisplay}</h3>` : ''}
@@ -3661,7 +3738,7 @@ function renderRoomPerson(student, animation) {
 
   return `
     <button class="room-person" type="button" data-student-id="${student.id}">
-      <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
+      <img src="${photoSrc}" alt="${getStudentPhotoAlt(student, nameDisplay)}" loading="lazy">
       <strong>${nameDisplay}</strong>
       ${metaLine}
     </button>
@@ -5352,7 +5429,7 @@ function openStudentModal(student) {
     <div class="profile">
       ${showPhoto ? `
       <div class="profile-photo-wrapper">
-        <img src="${photoSrc}" alt="${nameDisplay}" loading="lazy">
+        <img src="${photoSrc}" alt="${getStudentPhotoAlt(student, nameDisplay)}" loading="lazy">
         ${isPhotoUnlocked ? `<button type="button" class="expand-photo-btn" data-img="${student.img}" aria-label="${currentLang === 'bn' ? 'সম্পূর্ণ ছবি দেখুন' : 'View Full Photo'}" title="${currentLang === 'bn' ? 'সম্পূর্ণ ছবি দেখুন' : 'View Full Photo'}">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="15 3 21 3 21 9"/>
@@ -6164,6 +6241,9 @@ async function renderGalleryPage(galleryData) {
   const data = galleryData || await fetchJson("data/gallery.json");
   if (!data) return;
   currentGalleryData = data;
+  if (data && data.events) {
+    injectDynamicGalleryStructuredData(data.events);
+  }
 
   // Sort events by date latest first
   let events = data.events ? data.events.slice().sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0) || Number(a.position || 0) - Number(b.position || 0)) : [];
@@ -6188,7 +6268,7 @@ async function renderGalleryPage(galleryData) {
       return `
         <article class="dcsc-photo-card" data-aos="fade-up" data-aos-delay="${(pIdx % 6) * 60}">
           <button type="button" data-gallery-src="${photoSrc}" data-gallery-title="${caption}" data-gallery-desc="${title}">
-            <img src="${photoSrc}" alt="${caption}" loading="lazy">
+            <img src="${photoSrc}" alt="${getEventPhotoAlt(title, caption)}" loading="lazy">
             <div class="gallery-card-overlay">
               <div>
                 <span style="font-size: 0.88rem; font-weight: 700; line-height: 1.3; display: block; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
@@ -6276,7 +6356,7 @@ async function renderGalleryPage(galleryData) {
                    data-aos="fade-up" 
                    data-aos-delay="${(pIdx % 4) * 60}">
             <button type="button" data-gallery-src="${photoSrc}" data-gallery-title="${caption}" data-gallery-desc="${col.heading || ''}">
-              <img src="${photoSrc}" alt="${caption}" loading="lazy">
+              <img src="${photoSrc}" alt="${getEventPhotoAlt(title, caption)}" loading="lazy">
               <div class="gallery-card-overlay">
                 <div>
                   <span style="font-size: 0.88rem; font-weight: 700; line-height: 1.3; display: block; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
@@ -6483,7 +6563,7 @@ function showEventDetailView(eventId) {
           return `
             <article class="dcsc-photo-card" data-aos="fade-up" data-aos-delay="${(pIdx % 6) * 50}">
               <button type="button" data-gallery-src="${photoSrc}" data-gallery-title="${caption}" data-gallery-desc="${title}">
-                <img src="${photoSrc}" alt="${caption}" loading="lazy">
+                <img src="${photoSrc}" alt="${getEventPhotoAlt(title, caption)}" loading="lazy">
               </button>
             </article>
           `;
@@ -6733,7 +6813,7 @@ function renderHomeGallery(galleryData) {
     return `
       <article class="gallery-card" data-aos="fade-up" data-aos-delay="${(index % 6) * 60}">
         <a href="${linkUrl}" style="display: block; position: relative;">
-          <img src="${photo}" alt="${title}" loading="lazy">
+          <img src="${photo}" alt="${getEventPhotoAlt(title, item.badge_en)}" loading="lazy">
           <div class="gallery-card-overlay">
             <div>
               <span style="display: block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); font-weight: 700; margin-bottom: 3px;">
