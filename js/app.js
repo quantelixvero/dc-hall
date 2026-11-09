@@ -7776,25 +7776,21 @@ function initDeveloperFeedbackForm() {
     try {
       const formData = new FormData(form);
       formData.delete("attachments");
-      // Web3Forms free tier does not support file attachments — skip files
+      // Re-attach files for FormSubmit (supports file uploads on free tier)
+      attachedFiles.forEach((file, idx) => {
+        formData.append(`attachment`, file, file.name);
+      });
       formData.append("submitted_at", new Date().toISOString());
-      formData.append("subject", `[${category}] ${batch}${roll ? ' - Roll ' + roll : ''} | ${name}`);
+      formData.set("_subject", `[${category}] ${batch}${roll ? ' - Roll ' + roll : ''} | ${name}`);
 
-      // Try Web3Forms direct AJAX endpoint
-      let ok = false;
-      try {
-        const response = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          body: formData
-        });
-        const resJson = await response.json().catch(() => null);
-        if (response.ok && resJson && resJson.success) {
-          ok = true;
-        } else {
-          throw new Error(resJson?.message || "Failed to submit form to Web3Forms.");
-        }
-      } catch (networkErr) {
-        throw networkErr;
+      // FormSubmit AJAX endpoint
+      const response = await fetch("https://formsubmit.co/ajax/quantelixvero@gmail.com", {
+        method: "POST",
+        body: formData
+      });
+      const resJson = await response.json().catch(() => null);
+      if (!response.ok || !resJson || !resJson.success) {
+        throw new Error(resJson?.message || "Submission failed.");
       }
 
       // Generate ticket reference ID

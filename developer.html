@@ -315,14 +315,14 @@
             </p>
           </div>
 
-          <!-- Web3Forms API Form with direct email delivery and multi-file attachments -->
-          <form id="devFeedbackForm" class="dev-feedback-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
-            <!-- Web3Forms verified key & notification configuration -->
-            <input type="hidden" name="access_key" id="devFeedbackAccessKey" value="299809b5-9d92-4093-ba85-934140684358">
-            <input type="hidden" name="subject" value="DC Hall Website Feedback / Grievance Submission">
-            <input type="hidden" name="from_name" value="DC Hall Website Helpdesk">
+          <!-- FormSubmit AJAX form with file attachment support -->
+          <form id="devFeedbackForm" class="dev-feedback-form" action="https://formsubmit.co/ajax/quantelixvero@gmail.com" method="POST" enctype="multipart/form-data">
+            <!-- FormSubmit configuration -->
+            <input type="hidden" name="_subject" value="DC Hall Website Feedback / Grievance Submission">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
             <!-- Anti-Spam Honeypot -->
-            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+            <input type="text" name="_honey" style="display: none;">
 
             <div class="form-row-2">
               <div class="dev-form-group">
