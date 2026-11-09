@@ -1343,7 +1343,7 @@ img.bday-avatar {
 /* Mobile Responsiveness for Developer Hero */
 @media (max-width: 768px) {
   .developer-hero {
-    padding: 104px 0 48px !important;
+    padding: 124px 0 48px !important;
     background:
       linear-gradient(180deg, rgba(8, 13, 24, 0.96) 0%, rgba(13, 22, 38, 0.92) 100%),
       url("../images/hostel-hero.jpg") center 20% / cover no-repeat !important;
@@ -1393,7 +1393,7 @@ img.bday-avatar {
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    margin-top: 12px !important;
+    margin-top: 16px !important;
   }
   .dev-badge-sep,
   #devEyebrowOrg {

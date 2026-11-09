@@ -5759,6 +5759,86 @@ h3 {
   }
 }
 
+/* v8.29: Mobile fix — Hall Info & Hall Super split sections */
+@media (max-width: 640px) {
+  .split {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* Hall Info: text first, image below */
+  #hostel-info-preview .split {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  #hostel-info-preview .hostel-preview-photo {
+    order: 2 !important;
+    width: 100% !important;
+    max-height: 200px !important;
+    border-radius: 14px !important;
+  }
+
+  /* Hall Super: photo first, then text */
+  #hallsuper-preview .split {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    text-align: center !important;
+  }
+
+  #hallsuper-preview .hostel-photo {
+    max-width: 220px !important;
+    margin: 0 auto !important;
+    order: 1 !important;
+  }
+
+  #hallsuper-preview .split > div[data-aos] {
+    order: 2 !important;
+  }
+
+  /* Hall Super name: prevent overflow */
+  #hallsuper-preview h2,
+  #homeHallSuperName {
+    font-size: clamp(1.6rem, 7vw, 2.2rem) !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    line-height: 1.15 !important;
+  }
+
+  /* Hall Super badge pill: prevent awkward breaks */
+  #hallsuper-preview .split > div[data-aos] > p[style*="inline-block"] {
+    display: inline-block !important;
+    font-size: 0.78rem !important;
+    padding: 4px 12px !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    text-align: center !important;
+    max-width: 100% !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Hall Super bio text */
+  #hallsuper-preview .lead {
+    font-size: 0.95rem !important;
+    text-align: center !important;
+  }
+
+  /* Hall Super buttons center */
+  .hallsuper-preview-actions {
+    justify-content: center !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #hallsuper-preview h2,
+  #homeHallSuperName {
+    font-size: clamp(1.4rem, 6.5vw, 1.9rem) !important;
+  }
+}
+
 /* ==========================================================================
    8. Academic Results & Exam Cards (css/pages/results.css)
    ========================================================================== */
@@ -7593,7 +7673,7 @@ img.bday-avatar {
 /* Mobile Responsiveness for Developer Hero */
 @media (max-width: 768px) {
   .developer-hero {
-    padding: 104px 0 48px !important;
+    padding: 124px 0 48px !important;
     background:
       linear-gradient(180deg, rgba(8, 13, 24, 0.96) 0%, rgba(13, 22, 38, 0.92) 100%),
       url("../images/hostel-hero.jpg") center 20% / cover no-repeat !important;
@@ -7643,7 +7723,7 @@ img.bday-avatar {
     max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
-    margin-top: 12px !important;
+    margin-top: 16px !important;
   }
   .dev-badge-sep,
   #devEyebrowOrg {
