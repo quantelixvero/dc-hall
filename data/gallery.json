@@ -1,154 +1,782 @@
 {
+  "events": [
+    {
+      "id": "adda-in-room-316",
+      "position": 999,
+      "title_en": "Adda in Room 316",
+      "title_bn": "৩১৬ নম্বর রুমে আড্ডা",
+      "date": "2026-11-02",
+      "date_formatted_en": "",
+      "date_formatted_bn": "",
+      "batches": [
+        "HSC-27"
+      ],
+      "description_en": "A casual hangout and get-together with close friends in Room 316 before the HSC '28 junior batch arrives. Let's make some great memories together.",
+      "description_bn": "এইচএসসি '২৮ (জুনিয়র ব্যাচ) আসার আগে রুম ৩১৬-তে বন্ধুদের সাথে জমজমাট আড্ডা ও আনন্দঘন মুহূর্ত। জুনিয়ররা আসার আগেই একসাথে কিছু দারুণ স্মৃতি তৈরি করে নেওয়া।",
+      "media_order": "photos_first",
+      "default_caption_en": "",
+      "default_caption_bn": "",
+      "locations": [
+        "International Hall",
+        "ROOM 316"
+      ],
+      "location_name": "",
+      "photos": [
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/a8153a806deae056923bfc41637a4115e36ef878-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/8c208dc80c6e3d81dfc2009ef308b60106c24921-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/60b26df120e12edaf7f19c0d71f134b9e93307b3-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/a5ebfac13a4f35a83ad3e91bc4ed938b69d7236a-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/0beddc04b42cb4f210ed4e6791ba13f52ae59c0a-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/dbaad9ba050799e10e8c29b682881169ac48e70b-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/169fc9e96e62a5a03f83965ae6138d6e1eef5703-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/a01591207ccf210ddbb899bbe9cb5432fbda1d87-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/c88eb49fda9bbaa137f9e6d67fab781a6ce0d4af-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        }
+      ],
+      "videos": []
+    },
+    {
+      "id": "nafis's-birthday-celebration",
+      "position": 999,
+      "title_en": "Nafis's Birthday Celebration",
+      "title_bn": "",
+      "date": "2026-10-12",
+      "date_formatted_en": "",
+      "date_formatted_bn": "",
+      "batches": [
+        "HSC-27"
+      ],
+      "description_en": "Students of Dhaka College International Hall celebrated Nafis's birthday with a cheerful cake-cutting event.",
+      "description_bn": "ঢাকা কলেজ ইন্টারন্যাশনাল হলের ছাত্রদের উদ্যোগে নাফিসের জন্মদিন উদযাপিত হয়, যেখানে কেক কেটে আনন্দঘন মুহূর্তটি পালন করা হয়।",
+      "media_order": "photos_first",
+      "default_caption_en": "Nafis's Birthday Photos",
+      "default_caption_bn": "নাফিসের জন্মদিনের ছবি",
+      "locations": [
+        "Naim's Goli",
+        "Dhaka College",
+        "International Hall"
+      ],
+      "location_name": "",
+      "photos": [
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/ceda67a7901d1bb799d20dcad27f2e73642b649c-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/318f682dabaacd4297ca86501184bf44ddc07a93-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/285c970a63b844aded69902437913dd3ac647cea-1280x820.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/027a23e35d165431c2cedc5218bd32914ed03034-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/9869e286f58c1399868843a290f557ab095784f4-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b65cb93708c8c63452900e1a6ee41b1eec20fa70-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/a23a0053673efc1f6920554c58f2b41442a6715e-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/3567c3f1380c1c6dee895fe0cd009790c36e12a7-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/508161df933699d3c983a29c0556d7f9fca03131-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/38aeadc36df188eed8b89b66338272b8e6516011-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/c06d3d3b80b87ac82878e6620d109934a7834f8a-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/d0cf1815958db05d4825f5c6315392d10f03d4bd-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/6517c79deaf54ab92d45602fe88cc85468300e43-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/49a15e045240eefaeba625a83630cbfff2393326-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/09e8c71160c5c28675add87e431f346c54a7f92b-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/889ea7292fb3c7e7a1e920a808e0812df7072526-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/2451488db1a5db470bef08b0cef60c2a4914a846-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/d385e83ab2ca0ef3a759d7f9f75ac70c7eb468a3-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/811323f901c194c6551bc018574d0e6b5cd12de0-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/cbfb0ecfae3cd6bec9d84b2d42915e8bd974c549-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/bf8366c41c40b23dad46b8c7365b5d993818d14d-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/3e0a06ea08725e4861d38fce16922d523c7a1a1c-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/3db60de702e8bbb837a982255e5160b48f1b718d-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/5ed22f3518d4b1e8f635c82e7a4a9e28b2f4d6db-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/db15204816c9136fdcc767f247c2ce506530cef3-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/a62d614da7f3812752df8886d8308a52cb29f315-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        }
+      ],
+      "videos": [
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/d3667b23815a86ed7233e259f413fe9215c7a229.mp4",
+          "is_direct": true,
+          "title_en": "",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/6046af7a9b77088aff6b5842239828e8dd3be484.mp4",
+          "is_direct": true,
+          "title_en": "",
+          "title_bn": ""
+        }
+      ]
+    },
+    {
+      "id": "rajshahi-tour",
+      "position": 999,
+      "title_en": "Rajshahi Tour",
+      "title_bn": "রাজশাহী ট্যুর",
+      "date": "2026-10-05",
+      "date_formatted_en": "",
+      "date_formatted_bn": "",
+      "batches": [
+        "HSC-27"
+      ],
+      "description_en": "An exciting and memorable tour to Rajshahi organized by Dhaka College International Hall, featuring visits to historic Rajshahi College, Rajshahi University, and the scenic banks of the Padma River.",
+      "description_bn": "ঢাকা কলেজ ইন্টারন্যাশনাল হলের উদ্যোগে আয়োজিত রাজশাহী ভ্রমণ, যার মূল আকর্ষণ ছিল ঐতিহাসিক রাজশাহী কলেজ, রাজশাহী বিশ্ববিদ্যালয় এবং প্রমত্তা পদ্মার তীর পরিদর্শন।",
+      "media_order": "photos_first",
+      "default_caption_en": "",
+      "default_caption_bn": "",
+      "locations": [
+        "Rajshahi University ",
+        "Rajshahi College",
+        "Padma River"
+      ],
+      "location_name": "",
+      "photos": [
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/3d16fac0a1a49d4ea8d5b8d6780c0ca29b004b20-1600x1200.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/0aa0f769e78ef8d246fc456b327af347959ff669-1600x1200.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/665424b8d2be9d9f15926cc35aed27eb5024bf30-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/d38094a4bc596d112415f38ccaf3d2df86119656-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/48639429d6f1fbefc1d15f28a62809dee162e9d5-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/e63b62f84448148181b65e321b1bda05107a32f2-1200x1600.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/fc334b25dfdbf7bdf9889c7c481e1baa0566214b-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/588c63ada34e9e1fcec9e301678d4b1bebf4647f-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/05070b7575067db0170caa7ee5ccdc52099b4494-1296x972.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/6015567aaf24134806525e4fdf6b569393900b47-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/dc77e03b4ef0a4c5d56a85ce533847ed8b857332-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/3c68d5de4bded0ee87e1aa82f17f09b2732e6086-1600x1200.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/6497e8827fee40a168a94d04d6d12d05ae8a79af-1296x972.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b58b0b32795ff67ada562faced2b081b7eb6f78b-1296x972.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/28b1cd41cffbab00c39452fe69295991b1e54997-1600x1200.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/9947d3fadc5a35b1059143e4be8005f333187b11-1296x972.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/06f267a5905335db879e48c1df3aa38d3efd3b0a-1280x959.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/dc0622e010135c840c2a2bdd9a9e6a8424a60fdd-1600x1200.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/4469cb5013fd501448e51dcaa6929fe96a270f53-1600x1201.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/e2c306f20d5cac990861896c4acaaee920f1e731-1200x1600.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/57ab0a42d3bf2656c62841115aebfbead1abace7-1296x972.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/0aa0f769e78ef8d246fc456b327af347959ff669-1600x1200.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/588c63ada34e9e1fcec9e301678d4b1bebf4647f-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/f537bf3494bd11c1b5486703e75c90a4c7e2b935-1200x1600.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/019d2687486e7160f1ef7e845624c9d7526cec42-1280x959.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/bdd003888ebd2811442b43d9754d2b071c087a0a-1280x959.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/2b2c398db23b15b47a139129c8c67eeb4de0efb8-1600x1201.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/a256b9aeddb1150caa08e6bf524274ada55b0d59-1280x959.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/a6fe23c4907458a16b3f3073e26696f75b9b9e4e-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/5b9bd66f1951feac6ec146b83cc300fc6382362b-868x1160.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/e4c53d4f429fb1ae21ff0632c8efd2478eaa468d-1280x960.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/67440011093808e15fdab40aa1512139f0e4066c-1280x959.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/24b1e3834d5756e38f62a9f6200915cb356b7b14-1280x961.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/ec20f723b9514f6b86ae8d2d6079a111d059254b-1280x961.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/51c0cf0ffb72f609350d250fde62d6dbcefc2aa1-1280x963.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/cacbdbe20ebc24f4b570753d8bd89399cc73ab1d-3072x4096.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b34430f31face9fa288ea5b236525894d5c74e15-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/009105363e1fc0a14dba5dafbc03c64dd605cd42-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/3bdae7ab60759f9de9e98255d2a062266806c99a-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/c261455e4f035f76fc7a050a30f32415c210d3dd-1600x900.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/2c004412310f12ef071afa393d68cf69ce04579e-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/14e387d90b687f6867e2641f6886813acfa380e2-1280x963.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/1583e6f8ac39c696c0f4b84c4291473a4bd56773-1200x1600.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/a93d4ecc1596e3620adab4956ecc70d358a09946-1200x1600.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/33305493e63d6d6fe9bc2444a0efa9187cab4ae5-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/ba1cdbf66b34ae57b7720aea7c89635accdbca5e-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/1f8f9a619de16df9ec32de65b109163de139d9c7-960x1280.jpg",
+          "caption_en": "",
+          "caption_bn": ""
+        }
+      ],
+      "videos": [
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/bf3079ce07eee6811b573b7697fc8696b6097783.mp4",
+          "is_direct": true,
+          "title_en": "Safkat, Adib, Shakil and Sabit",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/31f06463d2eeb71398a180a3e41dc4e0e375265c.mp4",
+          "is_direct": true,
+          "title_en": "train",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/abcf953045bdc8e7332b288a8a94141b73e83fe3.mp4",
+          "is_direct": true,
+          "title_en": "train",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/d72946262b277724a2bbf596d34f7e0b0b0003c5.mp4",
+          "is_direct": true,
+          "title_en": "train 3",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/fa664eeac887f4d9c189462dbdcd75d33a614916.mp4",
+          "is_direct": true,
+          "title_en": "",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/e984d5e38bce9a50c047a328932803e271e3c75c.mp4",
+          "is_direct": true,
+          "title_en": "",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/d24d64a9c20be783a064399bc8e50af103479d32.mp4",
+          "is_direct": true,
+          "title_en": "river",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/58bd391cdb7d69892e3aa8cf10ce57943aabd23e.mp4",
+          "is_direct": true,
+          "title_en": "",
+          "title_bn": ""
+        },
+        {
+          "url": "https://cdn.sanity.io/files/w16kaeyg/production/933393ab04dc350ac7c7929e664a3f43763ee000.mp4",
+          "is_direct": true,
+          "title_en": "",
+          "title_bn": ""
+        }
+      ]
+    }
+  ],
   "items": [
     {
-      "position": 1,
-      "title_en": "Event 01",
-      "title_bn": "ইভেন্ট ০১",
-      "description_en": "Headline and short event description will be added here.",
-      "description_bn": "এখানে event headline ও সংক্ষিপ্ত description যোগ করা হবে।",
-      "photo": "assets/uploads/g1.jpg"
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/9e75af257ef3ed63852d91e508b7538cf924999d-1200x1600.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 2,
-      "photo": "assets/uploads/g2.jpeg",
-      "title_en": "Event 02",
-      "title_bn": "ইভেন্ট ০২ ",
-      "description_en": "Headline and short event description will be added here.",
-      "description_bn": "Headline and short event description will be added here."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b3df77e201617dd9a25c8de8b5e8aa49b697cc42-1600x900.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 3,
-      "title_en": "Event 03",
-      "photo": "assets/uploads/g3.jpg",
-      "title_bn": ".",
-      "description_en": ".",
-      "description_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/13da5f1e1af45e251378e3052927979d86bf4ea2-4096x3072.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 4,
-      "title_en": "Event 04",
-      "photo": "assets/uploads/g4.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/efc08cb0323fbb0c7ae61abfae16823c4f51d4bd-3480x2610.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 5,
-      "title_en": "Event 05",
-      "photo": "assets/uploads/g5.jpeg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b26f8c9e8e0c502a94ead9ed402899c8677f49f7-1280x720.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 6,
-      "title_en": "Event 06",
-      "photo": "assets/uploads/g6.jpeg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/d01f8855b3377fdd826f6e0ce8c02d0175998ac1-4080x3072.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 7,
-      "title_en": "Event 07",
-      "photo": "assets/uploads/g7.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/07f345959b5a85575c52aead84dfdb2a5e12b141-1296x972.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 8,
-      "title_en": "Event 08",
-      "photo": "assets/uploads/g6.jpeg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/836233e3b566d1fcf456fc060bafd86137ce15d2-1600x1200.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 9,
-      "title_en": "Event 09",
-      "photo": "assets/uploads/g9.jpeg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/0d51ec6b9a488d14b14a54dd74048aea3f84229b-1280x960.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 10,
-      "title_en": "Event 10",
-      "photo": "assets/uploads/g10.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/fb9a3b1dbfc44349c351fd2342636c87ebb4b718-1280x963.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 11,
-      "title_en": "Event 11",
-      "photo": "assets/uploads/g11.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/c30e31cf78e580e4359c81f5f6daf90858994eae-1600x1200.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 12,
-      "title_en": "Event 12",
-      "photo": "assets/uploads/g12.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/fe30da34e987a82448dc98852c72959d2352ddd9-1600x1200.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 13,
-      "title_en": "Event 13",
-      "photo": "assets/uploads/g13.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/ccd3e80e2de6105254fa3af1d069f9c1fdcc66dd-1600x1200.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 14,
-      "title_en": "Event 14",
-      "photo": "assets/uploads/g14.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/5751dde1006f26ee590d1df22311925d1b5f6069-4096x3072.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 15,
-      "title_en": "Event 15",
-      "photo": "assets/uploads/g15.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b37d7c294804f58f3303267212c3a604976eb7dd-1280x960.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 16,
-      "title_en": "Event 16",
-      "photo": "assets/uploads/g16.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/3b5318c69310787e6489cad6307ff36fbcf50980-2592x1944.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 17,
-      "title_en": "Event 17",
-      "photo": "assets/uploads/g17.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/84379832605ed8fd79a60eb22fb97cc2f6374911-1448x1086.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 18,
-      "title_en": "Event 18",
-      "photo": "assets/uploads/g18.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/80d92a2856ede89a6e07b03d7b4de5a50a0bca7f-4000x3000.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 19,
-      "title_en": "Event 19",
-      "photo": "assets/uploads/g19.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/426879e70a27f4a49fa41c4870605bd866cb4b2e-4096x3072.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 20,
-      "title_en": "Event 20",
-      "photo": "assets/uploads/g20.jpg",
-      "title_bn": "."
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/9787ecbea9508cf9ee68d634af4a0cd17dc692d8-3072x4096.jpg",
+      "heading": "HSC-27",
+      "caption": ""
     },
     {
-      "position": 21,
-      "title_en": "Event 21",
-      "photo": "assets/uploads/g21.jpg",
-      "title_bn": "."
-    },
+      "photo": "https://cdn.sanity.io/images/w16kaeyg/production/0007e4d7d8b7074937f85ae5c2d379f23c5274f3-4096x3072.jpg",
+      "heading": "HSC-27",
+      "caption": ""
+    }
+  ],
+  "collections": [
     {
-      "position": 22,
-      "title_en": "Event 22",
-      "photo": "assets/uploads/g23.jpg",
-      "title_bn": "."
-    },
-    {
-      "position": 23,
-      "title_en": "Event 23",
-      "photo": "assets/uploads/g23.jpg",
-      "title_bn": "."
-    },
-    {
-      "position": 24,
-      "title_en": "Event 24",
-      "photo": "assets/uploads/g24.jpg",
-      "title_bn": "."
+      "heading": "HSC-27",
+      "slug": {
+        "_type": "slug",
+        "current": "hsc-27"
+      },
+      "photos": [
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/9e75af257ef3ed63852d91e508b7538cf924999d-1200x1600.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b3df77e201617dd9a25c8de8b5e8aa49b697cc42-1600x900.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/13da5f1e1af45e251378e3052927979d86bf4ea2-4096x3072.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/efc08cb0323fbb0c7ae61abfae16823c4f51d4bd-3480x2610.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b26f8c9e8e0c502a94ead9ed402899c8677f49f7-1280x720.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/d01f8855b3377fdd826f6e0ce8c02d0175998ac1-4080x3072.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/07f345959b5a85575c52aead84dfdb2a5e12b141-1296x972.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/836233e3b566d1fcf456fc060bafd86137ce15d2-1600x1200.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/0d51ec6b9a488d14b14a54dd74048aea3f84229b-1280x960.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/fb9a3b1dbfc44349c351fd2342636c87ebb4b718-1280x963.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/c30e31cf78e580e4359c81f5f6daf90858994eae-1600x1200.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/fe30da34e987a82448dc98852c72959d2352ddd9-1600x1200.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/ccd3e80e2de6105254fa3af1d069f9c1fdcc66dd-1600x1200.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/5751dde1006f26ee590d1df22311925d1b5f6069-4096x3072.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/b37d7c294804f58f3303267212c3a604976eb7dd-1280x960.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/3b5318c69310787e6489cad6307ff36fbcf50980-2592x1944.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/84379832605ed8fd79a60eb22fb97cc2f6374911-1448x1086.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/80d92a2856ede89a6e07b03d7b4de5a50a0bca7f-4000x3000.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/426879e70a27f4a49fa41c4870605bd866cb4b2e-4096x3072.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/9787ecbea9508cf9ee68d634af4a0cd17dc692d8-3072x4096.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        },
+        {
+          "photo": "https://cdn.sanity.io/images/w16kaeyg/production/0007e4d7d8b7074937f85ae5c2d379f23c5274f3-4096x3072.jpg",
+          "heading": "HSC-27",
+          "caption": ""
+        }
+      ]
     }
   ]
 }

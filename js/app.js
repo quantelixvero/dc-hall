@@ -2158,7 +2158,8 @@ async function loadCmsContent() {
         home: homeData || {},
         developer: devData || {},
         hall: hallData || {},
-        galleries: galleryData?.collections || []
+        galleries: galleryData?.collections || [],
+        galleryEvents: galleryData?.events || []
       });
     } catch (err) {
       console.warn("Local static fallback fetch failed:", err);
