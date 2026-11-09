@@ -6361,7 +6361,7 @@ async function renderGalleryPage(galleryData) {
                    data-aos="fade-up" 
                    data-aos-delay="${(pIdx % 4) * 60}">
             <button type="button" data-gallery-src="${photoSrc}" data-gallery-title="${caption}" data-gallery-desc="${col.heading || ''}">
-              <img src="${photoSrc}" alt="${getEventPhotoAlt(title, caption)}" loading="lazy">
+              <img src="${photoSrc}" alt="${getEventPhotoAlt(col.heading || caption, caption)}" loading="lazy">
               <div class="gallery-card-overlay">
                 <div>
                   <span style="font-size: 0.88rem; font-weight: 700; line-height: 1.3; display: block; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
@@ -6475,22 +6475,25 @@ async function renderGalleryPage(galleryData) {
     });
   }
 
-  // 3. Attach click handlers for 'View Event' buttons
-  document.querySelectorAll(".dcsc-view-event-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const eventId = btn.dataset.eventId;
-      showEventDetailView(eventId);
+  // 3. Event delegation for 'View Event' + 'More Photos' buttons (survives DOM re-renders)
+  if (!eventsContainer._dcscDelegated) {
+    eventsContainer.addEventListener("click", (e) => {
+      const viewBtn = e.target.closest(".dcsc-view-event-btn");
+      if (viewBtn) {
+        e.preventDefault();
+        const eventId = viewBtn.dataset.eventId;
+        if (eventId) showEventDetailView(eventId);
+        return;
+      }
+      const moreBtn = e.target.closest(".dcsc-more-photos-tile");
+      if (moreBtn) {
+        const eid = moreBtn.getAttribute("data-event-id");
+        if (eid) showEventDetailView(eid);
+        return;
+      }
     });
-  });
-
-  
-  eventsContainer.querySelectorAll('.dcsc-more-photos-tile').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const eid = btn.getAttribute('data-event-id');
-      if (eid) showEventDetailView(eid);
-    });
-  });
+    eventsContainer._dcscDelegated = true;
+  }
 
   initGalleryFilters();
 
@@ -6530,9 +6533,15 @@ window.addEventListener("hashchange", () => {
 });
 
 function showEventDetailView(eventId) {
-  if (!currentGalleryData || !currentGalleryData.events) return;
+  if (!currentGalleryData || !currentGalleryData.events) {
+    console.warn("[Gallery] showEventDetailView: no currentGalleryData or events. eventId:", eventId, "data:", currentGalleryData);
+    return;
+  }
   const ev = currentGalleryData.events.find(e => e.id === eventId);
-  if (!ev) return;
+  if (!ev) {
+    console.warn("[Gallery] showEventDetailView: event not found. eventId:", eventId, "available:", currentGalleryData.events.map(e => e.id));
+    return;
+  }
 
   const mainView = document.getElementById("mainGalleryView");
   const detailView = document.getElementById("eventDetailView");
