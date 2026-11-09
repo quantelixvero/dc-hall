@@ -687,6 +687,11 @@ body.dark .active-batch-header .batch-count-pill {
    ═══════════════════════════════════════════════════════════════ */
 .batch-moderators-section {
   position: relative;
+  padding-bottom: 24px !important;
+}
+
+.batch-moderators-section .batch-moderator-group:last-child {
+  margin-bottom: 0 !important;
 }
 
 .batch-moderator-group {

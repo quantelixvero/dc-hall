@@ -311,15 +311,14 @@
             <span class="eyebrow dev-feedback-eyebrow" id="devFeedbackEyebrow">Developer Helpdesk & Grievance Portal</span>
             <h2 class="dev-feedback-title" id="devFeedbackTitle">Submit Feedback or Grievance</h2>
             <p class="dev-feedback-subtitle" id="devFeedbackSubtitle">
-              Send website issues, moderator concerns, or feature suggestions directly to the developer at quantelixvero@gmail.com.
+              Send website issues, moderator concerns, or feature suggestions directly to the developer.
             </p>
           </div>
 
           <!-- Web3Forms API Form with direct email delivery and multi-file attachments -->
-          <form id="devFeedbackForm" class="dev-feedback-form" method="POST" enctype="multipart/form-data">
-            <!-- Web3Forms free key & notification configuration -->
-            <input type="hidden" name="access_key" value="dc-hall-developer-contact">
-            <input type="hidden" name="to_email" id="devFeedbackToEmail" value="quantelixvero@gmail.com">
+          <form id="devFeedbackForm" class="dev-feedback-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
+            <!-- Web3Forms verified key & notification configuration -->
+            <input type="hidden" name="access_key" id="devFeedbackAccessKey" value="299809b5-9d92-4093-ba85-934140684358">
             <input type="hidden" name="subject" value="DC Hall Website Feedback / Grievance Submission">
             <input type="hidden" name="from_name" value="DC Hall Website Helpdesk">
             <!-- Anti-Spam Honeypot -->
@@ -413,12 +412,6 @@
                 </svg>
                 <span>Submit Feedback</span>
               </button>
-              <a href="mailto:quantelixvero@gmail.com?subject=Website%20Feedback%20or%20Complaint" class="btn secondary dev-mail-fallback">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                </svg>
-                <span>Send via Direct Email</span>
-              </a>
             </div>
 
             <!-- Live Status Feedback Alert -->

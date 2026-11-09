@@ -5,11 +5,11 @@ export default defineType({
   title: 'Developer Profile',
   type: 'document',
   groups: [
-    { name: 'bio', title: 'Bio & Portrait', default: true },
-    { name: 'panels', title: 'About, Contact & Focus' },
-    { name: 'skills_projects', title: 'Skills & Projects' },
-    { name: 'contributors', title: 'Contributors' },
-    { name: 'feedback_portal', title: 'Feedback & Grievance Portal' },
+    { name: 'bio', title: 'Bio & Portrait (পরিচিতি ও ছবি)', default: true },
+    { name: 'panels', title: 'Information Panels (তথ্য প্যানেল)' },
+    { name: 'skills_projects', title: 'Skills & Projects (দক্ষতা ও প্রোজেক্ট)' },
+    { name: 'contributors', title: 'Contributors (সহযোগীবৃন্দ)' },
+    { name: 'feedback_portal', title: 'Feedback & Helpdesk (ফিডব্যাক ও হেল্পডেস্ক)' },
   ],
   fields: [
     // ═══════════════════════════════════════════
@@ -438,8 +438,8 @@ export default defineType({
       type: 'text',
       rows: 2,
       group: 'feedback_portal',
-      placeholder: 'Send website issues, moderator concerns, or feature suggestions directly to the developer at quantelixvero@gmail.com.',
-      initialValue: 'Send website issues, moderator concerns, or feature suggestions directly to the developer at quantelixvero@gmail.com.',
+      placeholder: 'Send website issues, moderator concerns, or feature suggestions directly to the developer.',
+      initialValue: 'Send website issues, moderator concerns, or feature suggestions directly to the developer.',
       description: 'ফিডব্যাক ও অভিযোগ ফর্মের বিবরণ (ইংরেজি)।',
     }),
     defineField({
@@ -450,6 +450,15 @@ export default defineType({
       placeholder: 'quantelixvero@gmail.com',
       initialValue: 'quantelixvero@gmail.com',
       description: 'যে ইমেইলে ওয়েবসাইটের সমস্ত ফিডব্যাক ও অভিযোগ বার্তা পৌঁছাবে।',
+    }),
+    defineField({
+      name: 'feedback_web3_access_key',
+      title: 'Web3Forms Access Key',
+      type: 'string',
+      group: 'feedback_portal',
+      placeholder: '299809b5-9d92-4093-ba85-934140684358',
+      initialValue: '299809b5-9d92-4093-ba85-934140684358',
+      description: 'Web3Forms থেকে প্রাপ্ত লাইভ সিক্রেট অ্যাক্সেস কি। এটি ফর্মের ব্যাকএন্ডে ইমেইল ডেলিভারি নিশ্চিত করে।',
     }),
   ],
   preview: {

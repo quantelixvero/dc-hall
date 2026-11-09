@@ -1086,8 +1086,8 @@ img.bday-avatar {
   overflow: hidden;
   background:
     radial-gradient(circle at 85% 30%, rgba(13, 92, 78, 0.42) 0%, transparent 60%),
-    linear-gradient(135deg, rgba(8, 13, 24, 0.94) 0%, rgba(13, 22, 38, 0.84) 100%),
-    url("../images/hostel-building.jpg") center / cover no-repeat;
+    linear-gradient(135deg, rgba(8, 13, 24, 0.94) 0%, rgba(13, 22, 38, 0.86) 100%),
+    url("../images/hostel-hero.jpg") center / cover no-repeat;
   color: #ffffff;
 }
 
@@ -1343,7 +1343,10 @@ img.bday-avatar {
 /* Mobile Responsiveness for Developer Hero */
 @media (max-width: 768px) {
   .developer-hero {
-    padding: 110px 0 54px !important;
+    padding: 104px 0 48px !important;
+    background:
+      linear-gradient(180deg, rgba(8, 13, 24, 0.96) 0%, rgba(13, 22, 38, 0.92) 100%),
+      url("../images/hostel-hero.jpg") center 20% / cover no-repeat !important;
   }
   .developer-hero-inner {
     grid-template-columns: 1fr !important;
@@ -1385,6 +1388,10 @@ img.bday-avatar {
 }
 
 @media (max-width: 640px) {
+  .dev-badge-sep,
+  #devEyebrowOrg {
+    display: none !important;
+  }
   .developer-actions {
     display: grid !important;
     grid-template-columns: 1fr 1fr 44px !important;
@@ -1438,14 +1445,15 @@ img.bday-avatar {
     height: 18px !important;
   }
   .dev-metrics-strip {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 12px 16px !important;
+    display: none !important;
   }
-  .dev-metric {
-    min-width: 90px !important;
-    text-align: center !important;
+  .batch-moderators-section {
+    padding-top: 36px !important;
+    padding-bottom: 12px !important;
+  }
+  .dev-feedback-section {
+    padding-top: 16px !important;
+    padding-bottom: 48px !important;
   }
 }
 
@@ -1453,7 +1461,7 @@ img.bday-avatar {
    Developer Feedback & Grievance Portal Styles
    ========================================================================== */
 .dev-feedback-section {
-  padding: 80px 0;
+  padding: 24px 0 70px;
   background: var(--surface);
 }
 

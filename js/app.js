@@ -6907,6 +6907,9 @@ async function renderDeveloperPage(devData) {
   const fbSubtitle = byId("devFeedbackSubtitle");
   if (fbSubtitle && dev.feedback_subtitle) fbSubtitle.textContent = dev.feedback_subtitle;
 
+  const fbAccessKey = byId("devFeedbackAccessKey");
+  if (fbAccessKey && dev.feedback_web3_access_key) fbAccessKey.value = dev.feedback_web3_access_key;
+
   const fbToEmail = byId("devFeedbackToEmail");
   if (fbToEmail && dev.feedback_email) fbToEmail.value = dev.feedback_email;
 
@@ -7789,9 +7792,11 @@ function initDeveloperFeedbackForm() {
         const resJson = await response.json().catch(() => null);
         if (response.ok && resJson && resJson.success) {
           ok = true;
+        } else {
+          throw new Error(resJson?.message || "Failed to submit form to Web3Forms.");
         }
       } catch (networkErr) {
-        console.warn("Direct Web3Forms endpoint not reached or mock key, providing local success ticket.", networkErr);
+        throw networkErr;
       }
 
       // Generate ticket reference ID
