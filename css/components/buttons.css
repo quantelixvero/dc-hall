@@ -96,7 +96,19 @@ body:not([data-page="home"]) .dropdown-trigger {
   color: var(--accent-strong) !important;
 }
 
-@media (max-width: 640px) {
+.nav-dc-short {
+  display: none;
+}
+@media (max-width: 820px) {
+  .nav-dc-full {
+    display: none !important;
+  }
+  .nav-dc-short {
+    display: inline !important;
+  }
+}
+
+@media (max-width: 580px) {
   .nav-links {
     overflow-x: visible !important;
     white-space: normal !important;

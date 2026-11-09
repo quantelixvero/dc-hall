@@ -577,7 +577,19 @@ body:not([data-page="home"]) .dropdown-trigger {
   color: var(--accent-strong) !important;
 }
 
-@media (max-width: 640px) {
+.nav-dc-short {
+  display: none;
+}
+@media (max-width: 820px) {
+  .nav-dc-full {
+    display: none !important;
+  }
+  .nav-dc-short {
+    display: inline !important;
+  }
+}
+
+@media (max-width: 580px) {
   .nav-links {
     overflow-x: visible !important;
     white-space: normal !important;
@@ -2557,52 +2569,39 @@ body.dark .footer-links a:hover {
 
 @media (max-width: 920px) {
   .nav-inner {
-    align-items: flex-start;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: clamp(8px, 1.5vw, 16px) !important;
   }
 
   .nav-links {
-    order: 3;
-    width: 100%;
-    padding-top: 12px;
+    order: unset !important;
+    width: auto !important;
+    padding-top: 0 !important;
     overflow: visible;
-    flex-wrap: nowrap;
-    gap: 12px;
+    display: flex !important;
+    align-items: center !important;
+    gap: clamp(6px, 1.2vw, 12px) !important;
+    flex-shrink: 1;
   }
 
   .nav-links > a,
-  .more-menu-toggle {
-    min-height: 42px;
-    padding: 0 14px;
-    border-radius: 8px;
-  }
-
-  .nav-links > a {
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .nav-links a.is-overflow {
-    display: none;
-  }
-
-  .more-menu-panel a {
-    display: block;
-  }
-
-  .more-menu {
-    display: block;
-  }
-
-  .nav-actions {
-    margin-left: auto;
+  .dropdown-trigger {
+    min-height: 38px;
+    padding: 0 8px !important;
+    font-size: 0.88rem !important;
+    white-space: nowrap !important;
   }
 
   .nav-actions {
     display: inline-flex !important;
     align-items: center !important;
-    gap: 7px !important;
+    gap: 6px !important;
     height: 38px !important;
-    margin-left: auto;
+    margin-left: 0 !important;
+    flex-shrink: 0 !important;
   }
 
   .nav-actions > * {
@@ -2662,10 +2661,6 @@ body.dark .footer-links a:hover {
     width: 38px !important;
     height: 38px !important;
     border-radius: 9px !important;
-  }
-
-  .nav-inner {
-    flex-wrap: wrap;
   }
 
   .info-grid.three,
@@ -7612,6 +7607,12 @@ img.bday-avatar {
 }
 
 @media (max-width: 640px) {
+  .dev-badge-pill {
+    width: fit-content !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
   .dev-badge-sep,
   #devEyebrowOrg {
     display: none !important;

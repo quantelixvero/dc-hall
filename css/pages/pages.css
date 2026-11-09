@@ -1388,6 +1388,12 @@ img.bday-avatar {
 }
 
 @media (max-width: 640px) {
+  .dev-badge-pill {
+    width: fit-content !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
   .dev-badge-sep,
   #devEyebrowOrg {
     display: none !important;

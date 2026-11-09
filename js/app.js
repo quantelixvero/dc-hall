@@ -2647,7 +2647,7 @@ function ensureNavigation() {
 
     <div class="nav-dropdown ${isDcActive ? "active" : ""}">
       <button class="dropdown-trigger ${isDcActive ? "active" : ""}" type="button" aria-haspopup="true" aria-expanded="false">
-        <span>${dcDropdownLabel}</span>
+        <span class="nav-dc-full">${t("nav.dhakaCollege")}</span><span class="nav-dc-short">DC</span>
       </button>
       <div class="dropdown-content">
         <a href="embed.html?url=${encodeURIComponent(dcWebUrl)}&title=${encodeURIComponent(dcWebTitle)}">${dcWebTitle}</a>
@@ -7776,9 +7776,10 @@ function initDeveloperFeedbackForm() {
     try {
       const formData = new FormData(form);
       formData.delete("attachments");
-      attachedFiles.forEach((file, idx) => {
-        formData.append(`attachment_${idx + 1}`, file, file.name);
-      });
+      // Web3Forms free tier: only one file under "attachment"
+      if (attachedFiles.length > 0) {
+        formData.append("attachment", attachedFiles[0], attachedFiles[0].name);
+      }
       formData.append("submitted_at", new Date().toISOString());
       formData.append("subject", `[${category}] ${batch}${roll ? ' - Roll ' + roll : ''} | ${name}`);
 
