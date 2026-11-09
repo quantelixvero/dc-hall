@@ -2567,7 +2567,7 @@ body.dark .footer-links a:hover {
   color: #ffffff;
 }
 
-@media (max-width: 920px) {
+@media (max-width: 920px) and (min-width: 641px) {
   .nav-inner {
     display: flex !important;
     align-items: center !important;
