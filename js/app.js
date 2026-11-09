@@ -7775,13 +7775,11 @@ function initDeveloperFeedbackForm() {
 
     try {
       const formData = new FormData(form);
-      formData.delete("attachments");
-      // Attach files for FormSubmit — each as "attachment" (FormSubmit merges them)
-      if (attachedFiles.length > 0) {
-        attachedFiles.forEach((file) => {
-          formData.append("attachment", file, file.name);
-        });
-      }
+      // Clear the native file input data and re-add from our managed attachedFiles array
+      formData.delete("attachment");
+      attachedFiles.forEach((file) => {
+        formData.append("attachment", file, file.name);
+      });
       formData.append("submitted_at", new Date().toISOString());
       formData.set("_subject", `${name} sent DC Hall Feedback`);
 
