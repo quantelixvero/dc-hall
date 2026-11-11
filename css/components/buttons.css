@@ -30,7 +30,10 @@
 }
 
 .navbar.scrolled .dropdown-trigger,
-body:not([data-page="home"]) .dropdown-trigger {
+body[data-page="profile"] .dropdown-trigger,
+body[data-page="form"] .dropdown-trigger,
+body[data-page="404"] .dropdown-trigger,
+body.no-hero .dropdown-trigger {
   color: var(--text);
 }
 
@@ -142,7 +145,10 @@ body:not([data-page="home"]) .dropdown-trigger {
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
 }
 
-body:not([data-page="home"]) .profile-toggle,
+body[data-page="profile"] .profile-toggle,
+body[data-page="form"] .profile-toggle,
+body[data-page="404"] .profile-toggle,
+body.no-hero .profile-toggle,
 .navbar.scrolled .profile-toggle {
   background: var(--surface-strong);
   color: var(--text);
@@ -164,7 +170,10 @@ body:not([data-page="home"]) .profile-toggle,
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.28) !important;
 }
 
-body:not([data-page="home"]) .profile-toggle.logged-in,
+body[data-page="profile"] .profile-toggle.logged-in,
+body[data-page="form"] .profile-toggle.logged-in,
+body[data-page="404"] .profile-toggle.logged-in,
+body.no-hero .profile-toggle.logged-in,
 .navbar.scrolled .profile-toggle.logged-in {
   border: 1.5px solid #10b981 !important;
   color: #10b981 !important;

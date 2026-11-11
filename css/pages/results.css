@@ -8,7 +8,7 @@
 .roommates-hero,
 .results-hero,
 .hostel-hero {
-  background-image: linear-gradient(90deg, rgba(5, 10, 18, 0.72), rgba(5, 10, 18, 0.38)), url("../images/hostel-building.jpg");
+  background-image: linear-gradient(90deg, rgba(5, 10, 18, 0.75), rgba(5, 10, 18, 0.42)), var(--hero-bg, url("../images/hostel-hero.jpg"));
 }
 
 .table-shell {

@@ -149,7 +149,10 @@ input {
   padding: 10px 0;
 }
 
-body:not([data-page="home"]) .navbar {
+body[data-page="profile"] .navbar,
+body[data-page="form"] .navbar,
+body[data-page="404"] .navbar,
+body.no-hero .navbar {
   background: var(--nav-bg);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
   backdrop-filter: blur(14px);
@@ -176,8 +179,14 @@ body:not([data-page="home"]) .navbar {
   color: var(--text);
 }
 
-body:not([data-page="home"]) .logo,
-body:not([data-page="home"]) .nav-links a {
+body[data-page="profile"] .logo,
+body[data-page="profile"] .nav-links a,
+body[data-page="form"] .logo,
+body[data-page="form"] .nav-links a,
+body[data-page="404"] .logo,
+body[data-page="404"] .nav-links a,
+body.no-hero .logo,
+body.no-hero .nav-links a {
   color: var(--text);
 }
 
@@ -243,9 +252,18 @@ body:not([data-page="home"]) .nav-links a {
   transform: translateY(-1px);
 }
 
-body:not([data-page="home"]) .nav-links > a:hover,
-body:not([data-page="home"]) .nav-links > a:focus-visible,
-body:not([data-page="home"]) .nav-links > a.active,
+body[data-page="profile"] .nav-links > a:hover,
+body[data-page="profile"] .nav-links > a:focus-visible,
+body[data-page="profile"] .nav-links > a.active,
+body[data-page="form"] .nav-links > a:hover,
+body[data-page="form"] .nav-links > a:focus-visible,
+body[data-page="form"] .nav-links > a.active,
+body[data-page="404"] .nav-links > a:hover,
+body[data-page="404"] .nav-links > a:focus-visible,
+body[data-page="404"] .nav-links > a.active,
+body.no-hero .nav-links > a:hover,
+body.no-hero .nav-links > a:focus-visible,
+body.no-hero .nav-links > a.active,
 .navbar.scrolled .nav-links > a:hover,
 .navbar.scrolled .nav-links > a:focus-visible,
 .navbar.scrolled .nav-links > a.active {
@@ -299,7 +317,10 @@ body:not([data-page="home"]) .nav-links > a.active,
   box-shadow: 0 8px 18px var(--accent-soft);
 }
 
-body:not([data-page="home"]) .more-menu-toggle,
+body[data-page="profile"] .more-menu-toggle,
+body[data-page="form"] .more-menu-toggle,
+body[data-page="404"] .more-menu-toggle,
+body.no-hero .more-menu-toggle,
 .navbar.scrolled .more-menu-toggle {
   border-color: var(--border);
   background: var(--surface-strong);
@@ -404,18 +425,27 @@ body:not([data-page="home"]) .more-menu-toggle,
   color: #ffffff;
 }
 
-body:not([data-page="home"]) .language-switch,
+body[data-page="profile"] .language-switch,
+body[data-page="form"] .language-switch,
+body[data-page="404"] .language-switch,
+body.no-hero .language-switch,
 .navbar.scrolled .language-switch {
   background: var(--surface-strong);
   border-color: var(--border);
 }
 
-body:not([data-page="home"]) .language-switch button,
+body[data-page="profile"] .language-switch button,
+body[data-page="form"] .language-switch button,
+body[data-page="404"] .language-switch button,
+body.no-hero .language-switch button,
 .navbar.scrolled .language-switch button {
   color: var(--text);
 }
 
-body:not([data-page="home"]) .language-switch button.active,
+body[data-page="profile"] .language-switch button.active,
+body[data-page="form"] .language-switch button.active,
+body[data-page="404"] .language-switch button.active,
+body.no-hero .language-switch button.active,
 .navbar.scrolled .language-switch button.active {
   color: #ffffff;
 }
@@ -434,7 +464,10 @@ body:not([data-page="home"]) .language-switch button.active,
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border 0.2s ease;
 }
 
-body:not([data-page="home"]) .theme-toggle,
+body[data-page="profile"] .theme-toggle,
+body[data-page="form"] .theme-toggle,
+body[data-page="404"] .theme-toggle,
+body.no-hero .theme-toggle,
 .navbar.scrolled .theme-toggle {
   background: var(--surface-strong);
   color: var(--text);
@@ -511,7 +544,10 @@ body:not([data-page="home"]) .theme-toggle,
 }
 
 .navbar.scrolled .dropdown-trigger,
-body:not([data-page="home"]) .dropdown-trigger {
+body[data-page="profile"] .dropdown-trigger,
+body[data-page="form"] .dropdown-trigger,
+body[data-page="404"] .dropdown-trigger,
+body.no-hero .dropdown-trigger {
   color: var(--text);
 }
 
@@ -623,7 +659,10 @@ body:not([data-page="home"]) .dropdown-trigger {
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border 0.2s ease, box-shadow 0.2s ease;
 }
 
-body:not([data-page="home"]) .profile-toggle,
+body[data-page="profile"] .profile-toggle,
+body[data-page="form"] .profile-toggle,
+body[data-page="404"] .profile-toggle,
+body.no-hero .profile-toggle,
 .navbar.scrolled .profile-toggle {
   background: var(--surface-strong);
   color: var(--text);
@@ -645,7 +684,10 @@ body:not([data-page="home"]) .profile-toggle,
   box-shadow: 0 0 10px rgba(16, 185, 129, 0.28) !important;
 }
 
-body:not([data-page="home"]) .profile-toggle.logged-in,
+body[data-page="profile"] .profile-toggle.logged-in,
+body[data-page="form"] .profile-toggle.logged-in,
+body[data-page="404"] .profile-toggle.logged-in,
+body.no-hero .profile-toggle.logged-in,
 .navbar.scrolled .profile-toggle.logged-in {
   border: 1.5px solid #10b981 !important;
   color: #10b981 !important;
@@ -1333,9 +1375,18 @@ html.user-logged-in #statusCard {
 
 .page-main, main {
   min-height: 70vh;
-  padding-top: 72px;
+  padding-top: 0;
   display: flex;
   flex-direction: column;
+}
+
+body[data-page="profile"] .page-main,
+body[data-page="profile"] main,
+body[data-page="form"] .page-main,
+body[data-page="form"] main,
+body[data-page="404"] .page-main,
+body[data-page="404"] main {
+  padding-top: 72px;
 }
 
 .home-main {
@@ -1352,17 +1403,27 @@ html.user-logged-in #statusCard {
 
 .page-hero {
   position: relative;
-  padding: 96px 0 70px;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  padding: 130px 0 70px;
   overflow: hidden;
-  background: linear-gradient(90deg, rgba(5, 10, 18, 0.72), rgba(5, 10, 18, 0.38)), url("../images/hostel-hero.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(5, 10, 18, 0.75), rgba(5, 10, 18, 0.42)), var(--hero-bg, url("../images/hostel-hero.jpg")) center / cover no-repeat;
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .page-hero {
+    min-height: 320px;
+    padding: 110px 0 46px;
+  }
 }
 
 .page-hero.compact h1 {
   max-width: 820px;
 }
 
-.page-hero p {
+.page-hero p:not(.eyebrow) {
   max-width: 660px;
   color: #ffffff !important;
   opacity: 0.95;
@@ -1743,11 +1804,12 @@ body.dark .active-batch-header .batch-count-pill {
   }
 }
 
-/* Guaranteed Crisp White Description on all Page Heroes */
-.hero p,
-.page-hero p,
-.roommates-hero p,
-.developer-hero p,
+/* Guaranteed Crisp White Description on all Page Heroes (excluding eyebrow) */
+.hero p:not(.eyebrow),
+.page-hero p:not(.eyebrow),
+.roommates-hero p:not(.eyebrow),
+.developer-hero p:not(.eyebrow),
+.hero-subtitle,
 .roommates-hero [data-i18n="roommates.subtitle"] {
   color: #ffffff !important;
   opacity: 0.95 !important;
@@ -2833,7 +2895,10 @@ body.dark .footer-links a:hover {
   }
 
   .navbar.scrolled,
-  body:not([data-page="home"]) .navbar {
+  body[data-page="profile"] .navbar,
+  body[data-page="form"] .navbar,
+  body[data-page="404"] .navbar,
+  body.no-hero .navbar {
     padding: 8px 0;
   }
 
@@ -5260,7 +5325,7 @@ body[data-lang="bn"] textarea {
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: url("../images/hall/hostel-hero.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(5, 10, 18, 0.75), rgba(5, 10, 18, 0.42)), var(--hero-bg, url("../images/hostel-hero.jpg")) center / cover no-repeat;
 }
 
 .hero-overlay {
@@ -5321,8 +5386,22 @@ body[data-lang="bn"] h3 {
 }
 
 .hero .eyebrow,
-.page-hero .eyebrow {
-  color: #7dd3c7;
+.page-hero .eyebrow,
+.developer-hero .eyebrow,
+.roommates-hero .eyebrow,
+#heroEyebrowText,
+#devEyebrow,
+.dev-badge-pill .eyebrow {
+  color: #2dd4bf !important;
+  opacity: 1 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.section-head .eyebrow,
+.profile-modal .eyebrow,
+.section .eyebrow {
+  color: var(--accent) !important;
+  text-shadow: none !important;
 }
 
 .btn {
@@ -5858,22 +5937,26 @@ h3 {
     border-radius: 14px !important;
   }
 
-  /* Hall Super: photo first, then text */
+  /* Hall Super: photo first, then text, left-aligned like Hall Info page */
   #hallsuper-preview .split {
     display: flex !important;
     flex-direction: column !important;
-    gap: 20px !important;
-    text-align: center !important;
+    gap: 24px !important;
+    text-align: left !important;
+    align-items: flex-start !important;
   }
 
   #hallsuper-preview .hostel-photo {
-    max-width: 220px !important;
-    margin: 0 auto !important;
+    max-width: 360px !important;
+    width: 100% !important;
+    margin: 0 0 8px 0 !important;
     order: 1 !important;
   }
 
   #hallsuper-preview .split > div[data-aos] {
     order: 2 !important;
+    text-align: left !important;
+    width: 100% !important;
   }
 
   /* Hall Super name: prevent overflow */
@@ -5884,29 +5967,32 @@ h3 {
     overflow-wrap: break-word !important;
     hyphens: auto !important;
     line-height: 1.15 !important;
+    text-align: left !important;
   }
 
   /* Hall Super badge pill: prevent awkward breaks */
   #hallsuper-preview .split > div[data-aos] > p[style*="inline-block"] {
     display: inline-block !important;
-    font-size: 0.78rem !important;
-    padding: 4px 12px !important;
+    font-size: 0.82rem !important;
+    padding: 4px 14px !important;
     white-space: normal !important;
     word-break: keep-all !important;
-    text-align: center !important;
+    text-align: left !important;
     max-width: 100% !important;
     line-height: 1.4 !important;
+    margin-bottom: 14px !important;
   }
 
   /* Hall Super bio text */
   #hallsuper-preview .lead {
-    font-size: 0.95rem !important;
-    text-align: center !important;
+    font-size: 0.98rem !important;
+    text-align: left !important;
+    line-height: 1.65 !important;
   }
 
-  /* Hall Super buttons center */
+  /* Hall Super buttons left */
   .hallsuper-preview-actions {
-    justify-content: center !important;
+    justify-content: flex-start !important;
   }
 }
 
@@ -5924,7 +6010,7 @@ h3 {
 .roommates-hero,
 .results-hero,
 .hostel-hero {
-  background-image: linear-gradient(90deg, rgba(5, 10, 18, 0.72), rgba(5, 10, 18, 0.38)), url("../images/hostel-building.jpg");
+  background-image: linear-gradient(90deg, rgba(5, 10, 18, 0.75), rgba(5, 10, 18, 0.42)), var(--hero-bg, url("../images/hostel-hero.jpg"));
 }
 
 .table-shell {
@@ -7495,7 +7581,7 @@ img.bday-avatar {
   background:
     radial-gradient(circle at 85% 30%, rgba(13, 92, 78, 0.42) 0%, transparent 60%),
     linear-gradient(135deg, rgba(8, 13, 24, 0.94) 0%, rgba(13, 22, 38, 0.86) 100%),
-    url("../images/hostel-hero.jpg") center / cover no-repeat;
+    var(--hero-bg, url("../images/hostel-hero.jpg")) center / cover no-repeat;
   color: #ffffff;
 }
 
@@ -7754,7 +7840,7 @@ img.bday-avatar {
     padding: 124px 0 48px !important;
     background:
       linear-gradient(180deg, rgba(8, 13, 24, 0.96) 0%, rgba(13, 22, 38, 0.92) 100%),
-      url("../images/hostel-hero.jpg") center 20% / cover no-repeat !important;
+      var(--hero-bg, url("../images/hostel-hero.jpg")) center 20% / cover no-repeat !important;
   }
   .developer-hero-inner {
     grid-template-columns: 1fr !important;

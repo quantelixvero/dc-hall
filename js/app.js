@@ -1778,10 +1778,11 @@ function applyCmsSettings(settings) {
     });
   }
 
-  const heroImage = normalizeCmsPath(settings.hero_image);
+  const heroImage = normalizeCmsPath(settings.hero_image) || "images/hostel-hero.jpg";
   if (heroImage) {
+    document.documentElement.style.setProperty('--hero-bg', `url("${heroImage}")`);
     document.querySelectorAll(".hero, .page-hero, .developer-hero").forEach((section) => {
-      section.style.backgroundImage = `linear-gradient(90deg, var(--overlay), rgba(8, 13, 24, 0.25)), url("${heroImage}")`;
+      section.style.backgroundImage = `linear-gradient(90deg, rgba(5, 10, 18, 0.75), rgba(5, 10, 18, 0.42)), url("${heroImage}")`;
     });
   }
 
@@ -3473,28 +3474,14 @@ function groupByRoom(list) {
 
     // Pass 2: Remaining students
     const remaining = roomStudents.filter(s => !pairedIds.has(s.slug || s.id) && (!s._id || !pairedIds.has(s._id)));
-    if (isShared1stYear) {
-      // 1st Year shared dorm rooms (102, 103, 104):
-      // NEVER auto-pair unlinked students! If they did not explicitly select each other
-      // as bedmates in the admin panel, the adjacent seat MUST remain empty.
-      remaining.forEach(s => {
-        pairedIds.add(s.slug || s.id);
-        if (s._id || s.rawId) pairedIds.add(s._id || s.rawId);
-        roomPairs.push([roomNum, [s]]);
-      });
-    } else {
-      // 2nd Year standard 2-person rooms (314–329):
-      for (let i = 0; i < remaining.length; i += 2) {
-        if (i + 1 < remaining.length) {
-          pairedIds.add(remaining[i].slug || remaining[i].id);
-          pairedIds.add(remaining[i + 1].slug || remaining[i + 1].id);
-          roomPairs.push([roomNum, [remaining[i], remaining[i + 1]]]);
-        } else {
-          pairedIds.add(remaining[i].slug || remaining[i].id);
-          roomPairs.push([roomNum, [remaining[i]]]);
-        }
-      }
-    }
+    // For both 1st year dorm rooms and 2nd year rooms:
+    // Only pair students who are explicitly linked as roommates/bedmates.
+    // Unlinked students are displayed individually with empty seat placeholder.
+    remaining.forEach(s => {
+      pairedIds.add(s.slug || s.id);
+      if (s._id || s.rawId) pairedIds.add(s._id || s.rawId);
+      roomPairs.push([roomNum, [s]]);
+    });
 
     pairs.push(...roomPairs);
   });
@@ -5049,20 +5036,94 @@ function contactActions(student, phoneHref, whatsappHref, telegramHref, emailHre
 }
 
 
-function findStudentByNameOrSlug(nameOrSlug) {
-  if (!nameOrSlug || !students || !students.length) return null;
-  const q = String(nameOrSlug).trim().toLowerCase();
-  return students.find(s => 
-    (s.id && String(s.id).toLowerCase() === q) ||
-    (s.slug && String(s.slug).toLowerCase() === q) ||
-    (s.name && s.name.trim().toLowerCase() === q) ||
-    (s.bn?.name && s.bn.name.trim() === q) ||
-    (s.nameEn && s.nameEn.trim().toLowerCase() === q) ||
-    (s.nameBn && s.nameBn.trim() === q)
-  );
+function findStudent(target) {
+  if (!target || !students || !students.length) return null;
+  const q = String(target).trim().toLowerCase();
+  const cleanQ = q.replace(/^drafts\./, '');
+  return students.find(s => {
+    const sId = String(s.id != null ? s.id : '').toLowerCase();
+    const sRawId = String(s._id || s.rawId || '').toLowerCase().replace(/^drafts\./, '');
+    const sSlug = String(s.slug || '').toLowerCase();
+    const sStudentId = String(s.student_id || s.studentId || '').toLowerCase();
+    const sRoll = String(s.roll || s.short_roll || '').toLowerCase();
+    const sFullRoll = String(s.fullRoll || s.full_roll || '').toLowerCase();
+    const sName = String(s.name || s.nameEn || '').trim().toLowerCase();
+    const sNameBn = String(s.nameBn || s.bn?.name || '').trim();
+
+    return sId === q ||
+      (sRawId && sRawId === cleanQ) ||
+      (sSlug && sSlug === q) ||
+      (sStudentId && sStudentId === q) ||
+      (sRoll && sRoll === q) ||
+      (sFullRoll && sFullRoll === q) ||
+      (sName && sName === q) ||
+      (sNameBn && sNameBn === String(target).trim());
+  }) || null;
 }
 
-function buildProfileRoomItem(year, roomNo, mateName, mateStudent, isUnlocked, isVisible) {
+function findStudentByNameOrSlug(nameOrSlug) {
+  return findStudent(nameOrSlug);
+}
+
+function resolveRoommate(student, year) {
+  if (!student) return { mateName: '', mateStudent: null, photo: '' };
+  const roomObj = year === 1 ? student.room_1st_year : student.room_2nd_year;
+  if (!roomObj) return { mateName: '', mateStudent: null, photo: '' };
+
+  let mateStudent = null;
+  // 1. Try finding by ID / Reference ID
+  if (roomObj.bedmate_id) {
+    mateStudent = findStudent(roomObj.bedmate_id);
+  }
+  // 2. Try finding by slug / student_id
+  if (!mateStudent && roomObj.bedmate_slug) {
+    mateStudent = findStudent(roomObj.bedmate_slug);
+  }
+  // 3. Try finding by name
+  if (!mateStudent && roomObj.bedmate_name) {
+    mateStudent = findStudent(roomObj.bedmate_name);
+  }
+  // 4. Check roommateIds array if present
+  if (!mateStudent && Array.isArray(student.roommateIds) && student.roommateIds.length) {
+    for (const rId of student.roommateIds) {
+      mateStudent = findStudent(rId);
+      if (mateStudent) break;
+    }
+  }
+  // 5. Mutual check: Did another student in the same room select this student as bedmate/roommate?
+  if (!mateStudent && roomObj.room_no) {
+    const curRoomStr = String(roomObj.room_no).trim();
+    const curRefId = String(student._id || student.rawId || '').replace(/^drafts\./, '');
+    const curSlug = String(student.slug || '');
+    const curName = String(student.name || '').trim().toLowerCase();
+
+    mateStudent = students.find(other => {
+      if (other === student) return false;
+      const otherRoomObj = year === 1 ? other.room_1st_year : other.room_2nd_year;
+      if (!otherRoomObj || String(otherRoomObj.room_no).trim() !== curRoomStr) return false;
+
+      const otherMateId = String(otherRoomObj.bedmate_id || '').replace(/^drafts\./, '');
+      const otherMateSlug = String(otherRoomObj.bedmate_slug || '');
+      const otherMateName = String(otherRoomObj.bedmate_name || '').trim().toLowerCase();
+
+      return (curRefId && otherMateId && curRefId === otherMateId) ||
+        (curSlug && otherMateSlug && curSlug === otherMateSlug) ||
+        (curName && otherMateName && curName === otherMateName) ||
+        (Array.isArray(other.roommateIds) && (other.roommateIds.includes(curRefId) || other.roommateIds.includes(curSlug)));
+    }) || null;
+  }
+
+  // Determine display name and photo
+  const mateName = mateStudent 
+    ? studentValue(mateStudent, 'name')
+    : (roomObj.bedmate_name || '');
+
+  const photo = (mateStudent && (mateStudent.img || mateStudent.photo)) || roomObj.bedmate_photo || '';
+
+  return { mateName, mateStudent, photo };
+}
+
+function buildProfileRoomItem(year, roomNo, mateName, mateStudent, isUnlocked, isVisible, matePhoto) {
   if (!isVisible || !roomNo) return '';
 
   const isFirstYear = year === 1;
@@ -5087,17 +5148,17 @@ function buildProfileRoomItem(year, roomNo, mateName, mateStudent, isUnlocked, i
     if (mateStudent) {
       const mateDisplayName = studentValue(mateStudent, 'name');
       const avatarSrc = normalizeCmsPath(mateStudent.img || mateStudent.photo) || 'images/student-avatar.png';
+      const targetId = mateStudent.slug || mateStudent.id || mateStudent._id;
       mateLogoHtml = `
-        <span class="profile-mate-avatar-wrap" data-open-mate-id="${mateStudent.id || mateStudent.slug}" role="button" tabindex="0" title="${matePrefix}${mateDisplayName} (${currentLang === 'bn' ? 'প্রোফাইল দেখতে ক্লিক করুন' : 'Click to view profile'})">
+        <span class="profile-mate-avatar-wrap" data-open-mate-id="${targetId}" role="button" tabindex="0" title="${matePrefix}${mateDisplayName} (${currentLang === 'bn' ? 'প্রোফাইল দেখতে ক্লিক করুন' : 'Click to view profile'})">
           <img src="${avatarSrc}" class="profile-mate-avatar" alt="${mateDisplayName}" loading="lazy" onerror="this.src='images/student-avatar.png'">
         </span>
       `;
-    } else if (mateName) {
+    } else if (mateName || matePhoto) {
+      const avatarSrc = normalizeCmsPath(matePhoto) || 'images/student-avatar.png';
       mateLogoHtml = `
-        <span class="profile-mate-icon-placeholder" title="${matePrefix}${mateName}">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
-            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-          </svg>
+        <span class="profile-mate-avatar-wrap" data-open-mate-id="${mateName}" role="button" tabindex="0" title="${matePrefix}${mateName} (${currentLang === 'bn' ? 'প্রোফাইল দেখতে ক্লিক করুন' : 'Click to view profile'})">
+          <img src="${avatarSrc}" class="profile-mate-avatar" alt="${mateName}" loading="lazy" onerror="this.src='images/student-avatar.png'">
         </span>
       `;
     }
@@ -5267,18 +5328,16 @@ function openStudentModal(student) {
 
     room_1st_year: () => {
       const r1No = student.room_1st_year?.room_no;
-      const r1MateName = student.room_1st_year?.bedmate_name;
-      const r1Mate = findStudentByNameOrSlug(student.room_1st_year?.bedmate_slug || r1MateName);
+      const { mateName, mateStudent, photo } = resolveRoommate(student, 1);
       const isR1Vis = isProfileFieldVisible("room_1st_year");
-      return buildProfileRoomItem(1, r1No, r1MateName, r1Mate, showRoom1, isR1Vis);
+      return buildProfileRoomItem(1, r1No, mateName, mateStudent, showRoom1, isR1Vis, photo);
     },
 
     room_2nd_year: () => {
       const r2No = student.room_2nd_year?.room_no;
-      const r2MateName = student.room_2nd_year?.bedmate_name;
-      const r2Mate = findStudentByNameOrSlug(student.room_2nd_year?.bedmate_slug || r2MateName);
+      const { mateName, mateStudent, photo } = resolveRoommate(student, 2);
       const isR2Vis = isProfileFieldVisible("room_2nd_year");
-      return buildProfileRoomItem(2, r2No, r2MateName, r2Mate, showRoom2, isR2Vis);
+      return buildProfileRoomItem(2, r2No, mateName, mateStudent, showRoom2, isR2Vis, photo);
     },
 
     whatsapp: () => ((isProfileFieldVisible("whatsapp") && hasVal(whatsappNum)) ? (!showWhatsApp ? `
@@ -5531,12 +5590,16 @@ function openStudentModal(student) {
 
   // Attach roommate/bedmate button clicks to open that student's profile directly
   content.querySelectorAll('[data-open-mate-id]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
+    const handleOpen = (e) => {
       e.preventDefault();
       e.stopPropagation();
       const mId = btn.getAttribute('data-open-mate-id');
-      const targetStudent = students.find(s => String(s.id) === String(mId) || (s.slug && String(s.slug) === String(mId)));
+      const targetStudent = findStudent(mId);
       if (targetStudent) openStudentModal(targetStudent);
+    };
+    btn.addEventListener('click', handleOpen);
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') handleOpen(e);
     });
   });
 

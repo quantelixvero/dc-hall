@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  background: url("../images/hall/hostel-hero.jpg") center / cover no-repeat;
+  background: linear-gradient(90deg, rgba(5, 10, 18, 0.75), rgba(5, 10, 18, 0.42)), var(--hero-bg, url("../images/hostel-hero.jpg")) center / cover no-repeat;
 }
 
 .hero-overlay {
@@ -28,13 +28,23 @@
   color: #ffffff;
 }
 
-.hero h1,
-.page-hero h1 {
+/* Homepage hero title — short brand name, can be huge */
+.hero h1 {
   margin: 0;
   font-family: "Soin Sans Pro", "Outfit", Arial, sans-serif;
   font-size: clamp(2.5rem, 7vw, 5.6rem);
   line-height: 0.98;
   font-weight: 800;
+}
+
+/* Subpage hero titles — longer titles, needs controlled size */
+.page-hero h1 {
+  margin: 0;
+  font-family: "Soin Sans Pro", "Outfit", Arial, sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  line-height: 1.15;
+  font-weight: 800;
+  max-width: 820px;
 }
 
 body[data-lang="bn"] .hero h1,
@@ -72,8 +82,22 @@ body[data-lang="bn"] h3 {
 }
 
 .hero .eyebrow,
-.page-hero .eyebrow {
-  color: #7dd3c7;
+.page-hero .eyebrow,
+.developer-hero .eyebrow,
+.roommates-hero .eyebrow,
+#heroEyebrowText,
+#devEyebrow,
+.dev-badge-pill .eyebrow {
+  color: #2dd4bf !important;
+  opacity: 1 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.section-head .eyebrow,
+.profile-modal .eyebrow,
+.section .eyebrow {
+  color: var(--accent) !important;
+  text-shadow: none !important;
 }
 
 .btn {
@@ -609,22 +633,26 @@ h3 {
     border-radius: 14px !important;
   }
 
-  /* Hall Super: photo first, then text */
+  /* Hall Super: photo first, then text, left-aligned like Hall Info page */
   #hallsuper-preview .split {
     display: flex !important;
     flex-direction: column !important;
-    gap: 20px !important;
-    text-align: center !important;
+    gap: 24px !important;
+    text-align: left !important;
+    align-items: flex-start !important;
   }
 
   #hallsuper-preview .hostel-photo {
-    max-width: 220px !important;
-    margin: 0 auto !important;
+    max-width: 360px !important;
+    width: 100% !important;
+    margin: 0 0 8px 0 !important;
     order: 1 !important;
   }
 
   #hallsuper-preview .split > div[data-aos] {
     order: 2 !important;
+    text-align: left !important;
+    width: 100% !important;
   }
 
   /* Hall Super name: prevent overflow */
@@ -635,29 +663,32 @@ h3 {
     overflow-wrap: break-word !important;
     hyphens: auto !important;
     line-height: 1.15 !important;
+    text-align: left !important;
   }
 
   /* Hall Super badge pill: prevent awkward breaks */
   #hallsuper-preview .split > div[data-aos] > p[style*="inline-block"] {
     display: inline-block !important;
-    font-size: 0.78rem !important;
-    padding: 4px 12px !important;
+    font-size: 0.82rem !important;
+    padding: 4px 14px !important;
     white-space: normal !important;
     word-break: keep-all !important;
-    text-align: center !important;
+    text-align: left !important;
     max-width: 100% !important;
     line-height: 1.4 !important;
+    margin-bottom: 14px !important;
   }
 
   /* Hall Super bio text */
   #hallsuper-preview .lead {
-    font-size: 0.95rem !important;
-    text-align: center !important;
+    font-size: 0.98rem !important;
+    text-align: left !important;
+    line-height: 1.65 !important;
   }
 
-  /* Hall Super buttons center */
+  /* Hall Super buttons left */
   .hallsuper-preview-actions {
-    justify-content: center !important;
+    justify-content: flex-start !important;
   }
 }
 

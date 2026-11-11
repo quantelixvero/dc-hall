@@ -1035,7 +1035,10 @@ body.dark .footer-links a:hover {
   }
 
   .navbar.scrolled,
-  body:not([data-page="home"]) .navbar {
+  body[data-page="profile"] .navbar,
+  body[data-page="form"] .navbar,
+  body[data-page="404"] .navbar,
+  body.no-hero .navbar {
     padding: 8px 0;
   }
 

@@ -1085,9 +1085,9 @@ img.bday-avatar {
   padding: 136px 0 84px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 85% 30%, rgba(13, 92, 78, 0.42) 0%, transparent 60%),
-    linear-gradient(135deg, rgba(8, 13, 24, 0.94) 0%, rgba(13, 22, 38, 0.86) 100%),
-    url("../images/hostel-hero.jpg") center / cover no-repeat;
+    radial-gradient(circle at 85% 30%, rgba(13, 92, 78, 0.32) 0%, transparent 60%),
+    linear-gradient(90deg, rgba(5, 10, 18, 0.75), rgba(5, 10, 18, 0.42)),
+    var(--hero-bg, url("../images/hostel-hero.jpg")) center / cover no-repeat;
   color: #ffffff;
 }
 
@@ -1346,7 +1346,7 @@ img.bday-avatar {
     padding: 124px 0 48px !important;
     background:
       linear-gradient(180deg, rgba(8, 13, 24, 0.96) 0%, rgba(13, 22, 38, 0.92) 100%),
-      url("../images/hostel-hero.jpg") center 20% / cover no-repeat !important;
+      var(--hero-bg, url("../images/hostel-hero.jpg")) center 20% / cover no-repeat !important;
   }
   .developer-hero-inner {
     grid-template-columns: 1fr !important;

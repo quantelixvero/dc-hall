@@ -85,14 +85,18 @@ const SANITY_GROQ_QUERY = `{
     "room_1st_year": {
       "room_no": coalesce(room_1st_year.room_ref->room_no, room_1st_year.room_no),
       "bedmate_name": coalesce(room_1st_year.bedmate_name, room_1st_year.bedmate_ref->name_en),
+      "bedmate_name_bn": room_1st_year.bedmate_ref->name_bn,
       "bedmate_slug": coalesce(room_1st_year.bedmate_ref->student_id, room_1st_year.bedmate_ref->_id),
-      "bedmate_id": room_1st_year.bedmate_ref->_id
+      "bedmate_id": room_1st_year.bedmate_ref->_id,
+      "bedmate_photo": coalesce(room_1st_year.bedmate_ref->photo.asset->url, room_1st_year.bedmate_ref->photo)
     },
     "room_2nd_year": {
       "room_no": coalesce(room_2nd_year.room_ref->room_no, room_2nd_year.room_no),
       "bedmate_name": coalesce(room_2nd_year.bedmate_name, room_2nd_year.bedmate_ref->name_en),
+      "bedmate_name_bn": room_2nd_year.bedmate_ref->name_bn,
       "bedmate_slug": coalesce(room_2nd_year.bedmate_ref->student_id, room_2nd_year.bedmate_ref->_id),
-      "bedmate_id": room_2nd_year.bedmate_ref->_id
+      "bedmate_id": room_2nd_year.bedmate_ref->_id,
+      "bedmate_photo": coalesce(room_2nd_year.bedmate_ref->photo.asset->url, room_2nd_year.bedmate_ref->photo)
     },
     "results_1st_year": {
       ...,

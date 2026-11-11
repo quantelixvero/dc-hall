@@ -20,7 +20,10 @@
   padding: 10px 0;
 }
 
-body:not([data-page="home"]) .navbar {
+body[data-page="profile"] .navbar,
+body[data-page="form"] .navbar,
+body[data-page="404"] .navbar,
+body.no-hero .navbar {
   background: var(--nav-bg);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
   backdrop-filter: blur(14px);
@@ -47,8 +50,14 @@ body:not([data-page="home"]) .navbar {
   color: var(--text);
 }
 
-body:not([data-page="home"]) .logo,
-body:not([data-page="home"]) .nav-links a {
+body[data-page="profile"] .logo,
+body[data-page="profile"] .nav-links a,
+body[data-page="form"] .logo,
+body[data-page="form"] .nav-links a,
+body[data-page="404"] .logo,
+body[data-page="404"] .nav-links a,
+body.no-hero .logo,
+body.no-hero .nav-links a {
   color: var(--text);
 }
 
@@ -114,9 +123,18 @@ body:not([data-page="home"]) .nav-links a {
   transform: translateY(-1px);
 }
 
-body:not([data-page="home"]) .nav-links > a:hover,
-body:not([data-page="home"]) .nav-links > a:focus-visible,
-body:not([data-page="home"]) .nav-links > a.active,
+body[data-page="profile"] .nav-links > a:hover,
+body[data-page="profile"] .nav-links > a:focus-visible,
+body[data-page="profile"] .nav-links > a.active,
+body[data-page="form"] .nav-links > a:hover,
+body[data-page="form"] .nav-links > a:focus-visible,
+body[data-page="form"] .nav-links > a.active,
+body[data-page="404"] .nav-links > a:hover,
+body[data-page="404"] .nav-links > a:focus-visible,
+body[data-page="404"] .nav-links > a.active,
+body.no-hero .nav-links > a:hover,
+body.no-hero .nav-links > a:focus-visible,
+body.no-hero .nav-links > a.active,
 .navbar.scrolled .nav-links > a:hover,
 .navbar.scrolled .nav-links > a:focus-visible,
 .navbar.scrolled .nav-links > a.active {
@@ -170,7 +188,10 @@ body:not([data-page="home"]) .nav-links > a.active,
   box-shadow: 0 8px 18px var(--accent-soft);
 }
 
-body:not([data-page="home"]) .more-menu-toggle,
+body[data-page="profile"] .more-menu-toggle,
+body[data-page="form"] .more-menu-toggle,
+body[data-page="404"] .more-menu-toggle,
+body.no-hero .more-menu-toggle,
 .navbar.scrolled .more-menu-toggle {
   border-color: var(--border);
   background: var(--surface-strong);
@@ -275,18 +296,27 @@ body:not([data-page="home"]) .more-menu-toggle,
   color: #ffffff;
 }
 
-body:not([data-page="home"]) .language-switch,
+body[data-page="profile"] .language-switch,
+body[data-page="form"] .language-switch,
+body[data-page="404"] .language-switch,
+body.no-hero .language-switch,
 .navbar.scrolled .language-switch {
   background: var(--surface-strong);
   border-color: var(--border);
 }
 
-body:not([data-page="home"]) .language-switch button,
+body[data-page="profile"] .language-switch button,
+body[data-page="form"] .language-switch button,
+body[data-page="404"] .language-switch button,
+body.no-hero .language-switch button,
 .navbar.scrolled .language-switch button {
   color: var(--text);
 }
 
-body:not([data-page="home"]) .language-switch button.active,
+body[data-page="profile"] .language-switch button.active,
+body[data-page="form"] .language-switch button.active,
+body[data-page="404"] .language-switch button.active,
+body.no-hero .language-switch button.active,
 .navbar.scrolled .language-switch button.active {
   color: #ffffff;
 }
@@ -305,7 +335,10 @@ body:not([data-page="home"]) .language-switch button.active,
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border 0.2s ease;
 }
 
-body:not([data-page="home"]) .theme-toggle,
+body[data-page="profile"] .theme-toggle,
+body[data-page="form"] .theme-toggle,
+body[data-page="404"] .theme-toggle,
+body.no-hero .theme-toggle,
 .navbar.scrolled .theme-toggle {
   background: var(--surface-strong);
   color: var(--text);
