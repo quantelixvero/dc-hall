@@ -7,6 +7,7 @@ export default defineType({
   groups: [
     { name: 'general', title: 'General Settings', default: true },
     { name: 'hero', title: 'Hero Banner Settings' },
+    { name: 'birthday', title: 'Birthday Celebration Settings' },
     { name: 'dhaka_college', title: 'Dhaka College Official Resources & Clubs' },
   ],
   fields: [
@@ -188,6 +189,26 @@ export default defineType({
         { name: 'lock_results', title: 'Lock Academic Results PDFs', type: 'boolean', initialValue: true },
         { name: 'lock_room', title: 'Lock Room Allocation', type: 'boolean', initialValue: false },
       ],
+    }),
+
+
+    // ═══════════════════════════════════════════
+    // Birthday Celebration
+    // ═══════════════════════════════════════════
+    defineField({
+      name: 'birthday_wishes',
+      title: 'Birthday Wishes (English)',
+      type: 'array',
+      group: 'birthday',
+      description: 'জন্মদিনের পপআপে দেখানো শুভেচ্ছা বার্তাগুলো (ইংরেজি)। একাধিক বার্তা যোগ করলে প্রতিটি শিক্ষার্থীর জন্য র‍্যান্ডমলি একটি বেছে নেওয়া হবে। খালি রাখলে ডিফল্ট বার্তা দেখাবে।',
+      of: [{ type: 'string' }],
+    }),
+    defineField({
+      name: 'birthday_signature',
+      title: 'Birthday Wish Signature',
+      type: 'string',
+      group: 'birthday',
+      description: 'জন্মদিনের কার্ডে "With love & best wishes" এর পরে কার পক্ষ থেকে শুভেচ্ছা জানানো হচ্ছে তা লিখুন। যেমন: "International Hall Family"। খালি রাখলে ডিফল্ট ব্যবহার হবে।',
     }),
 
     // ═══════════════════════════════════════════

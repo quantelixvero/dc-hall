@@ -1345,7 +1345,7 @@ img.bday-avatar {
   .developer-hero {
     padding: 124px 0 48px !important;
     background:
-      linear-gradient(180deg, rgba(8, 13, 24, 0.96) 0%, rgba(13, 22, 38, 0.92) 100%),
+      linear-gradient(180deg, rgba(5, 10, 18, 0.80) 0%, rgba(5, 10, 18, 0.55) 100%),
       var(--hero-bg, url("../images/hostel-hero.jpg")) center 20% / cover no-repeat !important;
   }
   .developer-hero-inner {

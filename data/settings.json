@@ -202,5 +202,16 @@
       }
     ],
     "result_admit_title_bn": "রেজাল্ট ও এডমিট কার্ড"
-  }
+  },
+  "birthday_wishes": [
+    "Happy Birthday! May this special day bring you endless joy, wonderful memories, and the courage to chase every dream. The International Hall family is proud to celebrate you!",
+    "Wishing you the happiest of birthdays! May your journey ahead be filled with success, good health, and unforgettable moments. You make our hall proud!",
+    "Happy Birthday! As you grow another year wiser, may every goal you set be within reach and every challenge become a stepping stone to greatness.",
+    "On your special day, we wish you nothing but the best! May your talents shine brighter than ever and your future be as brilliant as your spirit.",
+    "Happy Birthday from the International Hall family! May today mark the beginning of an extraordinary chapter filled with achievement and happiness.",
+    "Warmest birthday wishes to you! May your dedication, hard work, and kindness always lead you to wonderful opportunities and lasting friendships.",
+    "Happy Birthday! Every day is a chance to learn, to grow, and to make a difference — and today we celebrate the amazing person you already are.",
+    "Sending you heartfelt birthday wishes! May the memories you create in these hostel days stay with you forever as a source of joy and inspiration."
+  ],
+  "birthday_signature": "International Hall Family"
 }

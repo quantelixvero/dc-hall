@@ -303,17 +303,15 @@ function normalizeRoomNumber(val) {
 // ═══════════════════════════════════════════════════════════════
 // BIRTHDAY CELEBRATION POPUP & MUSIC SYSTEM
 // ═══════════════════════════════════════════════════════════════
-const BIRTHDAY_WISHES_BN = [
-  "শুভ জন্মদিন! আন্তর্জাতিক ছাত্রাবাস পরিবারের পক্ষ থেকে তোমার জন্য রইল প্রাণঢালা অভিনন্দন ও উষ্ণ ভালোবাসা। জীবনের প্রতিটি পদক্ষেপে সাফল্য তোমার সঙ্গী হোক!",
-  "জন্মদিনের অনেক অনেক শুভেচ্ছা! তোমার প্রতিটি স্বপ্ন ও লক্ষ্য পূরণ হোক, ঢাকা কলেজ পরিবারের গর্ব হয়ে ওঠো।",
-  "শুভ জন্মদিন! সামনের দিনগুলো ভরে উঠুক অনাবিল আনন্দ, সুস্বাস্থ্য এবং অবিস্মরণীয় সব অর্জনে। ভবিষ্যৎ হোক অত্যন্ত উজ্জ্বল ও সমৃদ্ধ।",
-  "আজকের এই বিশেষ দিনে ছাত্রাবাস পরিবারের পক্ষ থেকে অফুরন্ত শুভকামনা। সততা ও নিষ্ঠায় গড়ে ওঠুক তোমার সুন্দর ভবিষ্যৎ।",
-  "শুভ জন্মদিন! ছাত্রাবাসের এই দিনগুলো আজীবন স্মৃতিময় হোক এবং সামনের প্রতিটি পথচলা হোক সাফল্যমণ্ডিত।",
-  "জন্মদিনের আন্তরিক অভিনন্দন! জ্ঞান, প্রজ্ঞা আর মানবিক গুণে বিকশিত হোক তোমার সুন্দর জীবন।",
-  "শুভ জন্মদিন! পড়াশোনা ও ক্যারিয়ারে সর্বোচ্চ শিখর স্পর্শ করো — আন্তর্জাতিক ছাত্রাবাস পরিবার সবসময় তোমার সাথে আছে।",
-  "আজকের দিনটি তোমার জন্য বয়ে আনুক অফুরন্ত আনন্দ আর নতুন অপার সম্ভাবনার বার্তা। শুভ জন্মদিন!",
-  "জন্মদিনের শুভেচ্ছা! আন্তর্জাতিক ছাত্রাবাসের আনন্দঘন স্মৃতি তোমার জীবনের এক অমূল্য প্রেরণা হয়ে থাকুক।",
-  "শুভ জন্মদিন! নিজের মেধা ও পরিশ্রমে দেশ ও দশের মুখ উজ্জ্বল করো — উজ্জ্বল আগামী তোমার অপেক্ষায়।"
+const BIRTHDAY_WISHES_EN = [
+  "Happy Birthday! May this special day bring you endless joy, wonderful memories, and the courage to chase every dream. The International Hall family is proud to celebrate you!",
+  "Wishing you the happiest of birthdays! May your journey ahead be filled with success, good health, and unforgettable moments. You make our hall proud!",
+  "Happy Birthday! As you grow another year wiser, may every goal you set be within reach and every challenge become a stepping stone to greatness.",
+  "On your special day, we wish you nothing but the best! May your talents shine brighter than ever and your future be as brilliant as your spirit.",
+  "Happy Birthday from the International Hall family! May today mark the beginning of an extraordinary chapter filled with achievement and happiness.",
+  "Warmest birthday wishes to you! May your dedication, hard work, and kindness always lead you to wonderful opportunities and lasting friendships.",
+  "Happy Birthday! Every day is a chance to learn, to grow, and to make a difference — and today we celebrate the amazing person you already are.",
+  "Sending you heartfelt birthday wishes! May the memories you create in these hostel days stay with you forever as a source of joy and inspiration."
 ];
 
 function playBirthdayMelody() {
@@ -373,6 +371,13 @@ function synthesizeHappyBirthday() {
 function showStudentBirthdayModal(bdayStudents, sessionKey) {
   let currentIndex = 0;
 
+  // Get wishes from CMS or use default English array
+  const cmsWishes = window.__SANITY_DATA__?.settings?.birthday_wishes;
+  const wishesArr = (Array.isArray(cmsWishes) && cmsWishes.length > 0) ? cmsWishes : BIRTHDAY_WISHES_EN;
+  const signature = window.__SANITY_DATA__?.settings?.birthday_signature || "International Hall Family";
+  const adminSettings = window.__SANITY_DATA__?.adminSettings || {};
+  const showContactBtns = adminSettings.birthday_show_contact_buttons !== false;
+
   function renderCard() {
     const student = bdayStudents[currentIndex];
     const isPhotoUnlocked = isProfileFieldUnlocked("photo", student);
@@ -383,7 +388,43 @@ function showStudentBirthdayModal(bdayStudents, sessionKey) {
     const isRoomUnlocked = isProfileFieldUnlocked("room_2nd_year", student) || isProfileFieldUnlocked("room_1st_year", student) || isProfileFieldUnlocked("room", student);
     const roomDisplay = roomVal ? (isRoomUnlocked ? `ROOM ${roomVal}` : "ROOM •••") : "";
 
-    const wishText = BIRTHDAY_WISHES_BN[Math.floor(Math.random() * BIRTHDAY_WISHES_BN.length)];
+    const wishText = wishesArr[Math.floor(Math.random() * wishesArr.length)];
+
+    // Privacy-checked meta pills
+    const metaPills = [];
+    if (isProfileFieldVisible("batch") && isProfileFieldUnlocked("batch", student) && student.batch) {
+      metaPills.push(`<span>${student.batch}</span>`);
+    }
+    if (isProfileFieldVisible("group") && isProfileFieldUnlocked("group", student) && student.group) {
+      metaPills.push(`<span>${groupLabel(student.group)}</span>`);
+    }
+    if ((isProfileFieldVisible("room_1st_year") || isProfileFieldVisible("room_2nd_year")) && roomDisplay) {
+      metaPills.push(`<span>${roomDisplay}</span>`);
+    }
+    const metaHtml = metaPills.length > 0
+      ? `<div class="bday-popup-meta">${metaPills.join('<span>·</span>')}</div>`
+      : '';
+
+    // Privacy-checked contact action buttons
+    let contactHtml = '';
+    if (showContactBtns) {
+      const contactBtns = [];
+      const whatsappNum = student.whatsapp || student.phone || '';
+      const phoneNum = student.phone || '';
+
+      if (whatsappNum && isProfileFieldVisible("whatsapp") && isProfileFieldUnlocked("whatsapp", student)) {
+        const waMsg = encodeURIComponent("Happy Birthday! 🎂🎉 Wishing you a wonderful day filled with joy and happiness!");
+        contactBtns.push(`<a href="https://wa.me/88${whatsappNum}?text=${waMsg}" target="_blank" rel="noopener" class="bday-action-btn bday-wa-btn" title="Wish on WhatsApp"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> WhatsApp</a>`);
+      }
+      if (phoneNum && isProfileFieldVisible("phone") && isProfileFieldUnlocked("phone", student)) {
+        contactBtns.push(`<a href="tel:${phoneNum}" class="bday-action-btn bday-call-btn" title="Call"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> Call</a>`);
+      }
+      contactBtns.push(`<button type="button" class="bday-action-btn bday-profile-btn" id="bdayViewProfile" title="View Profile"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg> Profile</button>`);
+
+      if (contactBtns.length > 0) {
+        contactHtml = `<div class="bday-contact-actions">${contactBtns.join('')}</div>`;
+      }
+    }
 
     let overlay = document.getElementById("birthdayPopupOverlay");
     if (!overlay) {
@@ -403,7 +444,7 @@ function showStudentBirthdayModal(bdayStudents, sessionKey) {
 
     overlay.innerHTML = `
       <div class="bday-popup-card" role="dialog" aria-modal="true">
-        <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody"></button>
+        <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></button>
         <button type="button" class="bday-popup-close" id="bdayCloseBtn" aria-label="Close">&times;</button>
         
         <div class="bday-avatar-large-wrap">
@@ -413,27 +454,23 @@ function showStudentBirthdayModal(bdayStudents, sessionKey) {
 
         <p class="eyebrow" style="color: var(--accent); margin-bottom: 4px;">Happy Birthday Today!</p>
         <h2 class="bday-popup-title">${nameDisplay}</h2>
-        <div class="bday-popup-meta">
-          <span>${student.batch || 'HSC-27'}</span>
-          <span>·</span>
-          <span>${groupLabel(student.group)}</span>
-          ${roomDisplay ? `<span>·</span><span>${roomDisplay}</span>` : ''}
-        </div>
+        ${metaHtml}
 
         <div class="bday-wish-quote">
           <p style="margin: 0;">"${wishText}"</p>
         </div>
 
         <div class="bday-wish-signature">
-          — শুভেচ্ছা ও ভালোবাসান্তে:<br>
-          <strong>আব্দুল্লাহ আল আদিব</strong><br>
-          <span style="font-size: 0.78rem;">(ওয়েবসাইট ডেভেলপার ও শিক্ষার্থী, ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস)</span>
+          — With love & best wishes:<br>
+          <strong>${signature}</strong><br>
+          <span style="font-size: 0.78rem;">(International Hall, Dhaka College)</span>
         </div>
 
+        ${contactHtml}
         ${multiNav}
 
         <button type="button" class="bday-popup-cta" id="bdayDoneBtn">
-          ধন্যবাদ ও শুভকামনা
+          Thank You & Best Wishes
         </button>
       </div>
     `;
@@ -461,6 +498,15 @@ function showStudentBirthdayModal(bdayStudents, sessionKey) {
     };
     if (closeBtn) closeBtn.onclick = closePopup;
     if (doneBtn) doneBtn.onclick = closePopup;
+
+    // View Profile button
+    const profileBtn = document.getElementById("bdayViewProfile");
+    if (profileBtn) {
+      profileBtn.onclick = () => {
+        closePopup();
+        setTimeout(() => openStudentModalById(student.id), 500);
+      };
+    }
 
     // Multi-nav
     const prevBtn = document.getElementById("bdayPrevBtn");
@@ -497,7 +543,7 @@ function showDeveloperBirthdayModal(isEve) {
 
   overlay.innerHTML = `
     <div class="bday-popup-card" role="dialog" aria-modal="true" style="border-color: #f59e0b; box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 45px rgba(245,158,11,0.3);">
-      <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody"></button>
+      <button type="button" class="bday-popup-sound-toggle" id="bdaySoundToggle" title="Play celebration melody"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></button>
       <button type="button" class="bday-popup-close" id="bdayCloseBtn" aria-label="Close">&times;</button>
 
       <div class="bday-avatar-large-wrap" style="background: linear-gradient(135deg, #f59e0b, #ef4444, #10c9a8);">
@@ -547,6 +593,10 @@ function initBirthdayCelebrationPopup() {
   const isHomeOrBirthday = page === "home" || page === "birthday" || window.location.pathname === "/" || window.location.pathname.endsWith("index.html") || window.location.pathname.endsWith("birthday.html");
   if (!isHomeOrBirthday) return;
 
+  // Check admin toggle
+  const adminSettings = window.__SANITY_DATA__?.adminSettings || {};
+  if (adminSettings.birthday_popup_enabled === false) return;
+
   const now = new Date();
   const curMonth = now.getMonth() + 1;
   const curDay = now.getDate();
@@ -564,15 +614,10 @@ function initBirthdayCelebrationPopup() {
     }
   }
 
-  // Students birthday in latest 3 batches
+  // ALL students birthday — no batch restriction
   if (!students || !students.length) return;
-  const batchSet = new Set(students.map(s => s.batch || "HSC-27"));
-  const sortedBatches = Array.from(batchSet).sort((a, b) => parseBatchNum(b) - parseBatchNum(a));
-  const latest3Batches = sortedBatches.slice(0, 3);
 
   const bdayStudents = students.filter(s => {
-    const b = s.batch || "HSC-27";
-    if (!latest3Batches.includes(b)) return false;
     const bInfo = getStudentBirthdayInfo(s);
     return bInfo.month === curMonth && bInfo.day === curDay;
   });
@@ -583,7 +628,6 @@ function initBirthdayCelebrationPopup() {
     showStudentBirthdayModal(bdayStudents, sessionKey);
   }
 }
-
 // ═══════════════════════════════════════════════════════════════
 // NOTICES & ANNOUNCEMENTS SYSTEM (Archive Page & Popup)
 // ═══════════════════════════════════════════════════════════════

@@ -77,6 +77,7 @@ export default defineType({
     { name: 'batch_rotation', title: 'Batch Moderators & Access' },
     { name: 'profile_controls', title: 'Profile Fields & Badges' },
     { name: 'page_access', title: 'Page Access & Locks' },
+    { name: 'birthday_celebration', title: 'Birthday Celebration' },
     { name: 'homepage_vis', title: 'Home Page Sections' },
     { name: 'developer_vis', title: 'Developer Sections' },
     { name: 'hallinfo_vis', title: 'Hall Info Sections' },
@@ -618,6 +619,27 @@ export default defineType({
       type: 'boolean',
       group: 'profile_controls',
       description: 'চালু (ON) থাকলে সাধারণ ভিজিটররা কোনো লগইন ছাড়াই প্রাথমিক প্রোফাইল তথ্য দেখতে পাবেন। বন্ধ করলে পুরো সাইটের প্রোফাইল প্রাইভেট হয়ে যাবে।',
+      initialValue: true,
+    }),
+
+
+    // ═══════════════════════════════════════════
+    // BIRTHDAY CELEBRATION CONTROLS
+    // ═══════════════════════════════════════════
+    defineField({
+      name: 'birthday_popup_enabled',
+      title: 'Birthday Popup Enabled',
+      type: 'boolean',
+      group: 'birthday_celebration',
+      description: 'ON থাকলে কোনো শিক্ষার্থীর জন্মদিনে স্বয়ংক্রিয় পপআপ দেখাবে। OFF করলে পপআপ বন্ধ থাকবে।',
+      initialValue: true,
+    }),
+    defineField({
+      name: 'birthday_show_contact_buttons',
+      title: 'Show Contact Buttons on Birthday Card',
+      type: 'boolean',
+      group: 'birthday_celebration',
+      description: 'ON থাকলে জন্মদিনের কার্ডে WhatsApp, Call ও View Profile বাটন দেখাবে (Privacy সেটিংস অনুযায়ী)। OFF করলে শুধু কার্ড দেখাবে, কোনো যোগাযোগ বাটন থাকবে না।',
       initialValue: true,
     }),
 

@@ -1419,10 +1419,6 @@ body[data-page="404"] main {
   }
 }
 
-.page-hero.compact h1 {
-  max-width: 820px;
-}
-
 .page-hero p:not(.eyebrow) {
   max-width: 660px;
   color: #ffffff !important;
@@ -4040,6 +4036,72 @@ body.dark .footer-links a:hover {
   box-shadow: 0 8px 20px rgba(16, 201, 168, 0.35);
 }
 
+.bday-contact-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.bday-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
+.bday-action-btn svg {
+  flex-shrink: 0;
+}
+
+.bday-wa-btn {
+  background: #25d366;
+  color: #ffffff !important;
+  border-color: #25d366;
+}
+
+.bday-wa-btn:hover {
+  background: #1eb956;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+}
+
+.bday-call-btn {
+  background: var(--surface-strong);
+  color: var(--accent) !important;
+  border-color: var(--accent);
+}
+
+.bday-call-btn:hover {
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 201, 168, 0.25);
+}
+
+.bday-profile-btn {
+  background: var(--surface-strong);
+  color: var(--text) !important;
+}
+
+.bday-profile-btn:hover {
+  background: var(--accent);
+  color: #0a1f38 !important;
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    NOTICES & ANNOUNCEMENTS STYLES
    ═══════════════════════════════════════════════════════════════ */
@@ -5342,13 +5404,23 @@ body[data-lang="bn"] textarea {
   color: #ffffff;
 }
 
-.hero h1,
-.page-hero h1 {
+/* Homepage hero title — short brand name, can be huge */
+.hero h1 {
   margin: 0;
   font-family: "Soin Sans Pro", "Outfit", Arial, sans-serif;
   font-size: clamp(2.5rem, 7vw, 5.6rem);
   line-height: 0.98;
   font-weight: 800;
+}
+
+/* Subpage hero titles — longer titles, needs controlled size */
+.page-hero h1 {
+  margin: 0;
+  font-family: "Soin Sans Pro", "Outfit", Arial, sans-serif;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  line-height: 1.15;
+  font-weight: 800;
+  max-width: 820px;
 }
 
 body[data-lang="bn"] .hero h1,
@@ -7579,8 +7651,8 @@ img.bday-avatar {
   padding: 136px 0 84px;
   overflow: hidden;
   background:
-    radial-gradient(circle at 85% 30%, rgba(13, 92, 78, 0.42) 0%, transparent 60%),
-    linear-gradient(135deg, rgba(8, 13, 24, 0.94) 0%, rgba(13, 22, 38, 0.86) 100%),
+    radial-gradient(circle at 85% 30%, rgba(13, 92, 78, 0.32) 0%, transparent 60%),
+    linear-gradient(90deg, rgba(5, 10, 18, 0.75), rgba(5, 10, 18, 0.42)),
     var(--hero-bg, url("../images/hostel-hero.jpg")) center / cover no-repeat;
   color: #ffffff;
 }
@@ -7839,7 +7911,7 @@ img.bday-avatar {
   .developer-hero {
     padding: 124px 0 48px !important;
     background:
-      linear-gradient(180deg, rgba(8, 13, 24, 0.96) 0%, rgba(13, 22, 38, 0.92) 100%),
+      linear-gradient(180deg, rgba(5, 10, 18, 0.80) 0%, rgba(5, 10, 18, 0.55) 100%),
       var(--hero-bg, url("../images/hostel-hero.jpg")) center 20% / cover no-repeat !important;
   }
   .developer-hero-inner {
