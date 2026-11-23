@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { SecurePasswordInput } from '../components/SecurePasswordInput.jsx'
 
 export default defineType({
   name: 'batchConfig',
@@ -40,6 +41,7 @@ export default defineType({
       name: 'batch_password',
       title: 'Website Login Password',
       type: 'string',
+      components: { input: SecurePasswordInput },
       description: 'ওয়েবসাইটে এই ব্যাচের সংরক্ষিত তথ্য দেখার পাসওয়ার্ড। শিক্ষার্থীরা এই পাসওয়ার্ড দিয়ে ওয়েবসাইটে লগইন করবে।',
     }),
   ],

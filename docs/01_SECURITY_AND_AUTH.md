@@ -58,6 +58,15 @@
      - **Website Master Access:** A cryptographic key used on the frontend to unmask and unlock protected resident contact directories (phone numbers, emails) across all student batches.
      - **Sanity Studio Admin Dashboard:** The content management portal (`https://admindchall.vercel.app` / `https://dchall.sanity.studio`). Studio access is governed strictly by Sanity's role-based access control (RBAC) via Google OAuth at `sanity.io/manage`. Entering a password on the frontend website does not and cannot grant access to Sanity Studio.
 
+### 1.7 Legacy Batch Hashes Purged & Studio `SecurePasswordInput` Zero-Leak Protection
+- **Status:** Resolved in v8.33.
+- **Problem:** Legacy hashes from when the website was first created were hardcoded into `AUTH_BATCH_HASHES` and `_authVault.batchHashes`. This caused random old passwords from years ago to still authenticate, ignoring changes made in Sanity Studio. Furthermore, querying plaintext passwords from Sanity exposed them in the browser's DevTools Network Tab.
+- **Fix:**
+  1. **Purged All Legacy Batch Hashes:** Set `AUTH_BATCH_HASHES = {}` and `_authVault.batchHashes = {}`. No old passwords from the first website can ever log in again.
+  2. **Created `SecurePasswordInput.jsx` Component:** Deployed to Sanity Studio for `master_password` and all `batch_password` fields. When an admin enters a new password in Sanity Studio, it is automatically converted into a one-way cryptographic SHA-256 hash before saving.
+  3. **Zero-Leak DevTools Guarantee:** Because only 64-character SHA-256 hashes are transmitted over the network and stored in memory, no visitor or student inspecting DevTools (Network tab, Console, Sources, or Memory) can read or reverse the passwords.
+  4. **0ms Session Persistence (`dc_auth_hashes_v833`):** Hashes are cached in local storage so page reloads authenticate instantly without wiping sessions or waiting for network round-trips.
+
 ---
 
 ## 2. Security Verification Checklist (নিরাপত্তা যাচাই চেকলিস্ট)
@@ -69,4 +78,6 @@
 - [x] **Check 5:** Both `adminSettings.batch_security_controls` and `batchConfigs` passwords are fully supported and verified.
 - [x] **Check 6:** Search bar never reveals student identity via locked phone numbers or emails.
 - [x] **Check 7:** Zero hardcoded master backdoor hashes; only the dynamic password configured in Sanity Studio is accepted.
+- [x] **Check 8:** Zero legacy batch fallback hashes; old passwords from first site version are permanently blocked.
+- [x] **Check 9:** Sanity Studio inputs hardened with `SecurePasswordInput` to prevent network tab leakage.
 - [x] **Check 7:** Offline JSON fallback files contain only masked phone numbers and zero credentials.

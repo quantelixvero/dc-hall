@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { SecurePasswordInput } from '../components/SecurePasswordInput.jsx'
 
 // Predefined Profile Fields for Dropdown (Clean English titles)
 const PROFILE_FIELD_OPTIONS = [
@@ -329,6 +330,7 @@ export default defineType({
       title: 'Master Admin Password',
       type: 'string',
       group: 'passwords',
+      components: { input: SecurePasswordInput },
       description: 'অ্যাডমিনের প্রধান সুপার মাস্টার পাসওয়ার্ড। এই পাসওয়ার্ড দিয়ে ওয়েবসাইটে লগইন করলে সকল ব্যাচ এবং সমস্ত সংরক্ষিত গোপন তথ্য অবিলম্বে আনলক হবে।',
     }),
 
@@ -387,6 +389,7 @@ export default defineType({
               name: 'batch_password',
               title: 'Batch Access Password',
               type: 'string',
+              components: { input: SecurePasswordInput },
               description: 'এই ব্যাচের ডিরেক্টরি আনলক করার পাসওয়ার্ড।',
             }),
             defineField({

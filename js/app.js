@@ -4506,46 +4506,29 @@ function computeSha256(ascii) {
 }
 
 // Precomputed one-way SHA-256 hashes (never exposes plaintext credentials)
-// Master password has ZERO hardcoded backdoors; strictly governed by Sanity Studio adminSettings.master_password
+// Zero hardcoded backdoors or legacy fallbacks; strictly governed by Sanity Studio
 const AUTH_MASTER_HASHES = [];
-
-const AUTH_BATCH_HASHES = {
-  "hsc24": ["d496a2e9db529d3ac67e1dc0697518d51339141054ff8485d35a0e19ab5c35f6"],
-  "hsc25": ["ec6740cda1b453b2c952acf97838c765376d940812a36c560c9a808ac30ac43b"],
-  "hsc26": ["d134b0d9cb95ef83720ef627560b12f96421858c088c742cd0e8bfef7a4892df"],
-  "hsc27": [
-    "5779e6be0589d1950478d0d819ff52d15240c45aef90c8e935fb778219798e38",
-    "9dfbae98257df8db309d3313566195a2cc240e8a1c364762dbdfd6ab9f3cac3a",
-    "f741d0d217ebae0bd49b0fb8bfe3ba31076e27675da9b4de46f96195843dd482"
-  ],
-  "hsc28": [
-    "189d3cedc3f17c39bf1255a232e575af62b21ad0268f1a9e1789ba5ff8e57289",
-    "0ebd02954b7d4ad2aeadcd54c036f39f3e1d1e7eb4f758f40ffa5b31c1b0560b",
-    "b3edc7f3a7d6cb3432685305c8a05bf186651702e12facf678781155a05fcf45"
-  ],
-  "hsc29": ["e69a6af334e6c1597a806c2c9a89d83da787d930b78bd131fe3d072a7c7e3000"],
-  "hsc30": ["35f875a4cc31e3d08a175d8e71edc8f4837084a1188b41af35df3bd6fe072c6b"],
-  "hsc31": ["787ba95b8a6046f48431f5615d835f4b58941df5334250b15abc1ada594873a0"],
-  "hsc32": ["5eac08e76697da0d2754cd794cfc17091c8e77b6efa14815621dfb1c0fcdf340"],
-  "hsc33": ["3024e70565c0433dd0a7607a18d5cff7143fa168527457bd78d6d270139ab81e"],
-  "hsc34": ["dfae1bc51c1a98479e03469549c0b1c495e822c0235ef48c2ec22ba2ebe5edd9"],
-  "hsc35": ["cfb35ac95fbbfb9c5955ece780d685660ac036306574c935b6f2a44b1281285c"]
-};
+const AUTH_BATCH_HASHES = {};
 
 function verifyAuthSecret(secret) {
   if (!secret) return null;
   const clean = String(secret).trim();
   const hash = computeSha256(clean);
 
-  // 1. High-security check via cryptographic Auth Vault (Sanity Lake + offline)
+  // 1. High-security check via cryptographic Auth Vault (Sanity Lake dynamic hashes)
   if (window.__DC_AUTH_VAULT__ && typeof window.__DC_AUTH_VAULT__.verify === "function") {
     const vaultRole = window.__DC_AUTH_VAULT__.verify(clean);
     if (vaultRole) return vaultRole;
   }
 
-  // 2. Direct Master Check (dynamic master password from adminSettings)
+  // 2. Direct Master Check (dynamic master password from adminSettings if in memory)
   const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
-  if (cmsMaster && (clean === String(cmsMaster).trim() || hash === computeSha256(String(cmsMaster).trim()))) return "master";
+  if (cmsMaster) {
+    const p = String(cmsMaster).trim();
+    const isMHash = /^[0-9a-f]{64}$/i.test(p);
+    if (isMHash && hash === p.toLowerCase()) return "master";
+    if (!isMHash && (clean === p || hash === computeSha256(p))) return "master";
+  }
   if (AUTH_MASTER_HASHES.includes(hash)) return "master";
 
   // 3. Dynamic Batch Passwords from adminSettings.batch_security_controls
@@ -4553,9 +4536,9 @@ function verifyAuthSecret(secret) {
     for (const ctrl of cmsAdminSettings.batch_security_controls) {
       if (ctrl && ctrl.batch && ctrl.batch_password) {
         const p = String(ctrl.batch_password).trim();
-        if (clean === p || hash === computeSha256(p)) {
-          return `hsc${parseBatchNum(ctrl.batch)}`;
-        }
+        const isBHash = /^[0-9a-f]{64}$/i.test(p);
+        if (isBHash && hash === p.toLowerCase()) return `hsc${parseBatchNum(ctrl.batch)}`;
+        if (!isBHash && (clean === p || hash === computeSha256(p))) return `hsc${parseBatchNum(ctrl.batch)}`;
       }
     }
   }
@@ -4565,17 +4548,16 @@ function verifyAuthSecret(secret) {
     for (const cfg of cmsBatchConfigs) {
       if (cfg && cfg.batch && cfg.batch_password) {
         const p = String(cfg.batch_password).trim();
-        if (clean === p || hash === computeSha256(p)) {
-          const num = parseBatchNum(cfg.batch);
-          return `hsc${num}`;
-        }
+        const isBHash = /^[0-9a-f]{64}$/i.test(p);
+        if (isBHash && hash === p.toLowerCase()) return `hsc${parseBatchNum(cfg.batch)}`;
+        if (!isBHash && (clean === p || hash === computeSha256(p))) return `hsc${parseBatchNum(cfg.batch)}`;
       }
     }
   }
 
-  // 5. Fallback verification against offline static hashes
+  // 5. Fallback verification against offline static hashes (strictly empty)
   for (const [bKey, hashes] of Object.entries(AUTH_BATCH_HASHES)) {
-    if (hashes.includes(hash)) return bKey;
+    if (Array.isArray(hashes) && hashes.includes(hash)) return bKey;
   }
   return null;
 }
@@ -4625,13 +4607,21 @@ function getAuthRole() {
 
   if (savedHash) {
     const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
-    if (cmsMaster && computeSha256(String(cmsMaster).trim()) === savedHash) return "master";
+    if (cmsMaster) {
+      const p = String(cmsMaster).trim();
+      const isMHash = /^[0-9a-f]{64}$/i.test(p);
+      const mHash = isMHash ? p.toLowerCase() : computeSha256(p);
+      if (mHash === savedHash) return "master";
+    }
     if (AUTH_MASTER_HASHES.includes(savedHash)) return "master";
 
     if (cmsAdminSettings?.batch_security_controls && Array.isArray(cmsAdminSettings.batch_security_controls)) {
       for (const ctrl of cmsAdminSettings.batch_security_controls) {
         if (ctrl && ctrl.batch && ctrl.batch_password) {
-          if (computeSha256(String(ctrl.batch_password).trim()) === savedHash) {
+          const p = String(ctrl.batch_password).trim();
+          const isBHash = /^[0-9a-f]{64}$/i.test(p);
+          const bHash = isBHash ? p.toLowerCase() : computeSha256(p);
+          if (bHash === savedHash) {
             return `hsc${parseBatchNum(ctrl.batch)}`;
           }
         }
@@ -4641,7 +4631,10 @@ function getAuthRole() {
     if (Array.isArray(cmsBatchConfigs)) {
       for (const cfg of cmsBatchConfigs) {
         if (cfg && cfg.batch && cfg.batch_password) {
-          if (computeSha256(String(cfg.batch_password).trim()) === savedHash) {
+          const p = String(cfg.batch_password).trim();
+          const isBHash = /^[0-9a-f]{64}$/i.test(p);
+          const bHash = isBHash ? p.toLowerCase() : computeSha256(p);
+          if (bHash === savedHash) {
             return `hsc${parseBatchNum(cfg.batch)}`;
           }
         }
@@ -4649,7 +4642,7 @@ function getAuthRole() {
     }
 
     for (const [bKey, hashes] of Object.entries(AUTH_BATCH_HASHES)) {
-      if (hashes.includes(savedHash)) return bKey;
+      if (Array.isArray(hashes) && hashes.includes(savedHash)) return bKey;
     }
   }
   return "guest";
@@ -4795,28 +4788,34 @@ function checkSessionValidity() {
     if (!isValid) {
       if (role === "master") {
         const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
-        if (cmsMaster && computeSha256(String(cmsMaster).trim()) === savedHash) isValid = true;
-        else if (AUTH_MASTER_HASHES.includes(savedHash)) isValid = true;
+        if (cmsMaster) {
+          const p = String(cmsMaster).trim();
+          const isMHash = /^[0-9a-f]{64}$/i.test(p);
+          const mHash = isMHash ? p.toLowerCase() : computeSha256(p);
+          if (mHash === savedHash) isValid = true;
+        } else if (AUTH_MASTER_HASHES.includes(savedHash)) isValid = true;
       } else {
         if (cmsAdminSettings?.batch_security_controls && Array.isArray(cmsAdminSettings.batch_security_controls)) {
           for (const ctrl of cmsAdminSettings.batch_security_controls) {
             if (ctrl && ctrl.batch && ctrl.batch_password) {
-              if (computeSha256(String(ctrl.batch_password).trim()) === savedHash) {
-                if (role === `hsc${parseBatchNum(ctrl.batch)}`) isValid = true;
-              }
+              const p = String(ctrl.batch_password).trim();
+              const isBHash = /^[0-9a-f]{64}$/i.test(p);
+              const bHash = isBHash ? p.toLowerCase() : computeSha256(p);
+              if (bHash === savedHash && role === `hsc${parseBatchNum(ctrl.batch)}`) isValid = true;
             }
           }
         }
-        if (Array.isArray(cmsBatchConfigs)) {
+        if (!isValid && Array.isArray(cmsBatchConfigs)) {
           for (const cfg of cmsBatchConfigs) {
             if (cfg && cfg.batch && cfg.batch_password) {
-              if (computeSha256(String(cfg.batch_password).trim()) === savedHash) {
-                if (role === `hsc${parseBatchNum(cfg.batch)}`) isValid = true;
-              }
+              const p = String(cfg.batch_password).trim();
+              const isBHash = /^[0-9a-f]{64}$/i.test(p);
+              const bHash = isBHash ? p.toLowerCase() : computeSha256(p);
+              if (bHash === savedHash && role === `hsc${parseBatchNum(cfg.batch)}`) isValid = true;
             }
           }
         }
-        if (AUTH_BATCH_HASHES[role] && AUTH_BATCH_HASHES[role].includes(savedHash)) isValid = true;
+        if (!isValid && Array.isArray(AUTH_BATCH_HASHES[role]) && AUTH_BATCH_HASHES[role].includes(savedHash)) isValid = true;
       }
     }
   } else {

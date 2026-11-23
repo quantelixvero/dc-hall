@@ -92,34 +92,62 @@ function parseBatchNum(batch) {
 }
 
 // ==============================================================================
-// 2. ZERO-LEAK INTERNAL AUTH VAULT (Zero Hardcoded Master Backdoors)
+// 2. ZERO-LEAK INTERNAL AUTH VAULT (Zero Hardcoded Master or Batch Backdoors)
 // ==============================================================================
 const _authVault = {
   // Master password hashes are strictly populated dynamically from Sanity Studio adminSettings.master_password
   masterHashes: new Set(),
-  batchHashes: {
-    "hsc24": new Set(["d496a2e9db529d3ac67e1dc0697518d51339141054ff8485d35a0e19ab5c35f6"]),
-    "hsc25": new Set(["ec6740cda1b453b2c952acf97838c765376d940812a36c560c9a808ac30ac43b"]),
-    "hsc26": new Set(["d134b0d9cb95ef83720ef627560b12f96421858c088c742cd0e8bfef7a4892df"]),
-    "hsc27": new Set([
-      "5779e6be0589d1950478d0d819ff52d15240c45aef90c8e935fb778219798e38",
-      "9dfbae98257df8db309d3313566195a2cc240e8a1c364762dbdfd6ab9f3cac3a",
-      "f741d0d217ebae0bd49b0fb8bfe3ba31076e27675da9b4de46f96195843dd482"
-    ]),
-    "hsc28": new Set([
-      "189d3cedc3f17c39bf1255a232e575af62b21ad0268f1a9e1789ba5ff8e57289",
-      "0ebd02954b7d4ad2aeadcd54c036f39f3e1d1e7eb4f758f40ffa5b31c1b0560b",
-      "b3edc7f3a7d6cb3432685305c8a05bf186651702e12facf678781155a05fcf45"
-    ]),
-    "hsc29": new Set(["e69a6af334e6c1597a806c2c9a89d83da787d930b78bd131fe3d072a7c7e3000"]),
-    "hsc30": new Set(["35f875a4cc31e3d08a175d8e71edc8f4837084a1188b41af35df3bd6fe072c6b"]),
-    "hsc31": new Set(["787ba95b8a6046f48431f5615d835f4b58941df5334250b15abc1ada594873a0"]),
-    "hsc32": new Set(["5eac08e76697da0d2754cd794cfc17091c8e77b6efa14815621dfb1c0fcdf340"]),
-    "hsc33": new Set(["3024e70565c0433dd0a7607a18d5cff7143fa168527457bd78d6d270139ab81e"]),
-    "hsc34": new Set(["dfae1bc51c1a98479e03469549c0b1c495e822c0235ef48c2ec22ba2ebe5edd9"]),
-    "hsc35": new Set(["cfb35ac95fbbfb9c5955ece780d685660ac036306574c935b6f2a44b1281285c"])
-  }
+  // Batch password hashes are strictly populated dynamically from Sanity Studio batchConfig & batch_security_controls
+  batchHashes: {}
 };
+
+/**
+ * Persist dynamic SHA-256 hashes to localStorage so subsequent page loads
+ * and navigation can authenticate at 0ms without waiting for network requests,
+ * while NEVER storing plaintext passwords or sensitive credentials.
+ */
+function persistAuthVault() {
+  try {
+    const serialized = {
+      master: Array.from(_authVault.masterHashes),
+      batches: {}
+    };
+    for (const [bKey, set] of Object.entries(_authVault.batchHashes)) {
+      if (set instanceof Set) {
+        serialized.batches[bKey] = Array.from(set);
+      }
+    }
+    localStorage.setItem("dc_auth_hashes_v833", JSON.stringify(serialized));
+  } catch (e) {}
+}
+
+/**
+ * Hydrate dynamic hashes from previous verified Sanity sync at 0ms.
+ */
+function loadPersistedVault() {
+  try {
+    const raw = localStorage.getItem("dc_auth_hashes_v833");
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (Array.isArray(data.master)) {
+        data.master.forEach(h => {
+          if (h && typeof h === "string") _authVault.masterHashes.add(h.toLowerCase());
+        });
+      }
+      if (data.batches && typeof data.batches === "object") {
+        for (const [bKey, list] of Object.entries(data.batches)) {
+          if (Array.isArray(list)) {
+            if (!_authVault.batchHashes[bKey]) _authVault.batchHashes[bKey] = new Set();
+            list.forEach(h => {
+              if (h && typeof h === "string") _authVault.batchHashes[bKey].add(h.toLowerCase());
+            });
+          }
+        }
+      }
+    }
+  } catch (e) {}
+}
+loadPersistedVault();
 
 /**
  * Ingests live passwords into cryptographic vault and completely scrubs
@@ -128,11 +156,16 @@ const _authVault = {
 function processAndSanitizeAuth(rawResult) {
   if (!rawResult) return;
 
+  // Clear previous dynamic hashes so deleted or modified credentials immediately stop working
+  _authVault.masterHashes.clear();
+  _authVault.batchHashes = {};
+
   // 1. Ingest Master Password from adminSettings
   if (rawResult.adminSettings && rawResult.adminSettings.master_password) {
     const rawMaster = String(rawResult.adminSettings.master_password).trim();
     if (rawMaster) {
-      _authVault.masterHashes.add(computeSha256(rawMaster));
+      const isHash = /^[0-9a-f]{64}$/i.test(rawMaster);
+      _authVault.masterHashes.add(isHash ? rawMaster.toLowerCase() : computeSha256(rawMaster));
     }
     // Scrub plaintext password so it NEVER leaks to window or localStorage
     delete rawResult.adminSettings.master_password;
@@ -146,7 +179,8 @@ function processAndSanitizeAuth(rawResult) {
         if (rawBatchPass) {
           const bKey = `hsc${parseBatchNum(ctrl.batch)}`;
           if (!_authVault.batchHashes[bKey]) _authVault.batchHashes[bKey] = new Set();
-          _authVault.batchHashes[bKey].add(computeSha256(rawBatchPass));
+          const isHash = /^[0-9a-f]{64}$/i.test(rawBatchPass);
+          _authVault.batchHashes[bKey].add(isHash ? rawBatchPass.toLowerCase() : computeSha256(rawBatchPass));
         }
         delete ctrl.batch_password;
       }
@@ -162,7 +196,8 @@ function processAndSanitizeAuth(rawResult) {
         if (rawBatchPass) {
           const bKey = `hsc${parseBatchNum(cfg.batch)}`;
           if (!_authVault.batchHashes[bKey]) _authVault.batchHashes[bKey] = new Set();
-          _authVault.batchHashes[bKey].add(computeSha256(rawBatchPass));
+          const isHash = /^[0-9a-f]{64}$/i.test(rawBatchPass);
+          _authVault.batchHashes[bKey].add(isHash ? rawBatchPass.toLowerCase() : computeSha256(rawBatchPass));
         }
         delete cfg.batch_password;
       }
@@ -176,6 +211,9 @@ function processAndSanitizeAuth(rawResult) {
     delete rawResult.adminSettings.super_admin_emails;
     delete rawResult.adminSettings.universal_moderator_emails;
   }
+
+  // 5. Persist the updated hashes so subsequent page reloads are verified at 0ms
+  persistAuthVault();
 }
 
 window.__DC_AUTH_VAULT__ = {
