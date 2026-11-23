@@ -3,7 +3,7 @@
 
 [![Live Portal](https://img.shields.io/badge/Live_Portal-dchall.pro.bd-00d084?style=for-the-badge&logo=googlechrome&logoColor=white)](https://dchall.pro.bd/)
 [![Sanity Studio](https://img.shields.io/badge/Sanity_Studio-dchall.sanity.studio-f03e2f?style=for-the-badge&logo=sanity&logoColor=white)](https://dchall.sanity.studio/)
-[![Version](https://img.shields.io/badge/Version-v8.32-0ea5e9?style=for-the-badge&logo=git&logoColor=white)](https://github.com/seadib/dc-hall)
+[![Version](https://img.shields.io/badge/Version-v8.33-0ea5e9?style=for-the-badge&logo=git&logoColor=white)](https://github.com/seadib/dc-hall)
 [![Performance](https://img.shields.io/badge/Lighthouse-100%2F100-emerald?style=for-the-badge&logo=lighthouse&logoColor=white)](https://dchall.pro.bd/)
 [![License](https://img.shields.io/badge/License-Proprietary-gray?style=for-the-badge)](LICENSE)
 

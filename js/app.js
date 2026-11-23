@@ -2173,7 +2173,7 @@ async function loadCmsContent() {
   applySavedViewModes();
   // ⚡ 1. FAST CACHE-FIRST HYDRATION (Instant 0ms render without waiting for network!)
   try {
-    const cachedRaw = localStorage.getItem("dc_sanity_cache_v81");
+    const cachedRaw = localStorage.getItem("dc_sanity_cache_v833");
     if (cachedRaw) {
       const cached = JSON.parse(cachedRaw);
       if (cached && cached.students && cached.students.length) {
@@ -2197,7 +2197,7 @@ async function loadCmsContent() {
 
   if (sanityData && sanityData.students && sanityData.students.length) {
     try {
-      localStorage.setItem("dc_sanity_cache_v81", JSON.stringify(sanityData));
+      localStorage.setItem("dc_sanity_cache_v833", JSON.stringify(sanityData));
     } catch (e) {}
     applySanityPayload(sanityData);
     renderDynamicContent();
@@ -2378,19 +2378,20 @@ function getBatchSecurityConfig(batchName) {
   if (!batchName) return null;
   const cleanBatch = String(batchName).trim().toUpperCase();
 
+  let matched = null;
   // 1. Check adminSettings.batch_security_controls (Centralized Security & Visibility)
   if (cmsAdminSettings?.batch_security_controls && Array.isArray(cmsAdminSettings.batch_security_controls)) {
-    const matched = cmsAdminSettings.batch_security_controls.find(c => String(c?.batch || '').trim().toUpperCase() === cleanBatch);
-    if (matched) return matched;
+    matched = cmsAdminSettings.batch_security_controls.find(c => String(c?.batch || '').trim().toUpperCase() === cleanBatch);
+    if (matched && (matched.batch_password || matched.is_locked)) return matched;
   }
 
   // 2. Check batchConfigs collection
   if (Array.isArray(cmsBatchConfigs)) {
-    const matched = cmsBatchConfigs.find(c => String(c?.batch || '').trim().toUpperCase() === cleanBatch);
-    if (matched) return matched;
+    const cfg = cmsBatchConfigs.find(c => String(c?.batch || '').trim().toUpperCase() === cleanBatch);
+    if (cfg) return cfg;
   }
 
-  return null;
+  return matched || null;
 }
 
 function isBatchDirectoryLocked(batchName) {
@@ -2402,9 +2403,9 @@ function unlockBatchDirectory(batchName, inputPassword) {
   const cleanPass = String(inputPassword).trim();
   const cleanBatch = String(batchName).trim().toUpperCase();
 
-  // Check master password
-  const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
-  if (cmsMaster && cleanPass === String(cmsMaster).trim()) {
+  // Unified verification against master or batch password
+  const verifiedRole = verifyAuthSecret(cleanPass);
+  if (verifiedRole === "master" || verifiedRole === `hsc${parseBatchNum(cleanBatch)}`) {
     sessionStorage.setItem(`dc_hall_batch_unlocked_${cleanBatch}`, "1");
     return { success: true };
   }
@@ -4537,16 +4538,35 @@ function verifyAuthSecret(secret) {
   const clean = String(secret).trim();
   const hash = computeSha256(clean);
 
-  // 1. Dynamic Master Password from Sanity CMS adminSettings
+  // 1. High-security check via cryptographic Auth Vault (Sanity Lake + offline)
+  if (window.__DC_AUTH_VAULT__ && typeof window.__DC_AUTH_VAULT__.verify === "function") {
+    const vaultRole = window.__DC_AUTH_VAULT__.verify(clean);
+    if (vaultRole) return vaultRole;
+  }
+
+  // 2. Direct Master Check (dynamic master password from adminSettings)
   const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
-  if (cmsMaster && clean === String(cmsMaster).trim()) return "master";
+  if (cmsMaster && (clean === String(cmsMaster).trim() || hash === computeSha256(String(cmsMaster).trim()))) return "master";
   if (AUTH_MASTER_HASHES.includes(hash)) return "master";
 
-  // 2. Dynamic Batch Passwords from Sanity CMS batchConfigs
+  // 3. Dynamic Batch Passwords from adminSettings.batch_security_controls
+  if (cmsAdminSettings?.batch_security_controls && Array.isArray(cmsAdminSettings.batch_security_controls)) {
+    for (const ctrl of cmsAdminSettings.batch_security_controls) {
+      if (ctrl && ctrl.batch && ctrl.batch_password) {
+        const p = String(ctrl.batch_password).trim();
+        if (clean === p || hash === computeSha256(p)) {
+          return `hsc${parseBatchNum(ctrl.batch)}`;
+        }
+      }
+    }
+  }
+
+  // 4. Dynamic Batch Passwords from Sanity CMS batchConfigs
   if (Array.isArray(cmsBatchConfigs)) {
     for (const cfg of cmsBatchConfigs) {
       if (cfg && cfg.batch && cfg.batch_password) {
-        if (clean === String(cfg.batch_password).trim()) {
+        const p = String(cfg.batch_password).trim();
+        if (clean === p || hash === computeSha256(p)) {
           const num = parseBatchNum(cfg.batch);
           return `hsc${num}`;
         }
@@ -4554,7 +4574,7 @@ function verifyAuthSecret(secret) {
     }
   }
 
-  // 3. Fallback verification against offline static hashes
+  // 5. Fallback verification against offline static hashes
   for (const [bKey, hashes] of Object.entries(AUTH_BATCH_HASHES)) {
     if (hashes.includes(hash)) return bKey;
   }
@@ -4576,7 +4596,7 @@ function isGlobalVisibilityOn() {
 
 function getAuthRole() {
   const role = localStorage.getItem("dc-auth-role");
-  if (role && role !== "guest") return role;
+  const savedHash = localStorage.getItem("dc-auth-hash");
 
   // Seamless migration from legacy plaintext password to secure hash
   const legacyPassword = localStorage.getItem("dc-student-password");
@@ -4590,9 +4610,45 @@ function getAuthRole() {
     }
   }
 
-  const savedHash = localStorage.getItem("dc-auth-hash");
+  // 1. Check cryptographic Auth Vault for saved hash
+  if (savedHash && window.__DC_AUTH_VAULT__ && typeof window.__DC_AUTH_VAULT__.getRoleForHash === "function") {
+    const vaultRole = window.__DC_AUTH_VAULT__.getRoleForHash(savedHash);
+    if (vaultRole) return vaultRole;
+  }
+
+  if (role && role !== "guest") {
+    if (savedHash && window.__DC_AUTH_VAULT__ && typeof window.__DC_AUTH_VAULT__.isHashValid === "function") {
+      if (window.__DC_AUTH_VAULT__.isHashValid(savedHash, role)) return role;
+    } else {
+      return role;
+    }
+  }
+
   if (savedHash) {
+    const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
+    if (cmsMaster && computeSha256(String(cmsMaster).trim()) === savedHash) return "master";
     if (AUTH_MASTER_HASHES.includes(savedHash)) return "master";
+
+    if (cmsAdminSettings?.batch_security_controls && Array.isArray(cmsAdminSettings.batch_security_controls)) {
+      for (const ctrl of cmsAdminSettings.batch_security_controls) {
+        if (ctrl && ctrl.batch && ctrl.batch_password) {
+          if (computeSha256(String(ctrl.batch_password).trim()) === savedHash) {
+            return `hsc${parseBatchNum(ctrl.batch)}`;
+          }
+        }
+      }
+    }
+
+    if (Array.isArray(cmsBatchConfigs)) {
+      for (const cfg of cmsBatchConfigs) {
+        if (cfg && cfg.batch && cfg.batch_password) {
+          if (computeSha256(String(cfg.batch_password).trim()) === savedHash) {
+            return `hsc${parseBatchNum(cfg.batch)}`;
+          }
+        }
+      }
+    }
+
     for (const [bKey, hashes] of Object.entries(AUTH_BATCH_HASHES)) {
       if (hashes.includes(savedHash)) return bKey;
     }
@@ -4732,22 +4788,37 @@ function checkSessionValidity() {
   if (!role || role === "guest") return;
   const savedHash = localStorage.getItem("dc-auth-hash");
   let isValid = false;
+
   if (savedHash) {
-    if (role === "master") {
-      const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
-      if (cmsMaster && computeSha256(String(cmsMaster).trim()) === savedHash) isValid = true;
-      else if (AUTH_MASTER_HASHES.includes(savedHash)) isValid = true;
-    } else {
-      if (Array.isArray(cmsBatchConfigs)) {
-        for (const cfg of cmsBatchConfigs) {
-          if (cfg && cfg.batch && cfg.batch_password) {
-            if (computeSha256(String(cfg.batch_password).trim()) === savedHash) {
-              if (role === `hsc${parseBatchNum(cfg.batch)}`) isValid = true;
+    if (window.__DC_AUTH_VAULT__ && typeof window.__DC_AUTH_VAULT__.isHashValid === "function") {
+      isValid = window.__DC_AUTH_VAULT__.isHashValid(savedHash, role);
+    }
+    if (!isValid) {
+      if (role === "master") {
+        const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
+        if (cmsMaster && computeSha256(String(cmsMaster).trim()) === savedHash) isValid = true;
+        else if (AUTH_MASTER_HASHES.includes(savedHash)) isValid = true;
+      } else {
+        if (cmsAdminSettings?.batch_security_controls && Array.isArray(cmsAdminSettings.batch_security_controls)) {
+          for (const ctrl of cmsAdminSettings.batch_security_controls) {
+            if (ctrl && ctrl.batch && ctrl.batch_password) {
+              if (computeSha256(String(ctrl.batch_password).trim()) === savedHash) {
+                if (role === `hsc${parseBatchNum(ctrl.batch)}`) isValid = true;
+              }
             }
           }
         }
+        if (Array.isArray(cmsBatchConfigs)) {
+          for (const cfg of cmsBatchConfigs) {
+            if (cfg && cfg.batch && cfg.batch_password) {
+              if (computeSha256(String(cfg.batch_password).trim()) === savedHash) {
+                if (role === `hsc${parseBatchNum(cfg.batch)}`) isValid = true;
+              }
+            }
+          }
+        }
+        if (AUTH_BATCH_HASHES[role] && AUTH_BATCH_HASHES[role].includes(savedHash)) isValid = true;
       }
-      if (AUTH_BATCH_HASHES[role] && AUTH_BATCH_HASHES[role].includes(savedHash)) isValid = true;
     }
   } else {
     const legacyPass = localStorage.getItem("dc-student-password");
