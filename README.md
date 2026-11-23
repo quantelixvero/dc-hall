@@ -1,5 +1,5 @@
 # 🏛️ Dhaka College International Hall Management System
-### ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস ওয়েব পোর্টাল ও সেন্ট্রাল ইনফরমেশন সিস্টেম
+### Central Information System & Web Portal
 
 [![Live Portal](https://img.shields.io/badge/Live_Portal-dchall.pro.bd-00d084?style=for-the-badge&logo=googlechrome&logoColor=white)](https://dchall.pro.bd/)
 [![Sanity Studio](https://img.shields.io/badge/Sanity_Studio-dchall.sanity.studio-f03e2f?style=for-the-badge&logo=sanity&logoColor=white)](https://dchall.sanity.studio/)
@@ -11,9 +11,9 @@
 
 ## 📖 Overview
 
-**Dhaka College International Hall** (ঢাকা কলেজ আন্তর্জাতিক ছাত্রাবাস) is the premier residential hall for higher secondary students of Dhaka College. This platform is an enterprise-grade, high-performance progressive web portal and administrative management system engineered to connect students, alumni, hall administration, and visitors.
+**Dhaka College International Hall** is the premier residential hall for higher secondary students of Dhaka College. This platform is an enterprise-grade, high-performance progressive web portal and administrative management system engineered to connect students, alumni, hall administration, and visitors.
 
-The platform combines an ultra-lightweight client-side frontend (0 kB external framework overhead, 100/100 Lighthouse performance) with a modern cloud content lake powered by **Sanity Headless CMS (v3)**, delivering real-time synchronization, zero data leaks, and responsive bilingual access across all devices.
+The platform combines an ultra-lightweight client-side frontend (0 kB external framework overhead, 100/100 Lighthouse performance) with a modern cloud content lake powered by **Sanity Headless CMS (v3)**, delivering real-time synchronization, zero data leaks, and responsive access across all devices.
 
 ---
 
@@ -24,7 +24,7 @@ The platform combines an ultra-lightweight client-side frontend (0 kB external f
 - **🔒 Privacy-First Security & Zero-Leak Search:** Public search queries cannot match or reveal students through locked phone numbers or emails. Server-level GROQ projections filter sensitive administrative credentials, and client-side password verification operates via zero-dependency pure SHA-256 cryptographic hashing.
 - **🚪 Intelligent Roommate Allocation:** Proprietary 2-pass pairing algorithm matching bedmates seamlessly, supporting both a 2-Column Detailed Grid View and a 3-Column Compact Parallel View with cross-batch historical room photo aggregation.
 - **📱 Responsive Deep Glassmorphism:** Custom dark mode aesthetic accented with Emerald Glow (`#00d084`), fluid mobile viewports, and zero-overflow grid containment.
-- **🌐 Bilingual Accessibility:** Full English and Bengali language integration across metadata, student cards, notice boards, and administrative studio guidelines.
+- **🌐 Multi-Language Accessibility:** Seamless bilingual data architecture (English & Bengali) across resident directory metadata, student cards, notice boards, and administrative studio guidelines.
 
 ---
 
@@ -108,7 +108,7 @@ Content management is orchestrated via **Sanity Studio v3**, hosted at [`dchall.
 
 - **Batch-Scoped Desk Structure:** Organizes all records into dedicated batch workspaces (**HSC-27** through **HSC-35**) for students, room allocations, and photo archives.
 - **Pre-Locked Document Templates:** Instantiating records from a batch directory pre-populates and locks the `batch` attribute, preventing accidental data displacement.
-- **Emoji-Free Enterprise UI:** Complete removal of emoji clutter in field titles and tabs, replaced with standardized English headings paired with clear Bengali administrative instructions.
+- **Emoji-Free Enterprise UI:** Standardized English headings paired with intuitive administrative instructions for hall authorities.
 - **Student Profile Review Pipeline:** Ingestion system capturing resident edit requests with visual side-by-side diffing and 1-click administrative approval.
 
 > Schema documentation and desk structure guidelines are documented in [Module 02: Sanity CMS & Studio](docs/02_SANITY_CMS_AND_STUDIO.md).
@@ -126,7 +126,7 @@ dc-hall/docs/
 ├── 02_SANITY_CMS_AND_STUDIO.md  # Studio v3 configuration, GROQ queries, schemas & desk structure
 ├── 03_DESIGN_CSS_AND_ASSETS.md  # CSS token architecture, design guidelines & responsive breakpoints
 ├── 04_LOGIC_AND_ARCHITECTURE.md # System flowcharts, roommate pairing algorithms & data models
-└── 05_NON_DEVELOPER_CHANGELOG.md# Non-technical version changelog explaining all fixes in plain Bangla
+└── 05_NON_DEVELOPER_CHANGELOG.md# Non-technical version changelog explaining all updates and fixes
 ```
 
 ---
@@ -216,15 +216,13 @@ npm run build:css
 
 ---
 
-## 👥 Lead Contributors & Acknowledgements
+## 👤 Author & Maintainer
 
-- **MD Siyam Hasan Olive** — Lead Project Architect & Developer (HSC-28)
-- **Dr. Adib (drseadib)** — System Administrator & Technical Advisor
-- **Dhaka College International Hall Administration** — Institutional Leadership & Guidance
+- **Abdullah Al Adib (seadib)** — Creator, Lead Architect & Developer ([@seadib](https://github.com/seadib))
 
 ---
 
 <div align="center">
-  <sub>Designed and engineered with pride for the students and alumni of Dhaka College International Hall.</sub><br>
+  <sub>Designed and engineered by <b>Abdullah Al Adib (seadib)</b>.</sub><br>
   <sub>© 2026 Dhaka College International Hall. All rights reserved.</sub>
 </div>
