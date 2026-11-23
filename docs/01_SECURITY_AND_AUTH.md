@@ -48,6 +48,16 @@
 - **Status:** Resolved in v8.7.
 - All committed `data/*.json` files are completely scrubbed of credentials and personal contact numbers are masked (`01625******`). Real contact details are served solely through live, authenticated Sanity Content Lake queries.
 
+### 1.6 Hardcoded Master Backdoor Hash Removal & Studio Dashboard OAuth Separation
+- **Status:** Resolved in v8.33.
+- **Problem:** Hardcoded SHA-256 hashes (`8570c2fbb...` for `admin@bos` and `a2e4dcfa...` for `adib@boss`) were embedded in client source code (`AUTH_MASTER_HASHES` and `_authVault.masterHashes`). This allowed these legacy/backdoor passwords to log in as Master Admin on the website even though they were not configured in Sanity Studio, creating confusion as to why `admin@boss` / `admin@bos` could authenticate on the site while having no privileges in Sanity Studio.
+- **Fix:**
+  1. Purged all hardcoded fallback hashes from `AUTH_MASTER_HASHES` across `js/app.js`, `js/sanity-client.js`, `js/modules/auth.js`, and `netlify/functions/auth.mjs`.
+  2. Master access hashes are now initialized completely empty (`new Set()`) and populated solely and dynamically from `adminSettings.master_password` when fetched from Sanity Content Lake.
+  3. Clarified the architectural separation:
+     - **Website Master Access:** A cryptographic key used on the frontend to unmask and unlock protected resident contact directories (phone numbers, emails) across all student batches.
+     - **Sanity Studio Admin Dashboard:** The content management portal (`https://admindchall.vercel.app` / `https://dchall.sanity.studio`). Studio access is governed strictly by Sanity's role-based access control (RBAC) via Google OAuth at `sanity.io/manage`. Entering a password on the frontend website does not and cannot grant access to Sanity Studio.
+
 ---
 
 ## 2. Security Verification Checklist (নিরাপত্তা যাচাই চেকলিস্ট)
@@ -58,4 +68,5 @@
 - [x] **Check 4:** Changing master or batch passwords in Sanity Studio takes effect immediately and persists across page reloads.
 - [x] **Check 5:** Both `adminSettings.batch_security_controls` and `batchConfigs` passwords are fully supported and verified.
 - [x] **Check 6:** Search bar never reveals student identity via locked phone numbers or emails.
+- [x] **Check 7:** Zero hardcoded master backdoor hashes; only the dynamic password configured in Sanity Studio is accepted.
 - [x] **Check 7:** Offline JSON fallback files contain only masked phone numbers and zero credentials.

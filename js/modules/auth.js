@@ -74,9 +74,8 @@ function computeSha256(ascii) {
 }
 
 // Precomputed one-way SHA-256 hashes (never exposes plaintext credentials)
-const AUTH_MASTER_HASHES = [
-  "0ebd02954b7d4ad2aeadcd54c036f39f3e1d1e7eb4f758f40ffa5b31c1b0560b" // Master Access Hash
-];
+// Master password has ZERO hardcoded backdoors; strictly governed by Sanity Studio adminSettings.master_password
+const AUTH_MASTER_HASHES = [];
 
 const AUTH_BATCH_HASHES = {
   "hsc24": ["d496a2e9db529d3ac67e1dc0697518d51339141054ff8485d35a0e19ab5c35f6"],

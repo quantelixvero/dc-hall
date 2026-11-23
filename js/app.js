@@ -4506,9 +4506,8 @@ function computeSha256(ascii) {
 }
 
 // Precomputed one-way SHA-256 hashes (never exposes plaintext credentials)
-const AUTH_MASTER_HASHES = [
-  "a2e4dcfa08c2cd2389ef53ea7315f467e143df6f17254b984e61dfaaac33c4e3"
-];
+// Master password has ZERO hardcoded backdoors; strictly governed by Sanity Studio adminSettings.master_password
+const AUTH_MASTER_HASHES = [];
 
 const AUTH_BATCH_HASHES = {
   "hsc24": ["d496a2e9db529d3ac67e1dc0697518d51339141054ff8485d35a0e19ab5c35f6"],
@@ -4892,12 +4891,12 @@ function initAuth() {
     if (statusCard) {
       statusCard.style.display = "block";
       const adminPanelBtn = byId("adminPanelBtn") || byId("adminStudioBtn");
-      if (adminPanelBtn) adminPanelBtn.style.display = "flex";
+      if (adminPanelBtn) adminPanelBtn.style.display = currentRole === "master" ? "flex" : "none";
       if (successMsg) {
         if (currentRole === "master") {
           successMsg.textContent = currentLang === "bn"
-            ? "তুমি মাস্টার এডমিন হিসেবে লগইন করে আছো! সকল ব্যাচের যাবতীয় তথ্য ও লক করা নম্বর আনলক রয়েছে।"
-            : "You are logged in as Master Admin. Full access unlocked across all batches.";
+            ? "তুমি মাস্টার অ্যাক্সেস দিয়ে লগইন আছো! সকল ব্যাচের যাবতীয় তথ্য ও সংরক্ষিত নম্বর আনলক রয়েছে। (স্যানিটি স্টুডিও ড্যাশবোর্ডে ডেটা এডিট করার জন্য অনুমোদিত গুগল অ্যাডমিন একাউন্ট প্রয়োজন)"
+            : "You are logged in with Master Access! All batches' directory records are unlocked. (Note: Editing content in Sanity Studio dashboard requires an authorized Google Admin email).";
         } else {
           successMsg.textContent = currentLang === "bn"
             ? `তুমি ${currentRole.toUpperCase()} ব্যাচ হিসেবে লগইন আছো! তোমার ব্যাচ এবং জুনিয়র ব্যাচসমূহের সংরক্ষিত তথ্য আনলক রয়েছে।`

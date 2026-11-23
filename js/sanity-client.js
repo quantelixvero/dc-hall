@@ -92,13 +92,11 @@ function parseBatchNum(batch) {
 }
 
 // ==============================================================================
-// 2. ZERO-LEAK INTERNAL AUTH VAULT
+// 2. ZERO-LEAK INTERNAL AUTH VAULT (Zero Hardcoded Master Backdoors)
 // ==============================================================================
 const _authVault = {
-  masterHashes: new Set([
-    "a2e4dcfa08c2cd2389ef53ea7315f467e143df6f17254b984e61dfaaac33c4e3",
-    "8570c2fbb3062066109e6892c5de98141f33fb50d6d18dedc1ebdca6c144bf62" // admin@bos
-  ]),
+  // Master password hashes are strictly populated dynamically from Sanity Studio adminSettings.master_password
+  masterHashes: new Set(),
   batchHashes: {
     "hsc24": new Set(["d496a2e9db529d3ac67e1dc0697518d51339141054ff8485d35a0e19ab5c35f6"]),
     "hsc25": new Set(["ec6740cda1b453b2c952acf97838c765376d940812a36c560c9a808ac30ac43b"]),
