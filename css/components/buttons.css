@@ -26,17 +26,27 @@
   font-weight: 700;
   opacity: 0.88;
   cursor: pointer;
-  transition: color 0.2s, opacity 0.2s, background 0.2s, transform 0.2s;
+  transition: color 0.2s ease, opacity 0.2s ease, background 0.2s ease, transform 0.18s ease;
 }
 
-.navbar.scrolled .dropdown-trigger,
-body[data-page="profile"] .dropdown-trigger,
-body[data-page="form"] .dropdown-trigger,
-body[data-page="404"] .dropdown-trigger,
-body.no-hero .dropdown-trigger {
-  color: var(--text);
+/* Green indicator underline for dropdown trigger (matches .nav-links > a::after) */
+.dropdown-trigger::before {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.35);
+  transform-origin: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
 }
 
+/* Dropdown Caret Arrow */
 .dropdown-trigger::after {
   content: "";
   display: inline-block;
@@ -53,6 +63,62 @@ body.no-hero .dropdown-trigger {
 .nav-dropdown:hover .dropdown-trigger::after,
 .nav-dropdown.open .dropdown-trigger::after {
   transform: rotate(180deg);
+}
+
+/* Scrolled & Non-Hero page text color */
+.navbar.scrolled .dropdown-trigger,
+body[data-page="profile"] .dropdown-trigger,
+body[data-page="form"] .dropdown-trigger,
+body[data-page="404"] .dropdown-trigger,
+body.no-hero .dropdown-trigger,
+body.page-locked .dropdown-trigger {
+  color: var(--text);
+}
+
+/* Active & Hover States for Dropdown Trigger (Hall ▾, Dhaka College ▾) */
+.dropdown-trigger:hover,
+.dropdown-trigger:focus-visible,
+.dropdown-trigger.active,
+.nav-dropdown.active > .dropdown-trigger {
+  color: var(--accent) !important;
+  opacity: 1;
+}
+
+.dropdown-trigger:hover,
+.dropdown-trigger:focus-visible,
+.dropdown-trigger.active,
+.nav-dropdown.active > .dropdown-trigger {
+  background: rgba(255, 255, 255, 0.14);
+  transform: translateY(-1px);
+}
+
+.dropdown-trigger:hover::before,
+.dropdown-trigger:focus-visible::before,
+.dropdown-trigger.active::before,
+.nav-dropdown.active > .dropdown-trigger::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+body[data-page="profile"] .dropdown-trigger:hover,
+body[data-page="profile"] .dropdown-trigger.active,
+body[data-page="profile"] .nav-dropdown.active > .dropdown-trigger,
+body[data-page="form"] .dropdown-trigger:hover,
+body[data-page="form"] .dropdown-trigger.active,
+body[data-page="form"] .nav-dropdown.active > .dropdown-trigger,
+body[data-page="404"] .dropdown-trigger:hover,
+body[data-page="404"] .dropdown-trigger.active,
+body[data-page="404"] .nav-dropdown.active > .dropdown-trigger,
+body.no-hero .dropdown-trigger:hover,
+body.no-hero .dropdown-trigger.active,
+body.no-hero .nav-dropdown.active > .dropdown-trigger,
+body.page-locked .dropdown-trigger:hover,
+body.page-locked .dropdown-trigger.active,
+body.page-locked .nav-dropdown.active > .dropdown-trigger,
+.navbar.scrolled .dropdown-trigger:hover,
+.navbar.scrolled .dropdown-trigger.active,
+.navbar.scrolled .nav-dropdown.active > .dropdown-trigger {
+  background: var(--accent-soft);
 }
 
 .dropdown-content {
@@ -149,6 +215,7 @@ body[data-page="profile"] .profile-toggle,
 body[data-page="form"] .profile-toggle,
 body[data-page="404"] .profile-toggle,
 body.no-hero .profile-toggle,
+body.page-locked .profile-toggle,
 .navbar.scrolled .profile-toggle {
   background: var(--surface-strong);
   color: var(--text);

@@ -864,6 +864,9 @@ function checkPageAccess() {
 
   // 1. If page is disabled (hidden)
   if (isHidden) {
+    document.body.classList.add("no-hero", "page-locked");
+    const navbar = byId("navbar");
+    if (navbar) navbar.classList.add("scrolled");
     const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
     if (mainEl) {
       const bannerTitle = currentLang === 'bn' ? 'পেজটি সাময়িকভাবে বন্ধ রাখা হয়েছে' : 'Page Temporarily Disabled';
@@ -893,6 +896,9 @@ function checkPageAccess() {
   if (isLockedAll || isLockedNormal) {
     const isAuthed = Boolean(role && role !== "guest");
     if (isLockedAll || !isAuthed) {
+      document.body.classList.add("no-hero", "page-locked");
+      const navbar = byId("navbar");
+      if (navbar) navbar.classList.add("scrolled");
       const mainEl = document.querySelector("main") || document.querySelector(".page-content") || document.body;
       if (mainEl) {
         const bannerTitle = currentLang === 'bn' ? 'এই পেজটি সংরক্ষিত' : 'Protected Residential Page';
@@ -932,7 +938,18 @@ function checkPageAccess() {
     }
   }
 
+  document.body.classList.remove("page-locked");
+  updatePageHeroState();
   return false; // Access permitted
+}
+
+function updatePageHeroState() {
+  const hasHero = Boolean(document.querySelector(".hero, .page-hero, .developer-hero"));
+  if (!hasHero || document.body.classList.contains("page-locked")) {
+    document.body.classList.add("no-hero");
+  } else {
+    document.body.classList.remove("no-hero");
+  }
 }
 
 const i18n = {
@@ -2902,9 +2919,14 @@ function initNavbar() {
   if (!navbar) return;
 
   const handleScroll = () => {
-    navbar.classList.toggle("scrolled", window.scrollY > 24);
+    if (document.body.classList.contains("page-locked") || document.body.classList.contains("no-hero")) {
+      navbar.classList.add("scrolled");
+    } else {
+      navbar.classList.toggle("scrolled", window.scrollY > 24);
+    }
   };
 
+  updatePageHeroState();
   handleScroll();
   window.addEventListener("scroll", handleScroll, { passive: true });
 }

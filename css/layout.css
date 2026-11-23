@@ -23,7 +23,9 @@
 body[data-page="profile"] .navbar,
 body[data-page="form"] .navbar,
 body[data-page="404"] .navbar,
-body.no-hero .navbar {
+body.no-hero .navbar,
+body.page-locked .navbar {
+  border-bottom: 1px solid var(--border);
   background: var(--nav-bg);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
   backdrop-filter: blur(14px);
@@ -57,7 +59,10 @@ body[data-page="form"] .nav-links a,
 body[data-page="404"] .logo,
 body[data-page="404"] .nav-links a,
 body.no-hero .logo,
-body.no-hero .nav-links a {
+body.no-hero .nav-links a,
+body.page-locked .logo,
+body.page-locked .nav-links a {
+  color: var(--text) !important;
   color: var(--text);
 }
 
@@ -300,6 +305,7 @@ body[data-page="profile"] .language-switch,
 body[data-page="form"] .language-switch,
 body[data-page="404"] .language-switch,
 body.no-hero .language-switch,
+body.page-locked .language-switch,
 .navbar.scrolled .language-switch {
   background: var(--surface-strong);
   border-color: var(--border);
@@ -309,6 +315,7 @@ body[data-page="profile"] .language-switch button,
 body[data-page="form"] .language-switch button,
 body[data-page="404"] .language-switch button,
 body.no-hero .language-switch button,
+body.page-locked .language-switch button,
 .navbar.scrolled .language-switch button {
   color: var(--text);
 }
@@ -317,6 +324,7 @@ body[data-page="profile"] .language-switch button.active,
 body[data-page="form"] .language-switch button.active,
 body[data-page="404"] .language-switch button.active,
 body.no-hero .language-switch button.active,
+body.page-locked .language-switch button.active,
 .navbar.scrolled .language-switch button.active {
   color: #ffffff;
 }
@@ -339,6 +347,7 @@ body[data-page="profile"] .theme-toggle,
 body[data-page="form"] .theme-toggle,
 body[data-page="404"] .theme-toggle,
 body.no-hero .theme-toggle,
+body.page-locked .theme-toggle,
 .navbar.scrolled .theme-toggle {
   background: var(--surface-strong);
   color: var(--text);
@@ -386,3 +395,9 @@ body.no-hero .theme-toggle,
   line-height: 1.6;
 }
 
+
+
+/* Protected / Page-Access Banner Layout */
+.page-access-banner {
+  margin: 120px auto 60px !important;
+}

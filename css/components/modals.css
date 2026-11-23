@@ -1038,7 +1038,8 @@ body.dark .footer-links a:hover {
   body[data-page="profile"] .navbar,
   body[data-page="form"] .navbar,
   body[data-page="404"] .navbar,
-  body.no-hero .navbar {
+  body.no-hero .navbar,
+  body.page-locked .navbar {
     padding: 8px 0;
   }
 
