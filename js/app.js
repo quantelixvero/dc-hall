@@ -4521,8 +4521,8 @@ function verifyAuthSecret(secret) {
     if (vaultRole) return vaultRole;
   }
 
-  // 2. Direct Master Check (dynamic master password from adminSettings if in memory)
-  const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
+  // 2. Direct Master Check (dynamic master password strictly from adminSettings if in memory)
+  const cmsMaster = cmsAdminSettings?.master_password;
   if (cmsMaster) {
     const p = String(cmsMaster).trim();
     const isMHash = /^[0-9a-f]{64}$/i.test(p);
@@ -4606,7 +4606,7 @@ function getAuthRole() {
   }
 
   if (savedHash) {
-    const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
+    const cmsMaster = cmsAdminSettings?.master_password;
     if (cmsMaster) {
       const p = String(cmsMaster).trim();
       const isMHash = /^[0-9a-f]{64}$/i.test(p);
@@ -4787,7 +4787,7 @@ function checkSessionValidity() {
     }
     if (!isValid) {
       if (role === "master") {
-        const cmsMaster = cmsAdminSettings?.master_password || cmsSettings?.master_password;
+        const cmsMaster = cmsAdminSettings?.master_password;
         if (cmsMaster) {
           const p = String(cmsMaster).trim();
           const isMHash = /^[0-9a-f]{64}$/i.test(p);

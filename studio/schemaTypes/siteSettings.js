@@ -82,29 +82,6 @@ export default defineType({
       description: 'ব্যানার শিরোনামের নিচের সংক্ষিপ্ত পরিচিতি বা বক্তব্য (বাংলা)।',
     }),
 
-    // ═══════════════════════════════════════════
-    // Privacy & Passwords (Hidden / Managed via adminSettings)
-    // ═══════════════════════════════════════════
-    defineField({
-      name: 'master_password',
-      title: 'Master Admin Password',
-      type: 'string',
-      hidden: true,
-      description: 'এই পাসওয়ার্ড দিয়ে লগইন করলে সমস্ত ব্যাচের সব লক করা তথ্য আনলক হবে।',
-    }),
-    defineField({
-      name: 'batch_passwords',
-      title: 'Batch Specific Passwords',
-      type: 'object',
-      hidden: true,
-      description: 'নির্দিষ্ট ব্যাচের শিক্ষার্থীরা এই পাসওয়ার্ড দিয়ে লগইন করলে শুধুমাত্র তাদের ব্যাচের সংরক্ষিত তথ্য দেখতে পারবে।',
-      fields: [
-        { name: 'hsc27', title: 'HSC 2027 Password', type: 'string', placeholder: 'dc27hall' },
-        { name: 'hsc28', title: 'HSC 2028 Password', type: 'string', placeholder: 'dc28hall' },
-        { name: 'hsc29', title: 'HSC 2029 Password', type: 'string', placeholder: 'dc29hall' },
-        { name: 'hsc30', title: 'HSC 2030 Password', type: 'string', placeholder: 'dc30hall' },
-      ],
-    }),
     defineField({
       name: 'batch_administration',
       title: 'Batch Administration',

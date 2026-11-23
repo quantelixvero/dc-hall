@@ -212,7 +212,13 @@ function processAndSanitizeAuth(rawResult) {
     delete rawResult.adminSettings.universal_moderator_emails;
   }
 
-  // 5. Persist the updated hashes so subsequent page reloads are verified at 0ms
+  // 5. Completely scrub legacy credentials from siteSettings
+  if (rawResult.settings) {
+    delete rawResult.settings.master_password;
+    delete rawResult.settings.batch_passwords;
+  }
+
+  // 6. Persist the updated hashes so subsequent page reloads are verified at 0ms
   persistAuthVault();
 }
 
@@ -308,6 +314,7 @@ const SANITY_GROQ_QUERY = `{
     "logo": coalesce(logo.asset->url, logo),
     "hero_image": coalesce(hero_image.asset->url, hero_image),
     "notice_pdf": coalesce(notice_pdf.asset->url, notice_pdf),
+    "master_password": null,
     "batch_passwords": null
   },
   "students": *[_type == "student" && !(_id in path("drafts.**"))] | order(position asc){
